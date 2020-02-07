@@ -25,8 +25,8 @@ Editing (assignable to Left, Middle and Right mouse buttons):
  - Pencil;
  - Probe;
  - Level;
- - Add/Sub level (binded to smooth);
- - Smooth (under development);
+ - Add/Sub level;
+ - Smooth;
  
 Export:
  - Height map as 8/16 bit gray PNG (LibPNG);
