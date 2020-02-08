@@ -66,7 +66,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cbbBytePresets = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.nudByte = new System.Windows.Forms.NumericUpDown();
+            this.nudByteRepeat = new System.Windows.Forms.NumericUpDown();
             this.tpSpectrum = new System.Windows.Forms.TabPage();
             this.btnSpectrumColor8 = new System.Windows.Forms.Button();
             this.btnSpectrumColor7 = new System.Windows.Forms.Button();
@@ -112,26 +112,30 @@
             this.btnToolX1MB = new System.Windows.Forms.Button();
             this.btnToolLMB = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.tbTool3Hex = new System.Windows.Forms.TextBox();
-            this.tbTool2Hex = new System.Windows.Forms.TextBox();
-            this.tbTool1Hex = new System.Windows.Forms.TextBox();
-            this.nudTool3Size = new System.Windows.Forms.NumericUpDown();
-            this.nudTool2Size = new System.Windows.Forms.NumericUpDown();
-            this.nudTool1Size = new System.Windows.Forms.NumericUpDown();
-            this.chbTool3Shape = new System.Windows.Forms.CheckBox();
+            this.btnSlot3Force = new System.Windows.Forms.Button();
+            this.ilToolForce = new System.Windows.Forms.ImageList(this.components);
+            this.btnSlot2Force = new System.Windows.Forms.Button();
+            this.btnSlot1Force = new System.Windows.Forms.Button();
+            this.tbSlot3Hex = new System.Windows.Forms.TextBox();
+            this.tbSlot2Hex = new System.Windows.Forms.TextBox();
+            this.tbSlot1Hex = new System.Windows.Forms.TextBox();
+            this.nudSlot3Size = new System.Windows.Forms.NumericUpDown();
+            this.nudSlot2Size = new System.Windows.Forms.NumericUpDown();
+            this.nudSlot1Size = new System.Windows.Forms.NumericUpDown();
+            this.chbSlot3Shape = new System.Windows.Forms.CheckBox();
             this.ilToolShape = new System.Windows.Forms.ImageList(this.components);
-            this.chbTool2Shape = new System.Windows.Forms.CheckBox();
-            this.chbTool1Shape = new System.Windows.Forms.CheckBox();
-            this.nudTool3Value = new System.Windows.Forms.NumericUpDown();
-            this.nudTool2Value = new System.Windows.Forms.NumericUpDown();
-            this.nudTool1Value = new System.Windows.Forms.NumericUpDown();
-            this.lblTool2Hex = new System.Windows.Forms.Label();
-            this.lblTool3Hex = new System.Windows.Forms.Label();
+            this.chbSlot2Shape = new System.Windows.Forms.CheckBox();
+            this.chbSlot1Shape = new System.Windows.Forms.CheckBox();
+            this.nudSlot3Value = new System.Windows.Forms.NumericUpDown();
+            this.nudSlot2Value = new System.Windows.Forms.NumericUpDown();
+            this.nudSlot1Value = new System.Windows.Forms.NumericUpDown();
+            this.lblSlot2Hex = new System.Windows.Forms.Label();
+            this.lblSlot3Hex = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.lblTool1Hex = new System.Windows.Forms.Label();
+            this.lblSlot1Hex = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
@@ -176,7 +180,7 @@
             this.tpMonochrome.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMonochromeRepeat)).BeginInit();
             this.tpBytes.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudByte)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudByteRepeat)).BeginInit();
             this.tpSpectrum.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSpectrumRepeat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSpectrum)).BeginInit();
@@ -187,12 +191,12 @@
             this.tlpTools.SuspendLayout();
             this.gbTools.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTool3Size)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTool2Size)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTool1Size)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTool3Value)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTool2Value)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTool1Value)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSlot3Size)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSlot2Size)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSlot1Size)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSlot3Value)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSlot2Value)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSlot1Value)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbMouseButtons)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbZoomOut)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbZoomIn)).BeginInit();
@@ -412,7 +416,7 @@
             this.tsmCreateEmpty.Name = "tsmCreateEmpty";
             this.tsmCreateEmpty.Size = new System.Drawing.Size(248, 22);
             this.tsmCreateEmpty.Text = "Create empty...";
-            this.tsmCreateEmpty.Click += new System.EventHandler(this.tsmCreateEmpty_Click);
+            this.tsmCreateEmpty.Click += new System.EventHandler(this.tsmCreat_Click);
             // 
             // tsmCreateScanline
             // 
@@ -472,7 +476,7 @@
             this.btnMonochromeColor.Size = new System.Drawing.Size(25, 25);
             this.btnMonochromeColor.TabIndex = 17;
             this.btnMonochromeColor.UseVisualStyleBackColor = false;
-            this.btnMonochromeColor.BackColorChanged += new System.EventHandler(this.HMapOption_Changed);
+            this.btnMonochromeColor.BackColorChanged += new System.EventHandler(this.btnMonochromeColor_BackColorChanged);
             this.btnMonochromeColor.Click += new System.EventHandler(this.PickColor_Click);
             // 
             // label1
@@ -552,7 +556,7 @@
             this.tpBytes.Controls.Add(this.label2);
             this.tpBytes.Controls.Add(this.cbbBytePresets);
             this.tpBytes.Controls.Add(this.label4);
-            this.tpBytes.Controls.Add(this.nudByte);
+            this.tpBytes.Controls.Add(this.nudByteRepeat);
             this.tpBytes.Location = new System.Drawing.Point(4, 22);
             this.tpBytes.Name = "tpBytes";
             this.tpBytes.Padding = new System.Windows.Forms.Padding(3);
@@ -653,29 +657,29 @@
             this.label4.Text = "Preset";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // nudByte
+            // nudByteRepeat
             // 
-            this.nudByte.Location = new System.Drawing.Point(48, 32);
-            this.nudByte.Maximum = new decimal(new int[] {
+            this.nudByteRepeat.Location = new System.Drawing.Point(48, 32);
+            this.nudByteRepeat.Maximum = new decimal(new int[] {
             32,
             0,
             0,
             0});
-            this.nudByte.Minimum = new decimal(new int[] {
+            this.nudByteRepeat.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.nudByte.Name = "nudByte";
-            this.nudByte.Size = new System.Drawing.Size(60, 20);
-            this.nudByte.TabIndex = 18;
-            this.nudByte.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudByte.Value = new decimal(new int[] {
+            this.nudByteRepeat.Name = "nudByteRepeat";
+            this.nudByteRepeat.Size = new System.Drawing.Size(60, 20);
+            this.nudByteRepeat.TabIndex = 18;
+            this.nudByteRepeat.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudByteRepeat.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.nudByte.ValueChanged += new System.EventHandler(this.HMapOption_Changed);
+            this.nudByteRepeat.ValueChanged += new System.EventHandler(this.HMapOption_Changed);
             // 
             // tpSpectrum
             // 
@@ -710,7 +714,7 @@
             this.btnSpectrumColor8.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor8.TabIndex = 23;
             this.btnSpectrumColor8.UseVisualStyleBackColor = false;
-            this.btnSpectrumColor8.BackColorChanged += new System.EventHandler(this.HMapOption_Changed);
+            this.btnSpectrumColor8.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor8.Click += new System.EventHandler(this.PickColor_Click);
             // 
             // btnSpectrumColor7
@@ -722,7 +726,7 @@
             this.btnSpectrumColor7.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor7.TabIndex = 22;
             this.btnSpectrumColor7.UseVisualStyleBackColor = false;
-            this.btnSpectrumColor7.BackColorChanged += new System.EventHandler(this.HMapOption_Changed);
+            this.btnSpectrumColor7.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor7.Click += new System.EventHandler(this.PickColor_Click);
             // 
             // btnSpectrumColor6
@@ -734,7 +738,7 @@
             this.btnSpectrumColor6.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor6.TabIndex = 17;
             this.btnSpectrumColor6.UseVisualStyleBackColor = false;
-            this.btnSpectrumColor6.BackColorChanged += new System.EventHandler(this.HMapOption_Changed);
+            this.btnSpectrumColor6.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor6.Click += new System.EventHandler(this.PickColor_Click);
             // 
             // btnSpectrumColor5
@@ -746,7 +750,7 @@
             this.btnSpectrumColor5.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor5.TabIndex = 21;
             this.btnSpectrumColor5.UseVisualStyleBackColor = false;
-            this.btnSpectrumColor5.BackColorChanged += new System.EventHandler(this.HMapOption_Changed);
+            this.btnSpectrumColor5.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor5.Click += new System.EventHandler(this.PickColor_Click);
             // 
             // btnSpectrumColor4
@@ -758,7 +762,7 @@
             this.btnSpectrumColor4.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor4.TabIndex = 20;
             this.btnSpectrumColor4.UseVisualStyleBackColor = false;
-            this.btnSpectrumColor4.BackColorChanged += new System.EventHandler(this.HMapOption_Changed);
+            this.btnSpectrumColor4.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor4.Click += new System.EventHandler(this.PickColor_Click);
             // 
             // btnSpectrumColor3
@@ -770,7 +774,7 @@
             this.btnSpectrumColor3.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor3.TabIndex = 19;
             this.btnSpectrumColor3.UseVisualStyleBackColor = false;
-            this.btnSpectrumColor3.BackColorChanged += new System.EventHandler(this.HMapOption_Changed);
+            this.btnSpectrumColor3.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor3.Click += new System.EventHandler(this.PickColor_Click);
             // 
             // btnSpectrumColor2
@@ -782,7 +786,7 @@
             this.btnSpectrumColor2.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor2.TabIndex = 18;
             this.btnSpectrumColor2.UseVisualStyleBackColor = false;
-            this.btnSpectrumColor2.BackColorChanged += new System.EventHandler(this.HMapOption_Changed);
+            this.btnSpectrumColor2.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor2.Click += new System.EventHandler(this.PickColor_Click);
             // 
             // btnSpectrumColor1
@@ -794,7 +798,7 @@
             this.btnSpectrumColor1.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor1.TabIndex = 17;
             this.btnSpectrumColor1.UseVisualStyleBackColor = false;
-            this.btnSpectrumColor1.BackColorChanged += new System.EventHandler(this.HMapOption_Changed);
+            this.btnSpectrumColor1.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor1.Click += new System.EventHandler(this.PickColor_Click);
             // 
             // btnSpectrumColor0
@@ -806,7 +810,7 @@
             this.btnSpectrumColor0.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor0.TabIndex = 16;
             this.btnSpectrumColor0.UseVisualStyleBackColor = false;
-            this.btnSpectrumColor0.BackColorChanged += new System.EventHandler(this.HMapOption_Changed);
+            this.btnSpectrumColor0.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor0.Click += new System.EventHandler(this.PickColor_Click);
             // 
             // nudSpectrumRepeat
@@ -1265,10 +1269,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbToolPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbbToolPreset.FormattingEnabled = true;
-            this.cbbToolPreset.Items.AddRange(new object[] {
-            "Pencil, Pan, Probe",
-            "Add, Pan, Subtract",
-            "Level, Pan, Smooth"});
             this.cbbToolPreset.Location = new System.Drawing.Point(48, 16);
             this.cbbToolPreset.Name = "cbbToolPreset";
             this.cbbToolPreset.Size = new System.Drawing.Size(160, 21);
@@ -1336,25 +1336,28 @@
             // 
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.tbTool3Hex);
-            this.panel1.Controls.Add(this.tbTool2Hex);
-            this.panel1.Controls.Add(this.tbTool1Hex);
-            this.panel1.Controls.Add(this.nudTool3Size);
-            this.panel1.Controls.Add(this.nudTool2Size);
-            this.panel1.Controls.Add(this.nudTool1Size);
-            this.panel1.Controls.Add(this.chbTool3Shape);
-            this.panel1.Controls.Add(this.chbTool2Shape);
-            this.panel1.Controls.Add(this.chbTool1Shape);
-            this.panel1.Controls.Add(this.nudTool3Value);
-            this.panel1.Controls.Add(this.nudTool2Value);
-            this.panel1.Controls.Add(this.nudTool1Value);
-            this.panel1.Controls.Add(this.lblTool2Hex);
-            this.panel1.Controls.Add(this.lblTool3Hex);
+            this.panel1.Controls.Add(this.btnSlot3Force);
+            this.panel1.Controls.Add(this.btnSlot2Force);
+            this.panel1.Controls.Add(this.btnSlot1Force);
+            this.panel1.Controls.Add(this.tbSlot3Hex);
+            this.panel1.Controls.Add(this.tbSlot2Hex);
+            this.panel1.Controls.Add(this.tbSlot1Hex);
+            this.panel1.Controls.Add(this.nudSlot3Size);
+            this.panel1.Controls.Add(this.nudSlot2Size);
+            this.panel1.Controls.Add(this.nudSlot1Size);
+            this.panel1.Controls.Add(this.chbSlot3Shape);
+            this.panel1.Controls.Add(this.chbSlot2Shape);
+            this.panel1.Controls.Add(this.chbSlot1Shape);
+            this.panel1.Controls.Add(this.nudSlot3Value);
+            this.panel1.Controls.Add(this.nudSlot2Value);
+            this.panel1.Controls.Add(this.nudSlot1Value);
+            this.panel1.Controls.Add(this.lblSlot2Hex);
+            this.panel1.Controls.Add(this.lblSlot3Hex);
             this.panel1.Controls.Add(this.label20);
             this.panel1.Controls.Add(this.label22);
             this.panel1.Controls.Add(this.label21);
             this.panel1.Controls.Add(this.label18);
-            this.panel1.Controls.Add(this.lblTool1Hex);
+            this.panel1.Controls.Add(this.lblSlot1Hex);
             this.panel1.Controls.Add(this.label25);
             this.panel1.Controls.Add(this.label24);
             this.panel1.Controls.Add(this.label23);
@@ -1364,136 +1367,183 @@
             this.panel1.Size = new System.Drawing.Size(164, 92);
             this.panel1.TabIndex = 22;
             // 
-            // tbTool3Hex
+            // btnSlot3Force
             // 
-            this.tbTool3Hex.Location = new System.Drawing.Point(36, 68);
-            this.tbTool3Hex.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.tbTool3Hex.MaxLength = 7;
-            this.tbTool3Hex.Name = "tbTool3Hex";
-            this.tbTool3Hex.Size = new System.Drawing.Size(36, 20);
-            this.tbTool3Hex.TabIndex = 10;
-            this.tbTool3Hex.Text = "0001";
-            this.tbTool3Hex.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip.SetToolTip(this.tbTool3Hex, "4 hexadecimals (0-9, A-F)");
-            this.tbTool3Hex.Visible = false;
-            this.tbTool3Hex.WordWrap = false;
-            this.tbTool3Hex.TextChanged += new System.EventHandler(this.tbTool3Hex_TextChanged);
+            this.btnSlot3Force.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSlot3Force.ImageIndex = 0;
+            this.btnSlot3Force.ImageList = this.ilToolForce;
+            this.btnSlot3Force.Location = new System.Drawing.Point(84, 68);
+            this.btnSlot3Force.Name = "btnSlot3Force";
+            this.btnSlot3Force.Size = new System.Drawing.Size(20, 20);
+            this.btnSlot3Force.TabIndex = 27;
+            this.btnSlot3Force.UseVisualStyleBackColor = true;
+            this.btnSlot3Force.Click += new System.EventHandler(this.btnTool3Force_Click);
             // 
-            // tbTool2Hex
+            // ilToolForce
             // 
-            this.tbTool2Hex.Location = new System.Drawing.Point(36, 44);
-            this.tbTool2Hex.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.tbTool2Hex.MaxLength = 7;
-            this.tbTool2Hex.Name = "tbTool2Hex";
-            this.tbTool2Hex.Size = new System.Drawing.Size(36, 20);
-            this.tbTool2Hex.TabIndex = 7;
-            this.tbTool2Hex.Text = "0001";
-            this.tbTool2Hex.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip.SetToolTip(this.tbTool2Hex, "4 hexadecimals (0-9, A-F)");
-            this.tbTool2Hex.Visible = false;
-            this.tbTool2Hex.WordWrap = false;
-            this.tbTool2Hex.TextChanged += new System.EventHandler(this.tbTool2Hex_TextChanged);
+            this.ilToolForce.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilToolForce.ImageStream")));
+            this.ilToolForce.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilToolForce.Images.SetKeyName(0, "brushForceSqure.png");
+            this.ilToolForce.Images.SetKeyName(1, "brushForceSphere.png");
+            this.ilToolForce.Images.SetKeyName(2, "brushForceGauss.png");
             // 
-            // tbTool1Hex
+            // btnSlot2Force
             // 
-            this.tbTool1Hex.Location = new System.Drawing.Point(36, 20);
-            this.tbTool1Hex.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.tbTool1Hex.MaxLength = 7;
-            this.tbTool1Hex.Name = "tbTool1Hex";
-            this.tbTool1Hex.Size = new System.Drawing.Size(36, 20);
-            this.tbTool1Hex.TabIndex = 4;
-            this.tbTool1Hex.Text = "0100";
-            this.tbTool1Hex.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip.SetToolTip(this.tbTool1Hex, "4 hexadecimals (0-9, A-F)");
-            this.tbTool1Hex.Visible = false;
-            this.tbTool1Hex.WordWrap = false;
-            this.tbTool1Hex.TextChanged += new System.EventHandler(this.tbTool1Hex_TextChanged);
+            this.btnSlot2Force.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSlot2Force.ImageIndex = 0;
+            this.btnSlot2Force.ImageList = this.ilToolForce;
+            this.btnSlot2Force.Location = new System.Drawing.Point(84, 44);
+            this.btnSlot2Force.Name = "btnSlot2Force";
+            this.btnSlot2Force.Size = new System.Drawing.Size(20, 20);
+            this.btnSlot2Force.TabIndex = 26;
+            this.btnSlot2Force.UseVisualStyleBackColor = true;
+            this.btnSlot2Force.Click += new System.EventHandler(this.btnTool2Force_Click);
             // 
-            // nudTool3Size
+            // btnSlot1Force
             // 
-            this.nudTool3Size.Location = new System.Drawing.Point(128, 68);
-            this.nudTool3Size.Maximum = new decimal(new int[] {
+            this.btnSlot1Force.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSlot1Force.ImageIndex = 0;
+            this.btnSlot1Force.ImageList = this.ilToolForce;
+            this.btnSlot1Force.Location = new System.Drawing.Point(84, 20);
+            this.btnSlot1Force.Name = "btnSlot1Force";
+            this.btnSlot1Force.Size = new System.Drawing.Size(20, 20);
+            this.btnSlot1Force.TabIndex = 25;
+            this.btnSlot1Force.UseVisualStyleBackColor = true;
+            this.btnSlot1Force.Click += new System.EventHandler(this.btnTool1Force_Click);
+            // 
+            // tbSlot3Hex
+            // 
+            this.tbSlot3Hex.Location = new System.Drawing.Point(28, 68);
+            this.tbSlot3Hex.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.tbSlot3Hex.MaxLength = 7;
+            this.tbSlot3Hex.Name = "tbSlot3Hex";
+            this.tbSlot3Hex.Size = new System.Drawing.Size(36, 20);
+            this.tbSlot3Hex.TabIndex = 10;
+            this.tbSlot3Hex.Text = "0001";
+            this.tbSlot3Hex.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.tbSlot3Hex, "4 hexadecimals (0-9, A-F)");
+            this.tbSlot3Hex.Visible = false;
+            this.tbSlot3Hex.WordWrap = false;
+            this.tbSlot3Hex.TextChanged += new System.EventHandler(this.tbTool3Hex_TextChanged);
+            // 
+            // tbSlot2Hex
+            // 
+            this.tbSlot2Hex.Location = new System.Drawing.Point(28, 44);
+            this.tbSlot2Hex.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.tbSlot2Hex.MaxLength = 7;
+            this.tbSlot2Hex.Name = "tbSlot2Hex";
+            this.tbSlot2Hex.Size = new System.Drawing.Size(36, 20);
+            this.tbSlot2Hex.TabIndex = 7;
+            this.tbSlot2Hex.Text = "0001";
+            this.tbSlot2Hex.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.tbSlot2Hex, "4 hexadecimals (0-9, A-F)");
+            this.tbSlot2Hex.Visible = false;
+            this.tbSlot2Hex.WordWrap = false;
+            this.tbSlot2Hex.TextChanged += new System.EventHandler(this.tbTool2Hex_TextChanged);
+            // 
+            // tbSlot1Hex
+            // 
+            this.tbSlot1Hex.Location = new System.Drawing.Point(28, 20);
+            this.tbSlot1Hex.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.tbSlot1Hex.MaxLength = 7;
+            this.tbSlot1Hex.Name = "tbSlot1Hex";
+            this.tbSlot1Hex.Size = new System.Drawing.Size(36, 20);
+            this.tbSlot1Hex.TabIndex = 4;
+            this.tbSlot1Hex.Text = "0100";
+            this.tbSlot1Hex.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.tbSlot1Hex, "4 hexadecimals (0-9, A-F)");
+            this.tbSlot1Hex.Visible = false;
+            this.tbSlot1Hex.WordWrap = false;
+            this.tbSlot1Hex.TextChanged += new System.EventHandler(this.tbTool1Hex_TextChanged);
+            // 
+            // nudSlot3Size
+            // 
+            this.nudSlot3Size.Location = new System.Drawing.Point(128, 68);
+            this.nudSlot3Size.Maximum = new decimal(new int[] {
             30,
             0,
             0,
             0});
-            this.nudTool3Size.Minimum = new decimal(new int[] {
+            this.nudSlot3Size.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.nudTool3Size.Name = "nudTool3Size";
-            this.nudTool3Size.Size = new System.Drawing.Size(32, 20);
-            this.nudTool3Size.TabIndex = 23;
-            this.nudTool3Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudTool3Size.Value = new decimal(new int[] {
-            1,
+            this.nudSlot3Size.Name = "nudSlot3Size";
+            this.nudSlot3Size.Size = new System.Drawing.Size(32, 20);
+            this.nudSlot3Size.TabIndex = 23;
+            this.nudSlot3Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudSlot3Size.Value = new decimal(new int[] {
+            6,
             0,
             0,
             0});
+            this.nudSlot3Size.ValueChanged += new System.EventHandler(this.nudTool3Size_ValueChanged);
             // 
-            // nudTool2Size
+            // nudSlot2Size
             // 
-            this.nudTool2Size.Location = new System.Drawing.Point(128, 44);
-            this.nudTool2Size.Maximum = new decimal(new int[] {
+            this.nudSlot2Size.Location = new System.Drawing.Point(128, 44);
+            this.nudSlot2Size.Maximum = new decimal(new int[] {
             30,
             0,
             0,
             0});
-            this.nudTool2Size.Minimum = new decimal(new int[] {
+            this.nudSlot2Size.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.nudTool2Size.Name = "nudTool2Size";
-            this.nudTool2Size.Size = new System.Drawing.Size(32, 20);
-            this.nudTool2Size.TabIndex = 22;
-            this.nudTool2Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudTool2Size.Value = new decimal(new int[] {
-            1,
+            this.nudSlot2Size.Name = "nudSlot2Size";
+            this.nudSlot2Size.Size = new System.Drawing.Size(32, 20);
+            this.nudSlot2Size.TabIndex = 22;
+            this.nudSlot2Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudSlot2Size.Value = new decimal(new int[] {
+            8,
             0,
             0,
             0});
+            this.nudSlot2Size.ValueChanged += new System.EventHandler(this.nudTool2Size_ValueChanged);
             // 
-            // nudTool1Size
+            // nudSlot1Size
             // 
-            this.nudTool1Size.Location = new System.Drawing.Point(128, 20);
-            this.nudTool1Size.Maximum = new decimal(new int[] {
+            this.nudSlot1Size.Location = new System.Drawing.Point(128, 20);
+            this.nudSlot1Size.Maximum = new decimal(new int[] {
             99,
             0,
             0,
             0});
-            this.nudTool1Size.Minimum = new decimal(new int[] {
+            this.nudSlot1Size.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.nudTool1Size.Name = "nudTool1Size";
-            this.nudTool1Size.Size = new System.Drawing.Size(32, 20);
-            this.nudTool1Size.TabIndex = 21;
-            this.nudTool1Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudTool1Size.Value = new decimal(new int[] {
-            99,
+            this.nudSlot1Size.Name = "nudSlot1Size";
+            this.nudSlot1Size.Size = new System.Drawing.Size(32, 20);
+            this.nudSlot1Size.TabIndex = 21;
+            this.nudSlot1Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudSlot1Size.Value = new decimal(new int[] {
+            4,
             0,
             0,
             0});
+            this.nudSlot1Size.ValueChanged += new System.EventHandler(this.nudTool1Size_ValueChanged);
             // 
-            // chbTool3Shape
+            // chbSlot3Shape
             // 
-            this.chbTool3Shape.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chbTool3Shape.BackColor = System.Drawing.SystemColors.Control;
-            this.chbTool3Shape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbTool3Shape.BackgroundImage")));
-            this.chbTool3Shape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.chbTool3Shape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbTool3Shape.ImageList = this.ilToolShape;
-            this.chbTool3Shape.Location = new System.Drawing.Point(100, 68);
-            this.chbTool3Shape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.chbTool3Shape.Name = "chbTool3Shape";
-            this.chbTool3Shape.Size = new System.Drawing.Size(20, 20);
-            this.chbTool3Shape.TabIndex = 24;
-            this.chbTool3Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chbTool3Shape.UseVisualStyleBackColor = false;
-            this.chbTool3Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
+            this.chbSlot3Shape.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbSlot3Shape.BackColor = System.Drawing.SystemColors.Control;
+            this.chbSlot3Shape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbSlot3Shape.BackgroundImage")));
+            this.chbSlot3Shape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbSlot3Shape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbSlot3Shape.ImageList = this.ilToolShape;
+            this.chbSlot3Shape.Location = new System.Drawing.Point(104, 68);
+            this.chbSlot3Shape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.chbSlot3Shape.Name = "chbSlot3Shape";
+            this.chbSlot3Shape.Size = new System.Drawing.Size(20, 20);
+            this.chbSlot3Shape.TabIndex = 24;
+            this.chbSlot3Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chbSlot3Shape.UseVisualStyleBackColor = false;
+            this.chbSlot3Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
             // 
             // ilToolShape
             // 
@@ -1502,135 +1552,135 @@
             this.ilToolShape.Images.SetKeyName(0, "circle.png");
             this.ilToolShape.Images.SetKeyName(1, "square.png");
             // 
-            // chbTool2Shape
+            // chbSlot2Shape
             // 
-            this.chbTool2Shape.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chbTool2Shape.BackColor = System.Drawing.SystemColors.Control;
-            this.chbTool2Shape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbTool2Shape.BackgroundImage")));
-            this.chbTool2Shape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.chbTool2Shape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbTool2Shape.ImageList = this.ilToolShape;
-            this.chbTool2Shape.Location = new System.Drawing.Point(100, 44);
-            this.chbTool2Shape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.chbTool2Shape.Name = "chbTool2Shape";
-            this.chbTool2Shape.Size = new System.Drawing.Size(20, 20);
-            this.chbTool2Shape.TabIndex = 24;
-            this.chbTool2Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chbTool2Shape.UseVisualStyleBackColor = false;
-            this.chbTool2Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
+            this.chbSlot2Shape.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbSlot2Shape.BackColor = System.Drawing.SystemColors.Control;
+            this.chbSlot2Shape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbSlot2Shape.BackgroundImage")));
+            this.chbSlot2Shape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbSlot2Shape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbSlot2Shape.ImageList = this.ilToolShape;
+            this.chbSlot2Shape.Location = new System.Drawing.Point(104, 44);
+            this.chbSlot2Shape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.chbSlot2Shape.Name = "chbSlot2Shape";
+            this.chbSlot2Shape.Size = new System.Drawing.Size(20, 20);
+            this.chbSlot2Shape.TabIndex = 24;
+            this.chbSlot2Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chbSlot2Shape.UseVisualStyleBackColor = false;
+            this.chbSlot2Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
             // 
-            // chbTool1Shape
+            // chbSlot1Shape
             // 
-            this.chbTool1Shape.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chbTool1Shape.BackColor = System.Drawing.SystemColors.Control;
-            this.chbTool1Shape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbTool1Shape.BackgroundImage")));
-            this.chbTool1Shape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.chbTool1Shape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbTool1Shape.ImageList = this.ilToolShape;
-            this.chbTool1Shape.Location = new System.Drawing.Point(100, 20);
-            this.chbTool1Shape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.chbTool1Shape.Name = "chbTool1Shape";
-            this.chbTool1Shape.Size = new System.Drawing.Size(20, 20);
-            this.chbTool1Shape.TabIndex = 24;
-            this.chbTool1Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chbTool1Shape.UseVisualStyleBackColor = false;
-            this.chbTool1Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
+            this.chbSlot1Shape.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbSlot1Shape.BackColor = System.Drawing.SystemColors.Control;
+            this.chbSlot1Shape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbSlot1Shape.BackgroundImage")));
+            this.chbSlot1Shape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbSlot1Shape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbSlot1Shape.ImageList = this.ilToolShape;
+            this.chbSlot1Shape.Location = new System.Drawing.Point(104, 20);
+            this.chbSlot1Shape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.chbSlot1Shape.Name = "chbSlot1Shape";
+            this.chbSlot1Shape.Size = new System.Drawing.Size(20, 20);
+            this.chbSlot1Shape.TabIndex = 24;
+            this.chbSlot1Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chbSlot1Shape.UseVisualStyleBackColor = false;
+            this.chbSlot1Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
             // 
-            // nudTool3Value
+            // nudSlot3Value
             // 
-            this.nudTool3Value.Location = new System.Drawing.Point(36, 68);
-            this.nudTool3Value.Maximum = new decimal(new int[] {
+            this.nudSlot3Value.Location = new System.Drawing.Point(28, 68);
+            this.nudSlot3Value.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.nudTool3Value.Name = "nudTool3Value";
-            this.nudTool3Value.Size = new System.Drawing.Size(52, 20);
-            this.nudTool3Value.TabIndex = 11;
-            this.nudTool3Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudTool3Value.Value = new decimal(new int[] {
+            this.nudSlot3Value.Name = "nudSlot3Value";
+            this.nudSlot3Value.Size = new System.Drawing.Size(52, 20);
+            this.nudSlot3Value.TabIndex = 11;
+            this.nudSlot3Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudSlot3Value.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.nudTool3Value.ValueChanged += new System.EventHandler(this.nudTool3Value_ValueChanged);
+            this.nudSlot3Value.ValueChanged += new System.EventHandler(this.nudTool3Value_ValueChanged);
             // 
-            // nudTool2Value
+            // nudSlot2Value
             // 
-            this.nudTool2Value.Location = new System.Drawing.Point(36, 44);
-            this.nudTool2Value.Maximum = new decimal(new int[] {
+            this.nudSlot2Value.Location = new System.Drawing.Point(28, 44);
+            this.nudSlot2Value.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.nudTool2Value.Name = "nudTool2Value";
-            this.nudTool2Value.Size = new System.Drawing.Size(52, 20);
-            this.nudTool2Value.TabIndex = 8;
-            this.nudTool2Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudTool2Value.Value = new decimal(new int[] {
+            this.nudSlot2Value.Name = "nudSlot2Value";
+            this.nudSlot2Value.Size = new System.Drawing.Size(52, 20);
+            this.nudSlot2Value.TabIndex = 8;
+            this.nudSlot2Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudSlot2Value.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.nudTool2Value.ValueChanged += new System.EventHandler(this.nudTool2Value_ValueChanged);
+            this.nudSlot2Value.ValueChanged += new System.EventHandler(this.nudTool2Value_ValueChanged);
             // 
-            // nudTool1Value
+            // nudSlot1Value
             // 
-            this.nudTool1Value.Location = new System.Drawing.Point(36, 20);
-            this.nudTool1Value.Maximum = new decimal(new int[] {
+            this.nudSlot1Value.Location = new System.Drawing.Point(28, 20);
+            this.nudSlot1Value.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.nudTool1Value.Name = "nudTool1Value";
-            this.nudTool1Value.Size = new System.Drawing.Size(52, 20);
-            this.nudTool1Value.TabIndex = 5;
-            this.nudTool1Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudTool1Value.Value = new decimal(new int[] {
+            this.nudSlot1Value.Name = "nudSlot1Value";
+            this.nudSlot1Value.Size = new System.Drawing.Size(52, 20);
+            this.nudSlot1Value.TabIndex = 5;
+            this.nudSlot1Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudSlot1Value.Value = new decimal(new int[] {
             256,
             0,
             0,
             0});
-            this.nudTool1Value.ValueChanged += new System.EventHandler(this.nudTool1Value_ValueChanged);
+            this.nudSlot1Value.ValueChanged += new System.EventHandler(this.nudTool1Value_ValueChanged);
             // 
-            // lblTool2Hex
+            // lblSlot2Hex
             // 
-            this.lblTool2Hex.AutoSize = true;
-            this.lblTool2Hex.BackColor = System.Drawing.Color.Transparent;
-            this.lblTool2Hex.Location = new System.Drawing.Point(20, 48);
-            this.lblTool2Hex.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.lblTool2Hex.Name = "lblTool2Hex";
-            this.lblTool2Hex.Size = new System.Drawing.Size(18, 13);
-            this.lblTool2Hex.TabIndex = 20;
-            this.lblTool2Hex.Text = "D:";
-            this.lblTool2Hex.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip.SetToolTip(this.lblTool2Hex, "Switch: decimal / hexadecimal");
-            this.lblTool2Hex.Click += new System.EventHandler(this.lblTool2Hex_Click);
+            this.lblSlot2Hex.AutoSize = true;
+            this.lblSlot2Hex.BackColor = System.Drawing.Color.Transparent;
+            this.lblSlot2Hex.Location = new System.Drawing.Point(16, 48);
+            this.lblSlot2Hex.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.lblSlot2Hex.Name = "lblSlot2Hex";
+            this.lblSlot2Hex.Size = new System.Drawing.Size(18, 13);
+            this.lblSlot2Hex.TabIndex = 20;
+            this.lblSlot2Hex.Text = "D:";
+            this.lblSlot2Hex.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.lblSlot2Hex, "Switch: decimal / hexadecimal");
+            this.lblSlot2Hex.Click += new System.EventHandler(this.lblTool2Hex_Click);
             // 
-            // lblTool3Hex
+            // lblSlot3Hex
             // 
-            this.lblTool3Hex.AutoSize = true;
-            this.lblTool3Hex.BackColor = System.Drawing.Color.Transparent;
-            this.lblTool3Hex.Location = new System.Drawing.Point(20, 72);
-            this.lblTool3Hex.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.lblTool3Hex.Name = "lblTool3Hex";
-            this.lblTool3Hex.Size = new System.Drawing.Size(18, 13);
-            this.lblTool3Hex.TabIndex = 20;
-            this.lblTool3Hex.Text = "D:";
-            this.lblTool3Hex.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip.SetToolTip(this.lblTool3Hex, "Switch: decimal / hexadecimal");
-            this.lblTool3Hex.Click += new System.EventHandler(this.lblTool3Hex_Click);
+            this.lblSlot3Hex.AutoSize = true;
+            this.lblSlot3Hex.BackColor = System.Drawing.Color.Transparent;
+            this.lblSlot3Hex.Location = new System.Drawing.Point(16, 72);
+            this.lblSlot3Hex.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.lblSlot3Hex.Name = "lblSlot3Hex";
+            this.lblSlot3Hex.Size = new System.Drawing.Size(18, 13);
+            this.lblSlot3Hex.TabIndex = 20;
+            this.lblSlot3Hex.Text = "D:";
+            this.lblSlot3Hex.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.lblSlot3Hex, "Switch: decimal / hexadecimal");
+            this.lblSlot3Hex.Click += new System.EventHandler(this.lblTool3Hex_Click);
             // 
             // label20
             // 
             this.label20.AutoSize = true;
             this.label20.BackColor = System.Drawing.Color.Transparent;
-            this.label20.Location = new System.Drawing.Point(28, 4);
+            this.label20.Location = new System.Drawing.Point(32, 4);
             this.label20.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(66, 13);
+            this.label20.Size = new System.Drawing.Size(34, 13);
             this.label20.TabIndex = 20;
-            this.label20.Text = "Value/Force";
+            this.label20.Text = "Value";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label22
@@ -1649,7 +1699,7 @@
             // 
             this.label21.AutoSize = true;
             this.label21.BackColor = System.Drawing.Color.Transparent;
-            this.label21.Location = new System.Drawing.Point(96, 4);
+            this.label21.Location = new System.Drawing.Point(88, 4);
             this.label21.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(34, 13);
@@ -1661,7 +1711,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.BackColor = System.Drawing.Color.Transparent;
-            this.label18.Location = new System.Drawing.Point(132, 4);
+            this.label18.Location = new System.Drawing.Point(136, 4);
             this.label18.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(27, 13);
@@ -1669,19 +1719,19 @@
             this.label18.Text = "Size";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // lblTool1Hex
+            // lblSlot1Hex
             // 
-            this.lblTool1Hex.AutoSize = true;
-            this.lblTool1Hex.BackColor = System.Drawing.Color.Transparent;
-            this.lblTool1Hex.Location = new System.Drawing.Point(20, 24);
-            this.lblTool1Hex.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.lblTool1Hex.Name = "lblTool1Hex";
-            this.lblTool1Hex.Size = new System.Drawing.Size(18, 13);
-            this.lblTool1Hex.TabIndex = 20;
-            this.lblTool1Hex.Text = "D:";
-            this.lblTool1Hex.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip.SetToolTip(this.lblTool1Hex, "Switch: decimal / hexadecimal");
-            this.lblTool1Hex.Click += new System.EventHandler(this.lblTool1Hex_Click);
+            this.lblSlot1Hex.AutoSize = true;
+            this.lblSlot1Hex.BackColor = System.Drawing.Color.Transparent;
+            this.lblSlot1Hex.Location = new System.Drawing.Point(16, 24);
+            this.lblSlot1Hex.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.lblSlot1Hex.Name = "lblSlot1Hex";
+            this.lblSlot1Hex.Size = new System.Drawing.Size(18, 13);
+            this.lblSlot1Hex.TabIndex = 20;
+            this.lblSlot1Hex.Text = "D:";
+            this.lblSlot1Hex.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.lblSlot1Hex, "Switch: decimal / hexadecimal");
+            this.lblSlot1Hex.Click += new System.EventHandler(this.lblTool1Hex_Click);
             // 
             // label25
             // 
@@ -2234,6 +2284,7 @@
             // pbPDA
             // 
             this.pbPDA.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pbPDA.ErrorImage = null;
             this.pbPDA.InitialImage = null;
             this.pbPDA.Location = new System.Drawing.Point(220, 0);
             this.pbPDA.Name = "pbPDA";
@@ -2264,6 +2315,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(360, 550);
             this.Name = "FormSHME";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSHME_FormClosed);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormSHME_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbHMap_MouseDown);
             this.MouseEnter += new System.EventHandler(this.FormSHME_MouseEnter);
@@ -2278,7 +2330,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudMonochromeRepeat)).EndInit();
             this.tpBytes.ResumeLayout(false);
             this.tpBytes.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudByte)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudByteRepeat)).EndInit();
             this.tpSpectrum.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudSpectrumRepeat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSpectrum)).EndInit();
@@ -2294,12 +2346,12 @@
             this.gbTools.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTool3Size)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTool2Size)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTool1Size)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTool3Value)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTool2Value)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTool1Value)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSlot3Size)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSlot2Size)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSlot1Size)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSlot3Value)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSlot2Value)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSlot1Value)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbMouseButtons)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbZoomOut)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbZoomIn)).EndInit();
@@ -2368,20 +2420,20 @@
         private System.Windows.Forms.Panel pnlZoomGrid;
         private System.Windows.Forms.CheckBox chbGrid;
         private System.Windows.Forms.GroupBox gbTools;
-        private System.Windows.Forms.Label lblTool1Hex;
-        private System.Windows.Forms.TextBox tbTool1Hex;
-        private System.Windows.Forms.Label lblTool2Hex;
-        private System.Windows.Forms.Label lblTool3Hex;
-        private System.Windows.Forms.TextBox tbTool2Hex;
-        private System.Windows.Forms.TextBox tbTool3Hex;
-        private System.Windows.Forms.NumericUpDown nudTool1Value;
-        private System.Windows.Forms.NumericUpDown nudTool2Value;
-        private System.Windows.Forms.NumericUpDown nudTool3Value;
+        private System.Windows.Forms.Label lblSlot1Hex;
+        private System.Windows.Forms.TextBox tbSlot1Hex;
+        private System.Windows.Forms.Label lblSlot2Hex;
+        private System.Windows.Forms.Label lblSlot3Hex;
+        private System.Windows.Forms.TextBox tbSlot2Hex;
+        private System.Windows.Forms.TextBox tbSlot3Hex;
+        private System.Windows.Forms.NumericUpDown nudSlot1Value;
+        private System.Windows.Forms.NumericUpDown nudSlot2Value;
+        private System.Windows.Forms.NumericUpDown nudSlot3Value;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox tbByteLo;
         private System.Windows.Forms.ComboBox cbbBytePresets;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown nudByte;
+        private System.Windows.Forms.NumericUpDown nudByteRepeat;
         private System.Windows.Forms.TextBox tbByteHi;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
@@ -2423,15 +2475,15 @@
         private System.Windows.Forms.Button btnToolProbe3;
         private System.Windows.Forms.Button btnToolPencil2;
         private System.Windows.Forms.Button btnToolProbe2;
-        private System.Windows.Forms.NumericUpDown nudTool1Size;
+        private System.Windows.Forms.NumericUpDown nudSlot1Size;
         private System.Windows.Forms.Button btnToolSwitch;
-        private System.Windows.Forms.NumericUpDown nudTool3Size;
-        private System.Windows.Forms.NumericUpDown nudTool2Size;
+        private System.Windows.Forms.NumericUpDown nudSlot3Size;
+        private System.Windows.Forms.NumericUpDown nudSlot2Size;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.CheckBox chbTool3Shape;
-        private System.Windows.Forms.CheckBox chbTool2Shape;
-        private System.Windows.Forms.CheckBox chbTool1Shape;
+        private System.Windows.Forms.CheckBox chbSlot3Shape;
+        private System.Windows.Forms.CheckBox chbSlot2Shape;
+        private System.Windows.Forms.CheckBox chbSlot1Shape;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.ImageList ilToolShape;
         private System.Windows.Forms.Button btnToolAdd3;
@@ -2454,6 +2506,10 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Button btnHMapResize;
         private System.Windows.Forms.Button btnPDAGenerate;
+        private System.Windows.Forms.ImageList ilToolForce;
+        private System.Windows.Forms.Button btnSlot3Force;
+        private System.Windows.Forms.Button btnSlot2Force;
+        private System.Windows.Forms.Button btnSlot1Force;
     }
 }
 

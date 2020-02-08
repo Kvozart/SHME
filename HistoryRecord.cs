@@ -32,13 +32,13 @@ namespace SHME
             if (Bottom < bottom) Bottom = bottom;
         }
 
-        public void Finish(byte action, bool fast = false)
+        public void Finish(byte action, bool full = false)
         {
             int x;
             Width  = Right  - Left + 1;
             Height = Bottom - Top  + 1;
             Action = action;
-            if (fast) return;
+            if (full) return;
             UInt16[,] buffer = Clip;
             Clip = new UInt16[Width, Height];
             for (int y = 0; y < Height; y++)

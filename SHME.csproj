@@ -175,6 +175,9 @@
     <None Include="Resources\historyForward.png" />
     <None Include="Resources\resize.png" />
     <None Include="Resources\Logo_SHME.ico" />
+    <None Include="Resources\brushForceGauss.png" />
+    <None Include="Resources\brushForceSphere.png" />
+    <None Include="Resources\brushForceSqure.png" />
     <Content Include="zlib1.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
