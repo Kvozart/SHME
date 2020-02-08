@@ -226,9 +226,9 @@ namespace SHME
                 {
                     h = (Level[x, y] - stretchMin) * k;
                     Pixel[x + y * Width] = A
-                        + ((byte)((color >> 16) * h) << 16)
-                        + ((byte)((color >>  8) * h) <<  8)
-                        + ((byte)((color      ) * h)      );
+                        + ((int)((byte)(color >> 16) * h) << 16)
+                        + ((int)((byte)(color >>  8) * h) <<  8)
+                        + ((int)((byte)(color      ) * h)      );
                 }
         }
 
