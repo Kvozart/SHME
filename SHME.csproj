@@ -179,6 +179,7 @@
     <None Include="Resources\brushForceSphere.png" />
     <None Include="Resources\brushForceSquare.png" />
     <None Include="Resources\delete.png" />
+    <None Include="Resources\add.png" />
     <Content Include="zlib1.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -58,6 +58,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.nudMonochromeRepeat = new System.Windows.Forms.NumericUpDown();
             this.cbbMonochromePresets = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.tpBytes = new System.Windows.Forms.TabPage();
             this.tbByteLo = new System.Windows.Forms.TextBox();
@@ -106,8 +107,10 @@
             this.btnPDAGenerate = new System.Windows.Forms.Button();
             this.tlpTools = new System.Windows.Forms.TableLayoutPanel();
             this.gbTools = new System.Windows.Forms.GroupBox();
+            this.btnToolsetRemove = new System.Windows.Forms.Button();
+            this.btnToolsetAdd = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
-            this.cbbToolPreset = new System.Windows.Forms.ComboBox();
+            this.cbbToolsetPreset = new System.Windows.Forms.ComboBox();
             this.btnToolRMB = new System.Windows.Forms.Button();
             this.btnToolX2MB = new System.Windows.Forms.Button();
             this.btnToolX1MB = new System.Windows.Forms.Button();
@@ -144,7 +147,6 @@
             this.pbMouseButtons = new System.Windows.Forms.PictureBox();
             this.hScrollBar = new System.Windows.Forms.HScrollBar();
             this.vScrollBar = new System.Windows.Forms.VScrollBar();
-            this.pnlCorner = new System.Windows.Forms.Panel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.cbbZoom = new System.Windows.Forms.ComboBox();
             this.btnHistoryForward = new System.Windows.Forms.Button();
@@ -152,8 +154,6 @@
             this.chbGrid = new System.Windows.Forms.CheckBox();
             this.pbZoomOut = new System.Windows.Forms.PictureBox();
             this.pbZoomIn = new System.Windows.Forms.PictureBox();
-            this.pnlZoomGrid = new System.Windows.Forms.Panel();
-            this.pnlToolSelect = new System.Windows.Forms.Panel();
             this.btnToolSmooth3 = new System.Windows.Forms.Button();
             this.btnToolSmooth2 = new System.Windows.Forms.Button();
             this.btnToolLevel3 = new System.Windows.Forms.Button();
@@ -174,7 +174,10 @@
             this.btnToolProbe3 = new System.Windows.Forms.Button();
             this.btnToolPencil3 = new System.Windows.Forms.Button();
             this.btnToolPencil2 = new System.Windows.Forms.Button();
+            this.pnlZoomGrid = new System.Windows.Forms.Panel();
+            this.pnlToolSelect = new System.Windows.Forms.Panel();
             this.pbPDA = new System.Windows.Forms.PictureBox();
+            this.pnlCorner = new System.Windows.Forms.Panel();
             this.gbStatistics.SuspendLayout();
             this.cmsOpenFile.SuspendLayout();
             this.tcThemes.SuspendLayout();
@@ -248,12 +251,13 @@
             // chbLimitMin
             // 
             this.chbLimitMin.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbLimitMin.BackgroundImage = global::SHME.Properties.Resources.limitDown;
+            this.chbLimitMin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.chbLimitMin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbLimitMin.Image = global::SHME.Properties.Resources.limitDown;
-            this.chbLimitMin.Location = new System.Drawing.Point(84, 44);
+            this.chbLimitMin.Location = new System.Drawing.Point(84, 43);
             this.chbLimitMin.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.chbLimitMin.Name = "chbLimitMin";
-            this.chbLimitMin.Size = new System.Drawing.Size(23, 23);
+            this.chbLimitMin.Size = new System.Drawing.Size(22, 22);
             this.chbLimitMin.TabIndex = 1;
             this.chbLimitMin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chbLimitMin.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
@@ -326,12 +330,13 @@
             // chbLimitMax
             // 
             this.chbLimitMax.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbLimitMax.BackgroundImage = global::SHME.Properties.Resources.limitUp;
+            this.chbLimitMax.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.chbLimitMax.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbLimitMax.Image = global::SHME.Properties.Resources.limitUp;
-            this.chbLimitMax.Location = new System.Drawing.Point(84, 16);
+            this.chbLimitMax.Location = new System.Drawing.Point(84, 15);
             this.chbLimitMax.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.chbLimitMax.Name = "chbLimitMax";
-            this.chbLimitMax.Size = new System.Drawing.Size(23, 23);
+            this.chbLimitMax.Size = new System.Drawing.Size(22, 22);
             this.chbLimitMax.TabIndex = 0;
             this.chbLimitMax.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chbLimitMax.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
@@ -469,6 +474,7 @@
             this.tpMonochrome.Controls.Add(this.label1);
             this.tpMonochrome.Controls.Add(this.nudMonochromeRepeat);
             this.tpMonochrome.Controls.Add(this.cbbMonochromePresets);
+            this.tpMonochrome.Controls.Add(this.label14);
             this.tpMonochrome.Controls.Add(this.label9);
             this.tpMonochrome.Location = new System.Drawing.Point(4, 22);
             this.tpMonochrome.Name = "tpMonochrome";
@@ -482,7 +488,7 @@
             this.btnMonochromeColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMonochromeColor.BackColor = System.Drawing.Color.White;
             this.btnMonochromeColor.ForeColor = System.Drawing.Color.White;
-            this.btnMonochromeColor.Location = new System.Drawing.Point(176, 32);
+            this.btnMonochromeColor.Location = new System.Drawing.Point(48, 56);
             this.btnMonochromeColor.Name = "btnMonochromeColor";
             this.btnMonochromeColor.Size = new System.Drawing.Size(25, 25);
             this.btnMonochromeColor.TabIndex = 2;
@@ -547,6 +553,17 @@
             this.cbbMonochromePresets.TabIndex = 0;
             this.toolTip.SetToolTip(this.cbbMonochromePresets, "Color theme presets");
             this.cbbMonochromePresets.SelectedIndexChanged += new System.EventHandler(this.cbbMonochromePresets_SelectedIndexChanged);
+            // 
+            // label14
+            // 
+            this.label14.BackColor = System.Drawing.Color.Transparent;
+            this.label14.Location = new System.Drawing.Point(4, 60);
+            this.label14.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(42, 17);
+            this.label14.TabIndex = 15;
+            this.label14.Text = "Max";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label9
             // 
@@ -1057,7 +1074,7 @@
             this.tableLayoutPanel4.Controls.Add(this.btnLoadPDA, 2, 1);
             this.tableLayoutPanel4.Controls.Add(this.chbShowHMap, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.chbShowPDA, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.btnPDAGenerate, 3, 1);
+            this.tableLayoutPanel4.Controls.Add(this.btnPDAGenerate, 4, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -1227,10 +1244,10 @@
             // 
             this.btnPDAGenerate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.btnPDAGenerate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnPDAGenerate.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.btnPDAGenerate.BackColor = System.Drawing.Color.LightGray;
             this.btnPDAGenerate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btnPDAGenerate.Image = global::SHME.Properties.Resources.grid;
-            this.btnPDAGenerate.Location = new System.Drawing.Point(155, 29);
+            this.btnPDAGenerate.Location = new System.Drawing.Point(183, 29);
             this.btnPDAGenerate.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
             this.btnPDAGenerate.Name = "btnPDAGenerate";
             this.btnPDAGenerate.Size = new System.Drawing.Size(25, 25);
@@ -1262,8 +1279,10 @@
             // gbTools
             // 
             this.gbTools.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.gbTools.Controls.Add(this.btnToolsetRemove);
+            this.gbTools.Controls.Add(this.btnToolsetAdd);
             this.gbTools.Controls.Add(this.label17);
-            this.gbTools.Controls.Add(this.cbbToolPreset);
+            this.gbTools.Controls.Add(this.cbbToolsetPreset);
             this.gbTools.Controls.Add(this.btnToolRMB);
             this.gbTools.Controls.Add(this.btnToolX2MB);
             this.gbTools.Controls.Add(this.btnToolX1MB);
@@ -1280,6 +1299,29 @@
             this.gbTools.TabStop = false;
             this.gbTools.Text = "Tools";
             // 
+            // btnToolsetRemove
+            // 
+            this.btnToolsetRemove.Enabled = false;
+            this.btnToolsetRemove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToolsetRemove.Image = global::SHME.Properties.Resources.delete;
+            this.btnToolsetRemove.Location = new System.Drawing.Point(160, 40);
+            this.btnToolsetRemove.Name = "btnToolsetRemove";
+            this.btnToolsetRemove.Size = new System.Drawing.Size(23, 23);
+            this.btnToolsetRemove.TabIndex = 25;
+            this.btnToolsetRemove.UseVisualStyleBackColor = true;
+            this.btnToolsetRemove.Click += new System.EventHandler(this.btnToolsetRemove_Click);
+            // 
+            // btnToolsetAdd
+            // 
+            this.btnToolsetAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToolsetAdd.Image = global::SHME.Properties.Resources.add;
+            this.btnToolsetAdd.Location = new System.Drawing.Point(184, 40);
+            this.btnToolsetAdd.Name = "btnToolsetAdd";
+            this.btnToolsetAdd.Size = new System.Drawing.Size(23, 23);
+            this.btnToolsetAdd.TabIndex = 25;
+            this.btnToolsetAdd.UseVisualStyleBackColor = true;
+            this.btnToolsetAdd.Click += new System.EventHandler(this.btnToolsetAdd_Click);
+            // 
             // label17
             // 
             this.label17.BackColor = System.Drawing.Color.Transparent;
@@ -1291,18 +1333,18 @@
             this.label17.Text = "Preset";
             this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // cbbToolPreset
+            // cbbToolsetPreset
             // 
-            this.cbbToolPreset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cbbToolsetPreset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbbToolPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbbToolPreset.FormattingEnabled = true;
-            this.cbbToolPreset.Location = new System.Drawing.Point(48, 16);
-            this.cbbToolPreset.Name = "cbbToolPreset";
-            this.cbbToolPreset.Size = new System.Drawing.Size(160, 21);
-            this.cbbToolPreset.TabIndex = 0;
-            this.toolTip.SetToolTip(this.cbbToolPreset, "Toolset presets");
-            this.cbbToolPreset.SelectedIndexChanged += new System.EventHandler(this.cbbToolPreset_SelectedIndexChanged);
+            this.cbbToolsetPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbToolsetPreset.FormattingEnabled = true;
+            this.cbbToolsetPreset.Location = new System.Drawing.Point(48, 16);
+            this.cbbToolsetPreset.Name = "cbbToolsetPreset";
+            this.cbbToolsetPreset.Size = new System.Drawing.Size(160, 21);
+            this.cbbToolsetPreset.TabIndex = 0;
+            this.toolTip.SetToolTip(this.cbbToolsetPreset, "Toolset presets");
+            this.cbbToolsetPreset.SelectedIndexChanged += new System.EventHandler(this.cbbToolsetPreset_SelectedIndexChanged);
             // 
             // btnToolRMB
             // 
@@ -1469,7 +1511,7 @@
             this.tbSlot2Hex.Name = "tbSlot2Hex";
             this.tbSlot2Hex.Size = new System.Drawing.Size(36, 20);
             this.tbSlot2Hex.TabIndex = 7;
-            this.tbSlot2Hex.Text = "0001";
+            this.tbSlot2Hex.Text = "0010";
             this.tbSlot2Hex.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip.SetToolTip(this.tbSlot2Hex, "4 hexadecimals (0-9, A-F)");
             this.tbSlot2Hex.Visible = false;
@@ -1510,11 +1552,11 @@
             this.nudSlot3Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip.SetToolTip(this.nudSlot3Size, "Brush size");
             this.nudSlot3Size.Value = new decimal(new int[] {
-            6,
+            5,
             0,
             0,
             0});
-            this.nudSlot3Size.ValueChanged += new System.EventHandler(this.nudTool3Size_ValueChanged);
+            this.nudSlot3Size.ValueChanged += new System.EventHandler(this.btnTool3Force_Click);
             // 
             // nudSlot2Size
             // 
@@ -1535,11 +1577,11 @@
             this.nudSlot2Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip.SetToolTip(this.nudSlot2Size, "Brush size");
             this.nudSlot2Size.Value = new decimal(new int[] {
-            8,
+            5,
             0,
             0,
             0});
-            this.nudSlot2Size.ValueChanged += new System.EventHandler(this.nudTool2Size_ValueChanged);
+            this.nudSlot2Size.ValueChanged += new System.EventHandler(this.btnTool2Force_Click);
             // 
             // nudSlot1Size
             // 
@@ -1560,11 +1602,11 @@
             this.nudSlot1Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip.SetToolTip(this.nudSlot1Size, "Brush size");
             this.nudSlot1Size.Value = new decimal(new int[] {
-            4,
+            5,
             0,
             0,
             0});
-            this.nudSlot1Size.ValueChanged += new System.EventHandler(this.nudTool1Size_ValueChanged);
+            this.nudSlot1Size.ValueChanged += new System.EventHandler(this.btnTool1Force_Click);
             // 
             // chbSlot3Shape
             // 
@@ -1659,7 +1701,7 @@
             this.nudSlot2Value.TabIndex = 7;
             this.nudSlot2Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudSlot2Value.Value = new decimal(new int[] {
-            1,
+            16,
             0,
             0,
             0});
@@ -1840,9 +1882,9 @@
             // 
             this.hScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.hScrollBar.Location = new System.Drawing.Point(220, 575);
+            this.hScrollBar.Location = new System.Drawing.Point(220, 571);
             this.hScrollBar.Name = "hScrollBar";
-            this.hScrollBar.Size = new System.Drawing.Size(548, 17);
+            this.hScrollBar.Size = new System.Drawing.Size(543, 21);
             this.hScrollBar.TabIndex = 10;
             this.hScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
             // 
@@ -1850,19 +1892,11 @@
             // 
             this.vScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.vScrollBar.Location = new System.Drawing.Point(767, 0);
+            this.vScrollBar.Location = new System.Drawing.Point(763, 0);
             this.vScrollBar.Name = "vScrollBar";
-            this.vScrollBar.Size = new System.Drawing.Size(17, 575);
+            this.vScrollBar.Size = new System.Drawing.Size(21, 571);
             this.vScrollBar.TabIndex = 9;
             this.vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
-            // 
-            // pnlCorner
-            // 
-            this.pnlCorner.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlCorner.Location = new System.Drawing.Point(767, 575);
-            this.pnlCorner.Name = "pnlCorner";
-            this.pnlCorner.Size = new System.Drawing.Size(17, 17);
-            this.pnlCorner.TabIndex = 11;
             // 
             // cbbZoom
             // 
@@ -1925,6 +1959,7 @@
             // chbGrid
             // 
             this.chbGrid.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbGrid.BackColor = System.Drawing.Color.LightGray;
             this.chbGrid.BackgroundImage = global::SHME.Properties.Resources.grid;
             this.chbGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.chbGrid.Location = new System.Drawing.Point(1, 1);
@@ -1933,7 +1968,7 @@
             this.chbGrid.Size = new System.Drawing.Size(25, 25);
             this.chbGrid.TabIndex = 1;
             this.toolTip.SetToolTip(this.chbGrid, "Switch grid");
-            this.chbGrid.UseVisualStyleBackColor = true;
+            this.chbGrid.UseVisualStyleBackColor = false;
             this.chbGrid.CheckedChanged += new System.EventHandler(this.cbbGrid_CheckedChanged);
             // 
             // pbZoomOut
@@ -1965,60 +2000,6 @@
             this.pbZoomIn.TabStop = false;
             this.toolTip.SetToolTip(this.pbZoomIn, "Zoom in");
             this.pbZoomIn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbZoomIn_Click);
-            // 
-            // pnlZoomGrid
-            // 
-            this.pnlZoomGrid.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.pnlZoomGrid.AutoSize = true;
-            this.pnlZoomGrid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnlZoomGrid.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlZoomGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pnlZoomGrid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlZoomGrid.Controls.Add(this.btnHistoryForward);
-            this.pnlZoomGrid.Controls.Add(this.btnHistoryBackward);
-            this.pnlZoomGrid.Controls.Add(this.chbGrid);
-            this.pnlZoomGrid.Controls.Add(this.cbbZoom);
-            this.pnlZoomGrid.Controls.Add(this.pbZoomOut);
-            this.pnlZoomGrid.Controls.Add(this.pbZoomIn);
-            this.pnlZoomGrid.Location = new System.Drawing.Point(446, 4);
-            this.pnlZoomGrid.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlZoomGrid.Name = "pnlZoomGrid";
-            this.pnlZoomGrid.Padding = new System.Windows.Forms.Padding(1);
-            this.pnlZoomGrid.Size = new System.Drawing.Size(152, 30);
-            this.pnlZoomGrid.TabIndex = 1;
-            // 
-            // pnlToolSelect
-            // 
-            this.pnlToolSelect.AutoSize = true;
-            this.pnlToolSelect.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnlToolSelect.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlToolSelect.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlToolSelect.Controls.Add(this.btnToolSmooth3);
-            this.pnlToolSelect.Controls.Add(this.btnToolSmooth2);
-            this.pnlToolSelect.Controls.Add(this.btnToolLevel3);
-            this.pnlToolSelect.Controls.Add(this.btnToolLevel2);
-            this.pnlToolSelect.Controls.Add(this.btnToolSub3);
-            this.pnlToolSelect.Controls.Add(this.btnToolSub2);
-            this.pnlToolSelect.Controls.Add(this.btnToolAdd3);
-            this.pnlToolSelect.Controls.Add(this.btnToolAdd2);
-            this.pnlToolSelect.Controls.Add(this.btnToolSwitch);
-            this.pnlToolSelect.Controls.Add(this.btnToolMove);
-            this.pnlToolSelect.Controls.Add(this.btnToolProbe1);
-            this.pnlToolSelect.Controls.Add(this.btnToolProbe2);
-            this.pnlToolSelect.Controls.Add(this.btnToolPencil1);
-            this.pnlToolSelect.Controls.Add(this.btnToolSmooth1);
-            this.pnlToolSelect.Controls.Add(this.btnToolLevel1);
-            this.pnlToolSelect.Controls.Add(this.btnToolAdd1);
-            this.pnlToolSelect.Controls.Add(this.btnToolSub1);
-            this.pnlToolSelect.Controls.Add(this.btnToolProbe3);
-            this.pnlToolSelect.Controls.Add(this.btnToolPencil3);
-            this.pnlToolSelect.Controls.Add(this.btnToolPencil2);
-            this.pnlToolSelect.Location = new System.Drawing.Point(224, 396);
-            this.pnlToolSelect.Name = "pnlToolSelect";
-            this.pnlToolSelect.Size = new System.Drawing.Size(233, 105);
-            this.pnlToolSelect.TabIndex = 5;
-            this.pnlToolSelect.Visible = false;
-            this.pnlToolSelect.Click += new System.EventHandler(this.pnlToolSelect_Click);
             // 
             // btnToolSmooth3
             // 
@@ -2352,6 +2333,60 @@
             this.btnToolPencil2.UseVisualStyleBackColor = true;
             this.btnToolPencil2.Click += new System.EventHandler(this.btnTool_Click);
             // 
+            // pnlZoomGrid
+            // 
+            this.pnlZoomGrid.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.pnlZoomGrid.AutoSize = true;
+            this.pnlZoomGrid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlZoomGrid.BackColor = System.Drawing.SystemColors.Control;
+            this.pnlZoomGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pnlZoomGrid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlZoomGrid.Controls.Add(this.btnHistoryForward);
+            this.pnlZoomGrid.Controls.Add(this.btnHistoryBackward);
+            this.pnlZoomGrid.Controls.Add(this.chbGrid);
+            this.pnlZoomGrid.Controls.Add(this.cbbZoom);
+            this.pnlZoomGrid.Controls.Add(this.pbZoomOut);
+            this.pnlZoomGrid.Controls.Add(this.pbZoomIn);
+            this.pnlZoomGrid.Location = new System.Drawing.Point(446, 4);
+            this.pnlZoomGrid.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlZoomGrid.Name = "pnlZoomGrid";
+            this.pnlZoomGrid.Padding = new System.Windows.Forms.Padding(1);
+            this.pnlZoomGrid.Size = new System.Drawing.Size(152, 30);
+            this.pnlZoomGrid.TabIndex = 1;
+            // 
+            // pnlToolSelect
+            // 
+            this.pnlToolSelect.AutoSize = true;
+            this.pnlToolSelect.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlToolSelect.BackColor = System.Drawing.SystemColors.Control;
+            this.pnlToolSelect.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlToolSelect.Controls.Add(this.btnToolSmooth3);
+            this.pnlToolSelect.Controls.Add(this.btnToolSmooth2);
+            this.pnlToolSelect.Controls.Add(this.btnToolLevel3);
+            this.pnlToolSelect.Controls.Add(this.btnToolLevel2);
+            this.pnlToolSelect.Controls.Add(this.btnToolSub3);
+            this.pnlToolSelect.Controls.Add(this.btnToolSub2);
+            this.pnlToolSelect.Controls.Add(this.btnToolAdd3);
+            this.pnlToolSelect.Controls.Add(this.btnToolAdd2);
+            this.pnlToolSelect.Controls.Add(this.btnToolSwitch);
+            this.pnlToolSelect.Controls.Add(this.btnToolMove);
+            this.pnlToolSelect.Controls.Add(this.btnToolProbe1);
+            this.pnlToolSelect.Controls.Add(this.btnToolProbe2);
+            this.pnlToolSelect.Controls.Add(this.btnToolPencil1);
+            this.pnlToolSelect.Controls.Add(this.btnToolSmooth1);
+            this.pnlToolSelect.Controls.Add(this.btnToolLevel1);
+            this.pnlToolSelect.Controls.Add(this.btnToolAdd1);
+            this.pnlToolSelect.Controls.Add(this.btnToolSub1);
+            this.pnlToolSelect.Controls.Add(this.btnToolProbe3);
+            this.pnlToolSelect.Controls.Add(this.btnToolPencil3);
+            this.pnlToolSelect.Controls.Add(this.btnToolPencil2);
+            this.pnlToolSelect.Location = new System.Drawing.Point(224, 396);
+            this.pnlToolSelect.Name = "pnlToolSelect";
+            this.pnlToolSelect.Size = new System.Drawing.Size(233, 105);
+            this.pnlToolSelect.TabIndex = 5;
+            this.pnlToolSelect.Visible = false;
+            this.pnlToolSelect.Click += new System.EventHandler(this.pnlToolSelect_Click);
+            // 
             // pbPDA
             // 
             this.pbPDA.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -2367,6 +2402,15 @@
             this.pbPDA.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbHMap_MouseDown);
             this.pbPDA.MouseLeave += new System.EventHandler(this.FormSHME_MouseLeave);
             this.pbPDA.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbHMap_MouseMove);
+            // 
+            // pnlCorner
+            // 
+            this.pnlCorner.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlCorner.BackColor = System.Drawing.SystemColors.Control;
+            this.pnlCorner.Location = new System.Drawing.Point(763, 571);
+            this.pnlCorner.Name = "pnlCorner";
+            this.pnlCorner.Size = new System.Drawing.Size(21, 21);
+            this.pnlCorner.TabIndex = 11;
             // 
             // FormSHME
             // 
@@ -2483,7 +2527,6 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.HScrollBar hScrollBar;
         private System.Windows.Forms.VScrollBar vScrollBar;
-        private System.Windows.Forms.Panel pnlCorner;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.CheckBox chbLevelPixelBigLittleIndian;
         private System.Windows.Forms.ToolTip toolTip;
@@ -2544,7 +2587,7 @@
         private System.Windows.Forms.Button btnToolLMB;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.ComboBox cbbToolPreset;
+        private System.Windows.Forms.ComboBox cbbToolsetPreset;
         private System.Windows.Forms.Button btnToolPencil3;
         private System.Windows.Forms.Button btnToolProbe3;
         private System.Windows.Forms.Button btnToolPencil2;
@@ -2585,6 +2628,10 @@
         private System.Windows.Forms.Button btnSlot2Force;
         private System.Windows.Forms.Button btnSlot1Force;
         private System.Windows.Forms.ToolStripMenuItem tsmiClear;
+        private System.Windows.Forms.Button btnToolsetRemove;
+        private System.Windows.Forms.Button btnToolsetAdd;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Panel pnlCorner;
     }
 }
 

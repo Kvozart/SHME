@@ -58,7 +58,7 @@ namespace SHME
         int[] spectrumColors = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
         Button[] SpectrumColorControls;
-        List<int> toolPresets = new List<int>(); // [5xTool (R M L)]
+        List<int> toolsetPresets = new List<int>(); // [5xTool (R M L)]
         Button[] ToolControls;
 
         bool lockMouse = false;
@@ -120,6 +120,12 @@ namespace SHME
             //* Preload presets
             cbbLevelFormat16bit.SelectedIndex = 0;
             cbbLevelFormat8bit.SelectedIndex = 0;
+            // Tools
+            btnToolLMB. Tag = btnToolPencil1.Tag;
+            btnToolMMB. Tag = btnToolMove.Tag;
+            btnToolRMB. Tag = btnToolProbe1.Tag;
+            btnToolX1MB.Tag = btnToolAdd1.Tag;
+            btnToolX2MB.Tag = btnToolSub1.Tag;
 
             //* Load options
             OptionsLoad();
@@ -128,12 +134,11 @@ namespace SHME
             DrawSpectrumSample();
             cbbZoom.SelectedIndex = ZoomMax;
             // Tool presets
-            if (cbbToolPreset.Items.Count < 1)
+            if (cbbToolsetPreset.Items.Count < 1)
             {
-                AddToolSet((int)btnToolAdd1.Tag,    (int)btnToolMove.Tag, (int)btnToolSub1.Tag,    (int)btnToolLevel1.Tag, (int)btnToolSmooth1.Tag);
-                AddToolSet((int)btnToolPencil1.Tag, (int)btnToolMove.Tag, (int)btnToolProbe1.Tag,  (int)btnToolAdd1.Tag,   (int)btnToolSub1.Tag);
-                AddToolSet((int)btnToolLevel1.Tag,  (int)btnToolMove.Tag, (int)btnToolSmooth1.Tag, (int)btnToolAdd1.Tag,   (int)btnToolSub1.Tag);
-                cbbToolPreset.SelectedIndex = 0;
+                AddToolset((int)btnToolPencil1.Tag, (int)btnToolMove.Tag, (int)btnToolProbe1.Tag,  (int)btnToolAdd1.Tag,   (int)btnToolSub1.Tag);
+                AddToolset((int)btnToolAdd1.Tag,    (int)btnToolMove.Tag, (int)btnToolSub1.Tag,    (int)btnToolLevel1.Tag, (int)btnToolSmooth1.Tag);
+                AddToolset((int)btnToolLevel1.Tag,  (int)btnToolMove.Tag, (int)btnToolSmooth1.Tag, (int)btnToolAdd1.Tag,   (int)btnToolSub1.Tag);
             }
 
             // Create tool force shape
@@ -912,7 +917,7 @@ namespace SHME
 
                             //* Tools
                             // Preset
-                            case "ToolSetup":
+                            case "Toolset":
                                 int toolL = 0, toolM = 0, toolR = 0, toolX1 = 0, toolX2 = 0;
                                 rec = value.Split(new String[] { ", " }, StringSplitOptions.None);
                                 for (i = 0; i < ToolControls.Length; i++)
@@ -932,7 +937,7 @@ namespace SHME
                                     ToolXMBSelect(btnToolX2MB, toolX2);
                                 }
                                 else
-                                    AddToolSet(toolL, toolM, toolR, toolX1, toolX2);
+                                    AddToolset(toolL, toolM, toolR, toolX1, toolX2);
                                 break;
                             // Slots
                             case "Slot1Value": nudSlot1Value.Value      = CheckInteger(value, 0, 65535, 0); break;
@@ -1102,8 +1107,8 @@ namespace SHME
                     ToolControls[(int)btnToolX2MB.Tag].Name
                     ).Replace("btnTool", ""));
                 // Preset
-                for (int i = 0; i < cbbToolPreset.Items.Count; i++)
-                    file.WriteLine("ToolSetup\t" + (i + 1) + ", " + cbbToolPreset.Items[i].ToString());
+                for (int i = 0; i < cbbToolsetPreset.Items.Count; i++)
+                    file.WriteLine("Toolset\t" + (i + 1) + ", " + cbbToolsetPreset.Items[i].ToString());
                 // Slots
                 file.WriteLine("Slot1Value\t" + nudSlot1Value.Value);
                 file.WriteLine("Slot2Value\t" + nudSlot2Value.Value);
@@ -1133,40 +1138,51 @@ namespace SHME
 
         #region Tools
         private String GetToolName(int ID) => ToolControls[ID].Name.Replace("btnTool", "");
-        private int AddToolSet(int toolL, int toolM, int toolR, int toolX1, int toolX2)//Ok
+
+        private void btnToolsetAdd_Click(object sender, EventArgs e) => cbbToolsetPreset.SelectedIndex = AddToolset(
+                (int)btnToolLMB.Tag,
+                (int)btnToolMMB.Tag,
+                (int)btnToolRMB.Tag,
+                (int)btnToolX1MB.Tag,
+                (int)btnToolX2MB.Tag);
+        private int AddToolset(int toolL, int toolM, int toolR, int toolX1, int toolX2)//Ok
         {
             int t = toolL + (toolM << 5) + (toolR << 10) + (toolX1 << 15) + (toolX2 << 20);
-            if (!toolPresets.Contains(t))
+            if (!toolsetPresets.Contains(t))
             {
-                cbbToolPreset.Items.Add(
+                cbbToolsetPreset.Items.Add(
                     GetToolName(toolL)  + ", " + 
                     GetToolName(toolM)  + ", " + 
                     GetToolName(toolR)  + ", " + 
                     GetToolName(toolX1) + ", " + 
                     GetToolName(toolX2));
-                toolPresets.Add(t);
+                toolsetPresets.Add(t);
             }
-            return toolPresets.IndexOf(t);
+            return toolsetPresets.IndexOf(t);
         }
 
-        private bool RemoveToolSet(int idx)//Ok
+        private void btnToolsetRemove_Click(object sender, EventArgs e) => RemoveToolset(cbbToolsetPreset.SelectedIndex);
+        private bool RemoveToolset(int idx)//Ok
         {
-            if (idx < 0 || toolPresets.Count <= idx) return false;
-            cbbToolPreset.Items.RemoveAt(idx);
-            toolPresets.RemoveAt(idx);
+            if (idx < 0 || toolsetPresets.Count <= idx) return false;
+            cbbToolsetPreset.Items.RemoveAt(idx);
+            btnToolsetRemove.Enabled = false;
+            toolsetPresets.RemoveAt(idx);
             return true;
         }
 
-        private void cbbToolPreset_SelectedIndexChanged(object sender, EventArgs e)//
+        private void cbbToolsetPreset_SelectedIndexChanged(object sender, EventArgs e)//
         {
-            if (cbbToolPreset.SelectedIndex < 0)
+            btnToolsetRemove.Enabled = false;
+            if (cbbToolsetPreset.SelectedIndex < 0)
                 return;
-            int IDs = toolPresets[cbbToolPreset.SelectedIndex];
+            int IDs = toolsetPresets[cbbToolsetPreset.SelectedIndex];
             ToolXMBSelect(btnToolLMB,  IDs      );
             ToolXMBSelect(btnToolMMB,  IDs >>  5);
             ToolXMBSelect(btnToolRMB,  IDs >> 10);
             ToolXMBSelect(btnToolX1MB, IDs >> 15);
             ToolXMBSelect(btnToolX2MB, IDs >> 20);
+            btnToolsetRemove.Enabled = true;
         }
 
         private void ToolXMBSelect(Button btnXMB, int ID)//O
@@ -1187,6 +1203,14 @@ namespace SHME
             pnlToolSelect.Top  = btn.Top  + gbTools.Top  - (btnToolMove.Top  + 1) - btnToolMove.Height;
             pnlToolSelect.Visible = true;
             pnlToolSelect.Focus();
+        }
+
+        private void pnlToolSelect_Click(object sender, EventArgs e) => pnlToolSelect.Visible = false;
+        private void btnTool_Click(object sender, EventArgs e)//Ok
+        {
+            ToolXMBSelect(pnlToolSelect.Tag as Button, (int)((sender as Button).Tag));
+            cbbToolsetPreset.SelectedIndex = -1;
+            pnlToolSelect.Visible = false;
         }
 
         private void nudTool1Value_ValueChanged(object sender, EventArgs e) => tbSlot1Hex.Text = ((int)nudSlot1Value.Value).ToString("X4");
@@ -1220,27 +1244,14 @@ namespace SHME
             tb.TextChanged += e;
         }
 
-        private void btnTool_Click(object sender, EventArgs e)//Ok
-        {
-            ToolXMBSelect(pnlToolSelect.Tag as Button, (int)((sender as Button).Tag));
-            cbbToolPreset.SelectedIndex = -1;
-            pnlToolSelect.Visible = false;
-        }
-
         private void chbToolShape_CheckedChanged(object sender, EventArgs e) => //Ok
             (sender as CheckBox).BackgroundImage = ilToolShape.Images[(sender as CheckBox).Checked ? 1 : 0];
-
-        private void pnlToolSelect_Click(object sender, EventArgs e) => pnlToolSelect.Visible = false;
 
         private void lblTool1Hex_Click(object sender, EventArgs e) => lblToolXHex_Click(tbSlot1Hex, lblSlot1Hex);
         private void lblTool2Hex_Click(object sender, EventArgs e) => lblToolXHex_Click(tbSlot2Hex, lblSlot2Hex);
         private void lblTool3Hex_Click(object sender, EventArgs e) => lblToolXHex_Click(tbSlot3Hex, lblSlot3Hex);
 
         private void lblToolXHex_Click(TextBox tb, Label lb) => lb.Text = (tb.Visible = !tb.Visible) ? "0x" : "D";
-
-        private void nudTool1Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref tool1ForceMask, ref tool1Brush, btnSlot1Force.ImageIndex, nudSlot1Size, chbSlot1Shape);
-        private void nudTool2Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref tool2ForceMask, ref tool2Brush, btnSlot2Force.ImageIndex, nudSlot2Size, chbSlot2Shape);
-        private void nudTool3Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref tool3ForceMask, ref tool3Brush, btnSlot3Force.ImageIndex, nudSlot3Size, chbSlot3Shape);
 
         private void btnTool1Force_Click(object sender, EventArgs e) => CreateToolForceMask(ref tool1ForceMask, ref tool1Brush, btnSlot1Force.ImageIndex += (1 < btnSlot1Force.ImageIndex) ? -2 : 1, nudSlot1Size, chbSlot1Shape);
         private void btnTool2Force_Click(object sender, EventArgs e) => CreateToolForceMask(ref tool2ForceMask, ref tool2Brush, btnSlot2Force.ImageIndex += (1 < btnSlot2Force.ImageIndex) ? -2 : 1, nudSlot2Size, chbSlot2Shape);
