@@ -121,11 +121,11 @@ namespace SHME
             cbbLevelFormat16bit.SelectedIndex = 0;
             cbbLevelFormat8bit.SelectedIndex = 0;
             // Tools
-            btnToolLMB. Tag = btnToolPencil1.Tag;
-            btnToolMMB. Tag = btnToolMove.Tag;
-            btnToolRMB. Tag = btnToolProbe1.Tag;
-            btnToolX1MB.Tag = btnToolAdd1.Tag;
-            btnToolX2MB.Tag = btnToolSub1.Tag;
+            ToolXMBSelect(btnToolLMB,  (int)btnToolPencil1.Tag);
+            ToolXMBSelect(btnToolMMB,  (int)btnToolMove.Tag);
+            ToolXMBSelect(btnToolRMB,  (int)btnToolProbe1.Tag);
+            ToolXMBSelect(btnToolX1MB, (int)btnToolAdd1.Tag);
+            ToolXMBSelect(btnToolX2MB, (int)btnToolSub1.Tag);
 
             //* Load options
             OptionsLoad();
@@ -1101,7 +1101,7 @@ namespace SHME
                 file.WriteLine("SpectrumColor8\t" + btnSpectrumColor8.BackColor.ToArgb());
 
                 //* Tools
-                file.WriteLine("ToolSetup\t0, " + (
+                file.WriteLine("Toolset\t0, " + (
                     ToolControls[(int)btnToolLMB.Tag ].Name + ", " +
                     ToolControls[(int)btnToolMMB.Tag ].Name + ", " +
                     ToolControls[(int)btnToolRMB.Tag ].Name + ", " +
