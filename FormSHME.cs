@@ -47,6 +47,7 @@ namespace SHME
              { Color.Black, Color.Green, Color.Yellow,  Color.Blue,  Color.Cyan,    Color.Red,   Color.Magenta, Color.White, Color.Black }
         };
 
+        const int HistoryMax = 99;
         const int ZoomMax = 6; // x64
         #endregion
 
@@ -75,6 +76,9 @@ namespace SHME
         float[,] tool1ForceMask;
         float[,] tool2ForceMask;
         float[,] tool3ForceMask;
+        int[,] tool1Brush;
+        int[,] tool2Brush;
+        int[,] tool3Brush;
 
         public FormSHME()
         {
@@ -133,9 +137,9 @@ namespace SHME
             }
 
             // Create tool force shape
-            CreateToolForceMask(tool1ForceMask, btnSlot1Force.ImageIndex, nudSlot1Size);
-            CreateToolForceMask(tool2ForceMask, btnSlot2Force.ImageIndex, nudSlot2Size);
-            CreateToolForceMask(tool3ForceMask, btnSlot3Force.ImageIndex, nudSlot3Size);
+            CreateToolForceMask(ref tool1ForceMask, ref tool1Brush, btnSlot1Force.ImageIndex, nudSlot1Size, chbSlot1Shape);
+            CreateToolForceMask(ref tool2ForceMask, ref tool2Brush, btnSlot2Force.ImageIndex, nudSlot2Size, chbSlot2Shape);
+            CreateToolForceMask(ref tool3ForceMask, ref tool3Brush, btnSlot3Force.ImageIndex, nudSlot3Size, chbSlot3Shape);
 
             // Load HMap
             if (HMapURL != "")
@@ -309,8 +313,8 @@ namespace SHME
         {
             if (lockDrawing) return;
             // Get limits
-            int smin = (chbLimitMin.Checked) ? HMap.MinLevel : 0;
-            int smax = (chbLimitMax.Checked) ? HMap.MaxLevel : 65535;
+            int smin = (chbLimitMin.Checked) ? ((HMap.MinLevel < 65535) ? HMap.MinLevel : 65534) :     0;
+            int smax = (chbLimitMax.Checked) ? ((HMap.MaxLevel >     0) ? HMap.MaxLevel :     1) : 65535;
             // Call builder
             if (tcThemes.SelectedTab == tpMonochrome)
                 HMap.BuildMonochrome(left, top, right, bottom,
@@ -502,6 +506,17 @@ namespace SHME
             FinishHMapLoading();
         }
 
+        private void tsmiClear_Click(object sender, EventArgs e)
+        {
+            int x, y;
+            historyRecord = new HistoryRecord(HMap, 0, 0, HMap.Width - 1, HMap.Height - 1);
+            HistoryAdd(HistoryRecord.ActionEdit);
+            for (y = 0; y < HMap.Height; y++)
+                for (x = 0; x < HMap.Width; x++)
+                    HMap.Level[x, y] = 0;
+            FinishHMapLoading();
+        }
+
         private void btnSaveHMap_Click(object sender, EventArgs e)//Ok
         {
             // Choose file name
@@ -617,13 +632,13 @@ namespace SHME
             int toolID = 0;
             if (e.Button != MouseButtons.None)
             {
-                object oID = (e.Button == MouseButtons.Left)
-                    ? btnToolLMB.Tag  : (e.Button == MouseButtons.Right)
-                    ? btnToolRMB.Tag  : (e.Button == MouseButtons.Middle)
-                    ? btnToolMMB.Tag  : (e.Button == MouseButtons.XButton1)
-                    ? btnToolX1MB.Tag : (e.Button == MouseButtons.XButton2)
-                    ? btnToolX2MB.Tag
-                    : null;
+                object oID =
+                    (e.Button == MouseButtons.Left)     ? btnToolLMB.Tag  :
+                    (e.Button == MouseButtons.Right)    ? btnToolRMB.Tag  :
+                    (e.Button == MouseButtons.Middle)   ? btnToolMMB.Tag  :
+                    (e.Button == MouseButtons.XButton1) ? btnToolX1MB.Tag :
+                    (e.Button == MouseButtons.XButton2) ? btnToolX2MB.Tag :
+                    null;
                 if (oID != null) toolID = (int)oID;
 
                 // Pan
@@ -642,8 +657,8 @@ namespace SHME
                             // Compensate for image
                             if (pbPDA == sender)
                             {
-                                msX0 = msX0 + ((scX - hScrollBar.Value) << zoom);
-                                msY0 = msY0 + ((scY - vScrollBar.Value) << zoom);
+                                msX0 += (scX - hScrollBar.Value) << zoom;
+                                msY0 += (scY - vScrollBar.Value) << zoom;
                             }
                             hScrollBar.Value = scX;
                             vScrollBar.Value = scY;
@@ -662,7 +677,7 @@ namespace SHME
             }
             // Calculate point on map
             int mapX = (((pbPDA.Visible) ? e.X : e.X - hScrollBar.Left) >> zoom) + hScrollBar.Value;
-            int mapY = ((e.Y - vScrollBar.Top) >> zoom) + vScrollBar.Value;
+            int mapY = (((pbPDA.Visible) ? e.Y : e.Y - vScrollBar.Top ) >> zoom) + vScrollBar.Value;
             // Skip outside
             if (mapX < 0 || mapY < 0 || HMap.Width <= mapX || HMap.Height <= mapY)
             {
@@ -679,30 +694,43 @@ namespace SHME
             }
 
             // No drawing?
-            if (toolID < 2 || lockMouse) return;
+            if (lockMouse || toolID < 2 || 19 < toolID) return;
 
             // Recalculate tool ID and Index
             toolID -= 2;
             int toolIdx = toolID % 3;
             toolID /= 3;
-            // Get tool shape
-            bool bar = (toolIdx == 0)
-                ? chbSlot1Shape.Checked
-                : (toolIdx == 1)
-                    ? chbSlot2Shape.Checked
-                    : chbSlot3Shape.Checked;
+
+            // Probe
+            if (toolID == 0)//Ok
+            {
+                     if (toolIdx == 0) nudSlot1Value.Value = HMap.Level[mapX, mapY];
+                else if (toolIdx == 1) nudSlot2Value.Value = HMap.Level[mapX, mapY];
+                else                   nudSlot3Value.Value = HMap.Level[mapX, mapY];
+                return;
+            }
+
+            // Start history record
+            if (historyRecord == null)
+                historyRecord = new HistoryRecord(HMap, mapX, mapY, mapX, mapY);
+
+            // Get brush
+            int[,] brush = (toolIdx == 0)
+                ? tool1Brush : (toolIdx == 1)
+                ? tool2Brush
+                : tool3Brush;
             // Get tool value
             UInt16 value = (toolIdx == 0)
-                ? (UInt16)nudSlot1Value.Value
-                : (toolIdx == 1)
-                    ? (UInt16)nudSlot2Value.Value
-                    : (UInt16)nudSlot3Value.Value;
+                ? (UInt16)nudSlot1Value.Value : (toolIdx == 1)
+                ? (UInt16)nudSlot2Value.Value
+                : (UInt16)nudSlot3Value.Value;
             // Get tool size
-            int y, x, size = (toolIdx == 0)
-                ? (int)nudSlot1Size.Value
-                : (toolIdx == 1)
-                    ? (int)nudSlot2Size.Value
-                    : (int)nudSlot3Size.Value;
+            int size = (toolIdx == 0)
+                ? (int)nudSlot1Size.Value : (toolIdx == 1)
+                ? (int)nudSlot2Size.Value
+                : (int)nudSlot3Size.Value;
+
+            int y, x;
             // Get region
             int mapR = mapX + size / 2;
             int mapB = mapY + size / 2;
@@ -710,128 +738,108 @@ namespace SHME
             int mapT = mapB - size + 1;
             int mapC = (mapL + mapR); // x2
             int mapM = (mapT + mapB); // x2
-            int sqrR = (size * size); // Radius x4
             // Limit region
             if (mapL < 0) mapL = 0;
             if (mapT < 0) mapT = 0;
             if (HMap.Width  <= mapR) mapR = HMap.Width  - 1;
             if (HMap.Height <= mapB) mapB = HMap.Height - 1;
-            int cX, cY, r;
 
-            // History (not for probe)
-            if (historyRecord == null && toolID != 0)
-                historyRecord = new HistoryRecord(HMap, mapL, mapT, mapL, mapT);
-
-            // Probe
-            if (toolID == 0)//Ok
-            {
-                value = HMap.Level[mapX, mapY];
-                     if (toolIdx == 0) nudSlot1Value.Value = value;
-                else if (toolIdx == 1) nudSlot2Value.Value = value;
-                else                   nudSlot3Value.Value = value;
-                return;
-            }
-            // Pencil/Level
-            else if (toolID < 3)
+            // Pencil, Level
+            if (toolID < 3)
             {
                 // Level probe
                 if (toolID == 2)
                     value = HMap.Level[mapX, mapY];
-                // Bar
-                if (bar || size < 3)
-                    for (y = mapT; y <= mapB; y++)
-                        for (x = mapL; x <= mapR; x++)
-                            HMap.Level[x, y] = value;
-                // Circle
-                else
-                    for (y = mapT; y <= mapB; y++)
-                        for (x = mapL; x <= mapR; x++)
-                        {
-                            cX = mapC - (x << 1);
-                            cY = mapM - (y << 1);
-                            if (cX * cX + cY * cY + 1 < sqrR) // +1 - correction for r3, "+" shape
-                                HMap.Level[x, y] = value;
-                        }
+                for (y = 0; y < size; y++)
+                    for (x = 0; x < size; x++)
+                        brush[x, y] = value;
             }
             // Add, Sub
             else if (toolID < 5)
             {
                 int v, d = (toolID == 4) ? -value : value;
-                // Bar
-                if (bar || size < 3)
-                    for (y = mapT; y <= mapB; y++)
-                        for (x = mapL; x <= mapR; x++)
-                        {
-                            v = HMap.Level[x, y] + d;
-                            if (v < 0) v = 0;
-                            if (65535 < v) v = 65535;
-                            HMap.Level[x, y] = (UInt16)v;
-                        }
-                // Circle
-                else
-                    for (y = mapT; y <= mapB; y++)
-                        for (x = mapL; x <= mapR; x++)
-                        {
-                            cX = mapC - (x << 1);
-                            cY = mapM - (y << 1);
-                            r = cX * cX + cY * cY + 1;
-                            if (r < sqrR) // +1 - correction for r3, "+" shape
-                            {
-                                v = HMap.Level[x, y] + d;
-                                if (v < 0) v = 0;
-                                if (65535 < v) v = 65535;
-                                HMap.Level[x, y] = (UInt16)v;
-                            }
-                        }
+                for (y = mapT; y <= mapB; y++)
+                    for (x = mapL; x <= mapR; x++)
+                    {
+                        v = HMap.Level[x, y] + d;
+                        brush[x - mapL, y - mapT] = (65535 < v) ? 65535 : (v < 0) ? 0 : v;
+                    }
             }
-                // Not Soos
-            else if (toolID > 5) return;
             // Smooth
             else
             {
-                double k;
-                // Get average
-                long h = 0;
+                int v, h;
                 for (y = mapT; y <= mapB; y++)
                     for (x = mapL; x <= mapR; x++)
-                        h += HMap.Level[x, y];
-                h /= (mapR - mapL + 1) * (mapB - mapT + 1);
-                // Smooth
-                if (bar || size < 3)
-                    for (y = mapT; y <= mapB; y++)
-                        for (x = mapL; x <= mapR; x++)
-                            HMap.Level[x, y] = (UInt16)((
-                                (UInt32)(h * value) +
-                                (UInt32)(HMap.Level[x, y] * (65535 - value))
-                                ) / 65535);
-                // Circle
-                else
-                    for (y = mapT; y <= mapB; y++)
-                        for (x = mapL; x <= mapR; x++)
-                        {
-                            cX = mapC - (x << 1);
-                            cY = mapM - (y << 1);
-                            r = cX * cX + cY * cY + 1;
-                            if (r < sqrR) // +1 - correction for r3, "+" shape
-                            {
-                                k = (Math.Sqrt((double)(sqrR - r) / sqrR) * ((double)(value) / 65535));
-                                HMap.Level[x, y] = (UInt16)((
-                                    HMap.Level[x, y] * (1 - k) +
-                                    h * k
-                                    ));
-                            }
-                        }
+                    {
+                        v = h = HMap.Level[x, y];
+                        v += (mapL < x) ? HMap.Level[x - 1, y    ] : h;
+                        v += (mapT < y) ? HMap.Level[x,     y - 1] : h;
+                        v += (x < mapR) ? HMap.Level[x + 1, y    ] : h;
+                        v += (y < mapB) ? HMap.Level[x,     y + 1] : h;
+                        brush[x - mapL, y - mapT] = (v + 2) / 5; // +2 for roundup
+                    }
             }
 
-            historyRecord.Check(mapL, mapT, mapR, mapB);
+            // Get tool shape
+            bool bar = (toolIdx == 0)
+                ? chbSlot1Shape.Checked : (toolIdx == 1)
+                ? chbSlot2Shape.Checked
+                : chbSlot3Shape.Checked;
+            // Get mask
+            float[,] mask = (toolIdx == 0)
+                ? tool1ForceMask : (toolIdx == 1)
+                ? tool2ForceMask
+                : tool3ForceMask;
+
+            float k, f = (toolID == 5) ? (float)value / 65535 : 1;
+            // Put brush
+            if (bar)
+                for (y = mapT; y <= mapB; y++)
+                    for (x = mapL; x <= mapR; x++)
+                    {
+                        k = mask[x - mapL, y - mapT] * f;
+                        HMap.Level[x, y] = (UInt16)(brush[x - mapL, y - mapT] * k + HMap.Level[x, y] * (1 - k));
+                    }
+            else
+            {
+                int cX, cY, r, sqrD = (size * size); // Radius^2 x4
+                for (y = mapT; y <= mapB; y++)
+                    for (x = mapL; x <= mapR; x++)
+                    {
+                        cX = mapC - (x << 1);
+                        cY = mapM - (y << 1);
+                        if (cX * cX + cY * cY < sqrD)
+                        {
+                            k = mask[x - mapL, y - mapT] * f;
+                            HMap.Level[x, y] = (UInt16)(brush[x - mapL, y - mapT] * k + HMap.Level[x, y] * (1 - k));
+                        }
+                    }
+            }
+
             // Update map
-            BuildSpectrum(mapL, mapT, mapR, mapB);
-            Invalidate(new Rectangle(
-                ((mapL - hScrollBar.Value) << zoom) + hScrollBar.Left,
-                ((mapT - vScrollBar.Value) << zoom) + vScrollBar.Top,
-                size << zoom,
-                size << zoom));
+            historyRecord.Check(mapL, mapT, mapR, mapB);
+            x = HMap.MaxLevel;
+            y = HMap.MinLevel;
             HMap.BuildStatistics(mapT, mapB);
+            if ((chbLimitMax.Checked || chbLimitMin.Checked) && (x != HMap.MaxLevel || y != HMap.MinLevel))
+            {
+                BuildSpectrum(0, 0, -1, -1);
+                Invalidate(new Rectangle(
+                    hScrollBar.Left,
+                    vScrollBar.Top,
+                    hScrollBar.Right,
+                    vScrollBar.Bottom));
+            }
+            else
+            {
+                BuildSpectrum(mapL, mapT, mapR, mapB);
+                Invalidate(new Rectangle(
+                    ((mapL - hScrollBar.Value) << zoom) + hScrollBar.Left,
+                    ((mapT - vScrollBar.Value) << zoom) + vScrollBar.Top,
+                    size << zoom,
+                    size << zoom));
+            }
             ShowStatistics();
         }
 
@@ -864,7 +872,7 @@ namespace SHME
             {
                 using (StreamReader file = File.OpenText("SHME.ini"))
                 {
-                    int v;
+                    int v, i;
                     while (!file.EndOfStream)
                     {
                         String line = file.ReadLine();
@@ -878,6 +886,13 @@ namespace SHME
                         switch (option)
                         {
                             //* Pages
+                            case "Theme":
+                                i = tcThemes.TabPages.Count - 1;
+                                for (; 0 < i; i--)
+                                    if (tcThemes.TabPages[i].Name.Contains(value))
+                                        break;
+                                tcThemes.SelectedIndex = i;
+                                break;
                             case "MonochromeRepeat": nudMonochromeRepeat.Value   = CheckInteger(value, 1, 32, 1); break;
                             case "HiLoByteRepeat":   nudByteRepeat.Value         = CheckInteger(value, 1, 32, 1); break;
                             case "SpectrumRepeat":   nudSpectrumRepeat.Value     = CheckInteger(value, 1, 32, 1); break;
@@ -900,7 +915,7 @@ namespace SHME
                             case "ToolSetup":
                                 int toolL = 0, toolM = 0, toolR = 0, toolX1 = 0, toolX2 = 0;
                                 rec = value.Split(new String[] { ", " }, StringSplitOptions.None);
-                                for (int i = 0; i < ToolControls.Length; i++)
+                                for (i = 0; i < ToolControls.Length; i++)
                                 {
                                     if (ToolControls[i].Name.Contains(rec[1])) toolL  = i;
                                     if (ToolControls[i].Name.Contains(rec[2])) toolM  = i;
@@ -1058,6 +1073,7 @@ namespace SHME
             using (StreamWriter file = File.CreateText("SHME.ini"))
             {
                 //* Pages
+                file.WriteLine("Theme\t" + tcThemes.SelectedTab.Name.Remove(0,2));
                 // Monochrome
                 file.WriteLine("MonochromeRepeat\t" + nudMonochromeRepeat.Value);
                 file.WriteLine("MonochromeColor\t" + btnMonochromeColor.BackColor.ToArgb());
@@ -1183,14 +1199,12 @@ namespace SHME
 
         private void HexTextCheck(TextBox tb, int size, NumericUpDown nud, EventHandler e)//Ok
         {
-            String s = tb.Text;
-            int lIn = s.Length;
-            int cursor = lIn - tb.SelectionStart; // position from end
+            String s = tb.Text.ToUpper();
+            int cursor = s.Length - tb.SelectionStart; // position from end
             // Check
-            s = s.ToUpper();
             char[] csOut = new char[size];
             int lOut = size - 1;
-            for (int i = lIn - 1; 0 <= i && 0 <= lOut; i--)
+            for (int i = s.Length - 1; 0 <= i && 0 <= lOut; i--)
             {
                 char c = s[i];
                 if (('0' <= c && c <= '9') || ('A' <= c && c <= 'F'))
@@ -1224,18 +1238,19 @@ namespace SHME
 
         private void lblToolXHex_Click(TextBox tb, Label lb) => lb.Text = (tb.Visible = !tb.Visible) ? "0x" : "D";
 
-        private void nudTool1Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(tool1ForceMask, btnSlot1Force.ImageIndex, nudSlot1Size);
-        private void nudTool2Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(tool2ForceMask, btnSlot2Force.ImageIndex, nudSlot2Size);
-        private void nudTool3Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(tool3ForceMask, btnSlot3Force.ImageIndex, nudSlot3Size);
+        private void nudTool1Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref tool1ForceMask, ref tool1Brush, btnSlot1Force.ImageIndex, nudSlot1Size, chbSlot1Shape);
+        private void nudTool2Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref tool2ForceMask, ref tool2Brush, btnSlot2Force.ImageIndex, nudSlot2Size, chbSlot2Shape);
+        private void nudTool3Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref tool3ForceMask, ref tool3Brush, btnSlot3Force.ImageIndex, nudSlot3Size, chbSlot3Shape);
 
-        private void btnTool1Force_Click(object sender, EventArgs e) => CreateToolForceMask(tool1ForceMask, ++btnSlot1Force.ImageIndex, nudSlot1Size);
-        private void btnTool2Force_Click(object sender, EventArgs e) => CreateToolForceMask(tool2ForceMask, ++btnSlot2Force.ImageIndex, nudSlot2Size);
-        private void btnTool3Force_Click(object sender, EventArgs e) => CreateToolForceMask(tool3ForceMask, ++btnSlot3Force.ImageIndex, nudSlot3Size);
+        private void btnTool1Force_Click(object sender, EventArgs e) => CreateToolForceMask(ref tool1ForceMask, ref tool1Brush, btnSlot1Force.ImageIndex += (1 < btnSlot1Force.ImageIndex) ? -2 : 1, nudSlot1Size, chbSlot1Shape);
+        private void btnTool2Force_Click(object sender, EventArgs e) => CreateToolForceMask(ref tool2ForceMask, ref tool2Brush, btnSlot2Force.ImageIndex += (1 < btnSlot2Force.ImageIndex) ? -2 : 1, nudSlot2Size, chbSlot2Shape);
+        private void btnTool3Force_Click(object sender, EventArgs e) => CreateToolForceMask(ref tool3ForceMask, ref tool3Brush, btnSlot3Force.ImageIndex += (1 < btnSlot3Force.ImageIndex) ? -2 : 1, nudSlot3Size, chbSlot3Shape);
 
-        private void CreateToolForceMask(float[,] mask, int forceShape, NumericUpDown nud)
+        private void CreateToolForceMask(ref float[,] mask, ref int[,] brush, int forceShape, NumericUpDown nudSize, CheckBox chbShape)
         {
-            int x, y, size = (int)nud.Value;
+            int x, y, size = (int)nudSize.Value;
             mask = new float[size, size];
+            brush = new int[size, size];
             // Square front
             if (forceShape == 0 || size < 3)
             {
@@ -1257,7 +1272,7 @@ namespace SHME
                         cx = size - (x << 1) - 1;
                         cy = size - (y << 1) - 1;
                         r = (cx * cx + cy * cy);
-                        if (r + 1 < qr)
+                        if (r < qr)
                             mask[     x,      y] =
                             mask[     x, sz - y] =
                             mask[sz - x,      y] =
@@ -1279,6 +1294,16 @@ namespace SHME
                         mask[sz - x,      y] =
                         mask[sz - x, sz - y] = (float)Math.Exp(-24 * r * r);
                     }
+            }
+
+            if (chbShape.Checked)
+            {
+                for (y = 0; y < hsize; y++)
+                    for (x = 0; x < hsize; x++)
+                        mask[     x,      y] =
+                        mask[     x, sz - y] =
+                        mask[sz - x,      y] =
+                        mask[sz - x, sz - y] = mask[Math.Min(x, y), hsize];
             }
         }
         #endregion
@@ -1314,7 +1339,7 @@ namespace SHME
                 }
                 else return;
             dest.Insert(0, historyRecord);
-            if (100 < dest.Count) dest.RemoveAt(100); // Limit history
+            if (HistoryMax < dest.Count) dest.RemoveAt(HistoryMax); // Limit history
             // Update
             btnHistoryBackward.Text = historyBackward.Count.ToString();
             btnHistoryForward. Text = historyForward. Count.ToString();

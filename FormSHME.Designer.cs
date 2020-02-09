@@ -51,6 +51,7 @@
             this.tsmCreateEmpty = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmCreateScanline = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmCreateSerpantine = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
             this.tcThemes = new System.Windows.Forms.TabControl();
             this.tpMonochrome = new System.Windows.Forms.TabPage();
             this.btnMonochromeColor = new System.Windows.Forms.Button();
@@ -404,9 +405,10 @@
             this.cmsOpenFile.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmCreateEmpty,
             this.tsmCreateScanline,
-            this.tsmCreateSerpantine});
+            this.tsmCreateSerpantine,
+            this.tsmiClear});
             this.cmsOpenFile.Name = "cmsOpenFile";
-            this.cmsOpenFile.Size = new System.Drawing.Size(249, 70);
+            this.cmsOpenFile.Size = new System.Drawing.Size(249, 92);
             // 
             // tsmCreateEmpty
             // 
@@ -436,6 +438,14 @@
             this.tsmCreateSerpantine.Size = new System.Drawing.Size(248, 22);
             this.tsmCreateSerpantine.Text = "Create gradient map (serpantine)";
             this.tsmCreateSerpantine.Click += new System.EventHandler(this.tsmCreat_Click);
+            // 
+            // tsmiClear
+            // 
+            this.tsmiClear.Image = global::SHME.Properties.Resources.delete;
+            this.tsmiClear.Name = "tsmiClear";
+            this.tsmiClear.Size = new System.Drawing.Size(248, 22);
+            this.tsmiClear.Text = "Clear";
+            this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
             // 
             // tcThemes
             // 
@@ -474,7 +484,7 @@
             this.btnMonochromeColor.Location = new System.Drawing.Point(176, 32);
             this.btnMonochromeColor.Name = "btnMonochromeColor";
             this.btnMonochromeColor.Size = new System.Drawing.Size(25, 25);
-            this.btnMonochromeColor.TabIndex = 17;
+            this.btnMonochromeColor.TabIndex = 2;
             this.btnMonochromeColor.UseVisualStyleBackColor = false;
             this.btnMonochromeColor.BackColorChanged += new System.EventHandler(this.btnMonochromeColor_BackColorChanged);
             this.btnMonochromeColor.Click += new System.EventHandler(this.PickColor_Click);
@@ -571,7 +581,7 @@
             this.tbByteLo.MaxLength = 7;
             this.tbByteLo.Name = "tbByteLo";
             this.tbByteLo.Size = new System.Drawing.Size(44, 20);
-            this.tbByteLo.TabIndex = 2;
+            this.tbByteLo.TabIndex = 3;
             this.tbByteLo.Text = "000001";
             this.tbByteLo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip.SetToolTip(this.tbByteLo, "6 hexadecimals (0-9, A-F) for RGB");
@@ -585,7 +595,7 @@
             this.tbByteHi.MaxLength = 7;
             this.tbByteHi.Name = "tbByteHi";
             this.tbByteHi.Size = new System.Drawing.Size(44, 20);
-            this.tbByteHi.TabIndex = 1;
+            this.tbByteHi.TabIndex = 2;
             this.tbByteHi.Text = "000100";
             this.tbByteHi.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip.SetToolTip(this.tbByteHi, "6 hexadecimals (0-9, A-F) for RGB");
@@ -672,7 +682,7 @@
             0});
             this.nudByteRepeat.Name = "nudByteRepeat";
             this.nudByteRepeat.Size = new System.Drawing.Size(60, 20);
-            this.nudByteRepeat.TabIndex = 18;
+            this.nudByteRepeat.TabIndex = 1;
             this.nudByteRepeat.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudByteRepeat.Value = new decimal(new int[] {
             1,
@@ -712,7 +722,7 @@
             this.btnSpectrumColor8.Location = new System.Drawing.Point(176, 56);
             this.btnSpectrumColor8.Name = "btnSpectrumColor8";
             this.btnSpectrumColor8.Size = new System.Drawing.Size(16, 16);
-            this.btnSpectrumColor8.TabIndex = 23;
+            this.btnSpectrumColor8.TabIndex = 10;
             this.btnSpectrumColor8.UseVisualStyleBackColor = false;
             this.btnSpectrumColor8.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor8.Click += new System.EventHandler(this.PickColor_Click);
@@ -724,7 +734,7 @@
             this.btnSpectrumColor7.Location = new System.Drawing.Point(156, 56);
             this.btnSpectrumColor7.Name = "btnSpectrumColor7";
             this.btnSpectrumColor7.Size = new System.Drawing.Size(16, 16);
-            this.btnSpectrumColor7.TabIndex = 22;
+            this.btnSpectrumColor7.TabIndex = 9;
             this.btnSpectrumColor7.UseVisualStyleBackColor = false;
             this.btnSpectrumColor7.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor7.Click += new System.EventHandler(this.PickColor_Click);
@@ -736,7 +746,7 @@
             this.btnSpectrumColor6.Location = new System.Drawing.Point(136, 56);
             this.btnSpectrumColor6.Name = "btnSpectrumColor6";
             this.btnSpectrumColor6.Size = new System.Drawing.Size(16, 16);
-            this.btnSpectrumColor6.TabIndex = 17;
+            this.btnSpectrumColor6.TabIndex = 8;
             this.btnSpectrumColor6.UseVisualStyleBackColor = false;
             this.btnSpectrumColor6.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor6.Click += new System.EventHandler(this.PickColor_Click);
@@ -748,7 +758,7 @@
             this.btnSpectrumColor5.Location = new System.Drawing.Point(116, 56);
             this.btnSpectrumColor5.Name = "btnSpectrumColor5";
             this.btnSpectrumColor5.Size = new System.Drawing.Size(16, 16);
-            this.btnSpectrumColor5.TabIndex = 21;
+            this.btnSpectrumColor5.TabIndex = 7;
             this.btnSpectrumColor5.UseVisualStyleBackColor = false;
             this.btnSpectrumColor5.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor5.Click += new System.EventHandler(this.PickColor_Click);
@@ -760,7 +770,7 @@
             this.btnSpectrumColor4.Location = new System.Drawing.Point(96, 56);
             this.btnSpectrumColor4.Name = "btnSpectrumColor4";
             this.btnSpectrumColor4.Size = new System.Drawing.Size(16, 16);
-            this.btnSpectrumColor4.TabIndex = 20;
+            this.btnSpectrumColor4.TabIndex = 6;
             this.btnSpectrumColor4.UseVisualStyleBackColor = false;
             this.btnSpectrumColor4.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor4.Click += new System.EventHandler(this.PickColor_Click);
@@ -772,7 +782,7 @@
             this.btnSpectrumColor3.Location = new System.Drawing.Point(76, 56);
             this.btnSpectrumColor3.Name = "btnSpectrumColor3";
             this.btnSpectrumColor3.Size = new System.Drawing.Size(16, 16);
-            this.btnSpectrumColor3.TabIndex = 19;
+            this.btnSpectrumColor3.TabIndex = 5;
             this.btnSpectrumColor3.UseVisualStyleBackColor = false;
             this.btnSpectrumColor3.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor3.Click += new System.EventHandler(this.PickColor_Click);
@@ -784,7 +794,7 @@
             this.btnSpectrumColor2.Location = new System.Drawing.Point(56, 56);
             this.btnSpectrumColor2.Name = "btnSpectrumColor2";
             this.btnSpectrumColor2.Size = new System.Drawing.Size(16, 16);
-            this.btnSpectrumColor2.TabIndex = 18;
+            this.btnSpectrumColor2.TabIndex = 4;
             this.btnSpectrumColor2.UseVisualStyleBackColor = false;
             this.btnSpectrumColor2.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor2.Click += new System.EventHandler(this.PickColor_Click);
@@ -796,7 +806,7 @@
             this.btnSpectrumColor1.Location = new System.Drawing.Point(36, 56);
             this.btnSpectrumColor1.Name = "btnSpectrumColor1";
             this.btnSpectrumColor1.Size = new System.Drawing.Size(16, 16);
-            this.btnSpectrumColor1.TabIndex = 17;
+            this.btnSpectrumColor1.TabIndex = 3;
             this.btnSpectrumColor1.UseVisualStyleBackColor = false;
             this.btnSpectrumColor1.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor1.Click += new System.EventHandler(this.PickColor_Click);
@@ -808,7 +818,7 @@
             this.btnSpectrumColor0.Location = new System.Drawing.Point(16, 56);
             this.btnSpectrumColor0.Name = "btnSpectrumColor0";
             this.btnSpectrumColor0.Size = new System.Drawing.Size(16, 16);
-            this.btnSpectrumColor0.TabIndex = 16;
+            this.btnSpectrumColor0.TabIndex = 2;
             this.btnSpectrumColor0.UseVisualStyleBackColor = false;
             this.btnSpectrumColor0.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor0.Click += new System.EventHandler(this.PickColor_Click);
@@ -943,7 +953,7 @@
             this.cbbLevelFormat8bit.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.cbbLevelFormat8bit.Name = "cbbLevelFormat8bit";
             this.cbbLevelFormat8bit.Size = new System.Drawing.Size(157, 21);
-            this.cbbLevelFormat8bit.TabIndex = 8;
+            this.cbbLevelFormat8bit.TabIndex = 11;
             this.toolTip.SetToolTip(this.cbbLevelFormat8bit, "Select wich 2 8bits components will form height");
             this.cbbLevelFormat8bit.Visible = false;
             this.cbbLevelFormat8bit.SelectedIndexChanged += new System.EventHandler(this.cbb_LevelFormat_Changed);
@@ -957,7 +967,7 @@
             this.chbLevelPixelBigLittleIndian.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.chbLevelPixelBigLittleIndian.Name = "chbLevelPixelBigLittleIndian";
             this.chbLevelPixelBigLittleIndian.Size = new System.Drawing.Size(67, 17);
-            this.chbLevelPixelBigLittleIndian.TabIndex = 7;
+            this.chbLevelPixelBigLittleIndian.TabIndex = 10;
             this.chbLevelPixelBigLittleIndian.Text = "Pixel BLI";
             this.toolTip.SetToolTip(this.chbLevelPixelBigLittleIndian, "Big-Little indian sequence of points in byte");
             this.chbLevelPixelBigLittleIndian.UseVisualStyleBackColor = true;
@@ -993,7 +1003,7 @@
             this.cbbLevelFormat16bit.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.cbbLevelFormat16bit.Name = "cbbLevelFormat16bit";
             this.cbbLevelFormat16bit.Size = new System.Drawing.Size(157, 21);
-            this.cbbLevelFormat16bit.TabIndex = 5;
+            this.cbbLevelFormat16bit.TabIndex = 8;
             this.toolTip.SetToolTip(this.cbbLevelFormat16bit, "Select wich 16bit component will form height");
             this.cbbLevelFormat16bit.Visible = false;
             this.cbbLevelFormat16bit.SelectedIndexChanged += new System.EventHandler(this.cbb_LevelFormat_Changed);
@@ -1007,7 +1017,7 @@
             this.chbLevelByteBigLittleIndian.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.chbLevelByteBigLittleIndian.Name = "chbLevelByteBigLittleIndian";
             this.chbLevelByteBigLittleIndian.Size = new System.Drawing.Size(66, 17);
-            this.chbLevelByteBigLittleIndian.TabIndex = 6;
+            this.chbLevelByteBigLittleIndian.TabIndex = 9;
             this.chbLevelByteBigLittleIndian.Text = "Byte BLI";
             this.toolTip.SetToolTip(this.chbLevelByteBigLittleIndian, "Big-Little indian sequence of bytes");
             this.chbLevelByteBigLittleIndian.UseVisualStyleBackColor = true;
@@ -1052,7 +1062,7 @@
             this.btnHMapResize.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
             this.btnHMapResize.Name = "btnHMapResize";
             this.btnHMapResize.Size = new System.Drawing.Size(25, 25);
-            this.btnHMapResize.TabIndex = 23;
+            this.btnHMapResize.TabIndex = 7;
             this.btnHMapResize.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolTip.SetToolTip(this.btnHMapResize, "Load image as topology map");
             this.btnHMapResize.UseVisualStyleBackColor = true;
@@ -1207,7 +1217,7 @@
             this.btnPDAGenerate.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
             this.btnPDAGenerate.Name = "btnPDAGenerate";
             this.btnPDAGenerate.Size = new System.Drawing.Size(25, 25);
-            this.btnPDAGenerate.TabIndex = 23;
+            this.btnPDAGenerate.TabIndex = 6;
             this.btnPDAGenerate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnPDAGenerate.UseVisualStyleBackColor = false;
             this.btnPDAGenerate.Click += new System.EventHandler(this.btnPDAGenerate_Click);
@@ -1272,7 +1282,7 @@
             this.cbbToolPreset.Location = new System.Drawing.Point(48, 16);
             this.cbbToolPreset.Name = "cbbToolPreset";
             this.cbbToolPreset.Size = new System.Drawing.Size(160, 21);
-            this.cbbToolPreset.TabIndex = 23;
+            this.cbbToolPreset.TabIndex = 0;
             this.toolTip.SetToolTip(this.cbbToolPreset, "Color theme presets");
             this.cbbToolPreset.SelectedIndexChanged += new System.EventHandler(this.cbbToolPreset_SelectedIndexChanged);
             // 
@@ -1285,7 +1295,7 @@
             this.btnToolRMB.Location = new System.Drawing.Point(84, 56);
             this.btnToolRMB.Name = "btnToolRMB";
             this.btnToolRMB.Size = new System.Drawing.Size(32, 32);
-            this.btnToolRMB.TabIndex = 2;
+            this.btnToolRMB.TabIndex = 3;
             this.btnToolRMB.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.btnToolRMB.UseVisualStyleBackColor = false;
             this.btnToolRMB.Click += new System.EventHandler(this.btnToolXMB_Click);
@@ -1299,7 +1309,7 @@
             this.btnToolX2MB.Location = new System.Drawing.Point(8, 128);
             this.btnToolX2MB.Name = "btnToolX2MB";
             this.btnToolX2MB.Size = new System.Drawing.Size(32, 32);
-            this.btnToolX2MB.TabIndex = 0;
+            this.btnToolX2MB.TabIndex = 5;
             this.btnToolX2MB.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.btnToolX2MB.UseVisualStyleBackColor = false;
             this.btnToolX2MB.Click += new System.EventHandler(this.btnToolXMB_Click);
@@ -1313,7 +1323,7 @@
             this.btnToolX1MB.Location = new System.Drawing.Point(8, 92);
             this.btnToolX1MB.Name = "btnToolX1MB";
             this.btnToolX1MB.Size = new System.Drawing.Size(32, 32);
-            this.btnToolX1MB.TabIndex = 0;
+            this.btnToolX1MB.TabIndex = 4;
             this.btnToolX1MB.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.btnToolX1MB.UseVisualStyleBackColor = false;
             this.btnToolX1MB.Click += new System.EventHandler(this.btnToolXMB_Click);
@@ -1327,7 +1337,7 @@
             this.btnToolLMB.Location = new System.Drawing.Point(10, 56);
             this.btnToolLMB.Name = "btnToolLMB";
             this.btnToolLMB.Size = new System.Drawing.Size(32, 32);
-            this.btnToolLMB.TabIndex = 0;
+            this.btnToolLMB.TabIndex = 1;
             this.btnToolLMB.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.btnToolLMB.UseVisualStyleBackColor = false;
             this.btnToolLMB.Click += new System.EventHandler(this.btnToolXMB_Click);
@@ -1375,7 +1385,7 @@
             this.btnSlot3Force.Location = new System.Drawing.Point(84, 68);
             this.btnSlot3Force.Name = "btnSlot3Force";
             this.btnSlot3Force.Size = new System.Drawing.Size(20, 20);
-            this.btnSlot3Force.TabIndex = 27;
+            this.btnSlot3Force.TabIndex = 11;
             this.btnSlot3Force.UseVisualStyleBackColor = true;
             this.btnSlot3Force.Click += new System.EventHandler(this.btnTool3Force_Click);
             // 
@@ -1383,7 +1393,7 @@
             // 
             this.ilToolForce.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilToolForce.ImageStream")));
             this.ilToolForce.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilToolForce.Images.SetKeyName(0, "brushForceSqure.png");
+            this.ilToolForce.Images.SetKeyName(0, "brushForceSquare.png");
             this.ilToolForce.Images.SetKeyName(1, "brushForceSphere.png");
             this.ilToolForce.Images.SetKeyName(2, "brushForceGauss.png");
             // 
@@ -1395,7 +1405,7 @@
             this.btnSlot2Force.Location = new System.Drawing.Point(84, 44);
             this.btnSlot2Force.Name = "btnSlot2Force";
             this.btnSlot2Force.Size = new System.Drawing.Size(20, 20);
-            this.btnSlot2Force.TabIndex = 26;
+            this.btnSlot2Force.TabIndex = 10;
             this.btnSlot2Force.UseVisualStyleBackColor = true;
             this.btnSlot2Force.Click += new System.EventHandler(this.btnTool2Force_Click);
             // 
@@ -1407,7 +1417,7 @@
             this.btnSlot1Force.Location = new System.Drawing.Point(84, 20);
             this.btnSlot1Force.Name = "btnSlot1Force";
             this.btnSlot1Force.Size = new System.Drawing.Size(20, 20);
-            this.btnSlot1Force.TabIndex = 25;
+            this.btnSlot1Force.TabIndex = 9;
             this.btnSlot1Force.UseVisualStyleBackColor = true;
             this.btnSlot1Force.Click += new System.EventHandler(this.btnTool1Force_Click);
             // 
@@ -1418,7 +1428,7 @@
             this.tbSlot3Hex.MaxLength = 7;
             this.tbSlot3Hex.Name = "tbSlot3Hex";
             this.tbSlot3Hex.Size = new System.Drawing.Size(36, 20);
-            this.tbSlot3Hex.TabIndex = 10;
+            this.tbSlot3Hex.TabIndex = 8;
             this.tbSlot3Hex.Text = "0001";
             this.tbSlot3Hex.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip.SetToolTip(this.tbSlot3Hex, "4 hexadecimals (0-9, A-F)");
@@ -1448,7 +1458,7 @@
             this.tbSlot1Hex.MaxLength = 7;
             this.tbSlot1Hex.Name = "tbSlot1Hex";
             this.tbSlot1Hex.Size = new System.Drawing.Size(36, 20);
-            this.tbSlot1Hex.TabIndex = 4;
+            this.tbSlot1Hex.TabIndex = 6;
             this.tbSlot1Hex.Text = "0100";
             this.tbSlot1Hex.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip.SetToolTip(this.tbSlot1Hex, "4 hexadecimals (0-9, A-F)");
@@ -1460,7 +1470,7 @@
             // 
             this.nudSlot3Size.Location = new System.Drawing.Point(128, 68);
             this.nudSlot3Size.Maximum = new decimal(new int[] {
-            30,
+            99,
             0,
             0,
             0});
@@ -1471,7 +1481,7 @@
             0});
             this.nudSlot3Size.Name = "nudSlot3Size";
             this.nudSlot3Size.Size = new System.Drawing.Size(32, 20);
-            this.nudSlot3Size.TabIndex = 23;
+            this.nudSlot3Size.TabIndex = 17;
             this.nudSlot3Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudSlot3Size.Value = new decimal(new int[] {
             6,
@@ -1484,7 +1494,7 @@
             // 
             this.nudSlot2Size.Location = new System.Drawing.Point(128, 44);
             this.nudSlot2Size.Maximum = new decimal(new int[] {
-            30,
+            99,
             0,
             0,
             0});
@@ -1495,7 +1505,7 @@
             0});
             this.nudSlot2Size.Name = "nudSlot2Size";
             this.nudSlot2Size.Size = new System.Drawing.Size(32, 20);
-            this.nudSlot2Size.TabIndex = 22;
+            this.nudSlot2Size.TabIndex = 16;
             this.nudSlot2Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudSlot2Size.Value = new decimal(new int[] {
             8,
@@ -1519,7 +1529,7 @@
             0});
             this.nudSlot1Size.Name = "nudSlot1Size";
             this.nudSlot1Size.Size = new System.Drawing.Size(32, 20);
-            this.nudSlot1Size.TabIndex = 21;
+            this.nudSlot1Size.TabIndex = 15;
             this.nudSlot1Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudSlot1Size.Value = new decimal(new int[] {
             4,
@@ -1540,7 +1550,7 @@
             this.chbSlot3Shape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.chbSlot3Shape.Name = "chbSlot3Shape";
             this.chbSlot3Shape.Size = new System.Drawing.Size(20, 20);
-            this.chbSlot3Shape.TabIndex = 24;
+            this.chbSlot3Shape.TabIndex = 14;
             this.chbSlot3Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chbSlot3Shape.UseVisualStyleBackColor = false;
             this.chbSlot3Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
@@ -1564,7 +1574,7 @@
             this.chbSlot2Shape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.chbSlot2Shape.Name = "chbSlot2Shape";
             this.chbSlot2Shape.Size = new System.Drawing.Size(20, 20);
-            this.chbSlot2Shape.TabIndex = 24;
+            this.chbSlot2Shape.TabIndex = 13;
             this.chbSlot2Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chbSlot2Shape.UseVisualStyleBackColor = false;
             this.chbSlot2Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
@@ -1581,7 +1591,7 @@
             this.chbSlot1Shape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.chbSlot1Shape.Name = "chbSlot1Shape";
             this.chbSlot1Shape.Size = new System.Drawing.Size(20, 20);
-            this.chbSlot1Shape.TabIndex = 24;
+            this.chbSlot1Shape.TabIndex = 12;
             this.chbSlot1Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chbSlot1Shape.UseVisualStyleBackColor = false;
             this.chbSlot1Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
@@ -1596,7 +1606,7 @@
             0});
             this.nudSlot3Value.Name = "nudSlot3Value";
             this.nudSlot3Value.Size = new System.Drawing.Size(52, 20);
-            this.nudSlot3Value.TabIndex = 11;
+            this.nudSlot3Value.TabIndex = 8;
             this.nudSlot3Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudSlot3Value.Value = new decimal(new int[] {
             1,
@@ -1615,7 +1625,7 @@
             0});
             this.nudSlot2Value.Name = "nudSlot2Value";
             this.nudSlot2Value.Size = new System.Drawing.Size(52, 20);
-            this.nudSlot2Value.TabIndex = 8;
+            this.nudSlot2Value.TabIndex = 7;
             this.nudSlot2Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudSlot2Value.Value = new decimal(new int[] {
             1,
@@ -1634,7 +1644,7 @@
             0});
             this.nudSlot1Value.Name = "nudSlot1Value";
             this.nudSlot1Value.Size = new System.Drawing.Size(52, 20);
-            this.nudSlot1Value.TabIndex = 5;
+            this.nudSlot1Value.TabIndex = 6;
             this.nudSlot1Value.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudSlot1Value.Value = new decimal(new int[] {
             256,
@@ -1778,7 +1788,7 @@
             this.btnToolMMB.Location = new System.Drawing.Point(47, 56);
             this.btnToolMMB.Name = "btnToolMMB";
             this.btnToolMMB.Size = new System.Drawing.Size(32, 32);
-            this.btnToolMMB.TabIndex = 1;
+            this.btnToolMMB.TabIndex = 2;
             this.btnToolMMB.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.btnToolMMB.UseVisualStyleBackColor = false;
             this.btnToolMMB.Click += new System.EventHandler(this.btnToolXMB_Click);
@@ -1991,6 +2001,7 @@
             this.btnToolSmooth3.Text = "3";
             this.btnToolSmooth3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.btnToolSmooth3.UseVisualStyleBackColor = true;
+            this.btnToolSmooth3.Click += new System.EventHandler(this.btnTool_Click);
             // 
             // btnToolSmooth2
             // 
@@ -2006,6 +2017,7 @@
             this.btnToolSmooth2.Text = "2";
             this.btnToolSmooth2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.btnToolSmooth2.UseVisualStyleBackColor = true;
+            this.btnToolSmooth2.Click += new System.EventHandler(this.btnTool_Click);
             // 
             // btnToolLevel3
             // 
@@ -2021,6 +2033,7 @@
             this.btnToolLevel3.Text = "3";
             this.btnToolLevel3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.btnToolLevel3.UseVisualStyleBackColor = true;
+            this.btnToolLevel3.Click += new System.EventHandler(this.btnTool_Click);
             // 
             // btnToolLevel2
             // 
@@ -2036,6 +2049,7 @@
             this.btnToolLevel2.Text = "2";
             this.btnToolLevel2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.btnToolLevel2.UseVisualStyleBackColor = true;
+            this.btnToolLevel2.Click += new System.EventHandler(this.btnTool_Click);
             // 
             // btnToolSub3
             // 
@@ -2051,6 +2065,7 @@
             this.btnToolSub3.Text = "2";
             this.btnToolSub3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.btnToolSub3.UseVisualStyleBackColor = true;
+            this.btnToolSub3.Click += new System.EventHandler(this.btnTool_Click);
             // 
             // btnToolSub2
             // 
@@ -2066,6 +2081,7 @@
             this.btnToolSub2.Text = "3";
             this.btnToolSub2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.btnToolSub2.UseVisualStyleBackColor = true;
+            this.btnToolSub2.Click += new System.EventHandler(this.btnTool_Click);
             // 
             // btnToolAdd3
             // 
@@ -2081,6 +2097,7 @@
             this.btnToolAdd3.Text = "3";
             this.btnToolAdd3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.btnToolAdd3.UseVisualStyleBackColor = true;
+            this.btnToolAdd3.Click += new System.EventHandler(this.btnTool_Click);
             // 
             // btnToolAdd2
             // 
@@ -2096,6 +2113,7 @@
             this.btnToolAdd2.Text = "2";
             this.btnToolAdd2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.btnToolAdd2.UseVisualStyleBackColor = true;
+            this.btnToolAdd2.Click += new System.EventHandler(this.btnTool_Click);
             // 
             // btnToolSwitch
             // 
@@ -2510,6 +2528,7 @@
         private System.Windows.Forms.Button btnSlot3Force;
         private System.Windows.Forms.Button btnSlot2Force;
         private System.Windows.Forms.Button btnSlot1Force;
+        private System.Windows.Forms.ToolStripMenuItem tsmiClear;
     }
 }
 

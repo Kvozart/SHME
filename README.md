@@ -19,14 +19,14 @@ Additionaly:
  - Two switchable height/topological map layers (assignable to mouse button).
  
 Editing (assignable to Left, Middle and Right mouse buttons):
- - Triple instrument (Pending: 2 XButtons);
+ - Five mouse buttons for instruments and thee slots for value/force, shape, form and size of brush;
  - Three value slots;
  - Grid (from x8);
  - Pencil;
  - Probe;
  - Level;
- - Add/Sub level (algorithm can be chnged);
- - Smooth (algorithm can be chnged);
+ - Add/Sub level;
+ - Smooth;
  
 Export:
  - Height map as 8/16 bit gray PNG (LibPNG);
