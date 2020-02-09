@@ -182,7 +182,7 @@ namespace SHME
             if (dlgColor.ShowDialog() != DialogResult.OK)
                 return;
             (sender as Control).BackColor = dlgColor.Color;
-            if ((sender as Panel).Tag != null)
+            if ((sender as Button).Tag != null)
                 DrawSpectrumSample();
             HMapOption_Changed(null, null);
         }

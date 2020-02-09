@@ -220,15 +220,15 @@ namespace SHME
             int x;
             if (right  < 0) right  = Width  + right;
             if (bottom < 0) bottom = Height + bottom;
-            float h, k = repeat / (float)(stretchMax - stretchMin); // max 255 target in color component
+            float h, k = (stretchMax - stretchMin); // max 255 target in color component
             for (int y = top; y <= bottom; y++)
                 for (x = left; x <= right; x++)
                 {
-                    h = (Level[x, y] - stretchMin) * k;
+                    h = (UInt16)(repeat * (Level[x, y] - stretchMin)) / k;
                     Pixel[x + y * Width] = A
-                        + ((int)((byte)(color >> 16) * h) << 16)
-                        + ((int)((byte)(color >>  8) * h) <<  8)
-                        + ((int)((byte)(color      ) * h)      );
+                        + ((byte)((byte)(color >> 16) * h) << 16)
+                        + ((byte)((byte)(color >>  8) * h) <<  8)
+                        + ((byte)((byte)(color      ) * h)      );
                 }
         }
 
@@ -259,7 +259,7 @@ namespace SHME
             for (int y = top; y <= bottom; y++)
                 for (x = left; x <= right; x++)
                 {
-                    h = (int)((Level[x, y] - stretchMin) * k);
+                    h = (UInt16)((Level[x, y] - stretchMin) * k);
                     Pixel[x + y * Width] = A
                         + ((   (h >> 8) * Hi
                         + (byte)h       * Lo) & 0xFFffFF);
@@ -283,8 +283,7 @@ namespace SHME
         /// </param>
         public void BuildSpectrum(int left, int top, int right, int bottom, int[] colors, int stretchMin = 0, int stretchMax = 65535, int repeat = 1)
         {
-            UInt16 h;
-            int x, segment;
+            int x, h, segment;
             if (right  < 0) right  = Width  + right;
             if (bottom < 0) bottom = Height + bottom;
             float k = (repeat * 65535 / (float)(stretchMax - stretchMin)); // 65535 as max target
