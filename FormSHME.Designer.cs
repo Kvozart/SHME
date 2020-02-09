@@ -1273,7 +1273,7 @@
             this.tlpTools.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpTools.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpTools.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTools.Size = new System.Drawing.Size(220, 592);
+            this.tlpTools.Size = new System.Drawing.Size(220, 593);
             this.tlpTools.TabIndex = 3;
             // 
             // gbTools
@@ -1294,7 +1294,7 @@
             this.gbTools.Location = new System.Drawing.Point(3, 401);
             this.gbTools.Name = "gbTools";
             this.gbTools.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.gbTools.Size = new System.Drawing.Size(214, 188);
+            this.gbTools.Size = new System.Drawing.Size(214, 189);
             this.gbTools.TabIndex = 4;
             this.gbTools.TabStop = false;
             this.gbTools.Text = "Tools";
@@ -1338,6 +1338,7 @@
             this.cbbToolsetPreset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbbToolsetPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbToolsetPreset.DropDownWidth = 220;
             this.cbbToolsetPreset.FormattingEnabled = true;
             this.cbbToolsetPreset.Location = new System.Drawing.Point(48, 16);
             this.cbbToolsetPreset.Name = "cbbToolsetPreset";
@@ -1882,9 +1883,9 @@
             // 
             this.hScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.hScrollBar.Location = new System.Drawing.Point(220, 571);
+            this.hScrollBar.Location = new System.Drawing.Point(220, 572);
             this.hScrollBar.Name = "hScrollBar";
-            this.hScrollBar.Size = new System.Drawing.Size(543, 21);
+            this.hScrollBar.Size = new System.Drawing.Size(544, 21);
             this.hScrollBar.TabIndex = 10;
             this.hScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
             // 
@@ -1892,9 +1893,9 @@
             // 
             this.vScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.vScrollBar.Location = new System.Drawing.Point(763, 0);
+            this.vScrollBar.Location = new System.Drawing.Point(764, 0);
             this.vScrollBar.Name = "vScrollBar";
-            this.vScrollBar.Size = new System.Drawing.Size(21, 571);
+            this.vScrollBar.Size = new System.Drawing.Size(21, 572);
             this.vScrollBar.TabIndex = 9;
             this.vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
             // 
@@ -2407,17 +2408,21 @@
             // 
             this.pnlCorner.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlCorner.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlCorner.Location = new System.Drawing.Point(763, 571);
+            this.pnlCorner.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlCorner.BackgroundImage")));
+            this.pnlCorner.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pnlCorner.Location = new System.Drawing.Point(764, 572);
             this.pnlCorner.Name = "pnlCorner";
             this.pnlCorner.Size = new System.Drawing.Size(21, 21);
             this.pnlCorner.TabIndex = 11;
+            this.toolTip.SetToolTip(this.pnlCorner, "Double click to open \"About\"");
+            this.pnlCorner.DoubleClick += new System.EventHandler(this.pnlCorner_DoubleClick);
             // 
             // FormSHME
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(784, 592);
+            this.ClientSize = new System.Drawing.Size(785, 593);
             this.Controls.Add(this.pnlToolSelect);
             this.Controls.Add(this.pnlZoomGrid);
             this.Controls.Add(this.pnlCorner);

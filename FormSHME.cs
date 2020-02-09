@@ -1071,6 +1071,8 @@ namespace SHME
             Invalidate();
         }
 
+        private void pnlCorner_DoubleClick(object sender, EventArgs e) => new AboutBox().ShowDialog();
+
         private void FormSHME_FormClosed(object sender, FormClosedEventArgs e) => OptionsSave();
 
         private void OptionsSave()
