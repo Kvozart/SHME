@@ -257,7 +257,7 @@
             this.chbLimitMin.TabIndex = 1;
             this.chbLimitMin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chbLimitMin.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.toolTip.SetToolTip(this.chbLimitMin, "Stretch down levels for view");
+            this.toolTip.SetToolTip(this.chbLimitMin, "Stretch levels to bottom for view");
             this.chbLimitMin.UseVisualStyleBackColor = true;
             this.chbLimitMin.CheckedChanged += new System.EventHandler(this.HMapOption_Changed);
             // 
@@ -268,7 +268,7 @@
             this.lblPointerPosition.Location = new System.Drawing.Point(48, 68);
             this.lblPointerPosition.Margin = new System.Windows.Forms.Padding(1);
             this.lblPointerPosition.Name = "lblPointerPosition";
-            this.lblPointerPosition.Size = new System.Drawing.Size(72, 28);
+            this.lblPointerPosition.Size = new System.Drawing.Size(80, 28);
             this.lblPointerPosition.TabIndex = 23;
             this.lblPointerPosition.Text = "- x -";
             this.lblPointerPosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -335,7 +335,7 @@
             this.chbLimitMax.TabIndex = 0;
             this.chbLimitMax.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chbLimitMax.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.toolTip.SetToolTip(this.chbLimitMax, "Stretch up levels for view");
+            this.toolTip.SetToolTip(this.chbLimitMax, "Stretch levels to ceiling for view");
             this.chbLimitMax.UseVisualStyleBackColor = true;
             this.chbLimitMax.CheckedChanged += new System.EventHandler(this.HMapOption_Changed);
             // 
@@ -459,6 +459,7 @@
             this.tcThemes.SelectedIndex = 0;
             this.tcThemes.Size = new System.Drawing.Size(214, 130);
             this.tcThemes.TabIndex = 2;
+            this.toolTip.SetToolTip(this.tcThemes, "View style");
             this.tcThemes.SelectedIndexChanged += new System.EventHandler(this.HMapOption_Changed);
             // 
             // tpMonochrome
@@ -485,6 +486,7 @@
             this.btnMonochromeColor.Name = "btnMonochromeColor";
             this.btnMonochromeColor.Size = new System.Drawing.Size(25, 25);
             this.btnMonochromeColor.TabIndex = 2;
+            this.toolTip.SetToolTip(this.btnMonochromeColor, "Color of maximum (65,535)");
             this.btnMonochromeColor.UseVisualStyleBackColor = false;
             this.btnMonochromeColor.BackColorChanged += new System.EventHandler(this.btnMonochromeColor_BackColorChanged);
             this.btnMonochromeColor.Click += new System.EventHandler(this.PickColor_Click);
@@ -517,6 +519,7 @@
             this.nudMonochromeRepeat.Size = new System.Drawing.Size(60, 20);
             this.nudMonochromeRepeat.TabIndex = 1;
             this.nudMonochromeRepeat.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudMonochromeRepeat, "Count of loops on range of 0-65,535");
             this.nudMonochromeRepeat.Value = new decimal(new int[] {
             1,
             0,
@@ -584,7 +587,7 @@
             this.tbByteLo.TabIndex = 3;
             this.tbByteLo.Text = "000001";
             this.tbByteLo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip.SetToolTip(this.tbByteLo, "6 hexadecimals (0-9, A-F) for RGB");
+            this.toolTip.SetToolTip(this.tbByteLo, "6 (3x2) hexadecimals (0-9, A-F) of RGB components");
             this.tbByteLo.WordWrap = false;
             this.tbByteLo.TextChanged += new System.EventHandler(this.textBox_TextChanged);
             // 
@@ -598,7 +601,7 @@
             this.tbByteHi.TabIndex = 2;
             this.tbByteHi.Text = "000100";
             this.tbByteHi.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip.SetToolTip(this.tbByteHi, "6 hexadecimals (0-9, A-F) for RGB");
+            this.toolTip.SetToolTip(this.tbByteHi, "6 (3x2) hexadecimals (0-9, A-F) of RGB components");
             this.tbByteHi.WordWrap = false;
             this.tbByteHi.TextChanged += new System.EventHandler(this.textBox_TextChanged);
             // 
@@ -654,7 +657,7 @@
             this.cbbBytePresets.Name = "cbbBytePresets";
             this.cbbBytePresets.Size = new System.Drawing.Size(152, 21);
             this.cbbBytePresets.TabIndex = 0;
-            this.toolTip.SetToolTip(this.cbbBytePresets, "Multipliers theme presets");
+            this.toolTip.SetToolTip(this.cbbBytePresets, "Multipliers presets");
             this.cbbBytePresets.SelectedIndexChanged += new System.EventHandler(this.cbbBytePresets_SelectedIndexChanged);
             // 
             // label4
@@ -684,6 +687,7 @@
             this.nudByteRepeat.Size = new System.Drawing.Size(60, 20);
             this.nudByteRepeat.TabIndex = 1;
             this.nudByteRepeat.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudByteRepeat, "Count of loops on range of 0-65,535");
             this.nudByteRepeat.Value = new decimal(new int[] {
             1,
             0,
@@ -723,6 +727,7 @@
             this.btnSpectrumColor8.Name = "btnSpectrumColor8";
             this.btnSpectrumColor8.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor8.TabIndex = 10;
+            this.toolTip.SetToolTip(this.btnSpectrumColor8, "7-8 range color. Color of maximum");
             this.btnSpectrumColor8.UseVisualStyleBackColor = false;
             this.btnSpectrumColor8.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor8.Click += new System.EventHandler(this.PickColor_Click);
@@ -735,6 +740,7 @@
             this.btnSpectrumColor7.Name = "btnSpectrumColor7";
             this.btnSpectrumColor7.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor7.TabIndex = 9;
+            this.toolTip.SetToolTip(this.btnSpectrumColor7, "6-7 range color");
             this.btnSpectrumColor7.UseVisualStyleBackColor = false;
             this.btnSpectrumColor7.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor7.Click += new System.EventHandler(this.PickColor_Click);
@@ -747,6 +753,7 @@
             this.btnSpectrumColor6.Name = "btnSpectrumColor6";
             this.btnSpectrumColor6.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor6.TabIndex = 8;
+            this.toolTip.SetToolTip(this.btnSpectrumColor6, "5-6 range color");
             this.btnSpectrumColor6.UseVisualStyleBackColor = false;
             this.btnSpectrumColor6.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor6.Click += new System.EventHandler(this.PickColor_Click);
@@ -759,6 +766,7 @@
             this.btnSpectrumColor5.Name = "btnSpectrumColor5";
             this.btnSpectrumColor5.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor5.TabIndex = 7;
+            this.toolTip.SetToolTip(this.btnSpectrumColor5, "4-5 range color");
             this.btnSpectrumColor5.UseVisualStyleBackColor = false;
             this.btnSpectrumColor5.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor5.Click += new System.EventHandler(this.PickColor_Click);
@@ -771,6 +779,7 @@
             this.btnSpectrumColor4.Name = "btnSpectrumColor4";
             this.btnSpectrumColor4.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor4.TabIndex = 6;
+            this.toolTip.SetToolTip(this.btnSpectrumColor4, "3-4 range color");
             this.btnSpectrumColor4.UseVisualStyleBackColor = false;
             this.btnSpectrumColor4.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor4.Click += new System.EventHandler(this.PickColor_Click);
@@ -783,6 +792,7 @@
             this.btnSpectrumColor3.Name = "btnSpectrumColor3";
             this.btnSpectrumColor3.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor3.TabIndex = 5;
+            this.toolTip.SetToolTip(this.btnSpectrumColor3, "2-3 range color");
             this.btnSpectrumColor3.UseVisualStyleBackColor = false;
             this.btnSpectrumColor3.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor3.Click += new System.EventHandler(this.PickColor_Click);
@@ -795,6 +805,7 @@
             this.btnSpectrumColor2.Name = "btnSpectrumColor2";
             this.btnSpectrumColor2.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor2.TabIndex = 4;
+            this.toolTip.SetToolTip(this.btnSpectrumColor2, "1-2 range color");
             this.btnSpectrumColor2.UseVisualStyleBackColor = false;
             this.btnSpectrumColor2.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor2.Click += new System.EventHandler(this.PickColor_Click);
@@ -807,6 +818,7 @@
             this.btnSpectrumColor1.Name = "btnSpectrumColor1";
             this.btnSpectrumColor1.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor1.TabIndex = 3;
+            this.toolTip.SetToolTip(this.btnSpectrumColor1, "0-1 range color");
             this.btnSpectrumColor1.UseVisualStyleBackColor = false;
             this.btnSpectrumColor1.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor1.Click += new System.EventHandler(this.PickColor_Click);
@@ -819,6 +831,7 @@
             this.btnSpectrumColor0.Name = "btnSpectrumColor0";
             this.btnSpectrumColor0.Size = new System.Drawing.Size(16, 16);
             this.btnSpectrumColor0.TabIndex = 2;
+            this.toolTip.SetToolTip(this.btnSpectrumColor0, "0 color. Base color");
             this.btnSpectrumColor0.UseVisualStyleBackColor = false;
             this.btnSpectrumColor0.BackColorChanged += new System.EventHandler(this.btnSpectrumColor_BackColorChanged);
             this.btnSpectrumColor0.Click += new System.EventHandler(this.PickColor_Click);
@@ -840,6 +853,7 @@
             this.nudSpectrumRepeat.Size = new System.Drawing.Size(60, 20);
             this.nudSpectrumRepeat.TabIndex = 1;
             this.nudSpectrumRepeat.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudSpectrumRepeat, "Count of loops on range of 0-65,535");
             this.nudSpectrumRepeat.Value = new decimal(new int[] {
             1,
             0,
@@ -864,7 +878,7 @@
             this.cbbSpectrumStyle.Name = "cbbSpectrumStyle";
             this.cbbSpectrumStyle.Size = new System.Drawing.Size(152, 21);
             this.cbbSpectrumStyle.TabIndex = 0;
-            this.toolTip.SetToolTip(this.cbbSpectrumStyle, "Spectrum theme presets");
+            this.toolTip.SetToolTip(this.cbbSpectrumStyle, "Spectrum presets");
             this.cbbSpectrumStyle.SelectedIndexChanged += new System.EventHandler(this.cbbSpectrumPresets_SelectedIndexChanged);
             // 
             // label7
@@ -897,6 +911,7 @@
             this.pbSpectrum.Size = new System.Drawing.Size(162, 23);
             this.pbSpectrum.TabIndex = 2;
             this.pbSpectrum.TabStop = false;
+            this.toolTip.SetToolTip(this.pbSpectrum, "Full 8 range spectrum");
             // 
             // gbFiles
             // 
@@ -954,7 +969,7 @@
             this.cbbLevelFormat8bit.Name = "cbbLevelFormat8bit";
             this.cbbLevelFormat8bit.Size = new System.Drawing.Size(157, 21);
             this.cbbLevelFormat8bit.TabIndex = 11;
-            this.toolTip.SetToolTip(this.cbbLevelFormat8bit, "Select wich 2 8bits components will form height");
+            this.toolTip.SetToolTip(this.cbbLevelFormat8bit, "Select which 2 8bit components will form height value");
             this.cbbLevelFormat8bit.Visible = false;
             this.cbbLevelFormat8bit.SelectedIndexChanged += new System.EventHandler(this.cbb_LevelFormat_Changed);
             // 
@@ -969,7 +984,7 @@
             this.chbLevelPixelBigLittleIndian.Size = new System.Drawing.Size(67, 17);
             this.chbLevelPixelBigLittleIndian.TabIndex = 10;
             this.chbLevelPixelBigLittleIndian.Text = "Pixel BLI";
-            this.toolTip.SetToolTip(this.chbLevelPixelBigLittleIndian, "Big-Little indian sequence of points in byte");
+            this.toolTip.SetToolTip(this.chbLevelPixelBigLittleIndian, "Big-Little indian sequence of pixels in byte");
             this.chbLevelPixelBigLittleIndian.UseVisualStyleBackColor = true;
             this.chbLevelPixelBigLittleIndian.Visible = false;
             this.chbLevelPixelBigLittleIndian.CheckedChanged += new System.EventHandler(this.cbb_LevelFormat_Changed);
@@ -1064,7 +1079,7 @@
             this.btnHMapResize.Size = new System.Drawing.Size(25, 25);
             this.btnHMapResize.TabIndex = 7;
             this.btnHMapResize.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip.SetToolTip(this.btnHMapResize, "Load image as topology map");
+            this.toolTip.SetToolTip(this.btnHMapResize, "Change canvas size");
             this.btnHMapResize.UseVisualStyleBackColor = true;
             this.btnHMapResize.Click += new System.EventHandler(this.btnResize_Click);
             // 
@@ -1154,7 +1169,7 @@
             this.btnLoadHMap.Size = new System.Drawing.Size(28, 25);
             this.btnLoadHMap.TabIndex = 3;
             this.btnLoadHMap.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip.SetToolTip(this.btnLoadHMap, "Load image (8/16bit PNG, bitmap,.. ) as heigh map or ...");
+            this.toolTip.SetToolTip(this.btnLoadHMap, "Load height map (8/16bit PNG, bitmap,.. ) or ...");
             this.btnLoadHMap.UseVisualStyleBackColor = true;
             this.btnLoadHMap.Click += new System.EventHandler(this.btnLoadHMap_Click);
             // 
@@ -1170,7 +1185,7 @@
             this.btnLoadPDA.Size = new System.Drawing.Size(28, 25);
             this.btnLoadPDA.TabIndex = 4;
             this.btnLoadPDA.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip.SetToolTip(this.btnLoadPDA, "Load image as topology map");
+            this.toolTip.SetToolTip(this.btnLoadPDA, "Load topographic map");
             this.btnLoadPDA.UseVisualStyleBackColor = true;
             this.btnLoadPDA.Click += new System.EventHandler(this.btnLoadPDA_Click);
             // 
@@ -1188,6 +1203,7 @@
             this.chbShowHMap.Text = "HMap";
             this.chbShowHMap.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chbShowHMap.ThreeState = true;
+            this.toolTip.SetToolTip(this.chbShowHMap, "Switch between height and topographic map");
             this.chbShowHMap.UseVisualStyleBackColor = true;
             this.chbShowHMap.CheckStateChanged += new System.EventHandler(this.SwitchView);
             // 
@@ -1203,6 +1219,7 @@
             this.chbShowPDA.Text = "PDA";
             this.chbShowPDA.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chbShowPDA.ThreeState = true;
+            this.toolTip.SetToolTip(this.chbShowPDA, "Switch between height and topographic map");
             this.chbShowPDA.UseVisualStyleBackColor = true;
             this.chbShowPDA.CheckStateChanged += new System.EventHandler(this.SwitchView);
             // 
@@ -1219,6 +1236,7 @@
             this.btnPDAGenerate.Size = new System.Drawing.Size(25, 25);
             this.btnPDAGenerate.TabIndex = 6;
             this.btnPDAGenerate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.btnPDAGenerate, "Generate grid background");
             this.btnPDAGenerate.UseVisualStyleBackColor = false;
             this.btnPDAGenerate.Click += new System.EventHandler(this.btnPDAGenerate_Click);
             // 
@@ -1283,7 +1301,7 @@
             this.cbbToolPreset.Name = "cbbToolPreset";
             this.cbbToolPreset.Size = new System.Drawing.Size(160, 21);
             this.cbbToolPreset.TabIndex = 0;
-            this.toolTip.SetToolTip(this.cbbToolPreset, "Color theme presets");
+            this.toolTip.SetToolTip(this.cbbToolPreset, "Toolset presets");
             this.cbbToolPreset.SelectedIndexChanged += new System.EventHandler(this.cbbToolPreset_SelectedIndexChanged);
             // 
             // btnToolRMB
@@ -1297,6 +1315,7 @@
             this.btnToolRMB.Size = new System.Drawing.Size(32, 32);
             this.btnToolRMB.TabIndex = 3;
             this.btnToolRMB.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolRMB, "Right mouse button");
             this.btnToolRMB.UseVisualStyleBackColor = false;
             this.btnToolRMB.Click += new System.EventHandler(this.btnToolXMB_Click);
             // 
@@ -1311,6 +1330,7 @@
             this.btnToolX2MB.Size = new System.Drawing.Size(32, 32);
             this.btnToolX2MB.TabIndex = 5;
             this.btnToolX2MB.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolX2MB, "X2 (side) mouse button");
             this.btnToolX2MB.UseVisualStyleBackColor = false;
             this.btnToolX2MB.Click += new System.EventHandler(this.btnToolXMB_Click);
             // 
@@ -1325,6 +1345,7 @@
             this.btnToolX1MB.Size = new System.Drawing.Size(32, 32);
             this.btnToolX1MB.TabIndex = 4;
             this.btnToolX1MB.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolX1MB, "X1 (side) mouse button");
             this.btnToolX1MB.UseVisualStyleBackColor = false;
             this.btnToolX1MB.Click += new System.EventHandler(this.btnToolXMB_Click);
             // 
@@ -1339,6 +1360,7 @@
             this.btnToolLMB.Size = new System.Drawing.Size(32, 32);
             this.btnToolLMB.TabIndex = 1;
             this.btnToolLMB.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolLMB, "Left mouse button");
             this.btnToolLMB.UseVisualStyleBackColor = false;
             this.btnToolLMB.Click += new System.EventHandler(this.btnToolXMB_Click);
             // 
@@ -1386,6 +1408,7 @@
             this.btnSlot3Force.Name = "btnSlot3Force";
             this.btnSlot3Force.Size = new System.Drawing.Size(20, 20);
             this.btnSlot3Force.TabIndex = 11;
+            this.toolTip.SetToolTip(this.btnSlot3Force, "Brush force shape");
             this.btnSlot3Force.UseVisualStyleBackColor = true;
             this.btnSlot3Force.Click += new System.EventHandler(this.btnTool3Force_Click);
             // 
@@ -1406,6 +1429,7 @@
             this.btnSlot2Force.Name = "btnSlot2Force";
             this.btnSlot2Force.Size = new System.Drawing.Size(20, 20);
             this.btnSlot2Force.TabIndex = 10;
+            this.toolTip.SetToolTip(this.btnSlot2Force, "Brush force shape");
             this.btnSlot2Force.UseVisualStyleBackColor = true;
             this.btnSlot2Force.Click += new System.EventHandler(this.btnTool2Force_Click);
             // 
@@ -1418,6 +1442,7 @@
             this.btnSlot1Force.Name = "btnSlot1Force";
             this.btnSlot1Force.Size = new System.Drawing.Size(20, 20);
             this.btnSlot1Force.TabIndex = 9;
+            this.toolTip.SetToolTip(this.btnSlot1Force, "Brush force shape");
             this.btnSlot1Force.UseVisualStyleBackColor = true;
             this.btnSlot1Force.Click += new System.EventHandler(this.btnTool1Force_Click);
             // 
@@ -1483,6 +1508,7 @@
             this.nudSlot3Size.Size = new System.Drawing.Size(32, 20);
             this.nudSlot3Size.TabIndex = 17;
             this.nudSlot3Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudSlot3Size, "Brush size");
             this.nudSlot3Size.Value = new decimal(new int[] {
             6,
             0,
@@ -1507,6 +1533,7 @@
             this.nudSlot2Size.Size = new System.Drawing.Size(32, 20);
             this.nudSlot2Size.TabIndex = 16;
             this.nudSlot2Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudSlot2Size, "Brush size");
             this.nudSlot2Size.Value = new decimal(new int[] {
             8,
             0,
@@ -1531,6 +1558,7 @@
             this.nudSlot1Size.Size = new System.Drawing.Size(32, 20);
             this.nudSlot1Size.TabIndex = 15;
             this.nudSlot1Size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudSlot1Size, "Brush size");
             this.nudSlot1Size.Value = new decimal(new int[] {
             4,
             0,
@@ -1552,6 +1580,7 @@
             this.chbSlot3Shape.Size = new System.Drawing.Size(20, 20);
             this.chbSlot3Shape.TabIndex = 14;
             this.chbSlot3Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chbSlot3Shape, "Brush shape");
             this.chbSlot3Shape.UseVisualStyleBackColor = false;
             this.chbSlot3Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
             // 
@@ -1576,6 +1605,7 @@
             this.chbSlot2Shape.Size = new System.Drawing.Size(20, 20);
             this.chbSlot2Shape.TabIndex = 13;
             this.chbSlot2Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chbSlot2Shape, "Brush shape");
             this.chbSlot2Shape.UseVisualStyleBackColor = false;
             this.chbSlot2Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
             // 
@@ -1593,6 +1623,7 @@
             this.chbSlot1Shape.Size = new System.Drawing.Size(20, 20);
             this.chbSlot1Shape.TabIndex = 12;
             this.chbSlot1Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chbSlot1Shape, "Brush shape");
             this.chbSlot1Shape.UseVisualStyleBackColor = false;
             this.chbSlot1Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
             // 
@@ -1685,13 +1716,14 @@
             // 
             this.label20.AutoSize = true;
             this.label20.BackColor = System.Drawing.Color.Transparent;
-            this.label20.Location = new System.Drawing.Point(32, 4);
+            this.label20.Location = new System.Drawing.Point(36, 4);
             this.label20.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(34, 13);
             this.label20.TabIndex = 20;
             this.label20.Text = "Value";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.label20, "Value to set, increment, decrement or Force of smoothing");
             // 
             // label22
             // 
@@ -1721,7 +1753,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.BackColor = System.Drawing.Color.Transparent;
-            this.label18.Location = new System.Drawing.Point(136, 4);
+            this.label18.Location = new System.Drawing.Point(132, 4);
             this.label18.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(27, 13);
@@ -1790,6 +1822,7 @@
             this.btnToolMMB.Size = new System.Drawing.Size(32, 32);
             this.btnToolMMB.TabIndex = 2;
             this.btnToolMMB.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolMMB, "Middle mouse button");
             this.btnToolMMB.UseVisualStyleBackColor = false;
             this.btnToolMMB.Click += new System.EventHandler(this.btnToolXMB_Click);
             // 
@@ -2000,6 +2033,7 @@
             this.btnToolSmooth3.Tag = "";
             this.btnToolSmooth3.Text = "3";
             this.btnToolSmooth3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolSmooth3, "Smooth (slot 3)");
             this.btnToolSmooth3.UseVisualStyleBackColor = true;
             this.btnToolSmooth3.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2016,6 +2050,7 @@
             this.btnToolSmooth2.Tag = "";
             this.btnToolSmooth2.Text = "2";
             this.btnToolSmooth2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolSmooth2, "Smooth (slot 2)");
             this.btnToolSmooth2.UseVisualStyleBackColor = true;
             this.btnToolSmooth2.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2032,6 +2067,7 @@
             this.btnToolLevel3.Tag = "";
             this.btnToolLevel3.Text = "3";
             this.btnToolLevel3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolLevel3, "Level (slot 3)");
             this.btnToolLevel3.UseVisualStyleBackColor = true;
             this.btnToolLevel3.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2048,6 +2084,7 @@
             this.btnToolLevel2.Tag = "";
             this.btnToolLevel2.Text = "2";
             this.btnToolLevel2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolLevel2, "Level (slot 2)");
             this.btnToolLevel2.UseVisualStyleBackColor = true;
             this.btnToolLevel2.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2064,6 +2101,7 @@
             this.btnToolSub3.Tag = "";
             this.btnToolSub3.Text = "2";
             this.btnToolSub3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolSub3, "Dig (slot 2)");
             this.btnToolSub3.UseVisualStyleBackColor = true;
             this.btnToolSub3.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2080,6 +2118,7 @@
             this.btnToolSub2.Tag = "";
             this.btnToolSub2.Text = "3";
             this.btnToolSub2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolSub2, "Dig (slot 3)");
             this.btnToolSub2.UseVisualStyleBackColor = true;
             this.btnToolSub2.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2096,6 +2135,7 @@
             this.btnToolAdd3.Tag = "";
             this.btnToolAdd3.Text = "3";
             this.btnToolAdd3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolAdd3, "Add (slot 3)");
             this.btnToolAdd3.UseVisualStyleBackColor = true;
             this.btnToolAdd3.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2112,6 +2152,7 @@
             this.btnToolAdd2.Tag = "";
             this.btnToolAdd2.Text = "2";
             this.btnToolAdd2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolAdd2, "Add (slot 2)");
             this.btnToolAdd2.UseVisualStyleBackColor = true;
             this.btnToolAdd2.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2124,6 +2165,7 @@
             this.btnToolSwitch.Size = new System.Drawing.Size(32, 32);
             this.btnToolSwitch.TabIndex = 1;
             this.btnToolSwitch.Tag = "";
+            this.toolTip.SetToolTip(this.btnToolSwitch, "Switch between height and topographic map");
             this.btnToolSwitch.UseVisualStyleBackColor = true;
             this.btnToolSwitch.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2136,6 +2178,7 @@
             this.btnToolMove.Size = new System.Drawing.Size(32, 32);
             this.btnToolMove.TabIndex = 0;
             this.btnToolMove.Tag = "";
+            this.toolTip.SetToolTip(this.btnToolMove, "Pan");
             this.btnToolMove.UseVisualStyleBackColor = true;
             this.btnToolMove.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2152,6 +2195,7 @@
             this.btnToolProbe1.Tag = "";
             this.btnToolProbe1.Text = "1";
             this.btnToolProbe1.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolProbe1, "Probe (slot 1)");
             this.btnToolProbe1.UseVisualStyleBackColor = true;
             this.btnToolProbe1.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2168,6 +2212,7 @@
             this.btnToolProbe2.Tag = "";
             this.btnToolProbe2.Text = "2";
             this.btnToolProbe2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolProbe2, "Probe (slot 2)");
             this.btnToolProbe2.UseVisualStyleBackColor = true;
             this.btnToolProbe2.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2184,6 +2229,7 @@
             this.btnToolPencil1.Tag = "";
             this.btnToolPencil1.Text = "1";
             this.btnToolPencil1.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolPencil1, "Pencil (slot 1)");
             this.btnToolPencil1.UseVisualStyleBackColor = true;
             this.btnToolPencil1.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2200,6 +2246,7 @@
             this.btnToolSmooth1.Tag = "";
             this.btnToolSmooth1.Text = "1";
             this.btnToolSmooth1.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolSmooth1, "Smooth (slot 1)");
             this.btnToolSmooth1.UseVisualStyleBackColor = true;
             this.btnToolSmooth1.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2216,6 +2263,7 @@
             this.btnToolLevel1.Tag = "";
             this.btnToolLevel1.Text = "1";
             this.btnToolLevel1.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolLevel1, "Level (slot 1)");
             this.btnToolLevel1.UseVisualStyleBackColor = true;
             this.btnToolLevel1.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2232,6 +2280,7 @@
             this.btnToolAdd1.Tag = "";
             this.btnToolAdd1.Text = "1";
             this.btnToolAdd1.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolAdd1, "Add (slot 1)");
             this.btnToolAdd1.UseVisualStyleBackColor = true;
             this.btnToolAdd1.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2248,6 +2297,7 @@
             this.btnToolSub1.Tag = "";
             this.btnToolSub1.Text = "1";
             this.btnToolSub1.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolSub1, "Dig (slot 1)");
             this.btnToolSub1.UseVisualStyleBackColor = true;
             this.btnToolSub1.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2264,6 +2314,7 @@
             this.btnToolProbe3.Tag = "";
             this.btnToolProbe3.Text = "3";
             this.btnToolProbe3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolProbe3, "Probe (slot 3)");
             this.btnToolProbe3.UseVisualStyleBackColor = true;
             this.btnToolProbe3.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2280,6 +2331,7 @@
             this.btnToolPencil3.Tag = "";
             this.btnToolPencil3.Text = "3";
             this.btnToolPencil3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolPencil3, "Pencil (slot 3)");
             this.btnToolPencil3.UseVisualStyleBackColor = true;
             this.btnToolPencil3.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2296,6 +2348,7 @@
             this.btnToolPencil2.Tag = "";
             this.btnToolPencil2.Text = "2";
             this.btnToolPencil2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.toolTip.SetToolTip(this.btnToolPencil2, "Pencil (slot 2)");
             this.btnToolPencil2.UseVisualStyleBackColor = true;
             this.btnToolPencil2.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2330,9 +2383,12 @@
             this.Controls.Add(this.pbPDA);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
+            this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(360, 550);
             this.Name = "FormSHME";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.Text = "Spectrum Height Map Editor";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSHME_FormClosed);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormSHME_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbHMap_MouseDown);

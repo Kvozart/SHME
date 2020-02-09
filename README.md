@@ -9,9 +9,9 @@ Can import/load images:
  - For 16 bit: choosable byte pack order.
  
 View as:
- - Monochrome - Classic one color (choosable color);
+ - Monochrome - Classic one color (choosable);
  - 2Bytes - gradient like result of combining 2 color component multipliers (i.e. 0x010101 - white) for Higher and Lower bytes;
- - Spectrum - choose 9 colors (8 ranges) to spread layout visually from 8 to 11 bit like classic height topographic map.
+ - Spectrum - choosable 9 colors (8 ranges in-between) to spread layout visually from 8 to 11 bit like classic height topographic map.
  
 Additionaly:
  - In all layouts color spectrum can be looped up to 32 times to better cover 16 bit range;
