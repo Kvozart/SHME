@@ -264,8 +264,7 @@ namespace SHME
         }
 
         private void cbbZoom_SelectedIndexChanged(object sender, EventArgs e) => SetZoom(ZoomMax - cbbZoom.SelectedIndex, false);
-        private void pbZoomIn_Click(object sender, MouseEventArgs e) => SetZoom(zoom + 1, false);
-        private void pbZoomReset_Click(object sender, MouseEventArgs e) => SetZoom(0, false);
+        private void pbZoomIn_Click (object sender, MouseEventArgs e) => SetZoom(zoom + 1, false);
         private void pbZoomOut_Click(object sender, MouseEventArgs e) => SetZoom(zoom - 1, false);
 
         private void SetZoom(int z, bool forced = true)//
@@ -273,18 +272,27 @@ namespace SHME
             if (lockDrawing) return;
             z = (z < 0) ? 0 : (ZoomMax < z) ? ZoomMax : z;
             if (zoom == z && !forced) return;
+            int oldZoom = zoom;
             zoom = z;
-            ZoomFinish(
-                (hScrollBar.Value + hScrollBar.LargeChange / 2) / (float)hScrollBar.Maximum,
-                (vScrollBar.Value + vScrollBar.LargeChange / 2) / (float)vScrollBar.Maximum
-                );
+            if (lblPointerLevel.Enabled)
+                ZoomFinish(
+                    (mapX + (((hScrollBar.Width  >> 1) - msX) >> zoom)) / (float)hScrollBar.Maximum,
+                    (mapY + (((vScrollBar.Height >> 1) - msY) >> zoom)) / (float)vScrollBar.Maximum
+                    );
+            else
+                ZoomFinish(
+                    (hScrollBar.Value + (hScrollBar.LargeChange >> 1)) / (float)hScrollBar.Maximum,
+                    (vScrollBar.Value + (vScrollBar.LargeChange >> 1)) / (float)vScrollBar.Maximum
+                    );
         }
 
         private void ZoomFinish(float scrollX, float scrollY)//
         {
             ResizeScrollBars();
-            hScrollBar.Value = (int)((hScrollBar.Maximum - hScrollBar.LargeChange) * scrollX);
-            vScrollBar.Value = (int)((vScrollBar.Maximum - vScrollBar.LargeChange) * scrollY);
+            int x = (int)(hScrollBar.Maximum * (scrollX - ((float)hScrollBar.LargeChange / hScrollBar.Maximum / 2)));
+            int y = (int)(vScrollBar.Maximum * (scrollY - ((float)vScrollBar.LargeChange / vScrollBar.Maximum / 2)));
+            ScrollValueCheckAndSet(hScrollBar, ref x, true);
+            ScrollValueCheckAndSet(vScrollBar, ref y, true);
             cbbZoom.SelectedIndex = ZoomMax - zoom;
             // Resize Boxes
             pbPDA.Width  = HMap.Width  << zoom;
@@ -459,9 +467,8 @@ namespace SHME
         {
             try
             {
-                Image.FromFile(fileName);
+                FinishPDALoading(Image.FromFile(fileName), switchTo);
                 pbPDA.ImageLocation = fileName;
-                FinishPDALoading(switchTo);
             }
             catch (Exception exc)
             {
@@ -487,14 +494,14 @@ namespace SHME
             for (x = 0; x < width;  x += 100) graphics.DrawLine(pen, x, 0,     x, height);
             for (y = 0; y < height; y += 100) graphics.DrawLine(pen, 0, y, width,      y);
             // Apply
-            pbPDA.Image = img;
             pbPDA.ImageLocation = "";
-            FinishPDALoading(switchTo);
+            FinishPDALoading(img, switchTo);
         }
 
-        private void FinishPDALoading(bool switchTo = true)
+        private void FinishPDALoading(Image img, bool switchTo = true)
         {
-            lblPDASizes.Text = pbPDA.Image.Width + XYSpliter + pbPDA.Image.Height;
+            pbPDA.Image = img;
+            lblPDASizes.Text = img.Width + XYSpliter + img.Height;
             if (switchTo)
                 chbShowPDA.Checked = true;
         }
@@ -626,8 +633,8 @@ namespace SHME
         #endregion
 
         #region Mouse
-        int scX0, scY0;
-        int msX0, msY0;
+        int scX0, msX0, msX, mapX;
+        int scY0, msY0, msY, mapY;
         UInt16 levelValue;
 
         private void pbHMap_MouseDown(object sender, MouseEventArgs e)//O
@@ -640,7 +647,14 @@ namespace SHME
             ToolAction(sender, e, false);
         }
 
-        private void pbHMap_MouseMove(object sender, MouseEventArgs e) => ToolAction(sender, e, true);
+        private void pbHMap_MouseMove(object sender, MouseEventArgs e)
+        {
+            msX = e.X - hScrollBar.Left;
+            msY = e.Y - vScrollBar.Top;
+            mapX = (((pbPDA.Visible) ? e.X : msX) >> zoom) + hScrollBar.Value;
+            mapY = (((pbPDA.Visible) ? e.Y : msY) >> zoom) + vScrollBar.Value;
+            ToolAction(sender, e, true);
+        }
 
         private void ToolAction(object sender, MouseEventArgs e, bool moving)
         {
@@ -698,8 +712,6 @@ namespace SHME
                 }
             }
             // Calculate point on map
-            int mapX = (((pbPDA.Visible) ? e.X : e.X - hScrollBar.Left) >> zoom) + hScrollBar.Value;
-            int mapY = (((pbPDA.Visible) ? e.Y : e.Y - vScrollBar.Top ) >> zoom) + vScrollBar.Value;
             int mapW = HMap.Width  - 1;
             int mapH = HMap.Height - 1;
             // Skip outside
