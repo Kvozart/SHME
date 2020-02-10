@@ -297,7 +297,7 @@
             this.lblPointerLevel.Name = "lblPointerLevel";
             this.lblPointerLevel.Size = new System.Drawing.Size(40, 26);
             this.lblPointerLevel.TabIndex = 24;
-            this.lblPointerLevel.Text = "65535 xFFFF";
+            this.lblPointerLevel.Text = "-";
             this.lblPointerLevel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblHeightAvg

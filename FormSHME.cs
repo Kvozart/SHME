@@ -149,17 +149,22 @@ namespace SHME
             CreateToolForceMask(ref tool3ForceMask, ref tool3Brush, btnSlot3Force.ImageIndex, nudSlot3Size, chbSlot3Shape);
 
             // Load HMap
+            bool loaded = false;
             if (HMapURL != "")
-                if (LoadHMap(HMapURL))
-                    return;
-            HMap = new HeightMap(true);
-            lockDrawing = false;
-            FinishHMapLoading();
+                loaded = LoadHMap(HMapURL);
+            if (!loaded)
+            {
+                HMap = new HeightMap(true);
+                lockDrawing = false;
+                FinishHMapLoading();
+            }
             // Load PDA
+            loaded = false;
             if (pbPDA.Tag != null)
                 if (pbPDA.Tag as String != "")
-                    if (!LoadPDA(pbPDA.Tag as String, false))
-                        GeneratePDA(HMap.Width, HMap.Height, false);
+                    loaded = LoadPDA(pbPDA.Tag as String, false);
+            if (!loaded)
+                GeneratePDA(HMap.Width, HMap.Height, false);
         }
 
         #region Theme pages
@@ -409,7 +414,7 @@ namespace SHME
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Unable to open file:\r\n" + exc.Message, "Open HMap error");
+                    MessageBox.Show("Unable to open file:\r\n" + exc.Message, "Load HMap error");
                     return false;
                 }
             }
@@ -454,21 +459,22 @@ namespace SHME
         {
             try
             {
-                FinishPDALoading(Image.FromFile(fileName), switchTo);
+                Image.FromFile(fileName);
+                pbPDA.ImageLocation = fileName;
+                FinishPDALoading(switchTo);
             }
             catch (Exception exc)
             {
-                MessageBox.Show("Unable to load file:\r\n\"" + fileName + "\"\r\n" + exc.Message, "Open PDA error");
+                MessageBox.Show("Unable to load file:\r\n\"" + fileName + "\"\r\n" + exc.Message, "Load PDA error");
                 return false;
             }
             return true;
         }
 
-        private void btnPDAGenerate_Click(object sender, EventArgs e) => GeneratePDA(HMap.Width, HMap.Height);
-        private void GeneratePDA(int width, int height, bool switchTo = true)
+        private void btnPDAGenerate_Click(object sender, EventArgs e) => GeneratePDA(HMap.Width, HMap.Height, true);
+        private void GeneratePDA(int width, int height, bool switchTo)
         {
             int x, y;
-            pbPDA.ImageLocation = "";
             Bitmap img = new Bitmap(width, height);
             var graphics = Graphics.FromImage(img);
             graphics.Clear(Color.DimGray);
@@ -481,13 +487,14 @@ namespace SHME
             for (x = 0; x < width;  x += 100) graphics.DrawLine(pen, x, 0,     x, height);
             for (y = 0; y < height; y += 100) graphics.DrawLine(pen, 0, y, width,      y);
             // Apply
-            FinishPDALoading(img, switchTo);
+            pbPDA.Image = img;
+            pbPDA.ImageLocation = "";
+            FinishPDALoading(switchTo);
         }
 
-        private void FinishPDALoading(Image img, bool switchTo = true)
+        private void FinishPDALoading(bool switchTo = true)
         {
-            pbPDA.Image = img;
-            lblPDASizes.Text = img.Width + XYSpliter + img.Height;
+            lblPDASizes.Text = pbPDA.Image.Width + XYSpliter + pbPDA.Image.Height;
             if (switchTo)
                 chbShowPDA.Checked = true;
         }
@@ -619,8 +626,8 @@ namespace SHME
         #endregion
 
         #region Mouse
-        int mapW, scX0, scY0;
-        int mapH, msX0, msY0;
+        int scX0, scY0;
+        int msX0, msY0;
         UInt16 levelValue;
 
         private void pbHMap_MouseDown(object sender, MouseEventArgs e)//O
@@ -637,6 +644,7 @@ namespace SHME
 
         private void ToolAction(object sender, MouseEventArgs e, bool moving)
         {
+            if (lockMouse) return;
             // Get tool, Pan, Switch
             int toolID = 0;
             if (e.Button != MouseButtons.None)
@@ -650,50 +658,41 @@ namespace SHME
                     null;
                 if (oID != null) toolID = (int)oID;
 
-                // Pan
-                if (toolID == 0)//Ok
+                if (toolID < 4)
                 {
                     if (moving)
                     {
-                        // Calculate shift
-                        int scX = scX0 + ((msX0 - e.X) >> zoom);
-                        int scY = scY0 + ((msY0 - e.Y) >> zoom);
-                        bool h = ScrollValueCheckAndSet(hScrollBar, ref scX);
-                        bool v = ScrollValueCheckAndSet(vScrollBar, ref scY);
-                        // Apply
-                        if (h | v)
+                        // Pan
+                        if (toolID == 0)
                         {
-                            // Compensate for image
-                            if (pbPDA == sender)
+                            // Calculate shift
+                            int scX = scX0 + ((msX0 - e.X) >> zoom);
+                            int scY = scY0 + ((msY0 - e.Y) >> zoom);
+                            bool h = ScrollValueCheckAndSet(hScrollBar, ref scX);
+                            bool v = ScrollValueCheckAndSet(vScrollBar, ref scY);
+                            // Apply
+                            if (h | v)
                             {
-                                msX0 += (scX - hScrollBar.Value) << zoom;
-                                msY0 += (scY - vScrollBar.Value) << zoom;
+                                // Compensate for image
+                                if (pbPDA == sender)
+                                {
+                                    msX0 += (scX - hScrollBar.Value) << zoom;
+                                    msY0 += (scY - vScrollBar.Value) << zoom;
+                                }
+                                hScrollBar.Value = scX;
+                                vScrollBar.Value = scY;
+                                ScrollBar_Scroll(null, null);
                             }
-                            hScrollBar.Value = scX;
-                            vScrollBar.Value = scY;
-                            ScrollBar_Scroll(null, null);
                         }
                     }
-                    return;
-                }
-                // Switching active layer
-                else if (toolID == 1)//Ok
-                {
-                    if (!moving)
+                    // Switching active layer
+                    else if (toolID == 1)
                         chbShowHMap.Checked = !chbShowHMap.Checked;
-                    return;
-                }
-                // Undo
-                else if (toolID == 2)
-                {
-                    if (!moving)
+                    // Undo
+                    else if (toolID == 2)
                         btnHistoryBackward_Click(null, null);
-                    return;
-                }
-                // Redo
-                else if (toolID == 3)
-                {
-                    if (!moving)
+                    // Redo
+                    else
                         btnHistoryForward_Click(null, null);
                     return;
                 }
@@ -701,25 +700,26 @@ namespace SHME
             // Calculate point on map
             int mapX = (((pbPDA.Visible) ? e.X : e.X - hScrollBar.Left) >> zoom) + hScrollBar.Value;
             int mapY = (((pbPDA.Visible) ? e.Y : e.Y - vScrollBar.Top ) >> zoom) + vScrollBar.Value;
-            mapW = HMap.Width  - 1;
-            mapH = HMap.Height - 1;
+            int mapW = HMap.Width  - 1;
+            int mapH = HMap.Height - 1;
             // Skip outside
             if (mapX < 0 || mapY < 0 || mapW < mapX || mapH < mapY)
             {
-                if (moving && lblPointerLevel.Visible)
+                if (moving && lblPointerLevel.Enabled)
                     FormSHME_MouseLeave(sender, e);
                 return;
             }
+            else
+                lblPointerLevel.Enabled = true;
             // Show level under pointer
             if (moving)
             {
-                if (!lblPointerLevel.Visible) lblPointerLevel.Visible = true;
                 lblPointerPosition.Text = mapX + PointerSpliter + mapY;
                 lblPointerLevel.Text = HMap.Level[mapX, mapY].ToString() + " x" + HMap.Level[mapX, mapY].ToString("X4");
             }
 
             // No drawing?
-            if (lockMouse || toolID < 4 || ToolControls.Length <= toolID) return;
+            if (toolID < 4) return;
 
             // Recalculate tool ID and Index
             toolID -= 4;
@@ -772,7 +772,9 @@ namespace SHME
             {
                 // Level probe
                 if (toolID == 2)
-                    value = (moving) ? levelValue : (levelValue = HMap.Level[mapX, mapY]);
+                    value = (moving)
+                        ? levelValue
+                        : (levelValue = HMap.Level[mapX, mapY]); // Store at first contact and use
                 for (y = 0; y < size; y++)
                     for (x = 0; x < size; x++)
                         brush[x, y] = value;
@@ -815,8 +817,8 @@ namespace SHME
                 ? tool2ForceMask
                 : tool3ForceMask;
 
-            float k, f = (toolID == 5) ? (float)value / 65535 : 1;
             // Put brush
+            float k, f = (toolID == 5) ? (float)value / 65535 : 1;
             for (y = iT; y <= iB; y++)
                 for (x = iL; x <= iR; x++)
                 {
@@ -850,11 +852,7 @@ namespace SHME
             ShowStatistics();
         }
 
-        private void FormSHME_MouseUp(object sender, MouseEventArgs e)
-        {
-            lockMouse = true;
-            HistoryAdd(HistoryRecord.ActionEdit);
-        }
+        private void FormSHME_MouseUp(object sender, MouseEventArgs e) => HistoryAdd(HistoryRecord.ActionEdit);
 
         private void FormSHME_MouseEnter(object sender, EventArgs e)
         {
@@ -865,7 +863,7 @@ namespace SHME
         private void FormSHME_MouseLeave(object sender, EventArgs e)//Ok
         {
             lblPointerPosition.Text = "-" + PointerSpliter + "-";
-            lblPointerLevel.Visible = false;
+            lblPointerLevel.Enabled = false;
             lblPointerLevel.Text = "-";
         }
         #endregion

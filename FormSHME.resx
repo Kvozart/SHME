@@ -152,20 +152,23 @@
   <metadata name="cmsSaveFile.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>520, 17</value>
   </metadata>
-  <data name="tsmi8BitPNG.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADrwAAA68AZW8ckkAAABcSURBVDhPpcOBEAAhFEXRZ/ARQgghhBBCCCGEEEIIIYQQ
-        Qrm7Du/MHP2wRgROpZRwKueMU6UUnKq14lRrDad67zg1xsCpOSdOrbVwau+NU+ccnLr34tR7D6ewwAe1
-        uGdPB64L3QAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="btnSaveHMap.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADrwAAA68AZW8ckkAAACCSURBVDhPvZPBDYAgDEXZxjG8Oo4bsIMDeeHqCOzyTTWQ
         H6mlxMTDI1D6X7kQAHziWtZtx7wcFyklk9InmSooxTcB33Fvzvl+BhefYQ7xXvhPwHCvKhihEWgTNUxB
         jNGkK/BgCrSpTFfgwRRoU5muwEMjKJ8JcXIhvZKpAkEOowAIJzI23yfQ1fx1AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>430, 17</value>
+  </metadata>
+  <data name="tsmi8BitPNG.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADrwAAA68AZW8ckkAAABcSURBVDhPpcOBEAAhFEXRZ/ARQgghhBBCCCGEEEIIIYQQ
+        Qrm7Du/MHP2wRgROpZRwKueMU6UUnKq14lRrDad67zg1xsCpOSdOrbVwau+NU+ccnLr34tR7D6ewwAe1
+        uGdPB64L3QAAAABJRU5ErkJggg==
 </value>
   </data>
   <metadata name="ilToolForce.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
