@@ -100,12 +100,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FormResize.resx">
       <DependentUpon>FormResize.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormCreate.resx">
       <DependentUpon>FormCreate.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSHME.resx">
       <DependentUpon>FormSHME.cs</DependentUpon>
@@ -180,8 +182,6 @@
     <None Include="Resources\square.png" />
     <None Include="Resources\toolLevelSub.png" />
     <None Include="Resources\toolLevelAdd.png" />
-    <None Include="Resources\historyBack.png" />
-    <None Include="Resources\historyForward.png" />
     <None Include="Resources\resize.png" />
     <None Include="Resources\Logo_SHME.ico" />
     <None Include="Resources\brushForceGauss.png" />
@@ -189,6 +189,10 @@
     <None Include="Resources\brushForceSquare.png" />
     <None Include="Resources\delete.png" />
     <None Include="Resources\add.png" />
+    <None Include="Resources\historyBack.png" />
+    <None Include="Resources\historyForward.png" />
+    <None Include="Resources\historyBackHi.png" />
+    <None Include="Resources\historyForwardHi.png" />
     <Content Include="zlib1.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

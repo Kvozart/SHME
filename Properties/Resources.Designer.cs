@@ -173,9 +173,29 @@ namespace SHME.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap historyBackHi {
+            get {
+                object obj = ResourceManager.GetObject("historyBackHi", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap historyForward {
             get {
                 object obj = ResourceManager.GetObject("historyForward", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap historyForwardHi {
+            get {
+                object obj = ResourceManager.GetObject("historyForwardHi", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

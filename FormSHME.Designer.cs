@@ -174,10 +174,12 @@
             this.btnToolProbe3 = new System.Windows.Forms.Button();
             this.btnToolPencil3 = new System.Windows.Forms.Button();
             this.btnToolPencil2 = new System.Windows.Forms.Button();
+            this.pnlCorner = new System.Windows.Forms.Panel();
             this.pnlZoomGrid = new System.Windows.Forms.Panel();
             this.pnlToolSelect = new System.Windows.Forms.Panel();
+            this.btnToolUndo = new System.Windows.Forms.Button();
+            this.btnToolRedo = new System.Windows.Forms.Button();
             this.pbPDA = new System.Windows.Forms.PictureBox();
-            this.pnlCorner = new System.Windows.Forms.Panel();
             this.gbStatistics.SuspendLayout();
             this.cmsOpenFile.SuspendLayout();
             this.tcThemes.SuspendLayout();
@@ -1557,7 +1559,7 @@
             0,
             0,
             0});
-            this.nudSlot3Size.ValueChanged += new System.EventHandler(this.btnTool3Force_Click);
+            this.nudSlot3Size.ValueChanged += new System.EventHandler(this.nudSlot3Size_ValueChanged);
             // 
             // nudSlot2Size
             // 
@@ -1582,7 +1584,7 @@
             0,
             0,
             0});
-            this.nudSlot2Size.ValueChanged += new System.EventHandler(this.btnTool2Force_Click);
+            this.nudSlot2Size.ValueChanged += new System.EventHandler(this.nudSlot2Size_ValueChanged);
             // 
             // nudSlot1Size
             // 
@@ -1607,7 +1609,7 @@
             0,
             0,
             0});
-            this.nudSlot1Size.ValueChanged += new System.EventHandler(this.btnTool1Force_Click);
+            this.nudSlot1Size.ValueChanged += new System.EventHandler(this.nudSlot1Size_ValueChanged);
             // 
             // chbSlot3Shape
             // 
@@ -1625,7 +1627,8 @@
             this.chbSlot3Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip.SetToolTip(this.chbSlot3Shape, "Brush shape");
             this.chbSlot3Shape.UseVisualStyleBackColor = false;
-            this.chbSlot3Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
+            this.chbSlot3Shape.CheckedChanged += new System.EventHandler(this.chbSlotXShape_CheckedChanged);
+            this.chbSlot3Shape.BackgroundImageChanged += new System.EventHandler(this.nudSlot3Size_ValueChanged);
             // 
             // ilToolShape
             // 
@@ -1650,7 +1653,8 @@
             this.chbSlot2Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip.SetToolTip(this.chbSlot2Shape, "Brush shape");
             this.chbSlot2Shape.UseVisualStyleBackColor = false;
-            this.chbSlot2Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
+            this.chbSlot2Shape.CheckedChanged += new System.EventHandler(this.chbSlotXShape_CheckedChanged);
+            this.chbSlot2Shape.BackgroundImageChanged += new System.EventHandler(this.nudSlot2Size_ValueChanged);
             // 
             // chbSlot1Shape
             // 
@@ -1668,7 +1672,8 @@
             this.chbSlot1Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip.SetToolTip(this.chbSlot1Shape, "Brush shape");
             this.chbSlot1Shape.UseVisualStyleBackColor = false;
-            this.chbSlot1Shape.CheckedChanged += new System.EventHandler(this.chbToolShape_CheckedChanged);
+            this.chbSlot1Shape.CheckedChanged += new System.EventHandler(this.chbSlotXShape_CheckedChanged);
+            this.chbSlot1Shape.BackgroundImageChanged += new System.EventHandler(this.nudSlot1Size_ValueChanged);
             // 
             // nudSlot3Value
             // 
@@ -1926,7 +1931,7 @@
             this.btnHistoryForward.Enabled = false;
             this.btnHistoryForward.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnHistoryForward.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
-            this.btnHistoryForward.Image = global::SHME.Properties.Resources.historyForward;
+            this.btnHistoryForward.Image = global::SHME.Properties.Resources.historyForwardHi;
             this.btnHistoryForward.Location = new System.Drawing.Point(124, 1);
             this.btnHistoryForward.Margin = new System.Windows.Forms.Padding(1);
             this.btnHistoryForward.Name = "btnHistoryForward";
@@ -1944,7 +1949,7 @@
             this.btnHistoryBackward.Enabled = false;
             this.btnHistoryBackward.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnHistoryBackward.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
-            this.btnHistoryBackward.Image = global::SHME.Properties.Resources.historyBack;
+            this.btnHistoryBackward.Image = global::SHME.Properties.Resources.historyBackHi;
             this.btnHistoryBackward.Location = new System.Drawing.Point(96, 1);
             this.btnHistoryBackward.Margin = new System.Windows.Forms.Padding(1);
             this.btnHistoryBackward.Name = "btnHistoryBackward";
@@ -2008,7 +2013,7 @@
             this.btnToolSmooth3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolSmooth3.Image = global::SHME.Properties.Resources.toolLevelSmooth;
             this.btnToolSmooth3.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolSmooth3.Location = new System.Drawing.Point(196, 4);
+            this.btnToolSmooth3.Location = new System.Drawing.Point(232, 4);
             this.btnToolSmooth3.Name = "btnToolSmooth3";
             this.btnToolSmooth3.Size = new System.Drawing.Size(32, 32);
             this.btnToolSmooth3.TabIndex = 19;
@@ -2025,7 +2030,7 @@
             this.btnToolSmooth2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolSmooth2.Image = global::SHME.Properties.Resources.toolLevelSmooth;
             this.btnToolSmooth2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolSmooth2.Location = new System.Drawing.Point(196, 36);
+            this.btnToolSmooth2.Location = new System.Drawing.Point(232, 36);
             this.btnToolSmooth2.Name = "btnToolSmooth2";
             this.btnToolSmooth2.Size = new System.Drawing.Size(32, 32);
             this.btnToolSmooth2.TabIndex = 18;
@@ -2042,7 +2047,7 @@
             this.btnToolLevel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolLevel3.Image = global::SHME.Properties.Resources.toolLevel;
             this.btnToolLevel3.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolLevel3.Location = new System.Drawing.Point(164, 4);
+            this.btnToolLevel3.Location = new System.Drawing.Point(200, 4);
             this.btnToolLevel3.Name = "btnToolLevel3";
             this.btnToolLevel3.Size = new System.Drawing.Size(32, 32);
             this.btnToolLevel3.TabIndex = 16;
@@ -2059,7 +2064,7 @@
             this.btnToolLevel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolLevel2.Image = global::SHME.Properties.Resources.toolLevel;
             this.btnToolLevel2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolLevel2.Location = new System.Drawing.Point(164, 36);
+            this.btnToolLevel2.Location = new System.Drawing.Point(200, 36);
             this.btnToolLevel2.Name = "btnToolLevel2";
             this.btnToolLevel2.Size = new System.Drawing.Size(32, 32);
             this.btnToolLevel2.TabIndex = 15;
@@ -2076,7 +2081,7 @@
             this.btnToolSub3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolSub3.Image = global::SHME.Properties.Resources.toolLevelSub;
             this.btnToolSub3.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolSub3.Location = new System.Drawing.Point(132, 36);
+            this.btnToolSub3.Location = new System.Drawing.Point(168, 36);
             this.btnToolSub3.Name = "btnToolSub3";
             this.btnToolSub3.Size = new System.Drawing.Size(32, 32);
             this.btnToolSub3.TabIndex = 12;
@@ -2093,7 +2098,7 @@
             this.btnToolSub2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolSub2.Image = global::SHME.Properties.Resources.toolLevelSub;
             this.btnToolSub2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolSub2.Location = new System.Drawing.Point(132, 4);
+            this.btnToolSub2.Location = new System.Drawing.Point(168, 4);
             this.btnToolSub2.Name = "btnToolSub2";
             this.btnToolSub2.Size = new System.Drawing.Size(32, 32);
             this.btnToolSub2.TabIndex = 13;
@@ -2110,7 +2115,7 @@
             this.btnToolAdd3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolAdd3.Image = ((System.Drawing.Image)(resources.GetObject("btnToolAdd3.Image")));
             this.btnToolAdd3.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolAdd3.Location = new System.Drawing.Point(100, 4);
+            this.btnToolAdd3.Location = new System.Drawing.Point(136, 4);
             this.btnToolAdd3.Name = "btnToolAdd3";
             this.btnToolAdd3.Size = new System.Drawing.Size(32, 32);
             this.btnToolAdd3.TabIndex = 10;
@@ -2127,7 +2132,7 @@
             this.btnToolAdd2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolAdd2.Image = ((System.Drawing.Image)(resources.GetObject("btnToolAdd2.Image")));
             this.btnToolAdd2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolAdd2.Location = new System.Drawing.Point(100, 36);
+            this.btnToolAdd2.Location = new System.Drawing.Point(136, 36);
             this.btnToolAdd2.Name = "btnToolAdd2";
             this.btnToolAdd2.Size = new System.Drawing.Size(32, 32);
             this.btnToolAdd2.TabIndex = 9;
@@ -2142,7 +2147,7 @@
             // 
             this.btnToolSwitch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnToolSwitch.Image = global::SHME.Properties.Resources.viewSwitch;
-            this.btnToolSwitch.Location = new System.Drawing.Point(4, 4);
+            this.btnToolSwitch.Location = new System.Drawing.Point(36, 36);
             this.btnToolSwitch.Name = "btnToolSwitch";
             this.btnToolSwitch.Size = new System.Drawing.Size(32, 32);
             this.btnToolSwitch.TabIndex = 1;
@@ -2170,7 +2175,7 @@
             this.btnToolProbe1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolProbe1.Image = global::SHME.Properties.Resources.toolProbe;
             this.btnToolProbe1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolProbe1.Location = new System.Drawing.Point(68, 68);
+            this.btnToolProbe1.Location = new System.Drawing.Point(104, 68);
             this.btnToolProbe1.Name = "btnToolProbe1";
             this.btnToolProbe1.Size = new System.Drawing.Size(32, 32);
             this.btnToolProbe1.TabIndex = 5;
@@ -2187,7 +2192,7 @@
             this.btnToolProbe2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolProbe2.Image = global::SHME.Properties.Resources.toolProbe;
             this.btnToolProbe2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolProbe2.Location = new System.Drawing.Point(68, 36);
+            this.btnToolProbe2.Location = new System.Drawing.Point(104, 36);
             this.btnToolProbe2.Name = "btnToolProbe2";
             this.btnToolProbe2.Size = new System.Drawing.Size(32, 32);
             this.btnToolProbe2.TabIndex = 6;
@@ -2204,7 +2209,7 @@
             this.btnToolPencil1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolPencil1.Image = global::SHME.Properties.Resources.toolPencil;
             this.btnToolPencil1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolPencil1.Location = new System.Drawing.Point(36, 68);
+            this.btnToolPencil1.Location = new System.Drawing.Point(72, 68);
             this.btnToolPencil1.Name = "btnToolPencil1";
             this.btnToolPencil1.Size = new System.Drawing.Size(32, 32);
             this.btnToolPencil1.TabIndex = 2;
@@ -2221,7 +2226,7 @@
             this.btnToolSmooth1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolSmooth1.Image = global::SHME.Properties.Resources.toolLevelSmooth;
             this.btnToolSmooth1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolSmooth1.Location = new System.Drawing.Point(196, 68);
+            this.btnToolSmooth1.Location = new System.Drawing.Point(232, 68);
             this.btnToolSmooth1.Name = "btnToolSmooth1";
             this.btnToolSmooth1.Size = new System.Drawing.Size(32, 32);
             this.btnToolSmooth1.TabIndex = 17;
@@ -2238,7 +2243,7 @@
             this.btnToolLevel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolLevel1.Image = global::SHME.Properties.Resources.toolLevel;
             this.btnToolLevel1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolLevel1.Location = new System.Drawing.Point(164, 68);
+            this.btnToolLevel1.Location = new System.Drawing.Point(200, 68);
             this.btnToolLevel1.Name = "btnToolLevel1";
             this.btnToolLevel1.Size = new System.Drawing.Size(32, 32);
             this.btnToolLevel1.TabIndex = 14;
@@ -2255,7 +2260,7 @@
             this.btnToolAdd1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolAdd1.Image = ((System.Drawing.Image)(resources.GetObject("btnToolAdd1.Image")));
             this.btnToolAdd1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolAdd1.Location = new System.Drawing.Point(100, 68);
+            this.btnToolAdd1.Location = new System.Drawing.Point(136, 68);
             this.btnToolAdd1.Name = "btnToolAdd1";
             this.btnToolAdd1.Size = new System.Drawing.Size(32, 32);
             this.btnToolAdd1.TabIndex = 8;
@@ -2272,7 +2277,7 @@
             this.btnToolSub1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolSub1.Image = global::SHME.Properties.Resources.toolLevelSub;
             this.btnToolSub1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolSub1.Location = new System.Drawing.Point(132, 68);
+            this.btnToolSub1.Location = new System.Drawing.Point(168, 68);
             this.btnToolSub1.Name = "btnToolSub1";
             this.btnToolSub1.Size = new System.Drawing.Size(32, 32);
             this.btnToolSub1.TabIndex = 11;
@@ -2289,7 +2294,7 @@
             this.btnToolProbe3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolProbe3.Image = global::SHME.Properties.Resources.toolProbe;
             this.btnToolProbe3.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolProbe3.Location = new System.Drawing.Point(68, 4);
+            this.btnToolProbe3.Location = new System.Drawing.Point(104, 4);
             this.btnToolProbe3.Name = "btnToolProbe3";
             this.btnToolProbe3.Size = new System.Drawing.Size(32, 32);
             this.btnToolProbe3.TabIndex = 7;
@@ -2306,7 +2311,7 @@
             this.btnToolPencil3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolPencil3.Image = global::SHME.Properties.Resources.toolPencil;
             this.btnToolPencil3.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolPencil3.Location = new System.Drawing.Point(36, 4);
+            this.btnToolPencil3.Location = new System.Drawing.Point(72, 4);
             this.btnToolPencil3.Name = "btnToolPencil3";
             this.btnToolPencil3.Size = new System.Drawing.Size(32, 32);
             this.btnToolPencil3.TabIndex = 4;
@@ -2323,7 +2328,7 @@
             this.btnToolPencil2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolPencil2.Image = global::SHME.Properties.Resources.toolPencil;
             this.btnToolPencil2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolPencil2.Location = new System.Drawing.Point(36, 36);
+            this.btnToolPencil2.Location = new System.Drawing.Point(72, 36);
             this.btnToolPencil2.Name = "btnToolPencil2";
             this.btnToolPencil2.Size = new System.Drawing.Size(32, 32);
             this.btnToolPencil2.TabIndex = 3;
@@ -2333,6 +2338,19 @@
             this.toolTip.SetToolTip(this.btnToolPencil2, "Pencil (slot 2)");
             this.btnToolPencil2.UseVisualStyleBackColor = true;
             this.btnToolPencil2.Click += new System.EventHandler(this.btnTool_Click);
+            // 
+            // pnlCorner
+            // 
+            this.pnlCorner.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlCorner.BackColor = System.Drawing.SystemColors.Control;
+            this.pnlCorner.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlCorner.BackgroundImage")));
+            this.pnlCorner.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pnlCorner.Location = new System.Drawing.Point(764, 572);
+            this.pnlCorner.Name = "pnlCorner";
+            this.pnlCorner.Size = new System.Drawing.Size(21, 21);
+            this.pnlCorner.TabIndex = 11;
+            this.toolTip.SetToolTip(this.pnlCorner, "Double click to open \"About\"");
+            this.pnlCorner.DoubleClick += new System.EventHandler(this.pnlCorner_DoubleClick);
             // 
             // pnlZoomGrid
             // 
@@ -2370,6 +2388,8 @@
             this.pnlToolSelect.Controls.Add(this.btnToolAdd3);
             this.pnlToolSelect.Controls.Add(this.btnToolAdd2);
             this.pnlToolSelect.Controls.Add(this.btnToolSwitch);
+            this.pnlToolSelect.Controls.Add(this.btnToolUndo);
+            this.pnlToolSelect.Controls.Add(this.btnToolRedo);
             this.pnlToolSelect.Controls.Add(this.btnToolMove);
             this.pnlToolSelect.Controls.Add(this.btnToolProbe1);
             this.pnlToolSelect.Controls.Add(this.btnToolProbe2);
@@ -2383,10 +2403,34 @@
             this.pnlToolSelect.Controls.Add(this.btnToolPencil2);
             this.pnlToolSelect.Location = new System.Drawing.Point(224, 396);
             this.pnlToolSelect.Name = "pnlToolSelect";
-            this.pnlToolSelect.Size = new System.Drawing.Size(233, 105);
+            this.pnlToolSelect.Size = new System.Drawing.Size(269, 105);
             this.pnlToolSelect.TabIndex = 5;
             this.pnlToolSelect.Visible = false;
             this.pnlToolSelect.Click += new System.EventHandler(this.pnlToolSelect_Click);
+            // 
+            // btnToolUndo
+            // 
+            this.btnToolUndo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToolUndo.Image = global::SHME.Properties.Resources.historyBack;
+            this.btnToolUndo.Location = new System.Drawing.Point(4, 4);
+            this.btnToolUndo.Name = "btnToolUndo";
+            this.btnToolUndo.Size = new System.Drawing.Size(32, 32);
+            this.btnToolUndo.TabIndex = 0;
+            this.btnToolUndo.Tag = "";
+            this.btnToolUndo.UseVisualStyleBackColor = true;
+            this.btnToolUndo.Click += new System.EventHandler(this.btnTool_Click);
+            // 
+            // btnToolRedo
+            // 
+            this.btnToolRedo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToolRedo.Image = global::SHME.Properties.Resources.historyForward;
+            this.btnToolRedo.Location = new System.Drawing.Point(36, 4);
+            this.btnToolRedo.Name = "btnToolRedo";
+            this.btnToolRedo.Size = new System.Drawing.Size(32, 32);
+            this.btnToolRedo.TabIndex = 0;
+            this.btnToolRedo.Tag = "";
+            this.btnToolRedo.UseVisualStyleBackColor = true;
+            this.btnToolRedo.Click += new System.EventHandler(this.btnTool_Click);
             // 
             // pbPDA
             // 
@@ -2403,19 +2447,6 @@
             this.pbPDA.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbHMap_MouseDown);
             this.pbPDA.MouseLeave += new System.EventHandler(this.FormSHME_MouseLeave);
             this.pbPDA.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbHMap_MouseMove);
-            // 
-            // pnlCorner
-            // 
-            this.pnlCorner.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlCorner.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlCorner.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlCorner.BackgroundImage")));
-            this.pnlCorner.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pnlCorner.Location = new System.Drawing.Point(764, 572);
-            this.pnlCorner.Name = "pnlCorner";
-            this.pnlCorner.Size = new System.Drawing.Size(21, 21);
-            this.pnlCorner.TabIndex = 11;
-            this.toolTip.SetToolTip(this.pnlCorner, "Double click to open \"About\"");
-            this.pnlCorner.DoubleClick += new System.EventHandler(this.pnlCorner_DoubleClick);
             // 
             // FormSHME
             // 
@@ -2637,6 +2668,8 @@
         private System.Windows.Forms.Button btnToolsetAdd;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Panel pnlCorner;
+        private System.Windows.Forms.Button btnToolUndo;
+        private System.Windows.Forms.Button btnToolRedo;
     }
 }
 
