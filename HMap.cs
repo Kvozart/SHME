@@ -22,6 +22,7 @@ namespace SHME
 
     class HeightMap : TopologicalMap
     {
+        public float[,] Changed;
         public UInt16[,] Levels { get; private set; } // Height map
         public int[] MinLevelAtRow { get; private set; } // Row height minimums
         public int[] AvgLevelAtRow { get; private set; } // Row height average
@@ -61,6 +62,7 @@ namespace SHME
                 }
             }
             Levels = newLevels;
+            Changed = new float[newWidth, newHeight];
             base.SetSize(newWidth, newHeight);
             return oldLevels;
         }

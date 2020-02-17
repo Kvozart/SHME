@@ -11,7 +11,7 @@ namespace SHME
         public int Bottom { get; private set; }
         public int Width  { get; private set; }
         public int Height { get; private set; }
-        private UInt16[,] Clip;
+        public UInt16[,] Clip { get; private set; }
 
         public HistoryRecord(HeightMap HMap, int left, int top, int right, int bottom, bool resizeAction = false)
         {

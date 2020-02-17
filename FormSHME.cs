@@ -754,9 +754,15 @@ namespace SHME
                 return;
             }
 
+            int y, x;
             // Start history record
             if (historyRecord == null)
+            {
+                for (y = 0; y < HMap.Height; y++)
+                    for (x = 0; x < HMap.Width; x++)
+                        HMap.Changed[x, y] = 0;
                 historyRecord = new HistoryRecord(HMap, mapX, mapY, mapX, mapY);
+            }
 
             // Get brush
             int[,] brush = (toolIdx == 0)
@@ -774,7 +780,6 @@ namespace SHME
                 ? (int)nudSlot2Size.Value
                 : (int)nudSlot3Size.Value;
 
-            int y, x;
             // Get region
             int iR = mapX + size / 2;
             int iB = mapY + size / 2;
@@ -805,7 +810,7 @@ namespace SHME
                 for (y = iT; y <= iB; y++)
                     for (x = iL; x <= iR; x++)
                     {
-                        v = HMap.Levels[x, y] + d;
+                        v = historyRecord.Clip[x, y] + d;
                         brush[x - mapL, y - mapT] = (65535 < v) ? 65535 : (v < 0) ? 0 : v;
                     }
             }
@@ -816,11 +821,11 @@ namespace SHME
                 for (y = iT; y <= iB; y++)
                     for (x = iL; x <= iR; x++)
                     {
-                        v = h = HMap.Levels[x, y];
-                        v += (0 <    x) ? HMap.Levels[x - 1, y    ] : h;
-                        v += (0 <    y) ? HMap.Levels[x,     y - 1] : h;
-                        v += (x < mapW) ? HMap.Levels[x + 1, y    ] : h;
-                        v += (y < mapH) ? HMap.Levels[x,     y + 1] : h;
+                        v = h = historyRecord.Clip[x, y];
+                        v += (0 <    x) ? historyRecord.Clip[x - 1, y    ] : h;
+                        v += (0 <    y) ? historyRecord.Clip[x,     y - 1] : h;
+                        v += (x < mapW) ? historyRecord.Clip[x + 1, y    ] : h;
+                        v += (y < mapH) ? historyRecord.Clip[x,     y + 1] : h;
                         brush[x - mapL, y - mapT] = (v + 2) / 5; // +2 for roundup
                     }
             }
@@ -840,10 +845,12 @@ namespace SHME
             float k, f = (toolID == 5) ? (float)value / 65535 : 1;
             for (y = iT; y <= iB; y++)
                 for (x = iL; x <= iR; x++)
-                {
-                    k = mask[x - mapL, y - mapT] * f;
-                    HMap.Levels[x, y] = (UInt16)(brush[x - mapL, y - mapT] * k + HMap.Levels[x, y] * (1 - k));
-                }
+                    if (HMap.Changed[x, y] < mask[x - mapL, y - mapT])
+                    {
+                        k = mask[x - mapL, y - mapT] * f;
+                        HMap.Levels[x, y] = (UInt16)(brush[x - mapL, y - mapT] * k + historyRecord.Clip[x, y] * (1 - k));
+                        HMap.Changed[x, y] = mask[x - mapL, y - mapT];
+                    }
 
             // Update map
             historyRecord.Check(iL, iT, iR, iB);
