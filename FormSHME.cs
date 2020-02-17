@@ -52,22 +52,22 @@ namespace SHME
         #endregion
 
         // Fast access
-        int monochromeColor  = -1;
+        int monochromeColor  = -1; // White
         int hiByteMultiplier = 0x000100;
         int loByteMultiplier = 0x000001;
         int[] spectrumColors = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
         Button[] SpectrumColorControls;
-        List<int> toolsetPresets = new List<int>(); // [5xTool (R M L)]
+        List<int> toolsetPresets = new List<int>(); // [5xTool (R M L X1 X2)]
         Button[] ToolControls;
 
         bool lockMouse = false;
         bool lockDrawing = true;
         int zoom = 0; // 1:1 (2^zoom)
         byte[] bBuffer; // Raw byte data
-        HeightMap HMap;
+        HeightMap HMap = new HeightMap();
+        TopologicalMap TMap = new TopologicalMap();
 
-        String HMapURL = "";
         List<HistoryRecord> historyBackward = new List<HistoryRecord>();
         List<HistoryRecord> historyForward  = new List<HistoryRecord>();
         HistoryRecord historyRecord;
@@ -83,6 +83,9 @@ namespace SHME
         public FormSHME()
         {
             InitializeComponent();
+
+            hScrollBar.LargeChange = hScrollBar.Width;
+            vScrollBar.LargeChange = vScrollBar.Height;
 
             // Bind and give Tool buttons ID
             ToolControls = new Button[]{
@@ -121,7 +124,7 @@ namespace SHME
 
             //* Preload presets
             cbbLevelFormat16bit.SelectedIndex = 0;
-            cbbLevelFormat8bit.SelectedIndex = 0;
+            cbbLevelFormat8bit. SelectedIndex = 0;
             // Tools
             ToolXMBSelect(btnToolLMB,  (int)btnToolPencil1.Tag);
             ToolXMBSelect(btnToolMMB,  (int)btnToolMove.Tag);
@@ -150,21 +153,20 @@ namespace SHME
 
             // Load HMap
             bool loaded = false;
-            if (HMapURL != "")
-                loaded = LoadHMap(HMapURL);
+            if (HMap.URL != "")
+                loaded = LoadHMap(HMap.URL);
             if (!loaded)
             {
-                HMap = new HeightMap(true);
+                CreateGradientMap(true);
                 lockDrawing = false;
                 FinishHMapLoading();
             }
-            // Load PDA
+            // Load TMap
             loaded = false;
-            if (pbPDA.Tag != null)
-                if (pbPDA.Tag as String != "")
-                    loaded = LoadPDA(pbPDA.Tag as String, false);
+            if (TMap.URL != "")
+                loaded = LoadTMap(TMap.URL, false);
             if (!loaded)
-                GeneratePDA(HMap.Width, HMap.Height, false);
+                GenerateTMap(HMap.Width, HMap.Height, false);
         }
 
         #region Theme pages
@@ -253,13 +255,13 @@ namespace SHME
         {
             CheckBox A = sender as CheckBox;
             if (A.CheckState == CheckState.Indeterminate) return;
-            CheckBox B = (A == chbShowHMap) ? chbShowPDA : chbShowHMap;
+            CheckBox B = (A == chbShowHMap) ? chbShowTMap : chbShowHMap;
             if (A.CheckState == CheckState.Checked)
                 B.CheckState = CheckState.Unchecked;
             else
             {
                 B.CheckState = CheckState.Indeterminate;
-                pbPDA.Visible = chbShowPDA.Checked;
+                Invalidate();
             }
         }
 
@@ -276,8 +278,8 @@ namespace SHME
             zoom = z;
             if (lblPointerLevel.Enabled)
                 ZoomFinish(
-                    (mapX + (((hScrollBar.Width  >> 1) - msX) >> zoom)) / (float)hScrollBar.Maximum,
-                    (mapY + (((vScrollBar.Height >> 1) - msY) >> zoom)) / (float)vScrollBar.Maximum
+                    (mapX + (((hScrollBar.Width  >> 1) - msX) >> zoom)) / (float)HMap.Width,
+                    (mapY + (((vScrollBar.Height >> 1) - msY) >> zoom)) / (float)HMap.Height
                     );
             else
                 ZoomFinish(
@@ -288,15 +290,16 @@ namespace SHME
 
         private void ZoomFinish(float scrollX, float scrollY)//
         {
-            ResizeScrollBars();
+            hScrollBar.Maximum = (HMap.Width  << zoom) - 1;
+            vScrollBar.Maximum = (HMap.Height << zoom) - 1;
+            hScrollBar.Enabled = (hScrollBar.Maximum >= hScrollBar.LargeChange);
+            vScrollBar.Enabled = (vScrollBar.Maximum >= vScrollBar.LargeChange);
             int x = (int)(hScrollBar.Maximum * (scrollX - ((float)hScrollBar.LargeChange / hScrollBar.Maximum / 2)));
             int y = (int)(vScrollBar.Maximum * (scrollY - ((float)vScrollBar.LargeChange / vScrollBar.Maximum / 2)));
             ScrollValueCheckAndSet(hScrollBar, ref x, true);
             ScrollValueCheckAndSet(vScrollBar, ref y, true);
             cbbZoom.SelectedIndex = ZoomMax - zoom;
-            // Resize Boxes
-            pbPDA.Width  = HMap.Width  << zoom;
-            pbPDA.Height = HMap.Height << zoom;
+            // Redraw
             ScrollBar_Scroll(null, null);
         }
 
@@ -314,10 +317,23 @@ namespace SHME
                 : (cbbLevelFormat16bit.Visible)
                     ? 2 * cbbLevelFormat8bit.SelectedIndex + 1
                     : 1;
-            HMap.Init(bBuffer, (int)chbLevelByteBigLittleIndian.Tag,
+            HMap.SetLevels(bBuffer, (int)chbLevelByteBigLittleIndian.Tag,
                 chbLevelByteBigLittleIndian.Checked ? hiIdx : loIdx,
                 chbLevelByteBigLittleIndian.Checked ? loIdx : hiIdx,
                 chbLevelPixelBigLittleIndian.Checked);
+        }
+
+        private void CreateGradientMap(bool serpantine)
+        {
+            int x, y;
+            HMap.SetSize(256, 256);
+            for (x = 0; x < 256; x++)
+                for (y = 0; y < 256; y++)
+                {
+                    HMap.Levels[x, y] = (UInt16)((y << 8) + x);
+                    if (serpantine)
+                        HMap.Levels[x, ++y] = (UInt16)((y << 8) - x + 255);
+                }
         }
 
         private void ShowStatistics()//Ok
@@ -422,7 +438,7 @@ namespace SHME
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Unable to open file:\r\n" + exc.Message, "Load HMap error");
+                    MessageBox.Show("Unable to open file:\r\n" + exc.Message, "Load height map error");
                     return false;
                 }
             }
@@ -434,11 +450,11 @@ namespace SHME
             // Store Channels and BlockSize
             chbLevelByteBigLittleIndian.Tag = channels * bitDepth; // Store block size
             // Unpack
-            HMap = new HeightMap(width, height);
-            HMapURL = fileName;
+            HMap.SetSize(width, height);
+            HMap.URL = fileName;
             BuildLevels();
-            lockDrawing = false;
             HistoryClear();
+            lockDrawing = false;
             FinishHMapLoading(switchto);
             return true;
         }
@@ -449,61 +465,67 @@ namespace SHME
             HMap.BuildStatistics(0, -1);
             ShowStatistics();
             BuildSpectrum(0, 0, -1, -1);
-            chbShowHMap.Checked = true;
-            // Limit scrolls
-            hScrollBar.Maximum = HMap.Width  - 1;
-            vScrollBar.Maximum = HMap.Height - 1;
+            if (switchto)
+                chbShowHMap.Checked = true;
             zoom = 0;
             ZoomFinish(0, 0);
         }
 
-        private void btnLoadPDA_Click(object sender, EventArgs e)//Ok
+        private void btnLoadTMap_Click(object sender, EventArgs e)//Ok
         {
             if (dlgOpen.ShowDialog() == DialogResult.OK)
-                LoadPDA(dlgOpen.FileName);
+                LoadTMap(dlgOpen.FileName);
         }
 
-        private bool LoadPDA(String fileName, bool switchTo = true)
+        private bool LoadTMap(String fileName, bool switchTo = true)
         {
             try
             {
-                FinishPDALoading(Image.FromFile(fileName), switchTo);
-                pbPDA.ImageLocation = fileName;
+                var img = Image.FromFile(fileName);
+                var bmp = new Bitmap(img);
+                TMap.SetSize(bmp.Width, bmp.Height);
+                var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
+                Marshal.Copy(data.Scan0, TMap.Pixels, 0, bmp.Width * bmp.Height);
+                bmp.UnlockBits(data);
+                TMap.URL = fileName;
+                FinishTMapLoading(switchTo);
             }
             catch (Exception exc)
             {
-                MessageBox.Show("Unable to load file:\r\n\"" + fileName + "\"\r\n" + exc.Message, "Load PDA error");
+                MessageBox.Show("Unable to load file:\r\n\"" + fileName + "\"\r\n" + exc.Message, "Load topological map error");
                 return false;
             }
             return true;
         }
 
-        private void btnPDAGenerate_Click(object sender, EventArgs e) => GeneratePDA(HMap.Width, HMap.Height, true);
-        private void GeneratePDA(int width, int height, bool switchTo)
+        private void btnTMapGenerate_Click(object sender, EventArgs e) => GenerateTMap(HMap.Width, HMap.Height, true);
+        private void GenerateTMap(int width, int height, bool switchTo)
         {
+            TMap.SetSize(width, height);
             int x, y;
-            Bitmap img = new Bitmap(width, height);
-            var graphics = Graphics.FromImage(img);
-            graphics.Clear(Color.DimGray);
+            // Clear
+            for (y = 0; y < height; y++)
+                for (x = 0; x < width; x++)
+                    TMap.Pixels[x + y * width] = -0x7F696968;
             // 10x10
-            var pen = new Pen(Color.DarkGray);
-            for (x = 0; x < width;  x += 10) graphics.DrawLine(pen, x, 0,     x, height);
-            for (y = 0; y < height; y += 10) graphics.DrawLine(pen, 0, y, width,      y);
+            for (x = 0; x < width;  x += 10) for (y = 0; y < height; y++) TMap.Pixels[x + y * TMap.Width] = -0x7FA9A9A8;
+            for (y = 0; y < height; y += 10) for (x = 0; x < width;  x++) TMap.Pixels[x + y * TMap.Width] = -0x7FA9A9A8;
             // 100x100
-            pen = new Pen(Color.LightGray);
-            for (x = 0; x < width;  x += 100) graphics.DrawLine(pen, x, 0,     x, height);
-            for (y = 0; y < height; y += 100) graphics.DrawLine(pen, 0, y, width,      y);
+            for (x = 0; x < width;  x += 100) for (y = 0; y < height; y++) TMap.Pixels[x + y * TMap.Width] = -0x7FD3D3D2;
+            for (y = 0; y < height; y += 100) for (x = 0; x < width;  x++) TMap.Pixels[x + y * TMap.Width] = -0x7FD3D3D2;
             // Apply
-            pbPDA.ImageLocation = "";
-            FinishPDALoading(img, switchTo);
+            TMap.URL = "";
+            FinishTMapLoading(switchTo);
         }
 
-        private void FinishPDALoading(Image img, bool switchTo = true)
+        private void FinishTMapLoading(bool switchTo = true)
         {
-            pbPDA.Image = img;
-            lblPDASizes.Text = img.Width + XYSpliter + img.Height;
+            lblTMapSizes.Text = TMap.Width + XYSpliter + TMap.Height;
             if (switchTo)
-                chbShowPDA.Checked = true;
+                if (chbShowTMap.Checked)
+                    Invalidate();
+                else
+                    chbShowTMap.Checked = true;
         }
 
         private void tsmCreat_Click(object sender, EventArgs e)
@@ -513,12 +535,10 @@ namespace SHME
                 var dlgCreate = new FormCreate();
                 if (dlgCreate.ShowDialog() != DialogResult.OK)
                     return;
-                HMap = new HeightMap(dlgCreate.mapWidth, dlgCreate.mapHeight);
+                HMap.SetSize(dlgCreate.mapWidth, dlgCreate.mapHeight);
             }
             else
-                HMap = (sender == tsmCreateScanline)
-                    ? new HeightMap(false)
-                    : new HeightMap(true);
+                CreateGradientMap(sender == tsmCreateSerpantine);
             HistoryClear();
             lblFileFormat.Visible =
             cbbLevelFormat8bit.Visible =
@@ -531,10 +551,10 @@ namespace SHME
         {
             int x, y;
             historyRecord = new HistoryRecord(HMap, 0, 0, HMap.Width - 1, HMap.Height - 1);
-            HistoryAdd(HistoryRecord.ActionEdit);
+            HistoryAdd();
             for (y = 0; y < HMap.Height; y++)
                 for (x = 0; x < HMap.Width; x++)
-                    HMap.Level[x, y] = 0;
+                    HMap.Levels[x, y] = 0;
             FinishHMapLoading();
         }
 
@@ -548,7 +568,7 @@ namespace SHME
                 return;
             // Pack
             SavePNG(sender == btnSaveHMap);
-            HMapURL = dlgSave.FileName;
+            HMap.URL = dlgSave.FileName;
         }
 
         private void SavePNG(bool full)
@@ -558,9 +578,9 @@ namespace SHME
             for (y = 0; y < HMap.Height; y++)
                 for (x = 0; x < HMap.Width; x++)
                 {
-                    buffer[i++] = (byte)(HMap.Level[x, y] >> 8);
+                    buffer[i++] = (byte)(HMap.Levels[x, y] >> 8);
                     if (full)
-                        buffer[i++] = (byte)(HMap.Level[x, y] & 255);
+                        buffer[i++] = (byte)(HMap.Levels[x, y] & 255);
                 }
            new PngWriter(dlgSave.FileName, buffer, HMap.Width, HMap.Height, 1, (full ? 16 : 8), PngColorType.Gray);
         }
@@ -592,9 +612,9 @@ namespace SHME
                 b = y * bytesPerRow; // byte to block correction
                 for (x = HMap.Width; 0 < x; x--)
                 {
-                    buffer[b++] = (byte)(HMap.Pixel[p]      );
-                    buffer[b++] = (byte)(HMap.Pixel[p] >>  8);
-                    buffer[b++] = (byte)(HMap.Pixel[p] >> 16);
+                    buffer[b++] = (byte)(HMap.Pixels[p]      );
+                    buffer[b++] = (byte)(HMap.Pixels[p] >>  8);
+                    buffer[b++] = (byte)(HMap.Pixels[p] >> 16);
                     p++;
                 }
             }
@@ -611,18 +631,10 @@ namespace SHME
             if (HMap.Width == dlgResize.mapWidth && HMap.Height == dlgResize.mapHeight)
                 return;
             // Register
-            historyRecord = new HistoryRecord(HMap, 0, 0, HMap.Width - 1, HMap.Height - 1);
-            HistoryAdd(HistoryRecord.ActionResize, true);
-            // Prepare
-            int w = (HMap.Width  < dlgResize.mapWidth ) ? HMap.Width  : dlgResize.mapWidth,
-                h = (HMap.Height < dlgResize.mapHeight) ? HMap.Height : dlgResize.mapHeight,
-                x;
-            HeightMap buffer = HMap;
-            HMap = new HeightMap(dlgResize.mapWidth, dlgResize.mapHeight);
-            // Copy
-            for (int y = 0; y < h; y++)
-                for (x = 0; x < w; x++)
-                    HMap.Level[x, y] = buffer.Level[x, y];
+            historyRecord = new HistoryRecord(HMap, 0, 0, HMap.Width - 1, HMap.Height - 1, true);
+            HistoryAdd();
+            // Transit
+            HMap.SetSize(dlgResize.mapWidth, dlgResize.mapHeight, null, true);
             // Finish
             lblFileFormat.Visible =
             cbbLevelFormat8bit.Visible =
@@ -633,16 +645,14 @@ namespace SHME
         #endregion
 
         #region Mouse
-        int scX0, msX0, msX, mapX;
-        int scY0, msY0, msY, mapY;
+        int msX0, msX, mapX;
+        int msY0, msY, mapY;
         UInt16 levelValue;
 
         private void pbHMap_MouseDown(object sender, MouseEventArgs e)//O
         {
             msX0 = e.X;
             msY0 = e.Y;
-            scX0 = hScrollBar.Value;
-            scY0 = vScrollBar.Value;
             lockMouse = false;
             ToolAction(sender, e, false);
         }
@@ -651,8 +661,8 @@ namespace SHME
         {
             msX = e.X - hScrollBar.Left;
             msY = e.Y - vScrollBar.Top;
-            mapX = (((pbPDA.Visible) ? e.X : msX) >> zoom) + hScrollBar.Value;
-            mapY = (((pbPDA.Visible) ? e.Y : msY) >> zoom) + vScrollBar.Value;
+            mapX = (msX + hScrollBar.Value) >> zoom;
+            mapY = (msY + vScrollBar.Value) >> zoom;
             ToolAction(sender, e, true);
         }
 
@@ -680,19 +690,15 @@ namespace SHME
                         if (toolID == 0)
                         {
                             // Calculate shift
-                            int scX = scX0 + ((msX0 - e.X) >> zoom);
-                            int scY = scY0 + ((msY0 - e.Y) >> zoom);
+                            int scX = hScrollBar.Value + (msX0 - e.X);
+                            int scY = vScrollBar.Value + (msY0 - e.Y);
                             bool h = ScrollValueCheckAndSet(hScrollBar, ref scX);
                             bool v = ScrollValueCheckAndSet(vScrollBar, ref scY);
                             // Apply
                             if (h | v)
                             {
-                                // Compensate for image
-                                if (pbPDA == sender)
-                                {
-                                    msX0 += (scX - hScrollBar.Value) << zoom;
-                                    msY0 += (scY - vScrollBar.Value) << zoom;
-                                }
+                                msX0 = e.X;
+                                msY0 = e.Y;
                                 hScrollBar.Value = scX;
                                 vScrollBar.Value = scY;
                                 ScrollBar_Scroll(null, null);
@@ -706,7 +712,7 @@ namespace SHME
                     else if (toolID == 2)
                         btnHistoryBackward_Click(null, null);
                     // Redo
-                    else
+                    else if (toolID == 3)
                         btnHistoryForward_Click(null, null);
                     return;
                 }
@@ -724,10 +730,11 @@ namespace SHME
             else
                 lblPointerLevel.Enabled = true;
             // Show level under pointer
+            UInt16 mapXYLevel = HMap.Levels[mapX, mapY];
             if (moving)
             {
                 lblPointerPosition.Text = mapX + PointerSpliter + mapY;
-                lblPointerLevel.Text = HMap.Level[mapX, mapY].ToString() + " x" + HMap.Level[mapX, mapY].ToString("X4");
+                lblPointerLevel.Text = mapXYLevel.ToString() + " x" + mapXYLevel.ToString("X4");
             }
 
             // No drawing?
@@ -741,9 +748,9 @@ namespace SHME
             // Probe
             if (toolID == 0)//Ok
             {
-                     if (toolIdx == 0) nudSlot1Value.Value = HMap.Level[mapX, mapY];
-                else if (toolIdx == 1) nudSlot2Value.Value = HMap.Level[mapX, mapY];
-                else                   nudSlot3Value.Value = HMap.Level[mapX, mapY];
+                     if (toolIdx == 0) nudSlot1Value.Value = mapXYLevel;
+                else if (toolIdx == 1) nudSlot2Value.Value = mapXYLevel;
+                else                   nudSlot3Value.Value = mapXYLevel;
                 return;
             }
 
@@ -786,7 +793,7 @@ namespace SHME
                 if (toolID == 2)
                     value = (moving)
                         ? levelValue
-                        : (levelValue = HMap.Level[mapX, mapY]); // Store at first contact and use
+                        : (levelValue = mapXYLevel); // Store at first contact and use
                 for (y = 0; y < size; y++)
                     for (x = 0; x < size; x++)
                         brush[x, y] = value;
@@ -798,7 +805,7 @@ namespace SHME
                 for (y = iT; y <= iB; y++)
                     for (x = iL; x <= iR; x++)
                     {
-                        v = HMap.Level[x, y] + d;
+                        v = HMap.Levels[x, y] + d;
                         brush[x - mapL, y - mapT] = (65535 < v) ? 65535 : (v < 0) ? 0 : v;
                     }
             }
@@ -809,11 +816,11 @@ namespace SHME
                 for (y = iT; y <= iB; y++)
                     for (x = iL; x <= iR; x++)
                     {
-                        v = h = HMap.Level[x, y];
-                        v += (0 <    x) ? HMap.Level[x - 1, y    ] : h;
-                        v += (0 <    y) ? HMap.Level[x,     y - 1] : h;
-                        v += (x < mapW) ? HMap.Level[x + 1, y    ] : h;
-                        v += (y < mapH) ? HMap.Level[x,     y + 1] : h;
+                        v = h = HMap.Levels[x, y];
+                        v += (0 <    x) ? HMap.Levels[x - 1, y    ] : h;
+                        v += (0 <    y) ? HMap.Levels[x,     y - 1] : h;
+                        v += (x < mapW) ? HMap.Levels[x + 1, y    ] : h;
+                        v += (y < mapH) ? HMap.Levels[x,     y + 1] : h;
                         brush[x - mapL, y - mapT] = (v + 2) / 5; // +2 for roundup
                     }
             }
@@ -835,7 +842,7 @@ namespace SHME
                 for (x = iL; x <= iR; x++)
                 {
                     k = mask[x - mapL, y - mapT] * f;
-                    HMap.Level[x, y] = (UInt16)(brush[x - mapL, y - mapT] * k + HMap.Level[x, y] * (1 - k));
+                    HMap.Levels[x, y] = (UInt16)(brush[x - mapL, y - mapT] * k + HMap.Levels[x, y] * (1 - k));
                 }
 
             // Update map
@@ -856,15 +863,15 @@ namespace SHME
             {
                 BuildSpectrum(iL, iT, iR, iB);
                 Invalidate(new Rectangle(
-                    ((iL - hScrollBar.Value) << zoom) + hScrollBar.Left,
-                    ((iT - vScrollBar.Value) << zoom) + vScrollBar.Top,
+                    hScrollBar.Left + (iL << zoom) - hScrollBar.Value,
+                    vScrollBar.Top  + (iT << zoom) - vScrollBar.Value,
                     size << zoom,
                     size << zoom));
             }
             ShowStatistics();
         }
 
-        private void FormSHME_MouseUp(object sender, MouseEventArgs e) => HistoryAdd(HistoryRecord.ActionEdit);
+        private void FormSHME_MouseUp(object sender, MouseEventArgs e) => HistoryAdd();
 
         private void FormSHME_MouseEnter(object sender, EventArgs e)
         {
@@ -966,9 +973,9 @@ namespace SHME
                             case "Slot3Shape": chbSlot3Shape.Checked    = (value == "True"); break;
 
                             //* Files
-                            case "FileHMap": HMapURL   = value; break;
-                            case "FilePDA":  pbPDA.Tag = value; break;
-                            case "Level8bit":  cbbLevelFormat8bit.SelectedIndex  = CheckInteger(value, 0, cbbLevelFormat8bit.Items.Count  - 1, 0); break;
+                            case "FileHMap": HMap.URL = value; break;
+                            case "FileTMap": TMap.URL = value; break;
+                            case "Level8bit":  cbbLevelFormat8bit. SelectedIndex = CheckInteger(value, 0, cbbLevelFormat8bit.Items.Count  - 1, 0); break;
                             case "Level16bit": cbbLevelFormat16bit.SelectedIndex = CheckInteger(value, 0, cbbLevelFormat16bit.Items.Count - 1, 0); break;
                             case "LevelBLIByte":  chbLevelByteBigLittleIndian.Checked  = (value == "True"); break;
                             case "LevelBLIPixel": chbLevelPixelBigLittleIndian.Checked = (value == "True"); break;
@@ -995,65 +1002,83 @@ namespace SHME
             if (lockDrawing) return;
             int l = e.ClipRectangle.Left   - hScrollBar.Left,
                 t = e.ClipRectangle.Top    - vScrollBar.Top,
-                r = e.ClipRectangle.Right  - hScrollBar.Left,
-                b = e.ClipRectangle.Bottom - vScrollBar.Top;
+                r = e.ClipRectangle.Right  - hScrollBar.Left + hScrollBar.Value,
+                b = e.ClipRectangle.Bottom - vScrollBar.Top  + vScrollBar.Value;
             // Limit
             if (l < 0) l = 0;
             if (t < 0) t = 0;
-            if (HMap.Width  <= (r >> zoom) + hScrollBar.Value) r = (HMap.Width  - hScrollBar.Value) << zoom;
-            if (HMap.Height <= (b >> zoom) + vScrollBar.Value) b = (HMap.Height - vScrollBar.Value) << zoom;
-            int w = r - l,
-                h = b - t;
+            l += hScrollBar.Value;
+            t += vScrollBar.Value;
+            if ((HMap.Width  << zoom) <= r) r = (HMap.Width  << zoom) - 1;
+            if ((HMap.Height << zoom) <= b) b = (HMap.Height << zoom) - 1;
+            int w = r - l + 1,
+                h = b - t + 1;
             // Optimisation
             if (w < 1 || h < 1) return;
-            int iy, x,
-                offset = 0,
-                mask = 63 >> (ZoomMax - zoom);
-            bool grid = chbGrid.Checked && 2 < zoom;
-            // Get image
+
+            int x, y, iy, offset = 0;
             int[] buffer = new int[w * h];
-            for (int y = t; y < b; y++)
+            // Draw TMap
+            if (chbShowTMap.Checked)
             {
-                iy = ((y >> zoom) + vScrollBar.Value) * HMap.Width + hScrollBar.Value;
-                for (x = l; x < r; x++)
+                int pw = TMap.Width  - 1, hw = HMap.Width  - 1,
+                    ph = TMap.Height - 1, hh = HMap.Height - 1;
+                for (y = t; y <= b; y++)
                 {
-                    if (grid)
-                    {
-                        if (mask == (y & mask) && 0 < (x & 1))
-                        {
-                            buffer[offset++] = (0 < (x & 2)) ? GridColor0 : GridColor1;
-                            continue;
-                        }
-                        if (mask == (x & mask) && 0 < (y & 1))
-                        {
-                            buffer[offset++] = (0 < (y & 2)) ? GridColor0 : GridColor1;
-                            continue;
-                        }
-                    }
-                    buffer[offset++] = HMap.Pixel[(x >> zoom) + iy];
+                    iy = ((y >> zoom) * ph / hh) * TMap.Width;
+                    for (x = l; x <= r; x++)
+                        buffer[offset++] = TMap.Pixels[((x >> zoom) * pw / hw) + iy];
                 }
             }
-            // Draw
+            // Draw HMap
+            else
+            {
+                for (y = t; y <= b; y++)
+                {
+                    iy = (y >> zoom) * HMap.Width;
+                    for (x = l; x <= r; x++)
+                        buffer[offset++] = HMap.Pixels[(x >> zoom) + iy];
+                }
+                // Add grid
+                if (chbGrid.Checked && (2 < zoom))
+                {
+                    int step = 1 << zoom,
+                        mask = step - 1;
+                    // Horizontal
+                    for (y = mask - t & mask; y < h; y += step)
+                    {
+                        offset = y * w;
+                        for (x = l & 1; x < w; x += 2)
+                            buffer[offset + x] = (0 < (x & 2)) ? GridColor0 : GridColor1;
+                    }
+                    // Vertical
+                    for (y = t & 1; y < h; y += 2)
+                    {
+                        offset = y * w;
+                        for (x = mask - l & mask; x < w; x += step)
+                            buffer[offset + x] = (0 < (y & 2)) ? GridColor0 : GridColor1;
+                    }
+                }
+            }
+            // Transfer
             Bitmap img = new Bitmap(w, h, w << 2, PixelFormat.Format32bppRgb, Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0));
-            e.Graphics.DrawImageUnscaled(img, l + hScrollBar.Left, t + vScrollBar.Top);
+            e.Graphics.DrawImageUnscaled(img,
+                l + hScrollBar.Left - hScrollBar.Value,
+                t + vScrollBar.Top  - vScrollBar.Value
+                );
         }
 
-        private void FormSHME_Resize(object sender, EventArgs e)
-        {
-            if (ResizeScrollBars())
-                ScrollBar_Scroll(null, null);
-        }
-
-        private bool ResizeScrollBars()
+        private void FormSHME_Resize(object sender, EventArgs e)//
         {
             bool h = ResizeScrollBar(hScrollBar, hScrollBar.Width);
             bool v = ResizeScrollBar(vScrollBar, vScrollBar.Height);
-            return h | v;
+            if (h | v)
+                ScrollBar_Scroll(null, null);
         }
 
         private bool ResizeScrollBar(ScrollBar scrollBar, int largeChange)
         {
-            scrollBar.LargeChange = largeChange >> zoom;
+            scrollBar.LargeChange = largeChange;
             scrollBar.Enabled = (scrollBar.Maximum >= scrollBar.LargeChange);
             int v = scrollBar.Value;
             return ScrollValueCheckAndSet(scrollBar, ref v, true);
@@ -1063,7 +1088,7 @@ namespace SHME
         /// Check range of value, apply if needed and returns if it's new
         /// </summary>
         /// <returns>Value not equal</returns>
-        private bool ScrollValueCheckAndSet(ScrollBar scrollBar, ref int value, bool apply = false)
+        private bool ScrollValueCheckAndSet(ScrollBar scrollBar, ref int value, bool apply = false)//Ok
         {
             if (scrollBar.Maximum + 1 < value + scrollBar.LargeChange) value = scrollBar.Maximum - scrollBar.LargeChange + 1;
             if (value < 0)
@@ -1073,13 +1098,11 @@ namespace SHME
             return true;
         }
 
-        private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
+        private void ScrollBar_Scroll(object sender, ScrollEventArgs e)//
         {
             if (e != null)
                 if (e.OldValue == e.NewValue)
                     return;
-            pbPDA.Left = -(hScrollBar.Value << zoom) + hScrollBar.Left;
-            pbPDA.Top  = -(vScrollBar.Value << zoom) + vScrollBar.Top;
             Invalidate();
         }
 
@@ -1138,8 +1161,8 @@ namespace SHME
                 file.WriteLine("Slot3Shape\t" + chbSlot3Shape.Checked);
 
                 //* Files
-                file.WriteLine("FileHMap\t" + HMapURL);
-                file.WriteLine("FilePDA\t"  + pbPDA.ImageLocation);
+                file.WriteLine("FileHMap\t" + HMap.URL);
+                file.WriteLine("FileTMap\t" + TMap.URL);
                 file.WriteLine("Level8bit\t" + cbbLevelFormat16bit.SelectedIndex);
                 file.WriteLine("Level16bit\t" + cbbLevelFormat16bit.SelectedIndex);
                 file.WriteLine("LevelBLIByte\t" + chbLevelByteBigLittleIndian.Checked);
@@ -1356,7 +1379,7 @@ namespace SHME
 
         private void btnHistoryForward_Click (object sender, EventArgs e) => HistoryRoll(historyForward,  historyBackward);
 
-        private void HistoryAdd(byte action, bool full = false)//O
+        private void HistoryAdd()//O
         {
             if (historyRecord == null) return;
             // Clear rofward
@@ -1365,7 +1388,8 @@ namespace SHME
                 btnHistoryForward.Enabled = false;
                 historyForward.Clear();
             }
-            historyRecord.Finish(action, full);
+            if (!historyRecord.ResizeAction)
+                historyRecord.Crop();
             HistoryRoll(null, historyBackward);
         }
 
@@ -1377,8 +1401,8 @@ namespace SHME
                     historyRecord = src[0];
                     src.RemoveAt(0);
                     // Rollback
-                    historyRecord.Rollback(ref HMap);
-                    if (historyRecord.Action == HistoryRecord.ActionResize)
+                    historyRecord.Rollback(HMap);
+                    if (historyRecord.ResizeAction)
                         FinishHMapLoading();
                 }
                 else return;
@@ -1390,7 +1414,7 @@ namespace SHME
             btnHistoryBackward.Enabled = (0 < historyBackward.Count);
             btnHistoryForward. Enabled = (0 < historyForward. Count);
             // Show
-            if (src != null && historyRecord.Action == HistoryRecord.ActionEdit)
+            if (src != null && !historyRecord.ResizeAction)
             {
                 BuildSpectrum(historyRecord.Left, historyRecord.Top, historyRecord.Right, historyRecord.Bottom);
                 HMap.BuildStatistics(historyRecord.Top, historyRecord.Bottom);
@@ -1406,7 +1430,8 @@ namespace SHME
             btnHistoryBackward.Text = "0";
             historyForward. Clear();
             historyBackward.Clear();
-            btnHistoryBackward.Enabled = btnHistoryForward.Enabled = false;
+            btnHistoryBackward.Enabled =
+            btnHistoryForward. Enabled = false;
         }
         #endregion
     }

@@ -4,13 +4,25 @@ using System.Drawing;
 
 namespace SHME
 {
-    class HeightMap
+    class TopologicalMap
     {
         public const int A = -0x01000000; // 0xFF,00,00,00
-        public int Width  { get; private set; }
-        public int Height { get; private set; }
-        public UInt16[,] Level; // Height map
-        public  Int32[] Pixel { get; private set; } // Color map
+        public int[] Pixels { get; private set; } // Color map
+        public int   Width  { get; private set; }// = 0;
+        public int   Height { get; private set; }// = 0;
+        public String URL = "";
+
+        public void SetSize(int width, int height)
+        {
+            Pixels = new int[width * height];
+            Width  = width;
+            Height = height;
+        }
+    }
+
+    class HeightMap : TopologicalMap
+    {
+        public UInt16[,] Levels { get; private set; } // Height map
         public int[] MinLevelAtRow { get; private set; } // Row height minimums
         public int[] AvgLevelAtRow { get; private set; } // Row height average
         public int[] MaxLevelAtRow { get; private set; } // Row height maximums
@@ -18,48 +30,39 @@ namespace SHME
         public int AvgLevel { get; private set; }
         public int MaxLevel { get; private set; }
 
-        #region Constructors
-        /// <summary>
-        /// Create 256x256 gradient map from 0 to 65,535
-        /// </summary>
-        /// <param name="serpantin">
-        /// Create gradient in serpantin manner
-        /// </param>
-        public HeightMap(bool serpantin = false) : this(256, 256)
-        {
-            int x, y;
-            for (x = 0; x < Width; x++)
-                for (y = 0; y < Height; y++)
-                {
-                    Level[x, y] = (UInt16)((y << 8) + x);
-                    if (serpantin)
-                        Level[x, ++y] = (UInt16)((y << 8) - x + 255);
-                }
-        }
-
-        /// <summary>
-        /// Create empty map of specified sizes
-        /// </summary>
-        public HeightMap(int width, int height) => SetLevelMap(width, height, new UInt16[width, height]);
-
+        #region Init
         /// <summary>
         /// Replace owned level map with new and recreate statistic arrays
         /// </summary>
-        /// <param name="width">width of new map</param>
-        /// <param name="height">height of new map</param>
-        /// <param name="newLevel">new level map</param>
-        /// <returns></returns>
-        public UInt16[,] SetLevelMap(int width, int height, UInt16[,] newLevel)
+        /// <param name="newWidth">New width</param>
+        /// <param name="newHeight">New height</param>
+        /// <param name="newLevels">New levels array to adopt</param>
+        /// <param name="saveData">If copy data from old array is needed</param>
+        /// <returns>Old levels array</returns>
+        public UInt16[,] SetSize(int newWidth, int newHeight, UInt16[,] newLevels = null, bool saveData = false)
         {
-            Width  = width;
-            Height = height;
-            UInt16[,] oldLevel = Level;
-            Level = newLevel;
-            Pixel = new Int32[Width * Height];
-            MinLevelAtRow = new int[Height];
-            MaxLevelAtRow = new int[Height];
-            AvgLevelAtRow = new int[Height];
-            return oldLevel;
+            MinLevel = 65535;
+            MaxLevel = 0;
+            AvgLevel = 32767;
+            MinLevelAtRow = new int[newHeight];
+            MaxLevelAtRow = new int[newHeight];
+            AvgLevelAtRow = new int[newHeight];
+            UInt16[,] oldLevels = Levels;
+            if (newLevels == null)
+            {
+                newLevels = new UInt16[newWidth, newHeight];
+                if (Levels != null && saveData)
+                {
+                    int x, w = (Width  < newWidth ) ? Width  : newWidth,
+                        y, h = (Height < newHeight) ? Height : newHeight;
+                    for (y = 0; y < h; y++)
+                        for (x = 0; x < w; x++)
+                            newLevels[x, y] = oldLevels[x, y];
+                }
+            }
+            Levels = newLevels;
+            base.SetSize(newWidth, newHeight);
+            return oldLevels;
         }
 
         /// <summary>
@@ -100,7 +103,7 @@ namespace SHME
         /// <param name="pixelBLIndian">
         /// Big-Little indian pixels in byte flag
         /// </param>
-        public void Init(byte[] buffer, int bitBlock = 8, int loIdx = 0, int hiIdx = 1, bool pixelBLIndian = false)
+        public void SetLevels(byte[] buffer, int bitBlock = 8, int loIdx = 0, int hiIdx = 1, bool pixelBLIndian = false)
         {
             int x, y, i = 0;
             if (bitBlock < 8)
@@ -112,11 +115,11 @@ namespace SHME
                         for (x = 0; x < Width;)
                         {
                             pack = (pixelBLIndian) ? buffer[i++] : MirrorBits(buffer[i++], 8);
-                            Level[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 4) : pack & 15) * 0x1111);
+                            Levels[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 4) : pack & 15) * 0x1111);
                             x++;
                             if (x == Width) break;
                             pack >>= 4;
-                            Level[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 4) : pack) * 0x1111);
+                            Levels[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 4) : pack) * 0x1111);
                             x++;
                         }
                 else if (bitBlock == 2)
@@ -124,19 +127,19 @@ namespace SHME
                         for (x = 0; x < Width;)
                         {
                             pack = (pixelBLIndian) ? buffer[i++] : MirrorBits(buffer[i++], 8);
-                            Level[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 2) : pack & 3) * 0x5555);
+                            Levels[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 2) : pack & 3) * 0x5555);
                             x++;
                             if (x == Width) break;
                             pack >>= 2;
-                            Level[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 2) : pack & 3) * 0x5555);
+                            Levels[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 2) : pack & 3) * 0x5555);
                             x++;
                             if (x == Width) break;
                             pack >>= 2;
-                            Level[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 2) : pack & 3) * 0x5555);
+                            Levels[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 2) : pack & 3) * 0x5555);
                             x++;
                             if (x == Width) break;
                             pack >>= 2;
-                            Level[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 2) : pack) * 0x5555);
+                            Levels[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 2) : pack) * 0x5555);
                             x++;
                         }
                 else
@@ -150,7 +153,7 @@ namespace SHME
                                 mask = 1;
                                 pack = (pixelBLIndian) ? buffer[i++] : MirrorBits(buffer[i++], 8);
                             }
-                            Level[x, y] = (UInt16)((0 < (pack & mask)) ? 65535 : 0);
+                            Levels[x, y] = (UInt16)((0 < (pack & mask)) ? 65535 : 0);
                             mask <<= 1;
                         }
                     }
@@ -162,12 +165,12 @@ namespace SHME
                 if (blockSize < 2)
                     for (y = 0; y < Height; y++)
                         for (x = 0; x < Width; x++)
-                            Level[x, y] = (UInt16)(buffer[i++] * 0x101);
+                            Levels[x, y] = (UInt16)(buffer[i++] * 0x101);
                 // >8bit block
                 else
                     for (y = 0; y < Height; y++)
                         for (x = 0; x < Width; x++)
-                            Level[x, y] = (UInt16)(
+                            Levels[x, y] = (UInt16)(
                                 (buffer[i * blockSize + hiIdx] << 8) +
                                  buffer[i++ * blockSize + loIdx]
                                 );
@@ -175,7 +178,7 @@ namespace SHME
         }
         #endregion
 
-        #region Building
+        #region Build spectrum
         /// <summary>
         /// Returns mixed color between two
         /// </summary>
@@ -224,8 +227,8 @@ namespace SHME
             for (int y = top; y <= bottom; y++)
                 for (x = left; x <= right; x++)
                 {
-                    h = (UInt16)(repeat * (Level[x, y] - stretchMin)) / k;
-                    Pixel[x + y * Width] = A
+                    h = (UInt16)(repeat * (Levels[x, y] - stretchMin)) / k;
+                    Pixels[x + y * Width] = A
                         + ((byte)((byte)(color >> 16) * h) << 16)
                         + ((byte)((byte)(color >>  8) * h) <<  8)
                         + ((byte)((byte)(color      ) * h)      );
@@ -259,8 +262,8 @@ namespace SHME
             for (int y = top; y <= bottom; y++)
                 for (x = left; x <= right; x++)
                 {
-                    h = (UInt16)((Level[x, y] - stretchMin) * k);
-                    Pixel[x + y * Width] = A
+                    h = (UInt16)((Levels[x, y] - stretchMin) * k);
+                    Pixels[x + y * Width] = A
                         + ((   (h >> 8) * Hi
                         + (byte)h       * Lo) & 0xFFffFF);
                 }
@@ -299,9 +302,9 @@ namespace SHME
             for (int y = top; y <= bottom; y++)
                 for (x = left; x <= right; x++)
                 {
-                    h = (UInt16)((Level[x, y] - stretchMin) * k);
+                    h = (UInt16)((Levels[x, y] - stretchMin) * k);
                     segment = (h >> 13);
-                    Pixel[x + y * Width] = MixColor(colors[segment], colors[segment + 1], (byte)(h >> 5), 255);
+                    Pixels[x + y * Width] = MixColor(colors[segment], colors[segment + 1], (byte)(h >> 5), 255);
                 }
         }
         #endregion
@@ -313,16 +316,16 @@ namespace SHME
             for (y = top; y <= bottom; y++)
             {
                 // Min
-                min = Level[0, y];
-                max = Level[0, y];
-                avg = Level[0, y];
+                min = Levels[0, y];
+                max = Levels[0, y];
+                avg = Levels[0, y];
                 for (x = 1; x < Width; x++)
                 {
-                    if (min > Level[x, y])
-                        min = Level[x, y];
-                    if (max < Level[x, y])
-                        max = Level[x, y];
-                    avg += Level[x, y];
+                    if (min > Levels[x, y])
+                        min = Levels[x, y];
+                    if (max < Levels[x, y])
+                        max = Levels[x, y];
+                    avg += Levels[x, y];
                 }
                 MinLevelAtRow[y] = min;
                 MaxLevelAtRow[y] = max;

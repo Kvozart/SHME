@@ -4,24 +4,27 @@ namespace SHME
 {
     class HistoryRecord
     {
-        public static byte ActionEdit   = 1;
-        public static byte ActionResize = 2;
+        public bool ResizeAction { get; private set; }
+        public int Left   { get; private set; }
+        public int Top    { get; private set; }
+        public int Right  { get; private set; }
+        public int Bottom { get; private set; }
+        public int Width  { get; private set; }
+        public int Height { get; private set; }
+        private UInt16[,] Clip;
 
-        public byte Action;
-        public int Left, Top, Right, Bottom, Width, Height;
-        UInt16[,] Clip;
-
-        public HistoryRecord(HeightMap HMap, int left, int top, int right, int bottom)
+        public HistoryRecord(HeightMap HMap, int left, int top, int right, int bottom, bool resizeAction = false)
         {
-            int x;
+            int x, y;
             Left = left;   Right  = right;
             Top  = top;    Bottom = bottom;
             Width  = Right  - Left + 1;
             Height = Bottom - Top  + 1;
+            ResizeAction = resizeAction;
             Clip = new UInt16[HMap.Width, HMap.Height];
-            for (int y = 0; y < HMap.Height; y++)
+            for (y = 0; y < HMap.Height; y++)
                 for (x = 0; x < HMap.Width; x++)
-                    Clip[x, y] = HMap.Level[x, y];
+                    Clip[x, y] = HMap.Levels[x, y];
         }
 
         public void Check(int left, int top, int right, int bottom)
@@ -32,45 +35,44 @@ namespace SHME
             if (Bottom < bottom) Bottom = bottom;
         }
 
-        public void Finish(byte action, bool fullMap = false)
+        public void Crop()
         {
             int x;
             Width  = Right  - Left + 1;
             Height = Bottom - Top  + 1;
-            Action = action;
-            if (fullMap) return;
-            UInt16[,] buffer = Clip;
-            Clip = new UInt16[Width, Height];
+            UInt16[,] newClip = new UInt16[Width, Height];
             for (int y = 0; y < Height; y++)
                 for (x = 0; x < Width; x++)
-                    Clip[x, y] = buffer[x + Left, y + Top];
+                    newClip[x, y] = Clip[x + Left, y + Top];
+            Clip = newClip;
         }
 
-        public void Rollback(ref HeightMap HMap)
+        public void Rollback(HeightMap HMap)
         {
-            int x;
-            UInt16[,] buffer = Clip;
-            // Edit back
-            if (Action == ActionEdit)
-            {
-                Clip = new UInt16[Width, Height];
-                for (int y = 0; y < Height; y++)
-                    for (x = 0; x < Width; x++)
-                    {
-                        Clip[x, y] = HMap.Level[x + Left, y + Top];
-                        HMap.Level[x + Left, y + Top] = buffer[x, y];
-                    }
-            }
-            else if (Action == ActionResize)
+            // Swap back
+            if (ResizeAction)
             {
                 // Remember corner
                 Right  = HMap.Width  - 1;
                 Bottom = HMap.Height - 1;
                 // Switch arrays
-                Clip = HMap.SetLevelMap(Width, Height, buffer);
+                Clip = HMap.SetSize(Width, Height, Clip);
                 // Update sizes
                 Width  = Right  - Left + 1;
                 Height = Bottom - Top  + 1;
+            }
+            // Edit back
+            else
+            {
+                int x, y;
+                UInt16 v;
+                for (y = 0; y < Height; y++)
+                    for (x = 0; x < Width; x++)
+                    {
+                        v = HMap.Levels[x + Left, y + Top];
+                        HMap.Levels[x + Left, y + Top] = Clip[x, y];
+                        Clip[x, y] = v;
+                    }
             }
         }
     }

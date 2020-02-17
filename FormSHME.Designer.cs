@@ -95,16 +95,16 @@
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.btnHMapResize = new System.Windows.Forms.Button();
             this.lblHMapSizes = new System.Windows.Forms.Label();
-            this.lblPDASizes = new System.Windows.Forms.Label();
+            this.lblTMapSizes = new System.Windows.Forms.Label();
             this.btnSaveHMap = new System.Windows.Forms.Button();
             this.cmsSaveFile = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmi8BitPNG = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiExportView = new System.Windows.Forms.ToolStripMenuItem();
             this.btnLoadHMap = new System.Windows.Forms.Button();
-            this.btnLoadPDA = new System.Windows.Forms.Button();
+            this.btnLoadTMap = new System.Windows.Forms.Button();
             this.chbShowHMap = new System.Windows.Forms.CheckBox();
-            this.chbShowPDA = new System.Windows.Forms.CheckBox();
-            this.btnPDAGenerate = new System.Windows.Forms.Button();
+            this.chbShowTMap = new System.Windows.Forms.CheckBox();
+            this.btnTMapGenerate = new System.Windows.Forms.Button();
             this.tlpTools = new System.Windows.Forms.TableLayoutPanel();
             this.gbTools = new System.Windows.Forms.GroupBox();
             this.btnToolsetRemove = new System.Windows.Forms.Button();
@@ -179,7 +179,6 @@
             this.pnlToolSelect = new System.Windows.Forms.Panel();
             this.btnToolUndo = new System.Windows.Forms.Button();
             this.btnToolRedo = new System.Windows.Forms.Button();
-            this.pbPDA = new System.Windows.Forms.PictureBox();
             this.gbStatistics.SuspendLayout();
             this.cmsOpenFile.SuspendLayout();
             this.tcThemes.SuspendLayout();
@@ -208,7 +207,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbZoomIn)).BeginInit();
             this.pnlZoomGrid.SuspendLayout();
             this.pnlToolSelect.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPDA)).BeginInit();
             this.SuspendLayout();
             // 
             // dlgOpen
@@ -1070,13 +1068,13 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.Controls.Add(this.btnHMapResize, 4, 0);
             this.tableLayoutPanel4.Controls.Add(this.lblHMapSizes, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblPDASizes, 1, 1);
+            this.tableLayoutPanel4.Controls.Add(this.lblTMapSizes, 1, 1);
             this.tableLayoutPanel4.Controls.Add(this.btnSaveHMap, 3, 0);
             this.tableLayoutPanel4.Controls.Add(this.btnLoadHMap, 2, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnLoadPDA, 2, 1);
+            this.tableLayoutPanel4.Controls.Add(this.btnLoadTMap, 2, 1);
             this.tableLayoutPanel4.Controls.Add(this.chbShowHMap, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.chbShowPDA, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.btnPDAGenerate, 4, 1);
+            this.tableLayoutPanel4.Controls.Add(this.chbShowTMap, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.btnTMapGenerate, 4, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -1114,17 +1112,17 @@
             this.lblHMapSizes.Text = "800 x 690";
             this.lblHMapSizes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblPDASizes
+            // lblTMapSizes
             // 
-            this.lblPDASizes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblPDASizes.BackColor = System.Drawing.Color.Transparent;
-            this.lblPDASizes.Location = new System.Drawing.Point(55, 35);
-            this.lblPDASizes.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.lblPDASizes.Name = "lblPDASizes";
-            this.lblPDASizes.Size = new System.Drawing.Size(69, 13);
-            this.lblPDASizes.TabIndex = 22;
-            this.lblPDASizes.Text = "800 x 690";
-            this.lblPDASizes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTMapSizes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTMapSizes.BackColor = System.Drawing.Color.Transparent;
+            this.lblTMapSizes.Location = new System.Drawing.Point(55, 35);
+            this.lblTMapSizes.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.lblTMapSizes.Name = "lblTMapSizes";
+            this.lblTMapSizes.Size = new System.Drawing.Size(69, 13);
+            this.lblTMapSizes.TabIndex = 22;
+            this.lblTMapSizes.Text = "800 x 690";
+            this.lblTMapSizes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnSaveHMap
             // 
@@ -1192,21 +1190,21 @@
             this.btnLoadHMap.UseVisualStyleBackColor = true;
             this.btnLoadHMap.Click += new System.EventHandler(this.btnLoadHMap_Click);
             // 
-            // btnLoadPDA
+            // btnLoadTMap
             // 
-            this.btnLoadPDA.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnLoadPDA.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnLoadPDA.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnLoadPDA.Image = global::SHME.Properties.Resources.load;
-            this.btnLoadPDA.Location = new System.Drawing.Point(127, 29);
-            this.btnLoadPDA.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
-            this.btnLoadPDA.Name = "btnLoadPDA";
-            this.btnLoadPDA.Size = new System.Drawing.Size(28, 25);
-            this.btnLoadPDA.TabIndex = 4;
-            this.btnLoadPDA.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip.SetToolTip(this.btnLoadPDA, "Load topographic map");
-            this.btnLoadPDA.UseVisualStyleBackColor = true;
-            this.btnLoadPDA.Click += new System.EventHandler(this.btnLoadPDA_Click);
+            this.btnLoadTMap.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnLoadTMap.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnLoadTMap.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnLoadTMap.Image = global::SHME.Properties.Resources.load;
+            this.btnLoadTMap.Location = new System.Drawing.Point(127, 29);
+            this.btnLoadTMap.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
+            this.btnLoadTMap.Name = "btnLoadTMap";
+            this.btnLoadTMap.Size = new System.Drawing.Size(28, 25);
+            this.btnLoadTMap.TabIndex = 4;
+            this.btnLoadTMap.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.btnLoadTMap, "Load topographic map");
+            this.btnLoadTMap.UseVisualStyleBackColor = true;
+            this.btnLoadTMap.Click += new System.EventHandler(this.btnLoadTMap_Click);
             // 
             // chbShowHMap
             // 
@@ -1226,38 +1224,38 @@
             this.chbShowHMap.UseVisualStyleBackColor = true;
             this.chbShowHMap.CheckStateChanged += new System.EventHandler(this.SwitchView);
             // 
-            // chbShowPDA
+            // chbShowTMap
             // 
-            this.chbShowPDA.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chbShowPDA.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbShowPDA.Location = new System.Drawing.Point(3, 31);
-            this.chbShowPDA.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.chbShowPDA.Name = "chbShowPDA";
-            this.chbShowPDA.Size = new System.Drawing.Size(49, 22);
-            this.chbShowPDA.TabIndex = 1;
-            this.chbShowPDA.Text = "PDA";
-            this.chbShowPDA.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chbShowPDA.ThreeState = true;
-            this.toolTip.SetToolTip(this.chbShowPDA, "Switch between height and topographic map");
-            this.chbShowPDA.UseVisualStyleBackColor = true;
-            this.chbShowPDA.CheckStateChanged += new System.EventHandler(this.SwitchView);
+            this.chbShowTMap.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbShowTMap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbShowTMap.Location = new System.Drawing.Point(3, 31);
+            this.chbShowTMap.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.chbShowTMap.Name = "chbShowTMap";
+            this.chbShowTMap.Size = new System.Drawing.Size(49, 22);
+            this.chbShowTMap.TabIndex = 1;
+            this.chbShowTMap.Text = "TMap";
+            this.chbShowTMap.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chbShowTMap.ThreeState = true;
+            this.toolTip.SetToolTip(this.chbShowTMap, "Switch between height and topographic map");
+            this.chbShowTMap.UseVisualStyleBackColor = true;
+            this.chbShowTMap.CheckStateChanged += new System.EventHandler(this.SwitchView);
             // 
-            // btnPDAGenerate
+            // btnTMapGenerate
             // 
-            this.btnPDAGenerate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnPDAGenerate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnPDAGenerate.BackColor = System.Drawing.Color.LightGray;
-            this.btnPDAGenerate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnPDAGenerate.Image = global::SHME.Properties.Resources.grid;
-            this.btnPDAGenerate.Location = new System.Drawing.Point(183, 29);
-            this.btnPDAGenerate.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
-            this.btnPDAGenerate.Name = "btnPDAGenerate";
-            this.btnPDAGenerate.Size = new System.Drawing.Size(25, 25);
-            this.btnPDAGenerate.TabIndex = 6;
-            this.btnPDAGenerate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip.SetToolTip(this.btnPDAGenerate, "Generate grid background");
-            this.btnPDAGenerate.UseVisualStyleBackColor = false;
-            this.btnPDAGenerate.Click += new System.EventHandler(this.btnPDAGenerate_Click);
+            this.btnTMapGenerate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnTMapGenerate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnTMapGenerate.BackColor = System.Drawing.Color.LightGray;
+            this.btnTMapGenerate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnTMapGenerate.Image = global::SHME.Properties.Resources.grid;
+            this.btnTMapGenerate.Location = new System.Drawing.Point(183, 29);
+            this.btnTMapGenerate.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
+            this.btnTMapGenerate.Name = "btnTMapGenerate";
+            this.btnTMapGenerate.Size = new System.Drawing.Size(25, 25);
+            this.btnTMapGenerate.TabIndex = 6;
+            this.btnTMapGenerate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.btnTMapGenerate, "Generate grid background");
+            this.btnTMapGenerate.UseVisualStyleBackColor = false;
+            this.btnTMapGenerate.Click += new System.EventHandler(this.btnTMapGenerate_Click);
             // 
             // tlpTools
             // 
@@ -1888,7 +1886,9 @@
             // 
             this.hScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.hScrollBar.LargeChange = 256;
             this.hScrollBar.Location = new System.Drawing.Point(220, 572);
+            this.hScrollBar.Maximum = 255;
             this.hScrollBar.Name = "hScrollBar";
             this.hScrollBar.Size = new System.Drawing.Size(544, 21);
             this.hScrollBar.TabIndex = 10;
@@ -1898,7 +1898,9 @@
             // 
             this.vScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.vScrollBar.LargeChange = 256;
             this.vScrollBar.Location = new System.Drawing.Point(764, 0);
+            this.vScrollBar.Maximum = 255;
             this.vScrollBar.Name = "vScrollBar";
             this.vScrollBar.Size = new System.Drawing.Size(21, 572);
             this.vScrollBar.TabIndex = 9;
@@ -2432,22 +2434,6 @@
             this.btnToolRedo.UseVisualStyleBackColor = true;
             this.btnToolRedo.Click += new System.EventHandler(this.btnTool_Click);
             // 
-            // pbPDA
-            // 
-            this.pbPDA.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pbPDA.ErrorImage = null;
-            this.pbPDA.InitialImage = null;
-            this.pbPDA.Location = new System.Drawing.Point(220, 0);
-            this.pbPDA.Name = "pbPDA";
-            this.pbPDA.Size = new System.Drawing.Size(360, 312);
-            this.pbPDA.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbPDA.TabIndex = 1;
-            this.pbPDA.TabStop = false;
-            this.pbPDA.Visible = false;
-            this.pbPDA.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbHMap_MouseDown);
-            this.pbPDA.MouseLeave += new System.EventHandler(this.FormSHME_MouseLeave);
-            this.pbPDA.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbHMap_MouseMove);
-            // 
             // FormSHME
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2460,7 +2446,6 @@
             this.Controls.Add(this.hScrollBar);
             this.Controls.Add(this.vScrollBar);
             this.Controls.Add(this.tlpTools);
-            this.Controls.Add(this.pbPDA);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
             this.HelpButton = true;
@@ -2512,7 +2497,6 @@
             this.pnlZoomGrid.ResumeLayout(false);
             this.pnlZoomGrid.PerformLayout();
             this.pnlToolSelect.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbPDA)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2535,7 +2519,6 @@
         private System.Windows.Forms.TabPage tpMonochrome;
         private System.Windows.Forms.TabPage tpBytes;
         private System.Windows.Forms.TabPage tpSpectrum;
-        private System.Windows.Forms.PictureBox pbPDA;
         private System.Windows.Forms.ColorDialog dlgColor;
         private System.Windows.Forms.Label lblPointerLevel;
         private System.Windows.Forms.Label lblPointerPosition;
@@ -2556,9 +2539,9 @@
         private System.Windows.Forms.PictureBox pbZoomOut;
         private System.Windows.Forms.PictureBox pbZoomIn;
         private System.Windows.Forms.Label lblHMapSizes;
-        private System.Windows.Forms.Label lblPDASizes;
+        private System.Windows.Forms.Label lblTMapSizes;
         private System.Windows.Forms.Button btnLoadHMap;
-        private System.Windows.Forms.Button btnLoadPDA;
+        private System.Windows.Forms.Button btnLoadTMap;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.HScrollBar hScrollBar;
@@ -2653,12 +2636,12 @@
         private System.Windows.Forms.Button btnHistoryForward;
         private System.Windows.Forms.Button btnHistoryBackward;
         private System.Windows.Forms.CheckBox chbShowHMap;
-        private System.Windows.Forms.CheckBox chbShowPDA;
+        private System.Windows.Forms.CheckBox chbShowTMap;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Button btnHMapResize;
-        private System.Windows.Forms.Button btnPDAGenerate;
+        private System.Windows.Forms.Button btnTMapGenerate;
         private System.Windows.Forms.ImageList ilToolForce;
         private System.Windows.Forms.Button btnSlot3Force;
         private System.Windows.Forms.Button btnSlot2Force;
