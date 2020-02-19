@@ -1360,7 +1360,7 @@ namespace SHME
         private void lblTool3Hex_Click(object sender, EventArgs e) => lblSlot3Hex.Text = (tbSlot3Hex.Visible = !tbSlot3Hex.Visible) ? "0x" : "D";
 
         private void nudSlot1Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref tool1ForceMask, ref tool1Brush, btnSlot1Force.ImageIndex, nudSlot1Size, chbSlot1Shape);
-        private void nudSlot2Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref tool2ForceMask, ref tool2Brush, btnSlot2Force.ImageIndex, nudSlot3Size, chbSlot2Shape);
+        private void nudSlot2Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref tool2ForceMask, ref tool2Brush, btnSlot2Force.ImageIndex, nudSlot2Size, chbSlot2Shape);
         private void nudSlot3Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref tool3ForceMask, ref tool3Brush, btnSlot3Force.ImageIndex, nudSlot3Size, chbSlot3Shape);
 
         private void btnTool1Force_Click(object sender, EventArgs e) => CreateToolForceMask(ref tool1ForceMask, ref tool1Brush, btnSlot1Force.ImageIndex += (1 < btnSlot1Force.ImageIndex) ? -2 : 1, nudSlot1Size, chbSlot1Shape);
