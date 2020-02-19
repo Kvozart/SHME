@@ -735,10 +735,19 @@ namespace SHME
             {
                 lblPointerPosition.Text = mapX + PointerSpliter + mapY;
                 lblPointerLevel.Text = mapXYLevel.ToString() + " x" + mapXYLevel.ToString("X4");
+                if (e.Button == MouseButtons.None)
+                {
+                    int sz = Math.Max((int)nudSlot1Size.Value, Math.Max((int)nudSlot2Size.Value, (int)nudSlot3Size.Value)) << zoom;
+                    Invalidate(new Rectangle(
+                        hScrollBar.Left,
+                        vScrollBar.Top,
+                        hScrollBar.Right,
+                        vScrollBar.Bottom));
+                }
             }
 
             // No drawing?
-            if (toolID < 4) return;
+            if (toolID < 4 || chbShowTMap.Checked) return;
 
             // Recalculate tool ID and Index
             toolID -= 4;
@@ -781,8 +790,8 @@ namespace SHME
                 : (int)nudSlot3Size.Value;
 
             // Get region
-            int iR = mapX + size / 2;
-            int iB = mapY + size / 2;
+            int iR = mapX + (size >> 1);
+            int iB = mapY + (size >> 1);
             int mapL = iR - size + 1;
             int mapT = iB - size + 1;
             // Limit region
@@ -869,11 +878,11 @@ namespace SHME
             else
             {
                 BuildSpectrum(iL, iT, iR, iB);
-                Invalidate(new Rectangle(
+                Invalidate(/*new Rectangle(
                     hScrollBar.Left + (iL << zoom) - hScrollBar.Value,
                     vScrollBar.Top  + (iT << zoom) - vScrollBar.Value,
                     size << zoom,
-                    size << zoom));
+                    size << zoom)*/);
             }
             ShowStatistics();
         }
@@ -891,6 +900,11 @@ namespace SHME
             lblPointerPosition.Text = "-" + PointerSpliter + "-";
             lblPointerLevel.Enabled = false;
             lblPointerLevel.Text = "-";
+            Invalidate(new Rectangle(
+                hScrollBar.Left,
+                vScrollBar.Top,
+                hScrollBar.Right,
+                vScrollBar.Bottom));
         }
         #endregion
 
@@ -1038,19 +1052,18 @@ namespace SHME
                     int delta = 1 << zoom >> 1;
                     int ld = (l < delta) ? delta : l;
                     int rd = (r - delta < zhw) ? r : zhw + delta - 1;
-                    for (y = t; y <= b; y++)
+                    int bd = (b - delta < zhh) ? b : zhh + delta - 1;
+                    if (t < delta)
+                        offset += ((y = delta) - t) * w;
+                    else
+                        y = t;
+                    for (; y <= bd; y++)
                     {
-                        iy = y - delta;
-                        if (iy < 0 || zhh <= iy)
-                            offset += w;
-                        else
-                        {
-                            iy = (iy * th / zhh) * tw;
-                            offset += ld - l;
-                            for (x = ld; x <= rd; x++)
-                                buffer[offset++] = TMap.Pixels[((x - delta) * tw / zhw) + iy];
-                            offset += r - rd;
-                        }
+                        iy = ((y - delta) * th / zhh) * tw;
+                        offset += ld - l;
+                        for (x = ld; x <= rd; x++)
+                            buffer[offset++] = TMap.Pixels[((x - delta) * tw / zhw) + iy];
+                        offset += r - rd;
                     }
                 }
                 // Other
@@ -1100,6 +1113,32 @@ namespace SHME
                 l + hScrollBar.Left - hScrollBar.Value,
                 t + vScrollBar.Top  - vScrollBar.Value
                 );
+            /**/
+            if (!lblPointerLevel.Enabled)
+                return;
+            DrawBrushContour(e.Graphics, (int)nudSlot1Size.Value, chbSlot1Shape.Checked);
+            DrawBrushContour(e.Graphics, (int)nudSlot2Size.Value, chbSlot2Shape.Checked);
+            DrawBrushContour(e.Graphics, (int)nudSlot3Size.Value, chbSlot3Shape.Checked);
+            /**/
+        }
+
+        private void DrawBrushContour(Graphics g, int size, bool shape)
+        {
+            int ix = ((mapX - ((size - 1) >> 1)) << zoom) - hScrollBar.Value;
+            int iy = ((mapY - ((size - 1) >> 1)) << zoom) - vScrollBar.Value;
+            if (shape)
+                g.DrawRectangle(
+                    new Pen(Color.Black),
+                    ix + hScrollBar.Left,
+                    iy + vScrollBar.Top,
+                    (size << zoom) - 1, (size << zoom) - 1);
+            else
+                g.DrawEllipse(
+                    new Pen(Color.Black),
+                    ix + hScrollBar.Left,
+                    iy + vScrollBar.Top,
+                    (size << zoom) - 1, (size << zoom) - 1
+                    );
         }
 
         private void FormSHME_Resize(object sender, EventArgs e)//
