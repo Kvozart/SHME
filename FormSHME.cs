@@ -1023,18 +1023,47 @@ namespace SHME
             // Optimisation
             if (w < 1 || h < 1) return;
 
-            int x, y, iy, offset = 0;
+            int x, y, ix, iy, offset = 0;
             int[] buffer = new int[w * h];
             // Draw TMap
             if (chbShowTMap.Checked)
             {
-                int pw = TMap.Width  - 1, hw = HMap.Width  - 1,
-                    ph = TMap.Height - 1, hh = HMap.Height - 1;
-                for (y = t; y <= b; y++)
+                int tw = TMap.Width,  hw = HMap.Width  - 1,
+                    th = TMap.Height, hh = HMap.Height - 1;
+                int zhw = hw << zoom,
+                    zhh = hh << zoom;
+                // Normal (TMapSize * proportion + 1)
+                if (((tw % hw == 0) && (th % hh == 0)) || ((hw % tw == 0) && (hh % th == 0)))
                 {
-                    iy = ((y >> zoom) * ph / hh) * TMap.Width;
-                    for (x = l; x <= r; x++)
-                        buffer[offset++] = TMap.Pixels[((x >> zoom) * pw / hw) + iy];
+                    int delta = 1 << zoom >> 1;
+                    int ld = (l < delta) ? delta : l;
+                    int rd = (r - delta < zhw) ? r : zhw + delta - 1;
+                    for (y = t; y <= b; y++)
+                    {
+                        iy = y - delta;
+                        if (iy < 0 || zhh <= iy)
+                            offset += w;
+                        else
+                        {
+                            iy = (iy * th / zhh) * tw;
+                            offset += ld - l;
+                            for (x = ld; x <= rd; x++)
+                                buffer[offset++] = TMap.Pixels[((x - delta) * tw / zhw) + iy];
+                            offset += r - rd;
+                        }
+                    }
+                }
+                // Other
+                else
+                {
+                    hw++;
+                    hh++;
+                    for (y = t; y <= b; y++)
+                    {
+                        iy = (y * th / hh >> zoom) * tw;
+                        for (x = l; x <= r; x++)
+                            buffer[offset++] = TMap.Pixels[((x * tw / hw) >> zoom) + iy];
+                    }
                 }
             }
             // Draw HMap
