@@ -1039,32 +1039,30 @@ namespace SHME
             }
             // Draw HMap
             else
-            {
                 for (y = t; y <= b; y++)
                 {
                     iy = (y >> zoom) * HMap.Width;
                     for (x = l; x <= r; x++)
                         buffer[offset++] = HMap.Pixels[(x >> zoom) + iy];
                 }
-                // Add grid
-                if (chbGrid.Checked && (2 < zoom))
+            // Add grid
+            if (chbGrid.Checked && (2 < zoom))
+            {
+                int step = 1 << zoom,
+                    mask = step - 1;
+                // Horizontal
+                for (y = mask - t & mask; y < h; y += step)
                 {
-                    int step = 1 << zoom,
-                        mask = step - 1;
-                    // Horizontal
-                    for (y = mask - t & mask; y < h; y += step)
-                    {
-                        offset = y * w;
-                        for (x = l & 1; x < w; x += 2)
-                            buffer[offset + x] = (0 < (x & 2)) ? GridColor0 : GridColor1;
-                    }
-                    // Vertical
-                    for (y = t & 1; y < h; y += 2)
-                    {
-                        offset = y * w;
-                        for (x = mask - l & mask; x < w; x += step)
-                            buffer[offset + x] = (0 < (y & 2)) ? GridColor0 : GridColor1;
-                    }
+                    offset = y * w;
+                    for (x = l & 1; x < w; x += 2)
+                        buffer[offset + x] = (0 < (x & 2)) ? GridColor0 : GridColor1;
+                }
+                // Vertical
+                for (y = t & 1; y < h; y += 2)
+                {
+                    offset = y * w;
+                    for (x = mask - l & mask; x < w; x += step)
+                        buffer[offset + x] = (0 < (y & 2)) ? GridColor0 : GridColor1;
                 }
             }
             // Transfer
