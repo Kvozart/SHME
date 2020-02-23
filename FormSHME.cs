@@ -89,7 +89,7 @@ namespace SHME
 
             // Bind and give Tool buttons ID
             ToolControls = new Button[]{
-                btnToolMove,
+                btnToolPan,
                 btnToolSwitch,
                 btnToolUndo,
                 btnToolRedo,
@@ -127,7 +127,7 @@ namespace SHME
             cbbLevelFormat8bit. SelectedIndex = 0;
             // Tools
             ToolXMBSelect(btnToolLMB,  (int)btnToolPencil1.Tag);
-            ToolXMBSelect(btnToolMMB,  (int)btnToolMove.Tag);
+            ToolXMBSelect(btnToolMMB,  (int)btnToolPan.Tag);
             ToolXMBSelect(btnToolRMB,  (int)btnToolProbe1.Tag);
             ToolXMBSelect(btnToolX1MB, (int)btnToolAdd1.Tag);
             ToolXMBSelect(btnToolX2MB, (int)btnToolSub1.Tag);
@@ -141,9 +141,9 @@ namespace SHME
             // Tool presets
             if (cbbToolsetPreset.Items.Count < 1)
             {
-                AddToolset((int)btnToolPencil1.Tag, (int)btnToolMove.Tag, (int)btnToolProbe1.Tag,  (int)btnToolAdd1.Tag,   (int)btnToolSub1.Tag);
-                AddToolset((int)btnToolAdd1.Tag,    (int)btnToolMove.Tag, (int)btnToolSub1.Tag,    (int)btnToolLevel1.Tag, (int)btnToolSmooth1.Tag);
-                AddToolset((int)btnToolLevel1.Tag,  (int)btnToolMove.Tag, (int)btnToolSmooth1.Tag, (int)btnToolAdd1.Tag,   (int)btnToolSub1.Tag);
+                AddToolset((int)btnToolPencil1.Tag, (int)btnToolPan.Tag, (int)btnToolProbe1.Tag,  (int)btnToolAdd1.Tag,   (int)btnToolSub1.Tag);
+                AddToolset((int)btnToolAdd1.Tag,    (int)btnToolPan.Tag, (int)btnToolSub1.Tag,    (int)btnToolLevel1.Tag, (int)btnToolSmooth1.Tag);
+                AddToolset((int)btnToolLevel1.Tag,  (int)btnToolPan.Tag, (int)btnToolSmooth1.Tag, (int)btnToolAdd1.Tag,   (int)btnToolSub1.Tag);
             }
 
             // Create tool force shape
@@ -375,6 +375,9 @@ namespace SHME
 
         private void btnLoadHMap_Click(object sender, EventArgs e)//Ok
         {
+            dlgOpen.FileName = Path.GetFileName(HMap.URL);
+            if (HMap.URL != "")
+                dlgOpen.InitialDirectory = Path.GetFullPath(HMap.URL).Replace(Path.GetFileName(HMap.URL), "");
             if (dlgOpen.ShowDialog() != DialogResult.OK)
                 return;
             lockMouse = true;
@@ -473,6 +476,9 @@ namespace SHME
 
         private void btnLoadTMap_Click(object sender, EventArgs e)//Ok
         {
+            dlgOpen.FileName = Path.GetFileName(TMap.URL);
+            if (TMap.URL != "")
+                dlgOpen.InitialDirectory = Path.GetFullPath(TMap.URL).Replace(Path.GetFileName(TMap.URL), "");
             if (dlgOpen.ShowDialog() == DialogResult.OK)
                 LoadTMap(dlgOpen.FileName);
         }
@@ -561,9 +567,11 @@ namespace SHME
         private void btnSaveHMap_Click(object sender, EventArgs e)//Ok
         {
             // Choose file name
-            dlgSave.FileName = Path.GetFileNameWithoutExtension(dlgSave.FileName);
+            dlgSave.FileName = Path.GetFileNameWithoutExtension(HMap.URL);
             dlgSave.Filter = "All files (*.*)|*.*|Portable Network Graphics (*.png)|*.png";
             dlgSave.FilterIndex = 2;
+            if (HMap.URL != "")
+                dlgSave.InitialDirectory = Path.GetFullPath(HMap.URL).Replace(Path.GetFileName(HMap.URL), "");
             if (dlgSave.ShowDialog() != DialogResult.OK)
                 return;
             // Pack
@@ -588,7 +596,7 @@ namespace SHME
         private void tsmiExportView_Click(object sender, EventArgs e)
         {
             // Choose file name
-            dlgSave.FileName = Path.GetFileNameWithoutExtension(dlgSave.FileName);
+            dlgSave.FileName = Path.GetFileNameWithoutExtension(HMap.URL);
             dlgSave.Filter = "All files|*.*"
                 + "|Windows Bitmap (.bmp)|*.bmp"
                 + "|Portable Network Graphics (.png)|*.png"
@@ -1308,8 +1316,8 @@ namespace SHME
             Button btn = sender as Button;
             pnlToolSelect.Tag = sender;
             var r = btn.PointToClient(btn.Location);
-            pnlToolSelect.Left = btn.Left + gbTools.Left - (btnToolMove.Left + 1);
-            pnlToolSelect.Top  = btn.Top  + gbTools.Top  - (btnToolMove.Top  + 1) - btnToolMove.Height;
+            pnlToolSelect.Left = btn.Left + gbTools.Left - (btnToolPan.Left + 1);
+            pnlToolSelect.Top  = btn.Top  + gbTools.Top  - (btnToolPan.Top  + 1) - btnToolPan.Height;
             pnlToolSelect.Visible = true;
             pnlToolSelect.Focus();
         }

@@ -163,7 +163,7 @@
             this.btnToolAdd3 = new System.Windows.Forms.Button();
             this.btnToolAdd2 = new System.Windows.Forms.Button();
             this.btnToolSwitch = new System.Windows.Forms.Button();
-            this.btnToolMove = new System.Windows.Forms.Button();
+            this.btnToolPan = new System.Windows.Forms.Button();
             this.btnToolProbe1 = new System.Windows.Forms.Button();
             this.btnToolProbe2 = new System.Windows.Forms.Button();
             this.btnToolPencil1 = new System.Windows.Forms.Button();
@@ -2083,14 +2083,14 @@
             this.btnToolSub3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolSub3.Image = global::SHME.Properties.Resources.toolLevelSub;
             this.btnToolSub3.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolSub3.Location = new System.Drawing.Point(168, 36);
+            this.btnToolSub3.Location = new System.Drawing.Point(168, 4);
             this.btnToolSub3.Name = "btnToolSub3";
             this.btnToolSub3.Size = new System.Drawing.Size(32, 32);
             this.btnToolSub3.TabIndex = 12;
             this.btnToolSub3.Tag = "";
-            this.btnToolSub3.Text = "2";
+            this.btnToolSub3.Text = "3";
             this.btnToolSub3.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.toolTip.SetToolTip(this.btnToolSub3, "Dig (slot 2)");
+            this.toolTip.SetToolTip(this.btnToolSub3, "Dig (slot 3)");
             this.btnToolSub3.UseVisualStyleBackColor = true;
             this.btnToolSub3.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2100,14 +2100,14 @@
             this.btnToolSub2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolSub2.Image = global::SHME.Properties.Resources.toolLevelSub;
             this.btnToolSub2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolSub2.Location = new System.Drawing.Point(168, 4);
+            this.btnToolSub2.Location = new System.Drawing.Point(168, 36);
             this.btnToolSub2.Name = "btnToolSub2";
             this.btnToolSub2.Size = new System.Drawing.Size(32, 32);
             this.btnToolSub2.TabIndex = 13;
             this.btnToolSub2.Tag = "";
-            this.btnToolSub2.Text = "3";
+            this.btnToolSub2.Text = "2";
             this.btnToolSub2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.toolTip.SetToolTip(this.btnToolSub2, "Dig (slot 3)");
+            this.toolTip.SetToolTip(this.btnToolSub2, "Dig (slot 2)");
             this.btnToolSub2.UseVisualStyleBackColor = true;
             this.btnToolSub2.Click += new System.EventHandler(this.btnTool_Click);
             // 
@@ -2158,18 +2158,18 @@
             this.btnToolSwitch.UseVisualStyleBackColor = true;
             this.btnToolSwitch.Click += new System.EventHandler(this.btnTool_Click);
             // 
-            // btnToolMove
+            // btnToolPan
             // 
-            this.btnToolMove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnToolMove.Image = global::SHME.Properties.Resources.toolMove;
-            this.btnToolMove.Location = new System.Drawing.Point(4, 36);
-            this.btnToolMove.Name = "btnToolMove";
-            this.btnToolMove.Size = new System.Drawing.Size(32, 32);
-            this.btnToolMove.TabIndex = 0;
-            this.btnToolMove.Tag = "";
-            this.toolTip.SetToolTip(this.btnToolMove, "Pan");
-            this.btnToolMove.UseVisualStyleBackColor = true;
-            this.btnToolMove.Click += new System.EventHandler(this.btnTool_Click);
+            this.btnToolPan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToolPan.Image = global::SHME.Properties.Resources.toolMove;
+            this.btnToolPan.Location = new System.Drawing.Point(4, 36);
+            this.btnToolPan.Name = "btnToolPan";
+            this.btnToolPan.Size = new System.Drawing.Size(32, 32);
+            this.btnToolPan.TabIndex = 0;
+            this.btnToolPan.Tag = "";
+            this.toolTip.SetToolTip(this.btnToolPan, "Pan");
+            this.btnToolPan.UseVisualStyleBackColor = true;
+            this.btnToolPan.Click += new System.EventHandler(this.btnTool_Click);
             // 
             // btnToolProbe1
             // 
@@ -2381,28 +2381,28 @@
             this.pnlToolSelect.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.pnlToolSelect.BackColor = System.Drawing.SystemColors.Control;
             this.pnlToolSelect.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlToolSelect.Controls.Add(this.btnToolSmooth3);
-            this.pnlToolSelect.Controls.Add(this.btnToolSmooth2);
-            this.pnlToolSelect.Controls.Add(this.btnToolLevel3);
-            this.pnlToolSelect.Controls.Add(this.btnToolLevel2);
-            this.pnlToolSelect.Controls.Add(this.btnToolSub3);
-            this.pnlToolSelect.Controls.Add(this.btnToolSub2);
-            this.pnlToolSelect.Controls.Add(this.btnToolAdd3);
-            this.pnlToolSelect.Controls.Add(this.btnToolAdd2);
-            this.pnlToolSelect.Controls.Add(this.btnToolSwitch);
             this.pnlToolSelect.Controls.Add(this.btnToolUndo);
             this.pnlToolSelect.Controls.Add(this.btnToolRedo);
-            this.pnlToolSelect.Controls.Add(this.btnToolMove);
-            this.pnlToolSelect.Controls.Add(this.btnToolProbe1);
-            this.pnlToolSelect.Controls.Add(this.btnToolProbe2);
-            this.pnlToolSelect.Controls.Add(this.btnToolPencil1);
+            this.pnlToolSelect.Controls.Add(this.btnToolPan);
+            this.pnlToolSelect.Controls.Add(this.btnToolSwitch);
+            this.pnlToolSelect.Controls.Add(this.btnToolSmooth3);
+            this.pnlToolSelect.Controls.Add(this.btnToolSmooth2);
             this.pnlToolSelect.Controls.Add(this.btnToolSmooth1);
+            this.pnlToolSelect.Controls.Add(this.btnToolLevel3);
+            this.pnlToolSelect.Controls.Add(this.btnToolLevel2);
             this.pnlToolSelect.Controls.Add(this.btnToolLevel1);
-            this.pnlToolSelect.Controls.Add(this.btnToolAdd1);
+            this.pnlToolSelect.Controls.Add(this.btnToolSub3);
+            this.pnlToolSelect.Controls.Add(this.btnToolSub2);
             this.pnlToolSelect.Controls.Add(this.btnToolSub1);
+            this.pnlToolSelect.Controls.Add(this.btnToolAdd3);
+            this.pnlToolSelect.Controls.Add(this.btnToolAdd2);
+            this.pnlToolSelect.Controls.Add(this.btnToolAdd1);
             this.pnlToolSelect.Controls.Add(this.btnToolProbe3);
+            this.pnlToolSelect.Controls.Add(this.btnToolProbe2);
+            this.pnlToolSelect.Controls.Add(this.btnToolProbe1);
             this.pnlToolSelect.Controls.Add(this.btnToolPencil3);
             this.pnlToolSelect.Controls.Add(this.btnToolPencil2);
+            this.pnlToolSelect.Controls.Add(this.btnToolPencil1);
             this.pnlToolSelect.Location = new System.Drawing.Point(224, 396);
             this.pnlToolSelect.Name = "pnlToolSelect";
             this.pnlToolSelect.Size = new System.Drawing.Size(269, 105);
@@ -2599,7 +2599,7 @@
         private System.Windows.Forms.Button btnToolLevel1;
         private System.Windows.Forms.Button btnToolPencil1;
         private System.Windows.Forms.Button btnToolProbe1;
-        private System.Windows.Forms.Button btnToolMove;
+        private System.Windows.Forms.Button btnToolPan;
         private System.Windows.Forms.PictureBox pbMouseButtons;
         private System.Windows.Forms.Button btnToolRMB;
         private System.Windows.Forms.Button btnToolMMB;
