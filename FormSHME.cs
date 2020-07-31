@@ -120,7 +120,10 @@ namespace SHME
                 btnSpectrumColor3, btnSpectrumColor4, btnSpectrumColor5,
                 btnSpectrumColor6, btnSpectrumColor7, btnSpectrumColor8 };
             for (int i = 0; i < 9; i++)
+            {
                 SpectrumColorControls[i].Tag = i;
+                spectrumColors[i] = (SpectrumColorControls[i].BackColor = SpectrumPresets[0, i]).ToArgb();
+            }
 
             //* Preload presets
             cbbLevelFormat16bit.SelectedIndex = 0;
