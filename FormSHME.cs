@@ -186,16 +186,20 @@ namespace SHME
         private void cbbMonochromePresets_SelectedIndexChanged(object sender, EventArgs e) =>
             btnMonochromeColor.BackColor = MonochromePresets[cbbMonochromePresets.SelectedIndex];
 
-        private void btnMonochromeColor_BackColorChanged(object sender, EventArgs e) =>
+        private void btnMonochromeColor_BackColorChanged(object sender, EventArgs e)
+        {
             monochromeColor = btnMonochromeColor.BackColor.ToArgb();
+            HMapOption_Changed(null, null);
+        }
 
         private void PickColor_Click(object sender, EventArgs e)//Ok
         {
             if (dlgColor.ShowDialog() != DialogResult.OK)
                 return;
             (sender as Control).BackColor = dlgColor.Color;
-            if ((sender as Button).Tag != null)
-                DrawSpectrumSample();
+            // Update spectrum bar
+            if ((sender as Button).Tag == null) return;
+            DrawSpectrumSample();
             HMapOption_Changed(null, null);
         }
 
