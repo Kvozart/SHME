@@ -171,7 +171,7 @@
     <None Include="Resources\toolMove.png" />
     <None Include="Resources\toolPencil.png" />
     <None Include="Resources\toolProbe.png" />
-    <None Include="Resources\toolLevel.png" />
+    <None Include="Resources\toolLevelFlaten.png" />
     <None Include="Resources\toolLevelSmooth.png" />
     <None Include="Resources\blank.png" />
     <None Include="Resources\gradientScanline.png" />
@@ -197,6 +197,10 @@
     <None Include="Resources\historyForward.png" />
     <None Include="Resources\historyBackHi.png" />
     <None Include="Resources\historyForwardHi.png" />
+    <None Include="Resources\toolLevelStretch.png" />
+    <None Include="Resources\toolLevelFlatenUp.png" />
+    <None Include="Resources\toolLevelFlatenDown.png" />
+    <None Include="Resources\eye.png" />
     <Content Include="zlib1.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

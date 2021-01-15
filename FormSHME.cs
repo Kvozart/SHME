@@ -73,12 +73,12 @@ namespace SHME
         HistoryRecord historyRecord;
 
         // Drawing
-        float[,] tool1ForceMask;
-        float[,] tool2ForceMask;
-        float[,] tool3ForceMask;
-        int[,] tool1Brush;
-        int[,] tool2Brush;
-        int[,] tool3Brush;
+        float[,] brush1ForceMask;
+        float[,] brush2ForceMask;
+        float[,] brush3ForceMask;
+        int[,] brush1Buffer;
+        int[,] brush2Buffer;
+        int[,] brush3Buffer;
 
         public FormSHME()
         {
@@ -89,28 +89,23 @@ namespace SHME
 
             // Bind and give Tool buttons ID
             ToolControls = new Button[]{
+                // Core tools
                 btnToolPan,
                 btnToolSwitch,
                 btnToolUndo,
                 btnToolRedo,
-                btnToolProbe1,  // 4
-                btnToolProbe2,
-                btnToolProbe3,
-                btnToolPencil1, // 7
-                btnToolPencil2,
-                btnToolPencil3,
-                btnToolLevel1,  // 10
-                btnToolLevel2,
-                btnToolLevel3,
-                btnToolAdd1,    // 13
-                btnToolAdd2,
-                btnToolAdd3,
-                btnToolSub1,    // 16
-                btnToolSub2,
-                btnToolSub3,
-                btnToolSmooth1, // 19
-                btnToolSmooth2,
-                btnToolSmooth3};
+                // Map tools
+                btnToolProbe,
+                btnToolPencil,
+                btnToolFlatenUp,
+                btnToolFlatenDown,
+                btnToolFlaten, // Must cover FlatenUp and FlatenDown
+                //
+                btnToolAdd,
+                btnToolSub, // Cover branch
+                //
+                btnToolSmooth,
+                btnToolStretch};
             for (int i = 0; i < ToolControls.Length; i++)
                 ToolControls[i].Tag = i;
 
@@ -129,11 +124,11 @@ namespace SHME
             cbbLevelFormat16bit.SelectedIndex = 0;
             cbbLevelFormat8bit. SelectedIndex = 0;
             // Tools
-            ToolXMBSelect(btnToolLMB,  (int)btnToolPencil1.Tag);
-            ToolXMBSelect(btnToolMMB,  (int)btnToolPan.Tag);
-            ToolXMBSelect(btnToolRMB,  (int)btnToolProbe1.Tag);
-            ToolXMBSelect(btnToolX1MB, (int)btnToolAdd1.Tag);
-            ToolXMBSelect(btnToolX2MB, (int)btnToolSub1.Tag);
+            ToolXMBSelect(btnToolLMB,  (int)btnToolPencil.Tag << 2);
+            ToolXMBSelect(btnToolMMB,  (int)btnToolPan   .Tag << 2);
+            ToolXMBSelect(btnToolRMB,  (int)btnToolProbe .Tag << 2);
+            ToolXMBSelect(btnToolX1MB, (int)btnToolAdd   .Tag << 2);
+            ToolXMBSelect(btnToolX2MB, (int)btnToolSub   .Tag << 2);
 
             //* Load options
             OptionsLoad();
@@ -144,15 +139,15 @@ namespace SHME
             // Tool presets
             if (cbbToolsetPreset.Items.Count < 1)
             {
-                AddToolset((int)btnToolPencil1.Tag, (int)btnToolPan.Tag, (int)btnToolProbe1.Tag,  (int)btnToolAdd1.Tag,   (int)btnToolSub1.Tag);
-                AddToolset((int)btnToolAdd1.Tag,    (int)btnToolPan.Tag, (int)btnToolSub1.Tag,    (int)btnToolLevel1.Tag, (int)btnToolSmooth1.Tag);
-                AddToolset((int)btnToolLevel1.Tag,  (int)btnToolPan.Tag, (int)btnToolSmooth1.Tag, (int)btnToolAdd1.Tag,   (int)btnToolSub1.Tag);
+                AddToolset((int)btnToolPencil.Tag << 2, (int)btnToolPan.Tag << 2, (int)btnToolProbe .Tag << 2, (int)btnToolAdd   .Tag << 2, (int)btnToolSub   .Tag << 2);
+                AddToolset((int)btnToolAdd   .Tag << 2, (int)btnToolPan.Tag << 2, (int)btnToolSub   .Tag << 2, (int)btnToolFlaten.Tag << 2, (int)btnToolSmooth.Tag << 2);
+                AddToolset((int)btnToolFlaten.Tag << 2, (int)btnToolPan.Tag << 2, (int)btnToolSmooth.Tag << 2, (int)btnToolAdd   .Tag << 2, (int)btnToolSub   .Tag << 2);
             }
 
             // Create tool force shape
-            CreateToolForceMask(ref tool1ForceMask, ref tool1Brush, btnSlot1Force.ImageIndex, nudSlot1Size, chbSlot1Shape);
-            CreateToolForceMask(ref tool2ForceMask, ref tool2Brush, btnSlot2Force.ImageIndex, nudSlot2Size, chbSlot2Shape);
-            CreateToolForceMask(ref tool3ForceMask, ref tool3Brush, btnSlot3Force.ImageIndex, nudSlot3Size, chbSlot3Shape);
+            CreateToolForceMask(ref brush1ForceMask, ref brush1Buffer, btnBrush1Distribution.ImageIndex, nudBrush1Width, nudBrush1Height, chbBrush1Shape);
+            CreateToolForceMask(ref brush2ForceMask, ref brush2Buffer, btnBrush2Distribution.ImageIndex, nudBrush2Width, nudBrush2Height, chbBrush2Shape);
+            CreateToolForceMask(ref brush3ForceMask, ref brush3Buffer, btnBrush3Distribution.ImageIndex, nudBrush3Width, nudBrush3Height, chbBrush3Shape);
 
             // Load HMap
             bool loaded = false;
@@ -685,20 +680,25 @@ namespace SHME
         {
             if (lockMouse) return;
             // Get tool, Pan, Switch
-            int toolID = 0;
+            int toolID    = 0,
+                toolBrush = 0;
             if (e.Button != MouseButtons.None)
             {
                 object oID =
-                    (e.Button == MouseButtons.Left)     ? btnToolLMB.Tag  :
-                    (e.Button == MouseButtons.Right)    ? btnToolRMB.Tag  :
-                    (e.Button == MouseButtons.Middle)   ? btnToolMMB.Tag  :
+                    (e.Button == MouseButtons.Left)     ? btnToolLMB .Tag :
+                    (e.Button == MouseButtons.Right)    ? btnToolRMB .Tag :
+                    (e.Button == MouseButtons.Middle)   ? btnToolMMB .Tag :
                     (e.Button == MouseButtons.XButton1) ? btnToolX1MB.Tag :
                     (e.Button == MouseButtons.XButton2) ? btnToolX2MB.Tag :
                     null;
                 if (oID != null) toolID = (int)oID;
+                // Split ID and brush number
+                toolBrush = toolID & 3;
+                toolID = toolID >> 2;
 
                 if (toolID < 4)
                 {
+                    // Skip before actual move
                     if (moving)
                     {
                         // Pan
@@ -752,7 +752,8 @@ namespace SHME
                 lblPointerLevel.Text = mapXYLevel.ToString() + " x" + mapXYLevel.ToString("X4");
                 if (e.Button == MouseButtons.None)
                 {
-                    int sz = Math.Max((int)nudSlot1Size.Value, Math.Max((int)nudSlot2Size.Value, (int)nudSlot3Size.Value)) << zoom;
+                    //int szW = Math.Max((int)nudBrush1Width .Value, Math.Max((int)nudBrush2Width .Value, (int)nudBrush3Width .Value)) << zoom;
+                    //int szH = Math.Max((int)nudBrush1Height.Value, Math.Max((int)nudBrush2Height.Value, (int)nudBrush3Height.Value)) << zoom;
                     Invalidate(new Rectangle(
                         hScrollBar.Left,
                         vScrollBar.Top,
@@ -764,17 +765,12 @@ namespace SHME
             // No drawing?
             if (toolID < 4 || chbShowTMap.Checked) return;
 
-            // Recalculate tool ID and Index
-            toolID -= 4;
-            int toolIdx = toolID % 3;
-            toolID /= 3;
-
             // Probe
-            if (toolID == 0)//Ok
+            if (toolID == (int)btnToolProbe.Tag)//Ok
             {
-                     if (toolIdx == 0) nudSlot1Value.Value = mapXYLevel;
-                else if (toolIdx == 1) nudSlot2Value.Value = mapXYLevel;
-                else                   nudSlot3Value.Value = mapXYLevel;
+                     if (toolBrush == 0) nudBrush1ValueDecimal.Value = mapXYLevel;
+                else if (toolBrush == 1) nudBrush2ValueDecimal.Value = mapXYLevel;
+                else                     nudBrush3ValueDecimal.Value = mapXYLevel;
                 return;
             }
 
@@ -788,58 +784,88 @@ namespace SHME
                 historyRecord = new HistoryRecord(HMap, mapX, mapY, mapX, mapY);
             }
 
-            // Get brush
-            int[,] brush = (toolIdx == 0)
-                ? tool1Brush : (toolIdx == 1)
-                ? tool2Brush
-                : tool3Brush;
-            // Get tool value
-            UInt16 value = (toolIdx == 0)
-                ? (UInt16)nudSlot1Value.Value : (toolIdx == 1)
-                ? (UInt16)nudSlot2Value.Value
-                : (UInt16)nudSlot3Value.Value;
-            // Get tool size
-            int size = (toolIdx == 0)
-                ? (int)nudSlot1Size.Value : (toolIdx == 1)
-                ? (int)nudSlot2Size.Value
-                : (int)nudSlot3Size.Value;
+            // Get brush 
+            int[,] brush;
+            float[,] mask;
+            UInt16 value;
+            float force;
+            int sizeW, sizeH;
+            if (toolBrush == 0)
+            {
+                brush = brush1Buffer;
+                mask  = brush1ForceMask;
+                value = (UInt16)nudBrush1ValueDecimal.Value;
+                force = (UInt16)nudBrush1ForceDecimal.Value;
+                sizeW = (int)nudBrush1Width .Value;
+                sizeH = (int)nudBrush1Height.Value;
+            }
+            else if (toolBrush == 1)
+            {
+                brush = brush2Buffer;
+                mask  = brush2ForceMask;
+                value = (UInt16)nudBrush2ValueDecimal.Value;
+                force = (UInt16)nudBrush2ForceDecimal.Value;
+                sizeW = (int)nudBrush2Width .Value;
+                sizeH = (int)nudBrush2Height.Value;
+            }
+            else
+            {
+                brush = brush3Buffer;
+                mask  = brush3ForceMask;
+                value = (UInt16)nudBrush3ValueDecimal.Value;
+                force = (UInt16)nudBrush3ForceDecimal.Value;
+                sizeW = (int)nudBrush3Width .Value;
+                sizeH = (int)nudBrush3Height.Value;
+            }
+            force = force / 65535;
 
             // Get region
-            int iR = mapX + (size >> 1);
-            int iB = mapY + (size >> 1);
-            int mapL = iR - size + 1;
-            int mapT = iB - size + 1;
+            int iR = mapX + (sizeW >> 1);
+            int iB = mapY + (sizeH >> 1);
+            int mapL = iR - sizeW + 1;
+            int mapT = iB - sizeH + 1;
             // Limit region
             int iL = (mapL < 0) ? 0 : mapL;
             int iT = (mapT < 0) ? 0 : mapT;
             if (mapW < iR) iR = mapW;
             if (mapH < iB) iB = mapH;
 
-            // Pencil, Level
-            if (toolID < 3)
+            // Pencil, FlatenUp, FlatenDown, Flaten
+            if (toolID <= (int)btnToolFlaten.Tag)
             {
                 // Level probe
-                if (toolID == 2)
+                if (toolID != (int)btnToolPencil.Tag)
                     value = (moving)
                         ? levelValue
                         : (levelValue = mapXYLevel); // Store at first contact and use
-                for (y = 0; y < size; y++)
-                    for (x = 0; x < size; x++)
-                        brush[x, y] = value;
+                // Apply FlatenUp, FlatenDown
+                if (toolID == (int)btnToolFlatenUp.Tag)
+                    for (y = iT; y <= iB; y++)
+                        for (x = iL; x <= iR; x++)
+                            brush[x - mapL, y - mapT] = (historyRecord.Clip[x, y] < value) ? value : historyRecord.Clip[x, y];
+                else if (toolID == (int)btnToolFlatenDown.Tag)
+                    for (y = iT; y <= iB; y++)
+                        for (x = iL; x <= iR; x++)
+                            brush[x - mapL, y - mapT] = (value < historyRecord.Clip[x, y]) ? value : historyRecord.Clip[x, y];
+                // Pencil, Flaten
+                else
+                    for (y = 0; y < sizeH; y++)
+                        for (x = 0; x < sizeW; x++)
+                            brush[x, y] = value;
             }
             // Add, Sub
-            else if (toolID < 5)
+            else if (toolID <= (int)btnToolSub.Tag)
             {
-                int v, d = (toolID == 4) ? -value : value;
+                int v, delta = (toolID == (int)btnToolSub.Tag) ? -value : value;
                 for (y = iT; y <= iB; y++)
                     for (x = iL; x <= iR; x++)
                     {
-                        v = historyRecord.Clip[x, y] + d;
+                        v = historyRecord.Clip[x, y] + delta;
                         brush[x - mapL, y - mapT] = (65535 < v) ? 65535 : (v < 0) ? 0 : v;
                     }
             }
             // Smooth
-            else
+            else if (toolID == (int)btnToolSmooth.Tag)
             {
                 int v, h;
                 for (y = iT; y <= iB; y++)
@@ -853,25 +879,29 @@ namespace SHME
                         brush[x - mapL, y - mapT] = (v + 2) / 5; // +2 for roundup
                     }
             }
-
-            // Get tool shape
-            bool bar = (toolIdx == 0)
-                ? chbSlot1Shape.Checked : (toolIdx == 1)
-                ? chbSlot2Shape.Checked
-                : chbSlot3Shape.Checked;
-            // Get mask
-            float[,] mask = (toolIdx == 0)
-                ? tool1ForceMask : (toolIdx == 1)
-                ? tool2ForceMask
-                : tool3ForceMask;
+            // Stretch (closed Smooth)
+            else
+            {
+                int v, h;
+                for (y = iT; y <= iB; y++)
+                    for (x = iL; x <= iR; x++)
+                    {
+                        v = h = historyRecord.Clip[x, y];
+                        v += (0 <    x && iL < x) ? historyRecord.Clip[x - 1, y    ] : h;
+                        v += (0 <    y && iT < y) ? historyRecord.Clip[x,     y - 1] : h;
+                        v += (x < mapW && x < iR) ? historyRecord.Clip[x + 1, y    ] : h;
+                        v += (y < mapH && y < iB) ? historyRecord.Clip[x,     y + 1] : h;
+                        brush[x - mapL, y - mapT] = (v + 2) / 5; // +2 for roundup
+                    }
+            }
 
             // Put brush
-            float k, f = (toolID == 5) ? (float)value / 65535 : 1;
+            float k;
             for (y = iT; y <= iB; y++)
                 for (x = iL; x <= iR; x++)
                     if (HMap.Changed[x, y] < mask[x - mapL, y - mapT])
                     {
-                        k = mask[x - mapL, y - mapT] * f;
+                        k = mask[x - mapL, y - mapT] * force;
                         HMap.Levels[x, y] = (UInt16)(brush[x - mapL, y - mapT] * k + historyRecord.Clip[x, y] * (1 - k));
                         HMap.Changed[x, y] = mask[x - mapL, y - mapT];
                     }
@@ -926,6 +956,16 @@ namespace SHME
         #region Form
         private int CheckInteger(String value, int min, int max, int def) => (Int32.TryParse(value, out int v)) ? (min <= v && v <= max) ? v : def : def;
 
+        private int ReadToolFromString(String s)
+        {
+            int i;
+            s = "btnTool" + s;
+            for (i = 0; i < ToolControls.Length; i++)
+                if (s.StartsWith(ToolControls[i].Name))
+                    return (i << 2) + CheckInteger(s.Substring(ToolControls[i].Name.Length, 1), 1, 3, 1) - 1;
+            return 0;
+        }
+
         private String OptionsLoad()
         {
             try
@@ -977,11 +1017,11 @@ namespace SHME
                                 rec = value.Split(new String[] { ", " }, StringSplitOptions.None);
                                 for (i = 0; i < ToolControls.Length; i++)
                                 {
-                                    if (ToolControls[i].Name.Contains(rec[1])) toolL  = i;
-                                    if (ToolControls[i].Name.Contains(rec[2])) toolM  = i;
-                                    if (ToolControls[i].Name.Contains(rec[3])) toolR  = i;
-                                    if (ToolControls[i].Name.Contains(rec[4])) toolX1 = i;
-                                    if (ToolControls[i].Name.Contains(rec[5])) toolX2 = i;
+                                    toolL  = ReadToolFromString(rec[1]);
+                                    toolM  = ReadToolFromString(rec[2]);
+                                    toolR  = ReadToolFromString(rec[3]);
+                                    toolX1 = ReadToolFromString(rec[4]);
+                                    toolX2 = ReadToolFromString(rec[5]);
                                 }
                                 if (rec[0] == "0")
                                 {
@@ -995,18 +1035,27 @@ namespace SHME
                                     AddToolset(toolL, toolM, toolR, toolX1, toolX2);
                                 break;
                             // Slots
-                            case "Slot1Value": nudSlot1Value.Value      = CheckInteger(value, 0, 65535, 0); break;
-                            case "Slot2Value": nudSlot2Value.Value      = CheckInteger(value, 0, 65535, 0); break;
-                            case "Slot3Value": nudSlot3Value.Value      = CheckInteger(value, 0, 65535, 0); break;
-                            case "Slot1Size":  nudSlot1Size.Value       = CheckInteger(value, 1, (int)nudSlot1Size.Maximum, 1); break;
-                            case "Slot2Size":  nudSlot2Size.Value       = CheckInteger(value, 1, (int)nudSlot2Size.Maximum, 1); break;
-                            case "Slot3Size":  nudSlot3Size.Value       = CheckInteger(value, 1, (int)nudSlot3Size.Maximum, 1); break;
-                            case "Slot1Force": btnSlot1Force.ImageIndex = CheckInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
-                            case "Slot2Force": btnSlot2Force.ImageIndex = CheckInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
-                            case "Slot3Force": btnSlot3Force.ImageIndex = CheckInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
-                            case "Slot1Shape": chbSlot1Shape.Checked    = (value == "True"); break;
-                            case "Slot2Shape": chbSlot2Shape.Checked    = (value == "True"); break;
-                            case "Slot3Shape": chbSlot3Shape.Checked    = (value == "True"); break;
+                            case "Slot1Value":        nudBrush1ValueDecimal.Value      = CheckInteger(value, 0, 65535, 0); break;
+                            case "Slot2Value":        nudBrush2ValueDecimal.Value      = CheckInteger(value, 0, 65535, 0); break;
+                            case "Slot3Value":        nudBrush3ValueDecimal.Value      = CheckInteger(value, 0, 65535, 0); break;
+                            case "Slot1Force":        nudBrush1ForceDecimal.Value      = CheckInteger(value, 0, 65535, 0); break;
+                            case "Slot2Force":        nudBrush2ForceDecimal.Value      = CheckInteger(value, 0, 65535, 0); break;
+                            case "Slot3Force":        nudBrush3ForceDecimal.Value      = CheckInteger(value, 0, 65535, 0); break;
+                            case "Slot1Width":        nudBrush1Width .Value            = CheckInteger(value, 1, (int)nudBrush1Width .Maximum, 1); break;
+                            case "Slot1Height":       nudBrush1Height.Value            = CheckInteger(value, 1, (int)nudBrush1Height.Maximum, 1); break;
+                            case "Slot2Width":        nudBrush2Width .Value            = CheckInteger(value, 1, (int)nudBrush2Width .Maximum, 1); break;
+                            case "Slot2Height":       nudBrush2Height.Value            = CheckInteger(value, 1, (int)nudBrush2Height.Maximum, 1); break;
+                            case "Slot3Width":        nudBrush3Width .Value            = CheckInteger(value, 1, (int)nudBrush3Width .Maximum, 1); break;
+                            case "Slot3Height":       nudBrush3Height.Value            = CheckInteger(value, 1, (int)nudBrush3Height.Maximum, 1); break;
+                            case "Slot1Distribution": btnBrush1Distribution.ImageIndex = CheckInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
+                            case "Slot2Distribution": btnBrush2Distribution.ImageIndex = CheckInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
+                            case "Slot3Distribution": btnBrush3Distribution.ImageIndex = CheckInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
+                            case "Slot1Shape":        chbBrush1Shape.Checked           = (value == "True"); break;
+                            case "Slot2Shape":        chbBrush2Shape.Checked           = (value == "True"); break;
+                            case "Slot3Shape":        chbBrush3Shape.Checked           = (value == "True"); break;
+                            case "Slot1FrameShow":    chbBrush1FrameShow.Checked       = (value == "True"); break;
+                            case "Slot2FrameShow":    chbBrush2FrameShow.Checked       = (value == "True"); break;
+                            case "Slot3FrameShow":    chbBrush3FrameShow.Checked       = (value == "True"); break;
 
                             //* Files
                             case "FileHMap": HMap.URL = value; break;
@@ -1131,28 +1180,30 @@ namespace SHME
             /**/
             if (!lblPointerLevel.Enabled)
                 return;
-            DrawBrushContour(e.Graphics, (int)nudSlot1Size.Value, chbSlot1Shape.Checked);
-            DrawBrushContour(e.Graphics, (int)nudSlot2Size.Value, chbSlot2Shape.Checked);
-            DrawBrushContour(e.Graphics, (int)nudSlot3Size.Value, chbSlot3Shape.Checked);
+            if (chbBrush1FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush1Width.Value, (int)nudBrush1Height.Value, chbBrush1Shape.Checked);
+            if (chbBrush2FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush2Width.Value, (int)nudBrush2Height.Value, chbBrush2Shape.Checked);
+            if (chbBrush3FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, chbBrush3Shape.Checked);
             /**/
         }
 
-        private void DrawBrushContour(Graphics g, int size, bool shape)
+        private void DrawBrushContour(Graphics g, int width, int height, bool shape)
         {
-            int ix = ((mapX - ((size - 1) >> 1)) << zoom) - hScrollBar.Value;
-            int iy = ((mapY - ((size - 1) >> 1)) << zoom) - vScrollBar.Value;
+            int ix = ((mapX - ((width  - 1) >> 1)) << zoom) - hScrollBar.Value;
+            int iy = ((mapY - ((height - 1) >> 1)) << zoom) - vScrollBar.Value;
             if (shape)
                 g.DrawRectangle(
                     new Pen(Color.Black),
                     ix + hScrollBar.Left,
                     iy + vScrollBar.Top,
-                    (size << zoom) - 1, (size << zoom) - 1);
+                    (width  << zoom) - 1,
+                    (height << zoom) - 1);
             else
                 g.DrawEllipse(
                     new Pen(Color.Black),
                     ix + hScrollBar.Left,
                     iy + vScrollBar.Top,
-                    (size << zoom) - 1, (size << zoom) - 1
+                    (width  << zoom) - 1,
+                    (height << zoom) - 1
                     );
         }
 
@@ -1225,35 +1276,44 @@ namespace SHME
 
                 //* Tools
                 file.WriteLine("Toolset\t0, " + (
-                    ToolControls[(int)btnToolLMB.Tag ].Name + ", " +
-                    ToolControls[(int)btnToolMMB.Tag ].Name + ", " +
-                    ToolControls[(int)btnToolRMB.Tag ].Name + ", " +
-                    ToolControls[(int)btnToolX1MB.Tag].Name + ", " +
-                    ToolControls[(int)btnToolX2MB.Tag].Name
+                    ToolControls[(int)btnToolLMB.Tag  >> 2].Name + (((int)btnToolLMB.Tag  & 3) + 1) + ", " +
+                    ToolControls[(int)btnToolMMB.Tag  >> 2].Name + (((int)btnToolMMB.Tag  & 3) + 1) + ", " +
+                    ToolControls[(int)btnToolRMB.Tag  >> 2].Name + (((int)btnToolRMB.Tag  & 3) + 1) + ", " +
+                    ToolControls[(int)btnToolX1MB.Tag >> 2].Name + (((int)btnToolX1MB.Tag & 3) + 1) + ", " +
+                    ToolControls[(int)btnToolX2MB.Tag >> 2].Name + (((int)btnToolX2MB.Tag & 3) + 1)
                     ).Replace("btnTool", ""));
                 // Preset
                 for (int i = 0; i < cbbToolsetPreset.Items.Count; i++)
                     file.WriteLine("Toolset\t" + (i + 1) + ", " + cbbToolsetPreset.Items[i].ToString());
                 // Slots
-                file.WriteLine("Slot1Value\t" + nudSlot1Value.Value);
-                file.WriteLine("Slot2Value\t" + nudSlot2Value.Value);
-                file.WriteLine("Slot3Value\t" + nudSlot3Value.Value);
-                file.WriteLine("Slot1Size\t"  + nudSlot1Size.Value);
-                file.WriteLine("Slot2Size\t"  + nudSlot2Size.Value);
-                file.WriteLine("Slot3Size\t"  + nudSlot3Size.Value);
-                file.WriteLine("Slot1Force\t" + btnSlot1Force.ImageIndex);
-                file.WriteLine("Slot2Force\t" + btnSlot2Force.ImageIndex);
-                file.WriteLine("Slot3Force\t" + btnSlot3Force.ImageIndex);
-                file.WriteLine("Slot1Shape\t" + chbSlot1Shape.Checked);
-                file.WriteLine("Slot2Shape\t" + chbSlot2Shape.Checked);
-                file.WriteLine("Slot3Shape\t" + chbSlot3Shape.Checked);
+                file.WriteLine("Slot1Value\t"        + nudBrush1ValueDecimal.Value);
+                file.WriteLine("Slot2Value\t"        + nudBrush2ValueDecimal.Value);
+                file.WriteLine("Slot3Value\t"        + nudBrush3ValueDecimal.Value);
+                file.WriteLine("Slot1Force\t"        + nudBrush1ForceDecimal.Value);
+                file.WriteLine("Slot2Force\t"        + nudBrush2ForceDecimal.Value);
+                file.WriteLine("Slot3Force\t"        + nudBrush3ForceDecimal.Value);
+                file.WriteLine("Slot1Width\t"        + nudBrush1Width .Value);
+                file.WriteLine("Slot1Height\t"       + nudBrush1Height.Value);
+                file.WriteLine("Slot2Width\t"        + nudBrush2Width .Value);
+                file.WriteLine("Slot2Height\t"       + nudBrush2Height.Value);
+                file.WriteLine("Slot3Width\t"        + nudBrush3Width .Value);
+                file.WriteLine("Slot3Height\t"       + nudBrush3Height.Value);
+                file.WriteLine("Slot1Distribution\t" + btnBrush1Distribution.ImageIndex);
+                file.WriteLine("Slot2Distribution\t" + btnBrush2Distribution.ImageIndex);
+                file.WriteLine("Slot3Distribution\t" + btnBrush3Distribution.ImageIndex);
+                file.WriteLine("Slot1Shape\t"        + chbBrush1Shape.Checked);
+                file.WriteLine("Slot2Shape\t"        + chbBrush2Shape.Checked);
+                file.WriteLine("Slot3Shape\t"        + chbBrush3Shape.Checked);
+                file.WriteLine("Slot1FrameShow\t"    + chbBrush1FrameShow.Checked);
+                file.WriteLine("Slot2FrameShow\t"    + chbBrush2FrameShow.Checked);
+                file.WriteLine("Slot3FrameShow\t"    + chbBrush3FrameShow.Checked);
 
                 //* Files
                 file.WriteLine("FileHMap\t" + HMap.URL);
                 file.WriteLine("FileTMap\t" + TMap.URL);
-                file.WriteLine("Level8bit\t" + cbbLevelFormat16bit.SelectedIndex);
-                file.WriteLine("Level16bit\t" + cbbLevelFormat16bit.SelectedIndex);
-                file.WriteLine("LevelBLIByte\t" + chbLevelByteBigLittleIndian.Checked);
+                file.WriteLine("Level8bit\t"     + cbbLevelFormat16bit.SelectedIndex);
+                file.WriteLine("Level16bit\t"    + cbbLevelFormat16bit.SelectedIndex);
+                file.WriteLine("LevelBLIByte\t"  + chbLevelByteBigLittleIndian.Checked);
                 file.WriteLine("LevelBLIPixel\t" + chbLevelPixelBigLittleIndian.Checked);
 
                 file.WriteLine("ViewGrid\t" + chbGrid.Checked);
@@ -1270,19 +1330,19 @@ namespace SHME
                 (int)btnToolX2MB.Tag);
         private int AddToolset(int toolL, int toolM, int toolR, int toolX1, int toolX2)//Ok
         {
-            int t = toolL + (toolM << 5) + (toolR << 10) + (toolX1 << 15) + (toolX2 << 20);
-            if (!toolsetPresets.Contains(t))
+            int preset = toolL + (toolM << 6) + (toolR << 12) + (toolX1 << 18) + (toolX2 << 24);
+            if (!toolsetPresets.Contains(preset))
             {
                 cbbToolsetPreset.Items.Add((
-                    ToolControls[toolL].Name  + ", " + 
-                    ToolControls[toolM].Name  + ", " + 
-                    ToolControls[toolR].Name  + ", " + 
-                    ToolControls[toolX1].Name + ", " +
-                    ToolControls[toolX2].Name
+                    ToolControls[toolL  >> 2].Name + ((toolL  & 3) + 1) + ", " + 
+                    ToolControls[toolM  >> 2].Name + ((toolM  & 3) + 1) + ", " + 
+                    ToolControls[toolR  >> 2].Name + ((toolR  & 3) + 1) + ", " + 
+                    ToolControls[toolX1 >> 2].Name + ((toolX1 & 3) + 1) + ", " +
+                    ToolControls[toolX2 >> 2].Name + ((toolX2 & 3) + 1)
                     ).Replace("btnTool", ""));
-                toolsetPresets.Add(t);
+                toolsetPresets.Add(preset);
             }
-            return toolsetPresets.IndexOf(t);
+            return toolsetPresets.IndexOf(preset);
         }
 
         private void btnToolsetRemove_Click(object sender, EventArgs e) => RemoveToolset(cbbToolsetPreset.SelectedIndex);
@@ -1302,29 +1362,26 @@ namespace SHME
                 return;
             int IDs = toolsetPresets[cbbToolsetPreset.SelectedIndex];
             ToolXMBSelect(btnToolLMB,  IDs      );
-            ToolXMBSelect(btnToolMMB,  IDs >>  5);
-            ToolXMBSelect(btnToolRMB,  IDs >> 10);
-            ToolXMBSelect(btnToolX1MB, IDs >> 15);
-            ToolXMBSelect(btnToolX2MB, IDs >> 20);
+            ToolXMBSelect(btnToolMMB,  IDs >>  6);
+            ToolXMBSelect(btnToolRMB,  IDs >> 12);
+            ToolXMBSelect(btnToolX1MB, IDs >> 18);
+            ToolXMBSelect(btnToolX2MB, IDs >> 24);
             btnToolsetRemove.Enabled = true;
-        }
-
-        private void ToolXMBSelect(Button btnXMB, int ID)//O
-        {
-            ID = ID & 31;
-            if (ToolControls.Length <= ID) ID = 0; // Unknown
-            btnXMB.Image = ToolControls[ID].Image;
-            btnXMB.Text = ToolControls[ID].Text;
-            btnXMB.Tag = ID;
         }
 
         private void btnToolXMB_Click(object sender, EventArgs e)//Ok
         {
-            Button btn = sender as Button;
             pnlToolSelect.Tag = sender;
-            var r = btn.PointToClient(btn.Location);
+            Button btn = sender as Button;
+            int useBrushNumber = (int)btn.Tag & 3;
+            // Popup panel
+            //var r = btn.PointToClient(btn.Location);
             pnlToolSelect.Left = btn.Left + gbTools.Left - (btnToolPan.Left + 1);
             pnlToolSelect.Top  = btn.Top  + gbTools.Top  - (btnToolPan.Top  + 1) - btnToolPan.Height;
+            // Set brush selection
+            rbToolUseBrush1.Checked = (useBrushNumber == 0);
+            rbToolUseBrush2.Checked = (useBrushNumber == 1);
+            rbToolUseBrush3.Checked = (useBrushNumber == 2);
             pnlToolSelect.Visible = true;
             pnlToolSelect.Focus();
         }
@@ -1332,20 +1389,40 @@ namespace SHME
         private void pnlToolSelect_Click(object sender, EventArgs e) => pnlToolSelect.Visible = false;
         private void btnTool_Click(object sender, EventArgs e)//Ok
         {
-            ToolXMBSelect(pnlToolSelect.Tag as Button, (int)((sender as Button).Tag));
+            int useBrushNumber = (rbToolUseBrush1.Checked) ? 0:
+                                 (rbToolUseBrush2.Checked) ? 1:
+                                                             2;
+            ToolXMBSelect(pnlToolSelect.Tag as Button, ((int)(sender as Button).Tag << 2) + useBrushNumber);
             cbbToolsetPreset.SelectedIndex = -1;
             pnlToolSelect.Visible = false;
         }
 
-        private void nudTool1Value_ValueChanged(object sender, EventArgs e) => tbSlot1Hex.Text = ((int)nudSlot1Value.Value).ToString("X4");
-        private void nudTool2Value_ValueChanged(object sender, EventArgs e) => tbSlot2Hex.Text = ((int)nudSlot2Value.Value).ToString("X4");
-        private void nudTool3Value_ValueChanged(object sender, EventArgs e) => tbSlot3Hex.Text = ((int)nudSlot3Value.Value).ToString("X4");
+        private void ToolXMBSelect(Button btnXMB, int ID)//O
+        {
+            ID = ID & 63; // Filter out ID + brush (4 + 2 bits)
+            if (ToolControls.Length <= ID >> 2) ID = 0; // Unknown tool, set pan
+            btnXMB.Image = ToolControls[ID >> 2].Image;
+            btnXMB.Text = (ID < 16) ? "" : ((ID & 3) + 1).ToString();
+            btnXMB.Tag = ID;
+        }
 
-        private void tbTool1Hex_TextChanged(object sender, EventArgs e) => HexTextCheck(tbSlot1Hex, 4, nudSlot1Value, tbTool1Hex_TextChanged);
-        private void tbTool2Hex_TextChanged(object sender, EventArgs e) => HexTextCheck(tbSlot2Hex, 4, nudSlot2Value, tbTool2Hex_TextChanged);
-        private void tbTool3Hex_TextChanged(object sender, EventArgs e) => HexTextCheck(tbSlot3Hex, 4, nudSlot3Value, tbTool3Hex_TextChanged);
+        private void nudBrush1Value_ValueChanged(object sender, EventArgs e) => tbBrush1ValueHex.Text = ((int)nudBrush1ValueDecimal.Value).ToString("X4");
+        private void nudBrush2Value_ValueChanged(object sender, EventArgs e) => tbBrush2ValueHex.Text = ((int)nudBrush2ValueDecimal.Value).ToString("X4");
+        private void nudBrush3Value_ValueChanged(object sender, EventArgs e) => tbBrush3ValueHex.Text = ((int)nudBrush3ValueDecimal.Value).ToString("X4");
 
-        private void HexTextCheck(TextBox tb, int size, NumericUpDown nud, EventHandler e)//Ok
+        private void nudBrush1Force_ValueChanged(object sender, EventArgs e) => tbBrush1ForceHex.Text = ((int)nudBrush1ForceDecimal.Value).ToString("X4");
+        private void nudBrush2Force_ValueChanged(object sender, EventArgs e) => tbBrush2ForceHex.Text = ((int)nudBrush2ForceDecimal.Value).ToString("X4");
+        private void nudBrush3Force_ValueChanged(object sender, EventArgs e) => tbBrush3ForceHex.Text = ((int)nudBrush3ForceDecimal.Value).ToString("X4");
+
+        private void tbBrush1ValueHex_TextChanged(object sender, EventArgs e) => HexTextCheck(tbBrush1ValueHex, 4, nudBrush1ValueDecimal, tbBrush1ValueHex_TextChanged);
+        private void tbBrush2ValueHex_TextChanged(object sender, EventArgs e) => HexTextCheck(tbBrush2ValueHex, 4, nudBrush2ValueDecimal, tbBrush2ValueHex_TextChanged);
+        private void tbBrush3ValueHex_TextChanged(object sender, EventArgs e) => HexTextCheck(tbBrush3ValueHex, 4, nudBrush3ValueDecimal, tbBrush3ValueHex_TextChanged);
+
+        private void tbBrush1ForceHex_TextChanged(object sender, EventArgs e) => HexTextCheck(tbBrush1ForceHex, 4, nudBrush1ForceDecimal, tbBrush1ForceHex_TextChanged);
+        private void tbBrush2ForceHex_TextChanged(object sender, EventArgs e) => HexTextCheck(tbBrush2ForceHex, 4, nudBrush2ForceDecimal, tbBrush2ForceHex_TextChanged);
+        private void tbBrush3ForceHex_TextChanged(object sender, EventArgs e) => HexTextCheck(tbBrush3ForceHex, 4, nudBrush3ForceDecimal, tbBrush3ForceHex_TextChanged);
+
+        private void HexTextCheck(TextBox tb, int size, NumericUpDown nud, EventHandler tbHandler)//Ok
         {
             String s = tb.Text.ToUpper();
             int cursor = s.Length - tb.SelectionStart; // position from end
@@ -1361,104 +1438,110 @@ namespace SHME
             for (; 0 <= lOut; lOut--)
                 csOut[lOut] = '0';
             // Save
-            tb.TextChanged -= e;
+            tb.TextChanged -= tbHandler;
             tb.Text = new String(csOut);
             tb.SelectionStart = size - cursor;
             if (nud != null) nud.Value = Convert.ToInt32(tb.Text, 16);
-            tb.TextChanged += e;
+            tb.TextChanged += tbHandler;
         }
 
-        private void chbSlotXShape_CheckedChanged(object sender, EventArgs e) => (sender as CheckBox).BackgroundImage = ilToolShape.Images[(sender as CheckBox).Checked ? 1 : 0];
+        private void chbBrushXShape_CheckedChanged(object sender, EventArgs e) => (sender as CheckBox).BackgroundImage = ilToolShape.Images[(sender as CheckBox).Checked ? 1 : 0];
 
-        private void lblTool1Hex_Click(object sender, EventArgs e) => lblSlot1Hex.Text = (tbSlot1Hex.Visible = !tbSlot1Hex.Visible) ? "0x" : "D";
-        private void lblTool2Hex_Click(object sender, EventArgs e) => lblSlot2Hex.Text = (tbSlot2Hex.Visible = !tbSlot2Hex.Visible) ? "0x" : "D";
-        private void lblTool3Hex_Click(object sender, EventArgs e) => lblSlot3Hex.Text = (tbSlot3Hex.Visible = !tbSlot3Hex.Visible) ? "0x" : "D";
+        private void chbHexValues_CheckedChanged(object sender, EventArgs e) =>
+            tbBrush1ValueHex.Visible = tbBrush1ForceHex.Visible =
+            tbBrush2ValueHex.Visible = tbBrush2ForceHex.Visible =
+            tbBrush3ValueHex.Visible = tbBrush3ForceHex.Visible = chbHexValues.Checked;
 
-        private void nudSlot1Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref tool1ForceMask, ref tool1Brush, btnSlot1Force.ImageIndex, nudSlot1Size, chbSlot1Shape);
-        private void nudSlot2Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref tool2ForceMask, ref tool2Brush, btnSlot2Force.ImageIndex, nudSlot2Size, chbSlot2Shape);
-        private void nudSlot3Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref tool3ForceMask, ref tool3Brush, btnSlot3Force.ImageIndex, nudSlot3Size, chbSlot3Shape);
+        private void nudBrush1Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref brush1ForceMask, ref brush1Buffer, btnBrush1Distribution.ImageIndex, nudBrush1Width, nudBrush1Height, chbBrush1Shape);
+        private void nudBrush2Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref brush2ForceMask, ref brush2Buffer, btnBrush2Distribution.ImageIndex, nudBrush2Width, nudBrush2Height, chbBrush2Shape);
+        private void nudBrush3Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref brush3ForceMask, ref brush3Buffer, btnBrush3Distribution.ImageIndex, nudBrush3Width, nudBrush3Height, chbBrush3Shape);
 
-        private void btnTool1Force_Click(object sender, EventArgs e) => CreateToolForceMask(ref tool1ForceMask, ref tool1Brush, btnSlot1Force.ImageIndex += (1 < btnSlot1Force.ImageIndex) ? -2 : 1, nudSlot1Size, chbSlot1Shape);
-        private void btnTool2Force_Click(object sender, EventArgs e) => CreateToolForceMask(ref tool2ForceMask, ref tool2Brush, btnSlot2Force.ImageIndex += (1 < btnSlot2Force.ImageIndex) ? -2 : 1, nudSlot2Size, chbSlot2Shape);
-        private void btnTool3Force_Click(object sender, EventArgs e) => CreateToolForceMask(ref tool3ForceMask, ref tool3Brush, btnSlot3Force.ImageIndex += (1 < btnSlot3Force.ImageIndex) ? -2 : 1, nudSlot3Size, chbSlot3Shape);
+        private void btnBrush1Distribution_Click(object sender, EventArgs e) => CreateToolForceMask(ref brush1ForceMask, ref brush1Buffer, btnBrush1Distribution.ImageIndex += (1 < btnBrush1Distribution.ImageIndex) ? -2 : 1, nudBrush1Width, nudBrush1Height, chbBrush1Shape);
+        private void btnBrush2Distribution_Click(object sender, EventArgs e) => CreateToolForceMask(ref brush2ForceMask, ref brush2Buffer, btnBrush2Distribution.ImageIndex += (1 < btnBrush2Distribution.ImageIndex) ? -2 : 1, nudBrush2Width, nudBrush2Height, chbBrush2Shape);
+        private void btnBrush3Distribution_Click(object sender, EventArgs e) => CreateToolForceMask(ref brush3ForceMask, ref brush3Buffer, btnBrush3Distribution.ImageIndex += (1 < btnBrush3Distribution.ImageIndex) ? -2 : 1, nudBrush3Width, nudBrush3Height, chbBrush3Shape);
 
-        private void CreateToolForceMask(ref float[,] mask, ref int[,] brush, int forceShape, NumericUpDown nudSize, CheckBox chbShape)
+        private void CreateToolForceMask(ref float[,] mask, ref int[,] brush, int distributionShape, NumericUpDown nudWidth, NumericUpDown nudHeight, CheckBox chbSquareShape)
         {
-            int x, cx, size = (int)nudSize.Value;
-            int y, cy, qr = size * size;
-            int sz = size - 1;
-            int hsize = sz >> 1;
-            mask  = new float[size, size];
-            brush = new   int[size, size];
+            int x, sizeW = (int)nudWidth .Value;
+            int y, sizeH = (int)nudHeight.Value;
+            // Create
+            mask  = new float[sizeW, sizeH];
+            brush = new   int[sizeW, sizeH];
 
             // Fast out
-            if (size < 3 || (forceShape == 0 && chbShape.Checked))
+            if ((sizeW < 3 && sizeH < 3) || (distributionShape == 0 && chbSquareShape.Checked))
             {
-                for (y = 0; y < size; y++)
-                    for (x = 0; x < size; x++)
+                for (y = 0; y < sizeH; y++)
+                    for (x = 0; x < sizeW; x++)
                         mask[x, y] = 1;
                 return;
             }
 
-            // Square front
-            if (forceShape == 0)
+            int szW = sizeW - 1, qr = sizeW * sizeH;
+            int szH = sizeH - 1, qqr= qr * qr;
+            int hsizeW = szW >> 1;
+            int hsizeH = szH >> 1;
+            int cx, cy;
+
+            // Square distribution
+            if (distributionShape == 0)
             {
                 int r;
-                for (y = 0; y <= hsize; y++)
-                    for (x = 0; x <= hsize; x++)
+                for (y = 0; y <= hsizeH; y++)
+                    for (x = 0; x <= hsizeW; x++)
                     {
-                        cx = sz - (x << 1);
-                        cy = sz - (y << 1);
+                        cx = (szW - (x << 1)) * sizeH;
+                        cy = (szH - (y << 1)) * sizeW;
                         r = (cx * cx + cy * cy);
-                        if (r + 1 < qr)
-                            mask[     x,      y] =
-                            mask[     x, sz - y] =
-                            mask[sz - x,      y] =
-                            mask[sz - x, sz - y] = 1;
+                        if (r + 1 < qqr)
+                            mask[      x,       y] =
+                            mask[      x, szH - y] =
+                            mask[szW - x,       y] =
+                            mask[szW - x, szH - y] = 1;
                     }
             }
-            // Shere
-            else if (forceShape == 1)
+            // Half-shere distribution
+            else if (distributionShape == 1)
             {
                 int r;
-                for (y = 0; y <= hsize; y++)
-                    for (x = 0; x <= hsize; x++)
+                for (y = 0; y <= hsizeH; y++)
+                    for (x = 0; x <= hsizeW; x++)
                     {
-                        cx = sz - (x << 1);
-                        cy = sz - (y << 1);
+                        cx = (szW - (x << 1)) * sizeH;
+                        cy = (szH - (y << 1)) * sizeW;
                         r = (cx * cx + cy * cy);
-                        if (r < qr)
-                            mask[     x,      y] =
-                            mask[     x, sz - y] =
-                            mask[sz - x,      y] =
-                            mask[sz - x, sz - y] = (float)(qr - r) / qr;
+                        if (r < qqr)
+                            mask[      x,       y] =
+                            mask[      x, szH - y] =
+                            mask[szW - x,       y] =
+                            mask[szW - x, szH - y] = (float)(qqr - r) / qqr;
                     }
             }
-            // Gaussian
+            // Gaussian distribution
             else
             {
                 float r;
-                for (y = 0; y <= hsize; y++)
-                    for (x = 0; x <= hsize; x++)
+                for (y = 0; y <= hsizeH; y++)
+                    for (x = 0; x <= hsizeW; x++)
                     {
-                        cx = hsize - x;
-                        cy = hsize - y;
+                        cx = hsizeW - x;
+                        cy = hsizeH - y;
                         r = (float)((cx * cx + cy * cy) << 2) / qr;
-                        mask[     x,      y] =
-                        mask[     x, sz - y] =
-                        mask[sz - x,      y] =
-                        mask[sz - x, sz - y] = (float)Math.Exp(-24 * r * r);
+                        mask[      x,       y] =
+                        mask[      x, szH - y] =
+                        mask[szW - x,       y] =
+                        mask[szW - x, szH - y] = (float)Math.Exp(-24 * r * r);
                     }
             }
 
             // Make square
-            if (chbShape.Checked)
-                for (y = 0; y < hsize; y++)
-                    for (x = 0; x < hsize; x++)
-                        mask[     x,      y] =
-                        mask[     x, sz - y] =
-                        mask[sz - x,      y] =
-                        mask[sz - x, sz - y] = mask[Math.Min(x, y), hsize];
+            if (chbSquareShape.Checked)
+                for (y = 0; y < hsizeH; y++)
+                    for (x = 0; x < hsizeW; x++)
+                        mask[      x,       y] =
+                        mask[      x, szH - y] =
+                        mask[szW - x,       y] =
+                        mask[szW - x, szH - y] = mask[Math.Min(x, y), hsizeH];
         }
         #endregion
 

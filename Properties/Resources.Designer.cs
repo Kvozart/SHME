@@ -133,6 +133,16 @@ namespace SHME.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap eye {
+            get {
+                object obj = ResourceManager.GetObject("eye", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap gradientScanline {
             get {
                 object obj = ResourceManager.GetObject("gradientScanline", resourceCulture);
@@ -313,16 +323,6 @@ namespace SHME.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap toolLevel {
-            get {
-                object obj = ResourceManager.GetObject("toolLevel", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap toolLevelAdd {
             get {
                 object obj = ResourceManager.GetObject("toolLevelAdd", resourceCulture);
@@ -333,9 +333,49 @@ namespace SHME.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap toolLevelFlaten {
+            get {
+                object obj = ResourceManager.GetObject("toolLevelFlaten", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap toolLevelFlatenDown {
+            get {
+                object obj = ResourceManager.GetObject("toolLevelFlatenDown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap toolLevelFlatenUp {
+            get {
+                object obj = ResourceManager.GetObject("toolLevelFlatenUp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap toolLevelSmooth {
             get {
                 object obj = ResourceManager.GetObject("toolLevelSmooth", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap toolLevelStretch {
+            get {
+                object obj = ResourceManager.GetObject("toolLevelStretch", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
