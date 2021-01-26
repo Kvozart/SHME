@@ -276,13 +276,20 @@ namespace SHME
             if (lockDrawing) return;
             z = (z < 0) ? 0 : (ZoomMax < z) ? ZoomMax : z;
             if (zoom == z && !forced) return;
-            int oldZoom = zoom;
+            // Block zooming with active tool
+            if (historyRecord != null)
+            {
+                cbbZoom.SelectedIndex = ZoomMax - zoom;
+                return;
+            }
             zoom = z;
+            // Zoom to tool
             if (lblPointerLevel.Enabled)
                 ZoomFinish(
                     (mapX + (((hScrollBar.Width  >> 1) - msX) >> zoom)) / (float)HMap.Width,
                     (mapY + (((vScrollBar.Height >> 1) - msY) >> zoom)) / (float)HMap.Height
                     );
+            // Zoom to screan center
             else
                 ZoomFinish(
                     (hScrollBar.Value + (hScrollBar.LargeChange >> 1)) / (float)hScrollBar.Maximum,
@@ -777,12 +784,7 @@ namespace SHME
             int y, x;
             // Start history record
             if (historyRecord == null)
-            {
-                for (y = 0; y < HMap.Height; y++)
-                    for (x = 0; x < HMap.Width; x++)
-                        HMap.Changed[x, y] = 0;
                 historyRecord = new HistoryRecord(HMap, mapX, mapY, mapX, mapY);
-            }
 
             // Get brush 
             int[,] brush;
@@ -923,16 +925,30 @@ namespace SHME
             else
             {
                 BuildSpectrum(iL, iT, iR, iB);
-                Invalidate(/*new Rectangle(
-                    hScrollBar.Left + (iL << zoom) - hScrollBar.Value,
-                    vScrollBar.Top  + (iT << zoom) - vScrollBar.Value,
-                    size << zoom,
-                    size << zoom)*/);
+                Invalidate(new Rectangle(
+                    hScrollBar.Left,
+                    vScrollBar.Top,
+                    hScrollBar.Right,
+                    vScrollBar.Bottom));
+                /*Invalidate(new Rectangle(
+                    hScrollBar.Left + (historyRecord.Left   << zoom) - hScrollBar.Value,
+                    vScrollBar.Top  + (historyRecord.Top    << zoom) - vScrollBar.Value,
+                    hScrollBar.Left + (historyRecord.Right  << zoom) - hScrollBar.Value,
+                    vScrollBar.Top  + (historyRecord.Bottom << zoom) - vScrollBar.Value));*/
             }
             ShowStatistics();
         }
 
-        private void FormSHME_MouseUp(object sender, MouseEventArgs e) => HistoryAdd();
+        private void FormSHME_MouseUp(object sender, MouseEventArgs e)
+        {
+            // Clear change level board
+            if (historyRecord != null)
+                for (int y = historyRecord.Top; y < historyRecord.Bottom; y++)
+                    for (int x = historyRecord.Left; x < historyRecord.Right; x++)
+                        HMap.Changed[x, y] = 0;
+            // Fix record
+            HistoryAdd();
+        }
 
         private void FormSHME_MouseEnter(object sender, EventArgs e)
         {

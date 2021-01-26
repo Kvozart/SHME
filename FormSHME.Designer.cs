@@ -118,6 +118,7 @@
             this.btnToolLMB = new System.Windows.Forms.Button();
             this.pnlTools = new System.Windows.Forms.Panel();
             this.pnlBrush3 = new System.Windows.Forms.Panel();
+            this.chbBrush3FrameShow = new System.Windows.Forms.CheckBox();
             this.tbBrush3ForceHex = new System.Windows.Forms.TextBox();
             this.nudBrush3ForceDecimal = new System.Windows.Forms.NumericUpDown();
             this.nudBrush3Height = new System.Windows.Forms.NumericUpDown();
@@ -132,6 +133,7 @@
             this.label27 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.pnlBrush2 = new System.Windows.Forms.Panel();
+            this.chbBrush2FrameShow = new System.Windows.Forms.CheckBox();
             this.tbBrush2ForceHex = new System.Windows.Forms.TextBox();
             this.nudBrush2ForceDecimal = new System.Windows.Forms.NumericUpDown();
             this.nudBrush2Height = new System.Windows.Forms.NumericUpDown();
@@ -190,8 +192,6 @@
             this.label15 = new System.Windows.Forms.Label();
             this.btnToolUndo = new System.Windows.Forms.Button();
             this.btnToolRedo = new System.Windows.Forms.Button();
-            this.chbBrush2FrameShow = new System.Windows.Forms.CheckBox();
-            this.chbBrush3FrameShow = new System.Windows.Forms.CheckBox();
             this.gbStatistics.SuspendLayout();
             this.cmsOpenFile.SuspendLayout();
             this.tcThemes.SuspendLayout();
@@ -1484,6 +1484,25 @@
             this.pnlBrush3.Size = new System.Drawing.Size(167, 43);
             this.pnlBrush3.TabIndex = 13;
             // 
+            // chbBrush3FrameShow
+            // 
+            this.chbBrush3FrameShow.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbBrush3FrameShow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.chbBrush3FrameShow.BackgroundImage = global::SHME.Properties.Resources.eye;
+            this.chbBrush3FrameShow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbBrush3FrameShow.Checked = true;
+            this.chbBrush3FrameShow.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbBrush3FrameShow.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.chbBrush3FrameShow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbBrush3FrameShow.Location = new System.Drawing.Point(4, 24);
+            this.chbBrush3FrameShow.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.chbBrush3FrameShow.Name = "chbBrush3FrameShow";
+            this.chbBrush3FrameShow.Size = new System.Drawing.Size(18, 14);
+            this.chbBrush3FrameShow.TabIndex = 28;
+            this.chbBrush3FrameShow.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chbBrush3FrameShow, "Brush shape");
+            this.chbBrush3FrameShow.UseVisualStyleBackColor = false;
+            // 
             // tbBrush3ForceHex
             // 
             this.tbBrush3ForceHex.Location = new System.Drawing.Point(112, 20);
@@ -1705,6 +1724,25 @@
             this.pnlBrush2.Name = "pnlBrush2";
             this.pnlBrush2.Size = new System.Drawing.Size(167, 43);
             this.pnlBrush2.TabIndex = 14;
+            // 
+            // chbBrush2FrameShow
+            // 
+            this.chbBrush2FrameShow.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbBrush2FrameShow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.chbBrush2FrameShow.BackgroundImage = global::SHME.Properties.Resources.eye;
+            this.chbBrush2FrameShow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbBrush2FrameShow.Checked = true;
+            this.chbBrush2FrameShow.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbBrush2FrameShow.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.chbBrush2FrameShow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbBrush2FrameShow.Location = new System.Drawing.Point(4, 24);
+            this.chbBrush2FrameShow.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.chbBrush2FrameShow.Name = "chbBrush2FrameShow";
+            this.chbBrush2FrameShow.Size = new System.Drawing.Size(18, 14);
+            this.chbBrush2FrameShow.TabIndex = 28;
+            this.chbBrush2FrameShow.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chbBrush2FrameShow, "Brush shape");
+            this.chbBrush2FrameShow.UseVisualStyleBackColor = false;
             // 
             // tbBrush2ForceHex
             // 
@@ -2313,7 +2351,7 @@
             this.btnToolSwitch.Location = new System.Drawing.Point(36, 36);
             this.btnToolSwitch.Name = "btnToolSwitch";
             this.btnToolSwitch.Size = new System.Drawing.Size(32, 32);
-            this.btnToolSwitch.TabIndex = 7;
+            this.btnToolSwitch.TabIndex = 1;
             this.btnToolSwitch.Tag = "";
             this.toolTip.SetToolTip(this.btnToolSwitch, "Switch between height and topographic map");
             this.btnToolSwitch.UseVisualStyleBackColor = true;
@@ -2326,7 +2364,7 @@
             this.btnToolPan.Location = new System.Drawing.Point(4, 36);
             this.btnToolPan.Name = "btnToolPan";
             this.btnToolPan.Size = new System.Drawing.Size(32, 32);
-            this.btnToolPan.TabIndex = 6;
+            this.btnToolPan.TabIndex = 0;
             this.btnToolPan.Tag = "";
             this.toolTip.SetToolTip(this.btnToolPan, "Pan");
             this.btnToolPan.UseVisualStyleBackColor = true;
@@ -2341,7 +2379,7 @@
             this.btnToolProbe.Location = new System.Drawing.Point(72, 4);
             this.btnToolProbe.Name = "btnToolProbe";
             this.btnToolProbe.Size = new System.Drawing.Size(32, 32);
-            this.btnToolProbe.TabIndex = 8;
+            this.btnToolProbe.TabIndex = 7;
             this.btnToolProbe.Tag = "";
             this.btnToolProbe.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.toolTip.SetToolTip(this.btnToolProbe, "Probe (slot 1)");
@@ -2357,7 +2395,7 @@
             this.btnToolPencil.Location = new System.Drawing.Point(72, 36);
             this.btnToolPencil.Name = "btnToolPencil";
             this.btnToolPencil.Size = new System.Drawing.Size(32, 32);
-            this.btnToolPencil.TabIndex = 9;
+            this.btnToolPencil.TabIndex = 8;
             this.btnToolPencil.Tag = "";
             this.btnToolPencil.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.toolTip.SetToolTip(this.btnToolPencil, "Pencil");
@@ -2373,7 +2411,7 @@
             this.btnToolSmooth.Location = new System.Drawing.Point(136, 4);
             this.btnToolSmooth.Name = "btnToolSmooth";
             this.btnToolSmooth.Size = new System.Drawing.Size(32, 32);
-            this.btnToolSmooth.TabIndex = 12;
+            this.btnToolSmooth.TabIndex = 11;
             this.btnToolSmooth.Tag = "";
             this.btnToolSmooth.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.toolTip.SetToolTip(this.btnToolSmooth, "Smooth");
@@ -2389,7 +2427,7 @@
             this.btnToolFlaten.Location = new System.Drawing.Point(168, 4);
             this.btnToolFlaten.Name = "btnToolFlaten";
             this.btnToolFlaten.Size = new System.Drawing.Size(32, 32);
-            this.btnToolFlaten.TabIndex = 14;
+            this.btnToolFlaten.TabIndex = 13;
             this.btnToolFlaten.Tag = "";
             this.btnToolFlaten.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.toolTip.SetToolTip(this.btnToolFlaten, "Level");
@@ -2405,7 +2443,7 @@
             this.btnToolAdd.Location = new System.Drawing.Point(104, 4);
             this.btnToolAdd.Name = "btnToolAdd";
             this.btnToolAdd.Size = new System.Drawing.Size(32, 32);
-            this.btnToolAdd.TabIndex = 10;
+            this.btnToolAdd.TabIndex = 9;
             this.btnToolAdd.Tag = "";
             this.btnToolAdd.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.toolTip.SetToolTip(this.btnToolAdd, "Add");
@@ -2421,7 +2459,7 @@
             this.btnToolSub.Location = new System.Drawing.Point(104, 36);
             this.btnToolSub.Name = "btnToolSub";
             this.btnToolSub.Size = new System.Drawing.Size(32, 32);
-            this.btnToolSub.TabIndex = 11;
+            this.btnToolSub.TabIndex = 10;
             this.btnToolSub.Tag = "";
             this.btnToolSub.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.toolTip.SetToolTip(this.btnToolSub, "Dig");
@@ -2450,7 +2488,7 @@
             this.btnToolStretch.Location = new System.Drawing.Point(136, 36);
             this.btnToolStretch.Name = "btnToolStretch";
             this.btnToolStretch.Size = new System.Drawing.Size(32, 32);
-            this.btnToolStretch.TabIndex = 13;
+            this.btnToolStretch.TabIndex = 12;
             this.btnToolStretch.Tag = "";
             this.btnToolStretch.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.toolTip.SetToolTip(this.btnToolStretch, "Smooth inside");
@@ -2466,7 +2504,7 @@
             this.btnToolFlatenDown.Location = new System.Drawing.Point(168, 36);
             this.btnToolFlatenDown.Name = "btnToolFlatenDown";
             this.btnToolFlatenDown.Size = new System.Drawing.Size(32, 32);
-            this.btnToolFlatenDown.TabIndex = 15;
+            this.btnToolFlatenDown.TabIndex = 14;
             this.btnToolFlatenDown.Tag = "";
             this.btnToolFlatenDown.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.toolTip.SetToolTip(this.btnToolFlatenDown, "Level higher");
@@ -2482,7 +2520,7 @@
             this.btnToolFlatenUp.Location = new System.Drawing.Point(168, 68);
             this.btnToolFlatenUp.Name = "btnToolFlatenUp";
             this.btnToolFlatenUp.Size = new System.Drawing.Size(32, 32);
-            this.btnToolFlatenUp.TabIndex = 16;
+            this.btnToolFlatenUp.TabIndex = 15;
             this.btnToolFlatenUp.Tag = "";
             this.btnToolFlatenUp.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.toolTip.SetToolTip(this.btnToolFlatenUp, "Level lower");
@@ -2550,7 +2588,7 @@
             this.rbToolUseBrush3.Location = new System.Drawing.Point(132, 74);
             this.rbToolUseBrush3.Name = "rbToolUseBrush3";
             this.rbToolUseBrush3.Size = new System.Drawing.Size(21, 21);
-            this.rbToolUseBrush3.TabIndex = 2;
+            this.rbToolUseBrush3.TabIndex = 6;
             this.rbToolUseBrush3.Text = "3";
             this.rbToolUseBrush3.UseVisualStyleBackColor = false;
             // 
@@ -2564,7 +2602,7 @@
             this.rbToolUseBrush2.Location = new System.Drawing.Point(108, 74);
             this.rbToolUseBrush2.Name = "rbToolUseBrush2";
             this.rbToolUseBrush2.Size = new System.Drawing.Size(21, 21);
-            this.rbToolUseBrush2.TabIndex = 1;
+            this.rbToolUseBrush2.TabIndex = 5;
             this.rbToolUseBrush2.Text = "2";
             this.rbToolUseBrush2.UseVisualStyleBackColor = false;
             // 
@@ -2578,7 +2616,7 @@
             this.rbToolUseBrush1.Location = new System.Drawing.Point(84, 74);
             this.rbToolUseBrush1.Name = "rbToolUseBrush1";
             this.rbToolUseBrush1.Size = new System.Drawing.Size(21, 21);
-            this.rbToolUseBrush1.TabIndex = 0;
+            this.rbToolUseBrush1.TabIndex = 4;
             this.rbToolUseBrush1.TabStop = true;
             this.rbToolUseBrush1.Text = "1";
             this.rbToolUseBrush1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2603,7 +2641,7 @@
             this.btnToolUndo.Location = new System.Drawing.Point(4, 4);
             this.btnToolUndo.Name = "btnToolUndo";
             this.btnToolUndo.Size = new System.Drawing.Size(32, 32);
-            this.btnToolUndo.TabIndex = 4;
+            this.btnToolUndo.TabIndex = 2;
             this.btnToolUndo.Tag = "";
             this.btnToolUndo.UseVisualStyleBackColor = true;
             this.btnToolUndo.Click += new System.EventHandler(this.btnTool_Click);
@@ -2615,48 +2653,10 @@
             this.btnToolRedo.Location = new System.Drawing.Point(36, 4);
             this.btnToolRedo.Name = "btnToolRedo";
             this.btnToolRedo.Size = new System.Drawing.Size(32, 32);
-            this.btnToolRedo.TabIndex = 5;
+            this.btnToolRedo.TabIndex = 3;
             this.btnToolRedo.Tag = "";
             this.btnToolRedo.UseVisualStyleBackColor = true;
             this.btnToolRedo.Click += new System.EventHandler(this.btnTool_Click);
-            // 
-            // chbBrush2FrameShow
-            // 
-            this.chbBrush2FrameShow.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chbBrush2FrameShow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.chbBrush2FrameShow.BackgroundImage = global::SHME.Properties.Resources.eye;
-            this.chbBrush2FrameShow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.chbBrush2FrameShow.Checked = true;
-            this.chbBrush2FrameShow.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbBrush2FrameShow.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.chbBrush2FrameShow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbBrush2FrameShow.Location = new System.Drawing.Point(4, 24);
-            this.chbBrush2FrameShow.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.chbBrush2FrameShow.Name = "chbBrush2FrameShow";
-            this.chbBrush2FrameShow.Size = new System.Drawing.Size(18, 14);
-            this.chbBrush2FrameShow.TabIndex = 28;
-            this.chbBrush2FrameShow.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip.SetToolTip(this.chbBrush2FrameShow, "Brush shape");
-            this.chbBrush2FrameShow.UseVisualStyleBackColor = false;
-            // 
-            // chbBrush3FrameShow
-            // 
-            this.chbBrush3FrameShow.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chbBrush3FrameShow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.chbBrush3FrameShow.BackgroundImage = global::SHME.Properties.Resources.eye;
-            this.chbBrush3FrameShow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.chbBrush3FrameShow.Checked = true;
-            this.chbBrush3FrameShow.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbBrush3FrameShow.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.chbBrush3FrameShow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbBrush3FrameShow.Location = new System.Drawing.Point(4, 24);
-            this.chbBrush3FrameShow.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.chbBrush3FrameShow.Name = "chbBrush3FrameShow";
-            this.chbBrush3FrameShow.Size = new System.Drawing.Size(18, 14);
-            this.chbBrush3FrameShow.TabIndex = 28;
-            this.chbBrush3FrameShow.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip.SetToolTip(this.chbBrush3FrameShow, "Brush shape");
-            this.chbBrush3FrameShow.UseVisualStyleBackColor = false;
             // 
             // FormSHME
             // 

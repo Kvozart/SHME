@@ -21,10 +21,7 @@ namespace SHME
             Width  = Right  - Left + 1;
             Height = Bottom - Top  + 1;
             ResizeAction = resizeAction;
-            Clip = new UInt16[HMap.Width, HMap.Height];
-            for (y = 0; y < HMap.Height; y++)
-                for (x = 0; x < HMap.Width; x++)
-                    Clip[x, y] = HMap.Levels[x, y];
+            Clip = HMap.Levels.Clone() as ushort[,];
         }
 
         public void Check(int left, int top, int right, int bottom)
