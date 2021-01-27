@@ -18,6 +18,13 @@ namespace SHME
         const String XYSpliter = " x ";
         const String PointerSpliter = " x ";
 
+        readonly String ExportFilter =
+                "All files|*.*" +
+                "|Windows Bitmap (.bmp)|*.bmp" +
+                "|Portable Network Graphics (.png)|*.png" +
+                "|Joint Photographic Experts Group (.jpg, .jpeg)|*.jpg" +
+                "|Compuserve GIF (.gif)|*.gif" +
+                "|Tagged Image File Format (.tiff)|*.tiff";
         List<String> ExportExts = new List<String>{
             ".bmp",
             ".png",
@@ -422,16 +429,15 @@ namespace SHME
                     var img = new Bitmap(fileName);
                     width = img.Width;
                     height = img.Height;
-                    channels = (img.PixelFormat == PixelFormat.Format32bppArgb) ? 4 : (img.PixelFormat == PixelFormat.Format24bppRgb) ? 3 : 1;
-                    bitDepth = (img.PixelFormat == PixelFormat.Format16bppRgb565 || img.PixelFormat == PixelFormat.Format16bppRgb555 || img.PixelFormat == PixelFormat.Format16bppGrayScale || img.PixelFormat == PixelFormat.Format16bppArgb1555)
-                        ? 16
-                        : (img.PixelFormat == PixelFormat.Format32bppArgb || img.PixelFormat == PixelFormat.Format24bppRgb || img.PixelFormat == PixelFormat.Format8bppIndexed)
-                            ? 8
-                            : (img.PixelFormat == PixelFormat.Format4bppIndexed)
-                                ? 4
-                                : (img.PixelFormat == PixelFormat.Format1bppIndexed)
-                                    ? 1
-                                    : 0; // unknown
+                    channels = (img.PixelFormat == PixelFormat.Format32bppArgb) ? 4:
+                               (img.PixelFormat == PixelFormat.Format24bppRgb ) ? 3:
+                                                                                  1;
+                    bitDepth = (img.PixelFormat == PixelFormat.Format16bppRgb565 || img.PixelFormat == PixelFormat.Format16bppRgb555 || img.PixelFormat == PixelFormat.Format16bppArgb1555 || img.PixelFormat == PixelFormat.Format16bppGrayScale) ?
+                          16 : (img.PixelFormat == PixelFormat.Format8bppIndexed || img.PixelFormat == PixelFormat.Format24bppRgb    || img.PixelFormat == PixelFormat.Format32bppArgb) ?
+                           8 : (img.PixelFormat == PixelFormat.Format4bppIndexed) ?
+                           4 : (img.PixelFormat == PixelFormat.Format1bppIndexed) ?
+                           1 :
+                           0 ; // unknown
                     if (bitDepth == 0)
                         throw new ArgumentException("Unacceptable format");
                     // Prepare buffer
@@ -451,6 +457,8 @@ namespace SHME
                 catch (Exception)
                 {
                     MessageBox.Show("Unable to open file:\r\n" + exc.Message, "Load height map error");
+                    lockDrawing = false;
+                    HMap.URL = "";
                     return false;
                 }
             }
@@ -508,6 +516,7 @@ namespace SHME
             catch (Exception exc)
             {
                 MessageBox.Show("Unable to load file:\r\n\"" + fileName + "\"\r\n" + exc.Message, "Load topological map error");
+                TMap.URL = "";
                 return false;
             }
             return true;
@@ -543,6 +552,8 @@ namespace SHME
                     chbShowTMap.Checked = true;
         }
 
+        private void cmsOpenFile_Opening(object sender, System.ComponentModel.CancelEventArgs e) => tsmiRefreash.Visible = (HMap.URL != "");
+
         private void tsmCreat_Click(object sender, EventArgs e)
         {
             if (sender == tsmCreateEmpty)
@@ -573,52 +584,52 @@ namespace SHME
             FinishHMapLoading();
         }
 
+        private void tsmiRefreash_Click(object sender, EventArgs e) => LoadHMap(HMap.URL);
+
         private void btnSaveHMap_Click(object sender, EventArgs e)//Ok
         {
-            // Choose file name
-            dlgSave.FileName = Path.GetFileNameWithoutExtension(HMap.URL);
-            dlgSave.Filter = "All files (*.*)|*.*|Portable Network Graphics (*.png)|*.png";
-            dlgSave.FilterIndex = 2;
-            if (HMap.URL != "")
-                dlgSave.InitialDirectory = Path.GetFullPath(HMap.URL).Replace(Path.GetFileName(HMap.URL), "");
-            if (dlgSave.ShowDialog() != DialogResult.OK)
-                return;
+            // Choose file name if needed
+            if (HMap.URL == "" || sender != btnSaveHMap)
+            {
+                dlgSave.FileName = Path.GetFileNameWithoutExtension(HMap.URL);
+                dlgSave.Filter = "All files (*.*)|*.*|Portable Network Graphics (*.png)|*.png";
+                dlgSave.FilterIndex = 2;
+                if (HMap.URL != "")
+                    dlgSave.InitialDirectory = Path.GetFullPath(HMap.URL).Replace(Path.GetFileName(HMap.URL), "");
+                if (dlgSave.ShowDialog() != DialogResult.OK)
+                    return;
+                HMap.URL = dlgSave.FileName;
+            }
             // Pack
-            SavePNG(sender == btnSaveHMap);
-            HMap.URL = dlgSave.FileName;
+            SavePNG(sender != tsmi8BitPNG);
         }
 
-        private void SavePNG(bool full)
+        private void SavePNG(bool as16bit)
         {
             int x, y, i = 0;
-            byte[] buffer = new byte[(HMap.Width * HMap.Height) << (full ? 1 : 0)];
+            byte[] buffer = new byte[(HMap.Width * HMap.Height) << (as16bit ? 1 : 0)];
             for (y = 0; y < HMap.Height; y++)
                 for (x = 0; x < HMap.Width; x++)
                 {
                     buffer[i++] = (byte)(HMap.Levels[x, y] >> 8);
-                    if (full)
+                    if (as16bit)
                         buffer[i++] = (byte)(HMap.Levels[x, y] & 255);
                 }
-           new PngWriter(dlgSave.FileName, buffer, HMap.Width, HMap.Height, 1, (full ? 16 : 8), PngColorType.Gray);
+           new PngWriter(HMap.URL, buffer, HMap.Width, HMap.Height, 1, (as16bit ? 16 : 8), PngColorType.Gray);
         }
 
         private void tsmiExportView_Click(object sender, EventArgs e)
         {
             // Choose file name
             dlgSave.FileName = Path.GetFileNameWithoutExtension(HMap.URL);
-            dlgSave.Filter = "All files|*.*"
-                + "|Windows Bitmap (.bmp)|*.bmp"
-                + "|Portable Network Graphics (.png)|*.png"
-                + "|Joint Photographic Experts Group (.jpg, .jpeg)|*.jpg"
-                + "|Compuserve GIF (.gif)|*.gif"
-                + "|Tagged Image File Format (.tiff)|*.tiff";
+            dlgSave.Filter = ExportFilter;
             dlgSave.FilterIndex = 3;
             if (dlgSave.ShowDialog() != DialogResult.OK)
                 return;
             // Check extention
             int extIdx = ExportExts.IndexOf(Path.GetExtension(dlgSave.FileName));
             if (extIdx < 0)
-                extIdx = 1; // Ok, lets play this game
+                extIdx = 1; // Ok, lets play this game. But with Bitmap
 
             // Create image
             int x, y, b, p = 0;
@@ -1031,14 +1042,11 @@ namespace SHME
                             case "Toolset":
                                 int toolL = 0, toolM = 0, toolR = 0, toolX1 = 0, toolX2 = 0;
                                 rec = value.Split(new String[] { ", " }, StringSplitOptions.None);
-                                for (i = 0; i < ToolControls.Length; i++)
-                                {
-                                    toolL  = ReadToolFromString(rec[1]);
-                                    toolM  = ReadToolFromString(rec[2]);
-                                    toolR  = ReadToolFromString(rec[3]);
-                                    toolX1 = ReadToolFromString(rec[4]);
-                                    toolX2 = ReadToolFromString(rec[5]);
-                                }
+                                toolL  = ReadToolFromString(rec[1]);
+                                toolM  = ReadToolFromString(rec[2]);
+                                toolR  = ReadToolFromString(rec[3]);
+                                toolX1 = ReadToolFromString(rec[4]);
+                                toolX2 = ReadToolFromString(rec[5]);
                                 if (rec[0] == "0")
                                 {
                                     ToolXMBSelect(btnToolLMB,  toolL);
@@ -1082,6 +1090,8 @@ namespace SHME
                             case "LevelBLIPixel": chbLevelPixelBigLittleIndian.Checked = (value == "True"); break;
 
                             case "ViewGrid": chbGrid.Checked = (value == "True"); break;
+                            case "LimitMax": chbLimitMax.Checked = (value == "True"); break;
+                            case "LimitMin": chbLimitMin.Checked = (value == "True"); break;
 
                             default:
                                 break;
@@ -1117,7 +1127,7 @@ namespace SHME
             // Optimisation
             if (w < 1 || h < 1) return;
 
-            int x, y, ix, iy, offset = 0;
+            int x, y, iy, offset = 0;
             int[] buffer = new int[w * h];
             // Draw TMap
             if (chbShowTMap.Checked)
@@ -1333,6 +1343,8 @@ namespace SHME
                 file.WriteLine("LevelBLIPixel\t" + chbLevelPixelBigLittleIndian.Checked);
 
                 file.WriteLine("ViewGrid\t" + chbGrid.Checked);
+                file.WriteLine("LimitMax\t" + chbLimitMax.Checked);
+                file.WriteLine("LimitMin\t" + chbLimitMin.Checked);
             }
         }
         #endregion

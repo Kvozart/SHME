@@ -52,6 +52,7 @@
             this.tsmCreateScanline = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmCreateSerpantine = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiClear = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRefreash = new System.Windows.Forms.ToolStripMenuItem();
             this.tcThemes = new System.Windows.Forms.TabControl();
             this.tpMonochrome = new System.Windows.Forms.TabPage();
             this.btnMonochromeColor = new System.Windows.Forms.Button();
@@ -192,6 +193,7 @@
             this.label15 = new System.Windows.Forms.Label();
             this.btnToolUndo = new System.Windows.Forms.Button();
             this.btnToolRedo = new System.Windows.Forms.Button();
+            this.tsmiSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.gbStatistics.SuspendLayout();
             this.cmsOpenFile.SuspendLayout();
             this.tcThemes.SuspendLayout();
@@ -433,9 +435,11 @@
             this.tsmCreateEmpty,
             this.tsmCreateScanline,
             this.tsmCreateSerpantine,
-            this.tsmiClear});
+            this.tsmiClear,
+            this.tsmiRefreash});
             this.cmsOpenFile.Name = "cmsOpenFile";
-            this.cmsOpenFile.Size = new System.Drawing.Size(249, 92);
+            this.cmsOpenFile.Size = new System.Drawing.Size(249, 114);
+            this.cmsOpenFile.Opening += new System.ComponentModel.CancelEventHandler(this.cmsOpenFile_Opening);
             // 
             // tsmCreateEmpty
             // 
@@ -461,6 +465,7 @@
             // 
             this.tsmCreateSerpantine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.tsmCreateSerpantine.Image = ((System.Drawing.Image)(resources.GetObject("tsmCreateSerpantine.Image")));
+            this.tsmCreateSerpantine.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmCreateSerpantine.Name = "tsmCreateSerpantine";
             this.tsmCreateSerpantine.Size = new System.Drawing.Size(248, 22);
             this.tsmCreateSerpantine.Text = "Create gradient map (serpantine)";
@@ -469,10 +474,21 @@
             // tsmiClear
             // 
             this.tsmiClear.Image = global::SHME.Properties.Resources.delete;
+            this.tsmiClear.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiClear.Name = "tsmiClear";
             this.tsmiClear.Size = new System.Drawing.Size(248, 22);
             this.tsmiClear.Text = "Clear";
             this.tsmiClear.Click += new System.EventHandler(this.tsmiClear_Click);
+            // 
+            // tsmiRefreash
+            // 
+            this.tsmiRefreash.Image = global::SHME.Properties.Resources.reload;
+            this.tsmiRefreash.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsmiRefreash.Name = "tsmiRefreash";
+            this.tsmiRefreash.Size = new System.Drawing.Size(248, 22);
+            this.tsmiRefreash.Text = "Refreash";
+            this.tsmiRefreash.Visible = false;
+            this.tsmiRefreash.Click += new System.EventHandler(this.tsmiRefreash_Click);
             // 
             // tcThemes
             // 
@@ -1169,10 +1185,11 @@
             // cmsSaveFile
             // 
             this.cmsSaveFile.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiSaveAs,
             this.tsmi8BitPNG,
             this.tsmiExportView});
             this.cmsSaveFile.Name = "cmsSaveFile";
-            this.cmsSaveFile.Size = new System.Drawing.Size(175, 48);
+            this.cmsSaveFile.Size = new System.Drawing.Size(175, 70);
             // 
             // tsmi8BitPNG
             // 
@@ -1180,7 +1197,7 @@
             this.tsmi8BitPNG.Image = ((System.Drawing.Image)(resources.GetObject("tsmi8BitPNG.Image")));
             this.tsmi8BitPNG.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmi8BitPNG.Name = "tsmi8BitPNG";
-            this.tsmi8BitPNG.Size = new System.Drawing.Size(174, 22);
+            this.tsmi8BitPNG.Size = new System.Drawing.Size(180, 22);
             this.tsmi8BitPNG.Text = "Save as 8 bit PNG...";
             this.tsmi8BitPNG.Click += new System.EventHandler(this.btnSaveHMap_Click);
             // 
@@ -1188,8 +1205,9 @@
             // 
             this.tsmiExportView.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.tsmiExportView.Image = global::SHME.Properties.Resources.spectrum;
+            this.tsmiExportView.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiExportView.Name = "tsmiExportView";
-            this.tsmiExportView.Size = new System.Drawing.Size(174, 22);
+            this.tsmiExportView.Size = new System.Drawing.Size(180, 22);
             this.tsmiExportView.Text = "Export view...";
             this.tsmiExportView.Click += new System.EventHandler(this.tsmiExportView_Click);
             // 
@@ -2376,7 +2394,7 @@
             this.btnToolProbe.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolProbe.Image = global::SHME.Properties.Resources.toolProbe;
             this.btnToolProbe.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolProbe.Location = new System.Drawing.Point(72, 4);
+            this.btnToolProbe.Location = new System.Drawing.Point(72, 36);
             this.btnToolProbe.Name = "btnToolProbe";
             this.btnToolProbe.Size = new System.Drawing.Size(32, 32);
             this.btnToolProbe.TabIndex = 7;
@@ -2392,7 +2410,7 @@
             this.btnToolPencil.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolPencil.Image = global::SHME.Properties.Resources.toolPencil;
             this.btnToolPencil.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolPencil.Location = new System.Drawing.Point(72, 36);
+            this.btnToolPencil.Location = new System.Drawing.Point(72, 68);
             this.btnToolPencil.Name = "btnToolPencil";
             this.btnToolPencil.Size = new System.Drawing.Size(32, 32);
             this.btnToolPencil.TabIndex = 8;
@@ -2408,7 +2426,7 @@
             this.btnToolSmooth.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolSmooth.Image = global::SHME.Properties.Resources.toolLevelSmooth;
             this.btnToolSmooth.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolSmooth.Location = new System.Drawing.Point(136, 4);
+            this.btnToolSmooth.Location = new System.Drawing.Point(136, 36);
             this.btnToolSmooth.Name = "btnToolSmooth";
             this.btnToolSmooth.Size = new System.Drawing.Size(32, 32);
             this.btnToolSmooth.TabIndex = 11;
@@ -2440,7 +2458,7 @@
             this.btnToolAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnToolAdd.Image")));
             this.btnToolAdd.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolAdd.Location = new System.Drawing.Point(104, 4);
+            this.btnToolAdd.Location = new System.Drawing.Point(104, 36);
             this.btnToolAdd.Name = "btnToolAdd";
             this.btnToolAdd.Size = new System.Drawing.Size(32, 32);
             this.btnToolAdd.TabIndex = 9;
@@ -2456,7 +2474,7 @@
             this.btnToolSub.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolSub.Image = global::SHME.Properties.Resources.toolLevelSub;
             this.btnToolSub.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolSub.Location = new System.Drawing.Point(104, 36);
+            this.btnToolSub.Location = new System.Drawing.Point(104, 68);
             this.btnToolSub.Name = "btnToolSub";
             this.btnToolSub.Size = new System.Drawing.Size(32, 32);
             this.btnToolSub.TabIndex = 10;
@@ -2485,7 +2503,7 @@
             this.btnToolStretch.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnToolStretch.Image = global::SHME.Properties.Resources.toolLevelStretch;
             this.btnToolStretch.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnToolStretch.Location = new System.Drawing.Point(136, 36);
+            this.btnToolStretch.Location = new System.Drawing.Point(136, 68);
             this.btnToolStretch.Name = "btnToolStretch";
             this.btnToolStretch.Size = new System.Drawing.Size(32, 32);
             this.btnToolStretch.TabIndex = 12;
@@ -2583,9 +2601,10 @@
             this.rbToolUseBrush3.Appearance = System.Windows.Forms.Appearance.Button;
             this.rbToolUseBrush3.BackColor = System.Drawing.Color.Silver;
             this.rbToolUseBrush3.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rbToolUseBrush3.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.rbToolUseBrush3.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.rbToolUseBrush3.FlatAppearance.CheckedBackColor = System.Drawing.Color.White;
             this.rbToolUseBrush3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbToolUseBrush3.Location = new System.Drawing.Point(132, 74);
+            this.rbToolUseBrush3.Location = new System.Drawing.Point(144, 10);
             this.rbToolUseBrush3.Name = "rbToolUseBrush3";
             this.rbToolUseBrush3.Size = new System.Drawing.Size(21, 21);
             this.rbToolUseBrush3.TabIndex = 6;
@@ -2597,9 +2616,10 @@
             this.rbToolUseBrush2.Appearance = System.Windows.Forms.Appearance.Button;
             this.rbToolUseBrush2.BackColor = System.Drawing.Color.Silver;
             this.rbToolUseBrush2.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rbToolUseBrush2.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.rbToolUseBrush2.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.rbToolUseBrush2.FlatAppearance.CheckedBackColor = System.Drawing.Color.White;
             this.rbToolUseBrush2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbToolUseBrush2.Location = new System.Drawing.Point(108, 74);
+            this.rbToolUseBrush2.Location = new System.Drawing.Point(124, 10);
             this.rbToolUseBrush2.Name = "rbToolUseBrush2";
             this.rbToolUseBrush2.Size = new System.Drawing.Size(21, 21);
             this.rbToolUseBrush2.TabIndex = 5;
@@ -2610,10 +2630,12 @@
             // 
             this.rbToolUseBrush1.Appearance = System.Windows.Forms.Appearance.Button;
             this.rbToolUseBrush1.BackColor = System.Drawing.Color.Silver;
+            this.rbToolUseBrush1.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rbToolUseBrush1.Checked = true;
+            this.rbToolUseBrush1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.rbToolUseBrush1.FlatAppearance.CheckedBackColor = System.Drawing.Color.White;
             this.rbToolUseBrush1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbToolUseBrush1.Location = new System.Drawing.Point(84, 74);
+            this.rbToolUseBrush1.Location = new System.Drawing.Point(104, 10);
             this.rbToolUseBrush1.Name = "rbToolUseBrush1";
             this.rbToolUseBrush1.Size = new System.Drawing.Size(21, 21);
             this.rbToolUseBrush1.TabIndex = 4;
@@ -2626,19 +2648,19 @@
             // 
             this.label15.AutoSize = true;
             this.label15.BackColor = System.Drawing.Color.Transparent;
-            this.label15.Location = new System.Drawing.Point(48, 78);
+            this.label15.Location = new System.Drawing.Point(72, 14);
             this.label15.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(37, 13);
+            this.label15.Size = new System.Drawing.Size(34, 13);
             this.label15.TabIndex = 27;
-            this.label15.Text = "Brush:";
+            this.label15.Text = "Brush";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnToolUndo
             // 
             this.btnToolUndo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnToolUndo.Image = global::SHME.Properties.Resources.historyBack;
-            this.btnToolUndo.Location = new System.Drawing.Point(4, 4);
+            this.btnToolUndo.Location = new System.Drawing.Point(4, 68);
             this.btnToolUndo.Name = "btnToolUndo";
             this.btnToolUndo.Size = new System.Drawing.Size(32, 32);
             this.btnToolUndo.TabIndex = 2;
@@ -2650,13 +2672,22 @@
             // 
             this.btnToolRedo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnToolRedo.Image = global::SHME.Properties.Resources.historyForward;
-            this.btnToolRedo.Location = new System.Drawing.Point(36, 4);
+            this.btnToolRedo.Location = new System.Drawing.Point(36, 68);
             this.btnToolRedo.Name = "btnToolRedo";
             this.btnToolRedo.Size = new System.Drawing.Size(32, 32);
             this.btnToolRedo.TabIndex = 3;
             this.btnToolRedo.Tag = "";
             this.btnToolRedo.UseVisualStyleBackColor = true;
             this.btnToolRedo.Click += new System.EventHandler(this.btnTool_Click);
+            // 
+            // tsmiSaveAs
+            // 
+            this.tsmiSaveAs.Image = global::SHME.Properties.Resources.blank;
+            this.tsmiSaveAs.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsmiSaveAs.Name = "tsmiSaveAs";
+            this.tsmiSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.tsmiSaveAs.Text = "Save as...";
+            this.tsmiSaveAs.Click += new System.EventHandler(this.btnSaveHMap_Click);
             // 
             // FormSHME
             // 
@@ -2903,6 +2934,8 @@
         private System.Windows.Forms.CheckBox chbBrush1FrameShow;
         private System.Windows.Forms.CheckBox chbBrush3FrameShow;
         private System.Windows.Forms.CheckBox chbBrush2FrameShow;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRefreash;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSaveAs;
     }
 }
 

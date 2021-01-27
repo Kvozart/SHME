@@ -201,6 +201,7 @@
     <None Include="Resources\toolLevelFlatenUp.png" />
     <None Include="Resources\toolLevelFlatenDown.png" />
     <None Include="Resources\eye.png" />
+    <None Include="Resources\reload.png" />
     <Content Include="zlib1.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
