@@ -670,6 +670,15 @@ namespace SHME
             chbLevelByteBigLittleIndian.Visible = false;
             FinishHMapLoading();
         }
+
+        private void chbMultiTouch_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as CheckBox).Checked) return;
+            // Clearing if released
+            for (int y = 0; y < HMap.Height; y++)
+                for (int x = 0; x < HMap.Width; x++)
+                    HMap.Changed[x, y] = 0;
+        }
         #endregion
 
         #region Mouse
@@ -952,10 +961,11 @@ namespace SHME
 
         private void FormSHME_MouseUp(object sender, MouseEventArgs e)
         {
+            if (historyRecord == null) return;
             // Clear change level board
-            if (historyRecord != null)
-                for (int y = historyRecord.Top; y < historyRecord.Bottom; y++)
-                    for (int x = historyRecord.Left; x < historyRecord.Right; x++)
+            if (!chbMultiTouch.Checked)
+                for (int y = historyRecord.Top; y <= historyRecord.Bottom; y++)
+                    for (int x = historyRecord.Left; x <= historyRecord.Right; x++)
                         HMap.Changed[x, y] = 0;
             // Fix record
             HistoryAdd();

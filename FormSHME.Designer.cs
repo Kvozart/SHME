@@ -99,6 +99,7 @@
             this.lblTMapSizes = new System.Windows.Forms.Label();
             this.btnSaveHMap = new System.Windows.Forms.Button();
             this.cmsSaveFile = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi8BitPNG = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiExportView = new System.Windows.Forms.ToolStripMenuItem();
             this.btnLoadHMap = new System.Windows.Forms.Button();
@@ -193,7 +194,7 @@
             this.label15 = new System.Windows.Forms.Label();
             this.btnToolUndo = new System.Windows.Forms.Button();
             this.btnToolRedo = new System.Windows.Forms.Button();
-            this.tsmiSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.chbMultiTouch = new System.Windows.Forms.CheckBox();
             this.gbStatistics.SuspendLayout();
             this.cmsOpenFile.SuspendLayout();
             this.tcThemes.SuspendLayout();
@@ -1191,13 +1192,22 @@
             this.cmsSaveFile.Name = "cmsSaveFile";
             this.cmsSaveFile.Size = new System.Drawing.Size(175, 70);
             // 
+            // tsmiSaveAs
+            // 
+            this.tsmiSaveAs.Image = global::SHME.Properties.Resources.blank;
+            this.tsmiSaveAs.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsmiSaveAs.Name = "tsmiSaveAs";
+            this.tsmiSaveAs.Size = new System.Drawing.Size(174, 22);
+            this.tsmiSaveAs.Text = "Save as...";
+            this.tsmiSaveAs.Click += new System.EventHandler(this.btnSaveHMap_Click);
+            // 
             // tsmi8BitPNG
             // 
             this.tsmi8BitPNG.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.tsmi8BitPNG.Image = ((System.Drawing.Image)(resources.GetObject("tsmi8BitPNG.Image")));
             this.tsmi8BitPNG.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmi8BitPNG.Name = "tsmi8BitPNG";
-            this.tsmi8BitPNG.Size = new System.Drawing.Size(180, 22);
+            this.tsmi8BitPNG.Size = new System.Drawing.Size(174, 22);
             this.tsmi8BitPNG.Text = "Save as 8 bit PNG...";
             this.tsmi8BitPNG.Click += new System.EventHandler(this.btnSaveHMap_Click);
             // 
@@ -1207,7 +1217,7 @@
             this.tsmiExportView.Image = global::SHME.Properties.Resources.spectrum;
             this.tsmiExportView.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsmiExportView.Name = "tsmiExportView";
-            this.tsmiExportView.Size = new System.Drawing.Size(180, 22);
+            this.tsmiExportView.Size = new System.Drawing.Size(174, 22);
             this.tsmiExportView.Text = "Export view...";
             this.tsmiExportView.Click += new System.EventHandler(this.tsmiExportView_Click);
             // 
@@ -1318,6 +1328,7 @@
             // gbTools
             // 
             this.gbTools.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.gbTools.Controls.Add(this.chbMultiTouch);
             this.gbTools.Controls.Add(this.chbHexValues);
             this.gbTools.Controls.Add(this.btnToolsetRemove);
             this.gbTools.Controls.Add(this.btnToolsetAdd);
@@ -1343,7 +1354,7 @@
             // 
             this.chbHexValues.Appearance = System.Windows.Forms.Appearance.Button;
             this.chbHexValues.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbHexValues.Location = new System.Drawing.Point(164, 66);
+            this.chbHexValues.Location = new System.Drawing.Point(172, 68);
             this.chbHexValues.Margin = new System.Windows.Forms.Padding(0);
             this.chbHexValues.Name = "chbHexValues";
             this.chbHexValues.Size = new System.Drawing.Size(39, 23);
@@ -2680,14 +2691,21 @@
             this.btnToolRedo.UseVisualStyleBackColor = true;
             this.btnToolRedo.Click += new System.EventHandler(this.btnTool_Click);
             // 
-            // tsmiSaveAs
+            // chbMultiTouch
             // 
-            this.tsmiSaveAs.Image = global::SHME.Properties.Resources.blank;
-            this.tsmiSaveAs.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsmiSaveAs.Name = "tsmiSaveAs";
-            this.tsmiSaveAs.Size = new System.Drawing.Size(180, 22);
-            this.tsmiSaveAs.Text = "Save as...";
-            this.tsmiSaveAs.Click += new System.EventHandler(this.btnSaveHMap_Click);
+            this.chbMultiTouch.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbMultiTouch.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.chbMultiTouch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbMultiTouch.Location = new System.Drawing.Point(128, 68);
+            this.chbMultiTouch.Margin = new System.Windows.Forms.Padding(0);
+            this.chbMultiTouch.Name = "chbMultiTouch";
+            this.chbMultiTouch.Size = new System.Drawing.Size(40, 23);
+            this.chbMultiTouch.TabIndex = 27;
+            this.chbMultiTouch.Text = "Multi";
+            this.chbMultiTouch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chbMultiTouch, "Do not clear editing state");
+            this.chbMultiTouch.UseVisualStyleBackColor = true;
+            this.chbMultiTouch.CheckedChanged += new System.EventHandler(this.chbMultiTouch_CheckedChanged);
             // 
             // FormSHME
             // 
@@ -2936,6 +2954,7 @@
         private System.Windows.Forms.CheckBox chbBrush2FrameShow;
         private System.Windows.Forms.ToolStripMenuItem tsmiRefreash;
         private System.Windows.Forms.ToolStripMenuItem tsmiSaveAs;
+        private System.Windows.Forms.CheckBox chbMultiTouch;
     }
 }
 
