@@ -682,8 +682,8 @@ namespace SHME
         #endregion
 
         #region Mouse
-        int msX0, msX, mapX;
-        int msY0, msY, mapY;
+        int msX0, msX, mapXl, mapX;
+        int msY0, msY, mapYl, mapY;
         UInt16 levelValue;
 
         private void pbHMap_MouseDown(object sender, MouseEventArgs e)//O
@@ -696,11 +696,25 @@ namespace SHME
 
         private void pbHMap_MouseMove(object sender, MouseEventArgs e)
         {
+            mapXl = mapX;
+            mapYl = mapY;
             msX = e.X - hScrollBar.Left;
             msY = e.Y - vScrollBar.Top;
             mapX = (msX + hScrollBar.Value) >> zoom;
             mapY = (msY + vScrollBar.Value) >> zoom;
             ToolAction(sender, e, true);
+        }
+
+        private void ToolShadow_Update()
+        {
+            int w, h;
+            w = Math.Max((int)nudBrush1Width. Value, Math.Max((int)nudBrush2Width. Value, (int)nudBrush3Width. Value));
+            h = Math.Max((int)nudBrush1Height.Value, Math.Max((int)nudBrush2Height.Value, (int)nudBrush3Height.Value));
+            Invalidate(new Rectangle(
+                hScrollBar.Left + ((Math.Min(mapXl, mapX) - ((w - 1) >> 1)) << zoom) - hScrollBar.Value - 1,
+                vScrollBar.Top  + ((Math.Min(mapYl, mapY) - ((h - 1) >> 1)) << zoom) - vScrollBar.Value - 1,
+                ((w + Math.Abs(mapXl - mapX)) << zoom) + 2,
+                ((h + Math.Abs(mapYl - mapY)) << zoom) + 2));
         }
 
         private void ToolAction(object sender, MouseEventArgs e, bool moving)
@@ -745,6 +759,8 @@ namespace SHME
                                 vScrollBar.Value = scY;
                                 ScrollBar_Scroll(null, null);
                             }
+                            else
+                                ToolShadow_Update();
                         }
                     }
                     // Switching active layer
@@ -778,15 +794,7 @@ namespace SHME
                 lblPointerPosition.Text = mapX + PointerSpliter + mapY;
                 lblPointerLevel.Text = mapXYLevel.ToString() + " x" + mapXYLevel.ToString("X4");
                 if (e.Button == MouseButtons.None)
-                {
-                    //int szW = Math.Max((int)nudBrush1Width .Value, Math.Max((int)nudBrush2Width .Value, (int)nudBrush3Width .Value)) << zoom;
-                    //int szH = Math.Max((int)nudBrush1Height.Value, Math.Max((int)nudBrush2Height.Value, (int)nudBrush3Height.Value)) << zoom;
-                    Invalidate(new Rectangle(
-                        hScrollBar.Left,
-                        vScrollBar.Top,
-                        hScrollBar.Right,
-                        vScrollBar.Bottom));
-                }
+                    ToolShadow_Update();
             }
 
             // No drawing?
@@ -801,17 +809,17 @@ namespace SHME
                 return;
             }
 
-            int y, x;
             // Start history record
             if (historyRecord == null)
                 historyRecord = new HistoryRecord(HMap, mapX, mapY, mapX, mapY);
 
-            // Get brush 
+            // Get brush
+            int x, y;
+            int sizeW, sizeH;
             int[,] brush;
             float[,] mask;
             UInt16 value;
             float force;
-            int sizeW, sizeH;
             if (toolBrush == 0)
             {
                 brush = brush1Buffer;
@@ -1013,7 +1021,7 @@ namespace SHME
                     while (!file.EndOfStream)
                     {
                         String line = file.ReadLine();
-                        //Decompress
+                        // Decompress
                         String[] rec = line.Split('\t');
                         // Skip empty
                         if (rec.Length < 2)
