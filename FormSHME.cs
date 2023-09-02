@@ -78,6 +78,7 @@ namespace SHME
         List<HistoryRecord> historyBackward = new List<HistoryRecord>();
         List<HistoryRecord> historyForward  = new List<HistoryRecord>();
         HistoryRecord historyRecord;
+        HistoryRecord multiTouch;
 
         // Drawing
         float[,] brush1ForceMask;
@@ -662,7 +663,7 @@ namespace SHME
             historyRecord = new HistoryRecord(HMap, 0, 0, HMap.Width - 1, HMap.Height - 1, true);
             HistoryAdd();
             // Transit
-            HMap.SetSize(dlgResize.mapWidth, dlgResize.mapHeight, null, true);
+            HMap.SetSize(dlgResize.mapWidth, dlgResize.mapHeight, true);
             // Finish
             lblFileFormat.Visible =
             cbbLevelFormat8bit.Visible =
@@ -678,6 +679,7 @@ namespace SHME
             for (int y = 0; y < HMap.Height; y++)
                 for (int x = 0; x < HMap.Width; x++)
                     HMap.Changed[x, y] = 0;
+            multiTouch = null;
         }
         #endregion
 
@@ -691,6 +693,11 @@ namespace SHME
             msX0 = e.X;
             msY0 = e.Y;
             lockMouse = false;
+            // Clearing if released
+            if (!chbMultiTouch.Checked)
+                for (int y = 0; y < HMap.Height; y++)
+                    for (int x = 0; x < HMap.Width; x++)
+                        HMap.Changed[x, y] = 0;
             ToolAction(sender, e, false);
         }
 
@@ -927,12 +934,14 @@ namespace SHME
 
             // Put brush
             float k;
+            if (multiTouch == null)
+                multiTouch = (chbMultiTouch.Checked) ? new HistoryRecord(HMap, mapX, mapY, mapX, mapY) : historyRecord;
             for (y = iT; y <= iB; y++)
                 for (x = iL; x <= iR; x++)
                     if (HMap.Changed[x, y] < mask[x - mapL, y - mapT])
                     {
                         k = mask[x - mapL, y - mapT] * force;
-                        HMap.Levels[x, y] = (UInt16)(brush[x - mapL, y - mapT] * k + historyRecord.Clip[x, y] * (1 - k));
+                        HMap.Levels[x, y] = (UInt16)(brush[x - mapL, y - mapT] * k + multiTouch.Clip[x, y] * (1 - k));
                         HMap.Changed[x, y] = mask[x - mapL, y - mapT];
                     }
 
@@ -972,9 +981,12 @@ namespace SHME
             if (historyRecord == null) return;
             // Clear change level board
             if (!chbMultiTouch.Checked)
+            {
                 for (int y = historyRecord.Top; y <= historyRecord.Bottom; y++)
                     for (int x = historyRecord.Left; x <= historyRecord.Right; x++)
                         HMap.Changed[x, y] = 0;
+                multiTouch = null;
+            }
             // Fix record
             HistoryAdd();
         }

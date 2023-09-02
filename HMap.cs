@@ -22,7 +22,7 @@ namespace SHME
 
     class HeightMap : TopologicalMap
     {
-        public float[,] Changed;
+        public float [,] Changed;
         public UInt16[,] Levels { get; private set; } // Height map
         public int[] MinLevelAtRow { get; private set; } // Row height minimums
         public int[] AvgLevelAtRow { get; private set; } // Row height average
@@ -38,9 +38,9 @@ namespace SHME
         /// <param name="newWidth">New width</param>
         /// <param name="newHeight">New height</param>
         /// <param name="newLevels">New levels array to adopt</param>
-        /// <param name="saveData">If copy data from old array is needed</param>
-        /// <returns>Old levels array</returns>
-        public UInt16[,] SetSize(int newWidth, int newHeight, UInt16[,] newLevels = null, bool saveData = false)
+        /// <param name="saveData">If copy data from old arrays is needed</param>
+        /// <returns>Old levels arrays</returns>
+        public void SetSize(int newWidth, int newHeight, bool saveData = false, UInt16[,] newLevels = null, float[,] newChanged = null)
         {
             MinLevel = 65535;
             MaxLevel = 0;
@@ -48,23 +48,44 @@ namespace SHME
             MinLevelAtRow = new int[newHeight];
             MaxLevelAtRow = new int[newHeight];
             AvgLevelAtRow = new int[newHeight];
-            UInt16[,] oldLevels = Levels;
             if (newLevels == null)
             {
-                newLevels = new UInt16[newWidth, newHeight];
+                newLevels  = new UInt16[newWidth, newHeight];
+                newChanged = new float [newWidth, newHeight];
                 if (Levels != null && saveData)
                 {
                     int x, w = (Width  < newWidth ) ? Width  : newWidth,
                         y, h = (Height < newHeight) ? Height : newHeight;
                     for (y = 0; y < h; y++)
                         for (x = 0; x < w; x++)
-                            newLevels[x, y] = oldLevels[x, y];
+                        {
+                            newLevels [x, y] = Levels [x, y];
+                            newChanged[x, y] = Changed[x, y];
+                        }
                 }
             }
-            Levels = newLevels;
-            Changed = new float[newWidth, newHeight];
+            // Swap arrays
+            Levels  = newLevels;
+            Changed = newChanged;
             base.SetSize(newWidth, newHeight);
-            return oldLevels;
+        }
+
+        /// <summary>
+        /// Replace owned level map with new and recreate statistic arrays
+        /// </summary>
+        /// <param name="newWidth">New width</param>
+        /// <param name="newHeight">New height</param>
+        /// <param name="newLevels">New levels array to adopt</param>
+        /// <param name="saveData">If copy data from old arrays is needed</param>
+        /// <returns>Old levels arrays</returns>
+        public void SwapClips(int newWidth, int newHeight, UInt16[,] newLevels, float[,] newChanged, out UInt16[,] oldLevels, out float[,] oldChanged)
+        {
+            // Swap arrays
+            UInt16[,] oLevels  = Levels;
+            float[,]  oChanged = Changed;
+            SetSize(newWidth, newHeight, false, newLevels, newChanged);
+            oldLevels  = oLevels;
+            oldChanged = oChanged;
         }
 
         /// <summary>

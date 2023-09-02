@@ -109,6 +109,7 @@
             this.btnTMapGenerate = new System.Windows.Forms.Button();
             this.tlpTools = new System.Windows.Forms.TableLayoutPanel();
             this.gbTools = new System.Windows.Forms.GroupBox();
+            this.chbMultiTouch = new System.Windows.Forms.CheckBox();
             this.chbHexValues = new System.Windows.Forms.CheckBox();
             this.btnToolsetRemove = new System.Windows.Forms.Button();
             this.btnToolsetAdd = new System.Windows.Forms.Button();
@@ -194,7 +195,6 @@
             this.label15 = new System.Windows.Forms.Label();
             this.btnToolUndo = new System.Windows.Forms.Button();
             this.btnToolRedo = new System.Windows.Forms.Button();
-            this.chbMultiTouch = new System.Windows.Forms.CheckBox();
             this.gbStatistics.SuspendLayout();
             this.cmsOpenFile.SuspendLayout();
             this.tcThemes.SuspendLayout();
@@ -1350,6 +1350,22 @@
             this.gbTools.TabStop = false;
             this.gbTools.Text = "Tools";
             // 
+            // chbMultiTouch
+            // 
+            this.chbMultiTouch.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbMultiTouch.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.chbMultiTouch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbMultiTouch.Location = new System.Drawing.Point(128, 68);
+            this.chbMultiTouch.Margin = new System.Windows.Forms.Padding(0);
+            this.chbMultiTouch.Name = "chbMultiTouch";
+            this.chbMultiTouch.Size = new System.Drawing.Size(40, 23);
+            this.chbMultiTouch.TabIndex = 27;
+            this.chbMultiTouch.Text = "Multi";
+            this.chbMultiTouch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chbMultiTouch, "Do not clear editing state");
+            this.chbMultiTouch.UseVisualStyleBackColor = true;
+            this.chbMultiTouch.CheckedChanged += new System.EventHandler(this.chbMultiTouch_CheckedChanged);
+            // 
             // chbHexValues
             // 
             this.chbHexValues.Appearance = System.Windows.Forms.Appearance.Button;
@@ -2338,7 +2354,6 @@
             this.chbGrid.Name = "chbGrid";
             this.chbGrid.Size = new System.Drawing.Size(25, 25);
             this.chbGrid.TabIndex = 1;
-            this.chbGrid.Text = "@";
             this.toolTip.SetToolTip(this.chbGrid, "Switch grid");
             this.chbGrid.UseVisualStyleBackColor = false;
             this.chbGrid.CheckedChanged += new System.EventHandler(this.cbbGrid_CheckedChanged);
@@ -2690,22 +2705,6 @@
             this.btnToolRedo.Tag = "";
             this.btnToolRedo.UseVisualStyleBackColor = true;
             this.btnToolRedo.Click += new System.EventHandler(this.btnTool_Click);
-            // 
-            // chbMultiTouch
-            // 
-            this.chbMultiTouch.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chbMultiTouch.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.chbMultiTouch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbMultiTouch.Location = new System.Drawing.Point(128, 68);
-            this.chbMultiTouch.Margin = new System.Windows.Forms.Padding(0);
-            this.chbMultiTouch.Name = "chbMultiTouch";
-            this.chbMultiTouch.Size = new System.Drawing.Size(40, 23);
-            this.chbMultiTouch.TabIndex = 27;
-            this.chbMultiTouch.Text = "Multi";
-            this.chbMultiTouch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip.SetToolTip(this.chbMultiTouch, "Do not clear editing state");
-            this.chbMultiTouch.UseVisualStyleBackColor = true;
-            this.chbMultiTouch.CheckedChanged += new System.EventHandler(this.chbMultiTouch_CheckedChanged);
             // 
             // FormSHME
             // 
