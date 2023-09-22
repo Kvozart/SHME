@@ -4,6 +4,7 @@ namespace SHME
 {
     class HistoryRecord
     {
+        public bool MultiTouch { get; private set; }
         public bool ResizeAction { get; private set; }
         public int Left   { get; private set; }
         public int Top    { get; private set; }
@@ -14,13 +15,14 @@ namespace SHME
         public UInt16[,] Clip    { get; private set; }
         public float [,] Changed { get; private set; }
 
-        public HistoryRecord(HeightMap HMap, int left, int top, int right, int bottom, bool resizeAction = false)
+        public HistoryRecord(HeightMap HMap, int left, int top, int right, int bottom, bool multiTouch, bool resizeAction = false)
         {
             int x, y;
             Left = left;   Right  = right;
             Top  = top;    Bottom = bottom;
             Width  = Right  - Left + 1;
             Height = Bottom - Top  + 1;
+            MultiTouch = multiTouch;
             ResizeAction = resizeAction;
             Clip    = HMap.Levels.Clone() as ushort[,];
             Changed = HMap.Changed.Clone() as float[,];

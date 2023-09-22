@@ -326,6 +326,7 @@ namespace SHME
                 for (x = left; x <= right; x++)
                 {
                     h = (UInt16)((Levels[x, y] - stretchMin) * k);
+                    //h = (UInt16)((65535*Changed[x, y] - stretchMin) * k); // Display states instead of levels
                     segment = (h >> 13);
                     Pixels[x + y * Width] = MixColor(colors[segment], colors[segment + 1], (byte)(h >> 5), 255);
                 }

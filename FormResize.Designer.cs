@@ -61,6 +61,11 @@
             0,
             0,
             0});
+            this.nudHeight.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudHeight.Name = "nudHeight";
             this.nudHeight.Size = new System.Drawing.Size(68, 20);
             this.nudHeight.TabIndex = 6;
@@ -76,6 +81,11 @@
             this.nudWidth.Location = new System.Drawing.Point(124, 52);
             this.nudWidth.Maximum = new decimal(new int[] {
             4097,
+            0,
+            0,
+            0});
+            this.nudWidth.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});

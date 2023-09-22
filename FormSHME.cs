@@ -78,7 +78,7 @@ namespace SHME
         List<HistoryRecord> historyBackward = new List<HistoryRecord>();
         List<HistoryRecord> historyForward  = new List<HistoryRecord>();
         HistoryRecord historyRecord;
-        HistoryRecord multiTouch;
+        HistoryRecord stateMap;
 
         // Drawing
         float[,] brush1ForceMask;
@@ -577,7 +577,7 @@ namespace SHME
         private void tsmiClear_Click(object sender, EventArgs e)
         {
             int x, y;
-            historyRecord = new HistoryRecord(HMap, 0, 0, HMap.Width - 1, HMap.Height - 1);
+            historyRecord = new HistoryRecord(HMap, 0, 0, HMap.Width - 1, HMap.Height - 1, chbMultiTouch.Checked);
             HistoryAdd();
             for (y = 0; y < HMap.Height; y++)
                 for (x = 0; x < HMap.Width; x++)
@@ -657,13 +657,13 @@ namespace SHME
             var dlgResize = new FormResize(HMap.Width, HMap.Height);
             if (dlgResize.ShowDialog() != DialogResult.OK)
                 return;
-            if (HMap.Width == dlgResize.mapWidth && HMap.Height == dlgResize.mapHeight)
+            if (HMap.Width == dlgResize.newWidth && HMap.Height == dlgResize.newHeight)
                 return;
             // Register
-            historyRecord = new HistoryRecord(HMap, 0, 0, HMap.Width - 1, HMap.Height - 1, true);
+            historyRecord = new HistoryRecord(HMap, 0, 0, HMap.Width - 1, HMap.Height - 1, chbMultiTouch.Checked, true);
             HistoryAdd();
             // Transit
-            HMap.SetSize(dlgResize.mapWidth, dlgResize.mapHeight, true);
+            HMap.SetSize(dlgResize.newWidth, dlgResize.newHeight, true);
             // Finish
             lblFileFormat.Visible =
             cbbLevelFormat8bit.Visible =
@@ -672,14 +672,19 @@ namespace SHME
             FinishHMapLoading();
         }
 
-        private void chbMultiTouch_CheckedChanged(object sender, EventArgs e)
+        private void chbMultiTouch_Click(object sender, EventArgs e)
         {
-            if ((sender as CheckBox).Checked) return;
-            // Clearing if released
-            for (int y = 0; y < HMap.Height; y++)
-                for (int x = 0; x < HMap.Width; x++)
-                    HMap.Changed[x, y] = 0;
-            multiTouch = null;
+            if (chbMultiTouch.Checked)
+                chbMultiTouch.Tag = (0 < historyBackward.Count) ? historyBackward[0] : null;
+            else
+            {
+                if (chbMultiTouch.Tag == ((0 < historyBackward.Count) ? historyBackward[0] : null))
+                    return;
+                // Store state and push history
+                historyRecord = new HistoryRecord(HMap, 0, 0, HMap.Width - 1, HMap.Height - 1, false);
+                FormSHME_MouseUp(null, null);
+                stateMap = null;
+            }
         }
         #endregion
 
@@ -694,7 +699,7 @@ namespace SHME
             msY0 = e.Y;
             lockMouse = false;
             // Clearing if released
-            if (!chbMultiTouch.Checked)
+            if (!chbMultiTouch.Checked && (0 < historyForward.Count))
                 for (int y = 0; y < HMap.Height; y++)
                     for (int x = 0; x < HMap.Width; x++)
                         HMap.Changed[x, y] = 0;
@@ -818,7 +823,7 @@ namespace SHME
 
             // Start history record
             if (historyRecord == null)
-                historyRecord = new HistoryRecord(HMap, mapX, mapY, mapX, mapY);
+                historyRecord = new HistoryRecord(HMap, mapX, mapY, mapX, mapY, chbMultiTouch.Checked);
 
             // Get brush
             int x, y;
@@ -934,14 +939,14 @@ namespace SHME
 
             // Put brush
             float k;
-            if (multiTouch == null)
-                multiTouch = (chbMultiTouch.Checked) ? new HistoryRecord(HMap, mapX, mapY, mapX, mapY) : historyRecord;
+            if (stateMap == null)
+                stateMap = (chbMultiTouch.Checked) ? new HistoryRecord(HMap, mapX, mapY, mapX, mapY, chbMultiTouch.Checked) : historyRecord;
             for (y = iT; y <= iB; y++)
                 for (x = iL; x <= iR; x++)
                     if (HMap.Changed[x, y] < mask[x - mapL, y - mapT])
                     {
                         k = mask[x - mapL, y - mapT] * force;
-                        HMap.Levels[x, y] = (UInt16)(brush[x - mapL, y - mapT] * k + multiTouch.Clip[x, y] * (1 - k));
+                        HMap.Levels[x, y] = (UInt16)(brush[x - mapL, y - mapT] * k + stateMap.Clip[x, y] * (1 - k));
                         HMap.Changed[x, y] = mask[x - mapL, y - mapT];
                     }
 
@@ -985,10 +990,17 @@ namespace SHME
                 for (int y = historyRecord.Top; y <= historyRecord.Bottom; y++)
                     for (int x = historyRecord.Left; x <= historyRecord.Right; x++)
                         HMap.Changed[x, y] = 0;
-                multiTouch = null;
+                stateMap = null;
             }
             // Fix record
             HistoryAdd();
+            
+BuildSpectrum(0, 0, -1, -1);
+Invalidate(new Rectangle(
+    hScrollBar.Left,
+    vScrollBar.Top,
+    hScrollBar.Right,
+    vScrollBar.Bottom));
         }
 
         private void FormSHME_MouseEnter(object sender, EventArgs e)
@@ -1606,7 +1618,7 @@ namespace SHME
         #region History
         private void btnHistoryBackward_Click(object sender, EventArgs e) => HistoryRoll(historyBackward, historyForward);
 
-        private void btnHistoryForward_Click (object sender, EventArgs e) => HistoryRoll(historyForward,  historyBackward);
+        private void btnHistoryForward_Click (object sender, EventArgs e) => HistoryRoll(historyForward, historyBackward);
 
         private void HistoryAdd()//O
         {
@@ -1645,6 +1657,7 @@ namespace SHME
             // Show
             if (src != null && !historyRecord.ResizeAction)
             {
+                chbMultiTouch.Checked = (0 < historyBackward.Count) ? historyBackward[0].MultiTouch : false;
                 BuildSpectrum(historyRecord.Left, historyRecord.Top, historyRecord.Right, historyRecord.Bottom);
                 HMap.BuildStatistics(historyRecord.Top, historyRecord.Bottom);
                 ShowStatistics();

@@ -1364,7 +1364,7 @@
             this.chbMultiTouch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip.SetToolTip(this.chbMultiTouch, "Do not clear editing state");
             this.chbMultiTouch.UseVisualStyleBackColor = true;
-            this.chbMultiTouch.CheckedChanged += new System.EventHandler(this.chbMultiTouch_CheckedChanged);
+            this.chbMultiTouch.Click += new System.EventHandler(this.chbMultiTouch_Click);
             // 
             // chbHexValues
             // 

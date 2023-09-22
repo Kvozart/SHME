@@ -12,7 +12,7 @@ namespace SHME
 {
     public partial class FormResize : Form
     {
-        public int mapWidth = 0, mapHeight = 0;
+        public int newWidth = 1, newHeight = 1;
 
         public FormResize(int width, int height)
         {
@@ -20,12 +20,15 @@ namespace SHME
 
             lblOldWidth. Text = width. ToString();
             lblOldHeight.Text = height.ToString();
+            
+            nudWidth. Value = width;
+            nudHeight.Value = height;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            mapWidth  = (int)nudWidth. Value;
-            mapHeight = (int)nudHeight.Value;
+            newWidth  = (int)nudWidth. Value;
+            newHeight = (int)nudHeight.Value;
         }
     }
 }
