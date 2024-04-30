@@ -143,7 +143,7 @@ namespace SHME
 
             //* Postload checks
             DrawSpectrumSample();
-            cbbZoom.SelectedIndex = ZoomMax;
+            cbbZoom.SelectedIndex = 0;
             // Tool presets
             if (cbbToolsetPreset.Items.Count < 1)
             {
@@ -153,9 +153,9 @@ namespace SHME
             }
 
             // Create tool force shape
-            CreateToolForceMask(ref brush1ForceMask, ref brush1Buffer, btnBrush1Distribution.ImageIndex, nudBrush1Width, nudBrush1Height, chbBrush1Shape);
-            CreateToolForceMask(ref brush2ForceMask, ref brush2Buffer, btnBrush2Distribution.ImageIndex, nudBrush2Width, nudBrush2Height, chbBrush2Shape);
-            CreateToolForceMask(ref brush3ForceMask, ref brush3Buffer, btnBrush3Distribution.ImageIndex, nudBrush3Width, nudBrush3Height, chbBrush3Shape);
+            CreateToolForceMask(ref brush1ForceMask, ref brush1Buffer, btnBrush1Distribution.ImageIndex, nudBrush1Width, nudBrush1Height, chbBrush1RectangleShape);
+            CreateToolForceMask(ref brush2ForceMask, ref brush2Buffer, btnBrush2Distribution.ImageIndex, nudBrush2Width, nudBrush2Height, chbBrush2RectangleShape);
+            CreateToolForceMask(ref brush3ForceMask, ref brush3Buffer, btnBrush3Distribution.ImageIndex, nudBrush3Width, nudBrush3Height, chbBrush3RectangleShape);
 
             // Load HMap
             bool loaded = false;
@@ -173,6 +173,8 @@ namespace SHME
                 loaded = LoadTMap(TMap.URL, false);
             if (!loaded)
                 GenerateTMap(HMap.Width, HMap.Height, false);
+
+            this.MouseWheel+= new System.Windows.Forms.MouseEventHandler(this.FormSHME_MouseScroll);
         }
 
         #region Theme pages
@@ -275,7 +277,7 @@ namespace SHME
             }
         }
 
-        private void cbbZoom_SelectedIndexChanged(object sender, EventArgs e) => SetZoom(ZoomMax - cbbZoom.SelectedIndex, false);
+        private void cbbZoom_SelectedIndexChanged(object sender, EventArgs e) => SetZoom(cbbZoom.SelectedIndex, false);
         private void pbZoomIn_Click (object sender, MouseEventArgs e) => SetZoom(zoom + 1, false);
         private void pbZoomOut_Click(object sender, MouseEventArgs e) => SetZoom(zoom - 1, false);
 
@@ -287,7 +289,7 @@ namespace SHME
             // Block zooming with active tool
             if (historyRecord != null)
             {
-                cbbZoom.SelectedIndex = ZoomMax - zoom;
+                cbbZoom.SelectedIndex = zoom;
                 return;
             }
             zoom = z;
@@ -315,7 +317,7 @@ namespace SHME
             int y = (int)(vScrollBar.Maximum * (scrollY - ((float)vScrollBar.LargeChange / vScrollBar.Maximum / 2)));
             ScrollValueCheckAndSet(hScrollBar, ref x, true);
             ScrollValueCheckAndSet(vScrollBar, ref y, true);
-            cbbZoom.SelectedIndex = ZoomMax - zoom;
+            cbbZoom.SelectedIndex = zoom;
             // Redraw
             ScrollBar_Scroll(null, null);
         }
@@ -794,7 +796,7 @@ namespace SHME
             if (mapX < 0 || mapY < 0 || mapW < mapX || mapH < mapY)
             {
                 if (moving && lblPointerLevel.Enabled)
-                    FormSHME_MouseLeave(sender, e);
+                    FormSHME_HideValues();
                 return;
             }
             else
@@ -1008,8 +1010,21 @@ Invalidate(new Rectangle(
             pnlToolSelect.Visible = false;
             cbbZoom.Focus();
         }
+        
+        private void FormSHME_MouseScroll(object sender, MouseEventArgs e)//Ok
+        {
+            if (!lblPointerLevel.Enabled) return;
+            SetZoom((e.Delta < 0) 
+                ? zoom - 1 
+                : zoom + 1,
+                false);
+mapX = (msX + hScrollBar.Value) >> zoom;//
+mapY = (msY + vScrollBar.Value) >> zoom;//
+        }
 
-        private void FormSHME_MouseLeave(object sender, EventArgs e)//Ok
+        private void FormSHME_MouseLeave(object sender, EventArgs e) => FormSHME_HideValues();//Ok
+
+        private void FormSHME_HideValues()//Ok
         {
             lblPointerPosition.Text = "-" + PointerSpliter + "-";
             lblPointerLevel.Enabled = false;
@@ -1116,9 +1131,9 @@ Invalidate(new Rectangle(
                             case "Slot1Distribution": btnBrush1Distribution.ImageIndex = CheckInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
                             case "Slot2Distribution": btnBrush2Distribution.ImageIndex = CheckInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
                             case "Slot3Distribution": btnBrush3Distribution.ImageIndex = CheckInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
-                            case "Slot1Shape":        chbBrush1Shape.Checked           = (value == "True"); break;
-                            case "Slot2Shape":        chbBrush2Shape.Checked           = (value == "True"); break;
-                            case "Slot3Shape":        chbBrush3Shape.Checked           = (value == "True"); break;
+                            case "Slot1Shape":        chbBrush1RectangleShape.Checked  = (value == "True"); break;
+                            case "Slot2Shape":        chbBrush2RectangleShape.Checked  = (value == "True"); break;
+                            case "Slot3Shape":        chbBrush3RectangleShape.Checked  = (value == "True"); break;
                             case "Slot1FrameShow":    chbBrush1FrameShow.Checked       = (value == "True"); break;
                             case "Slot2FrameShow":    chbBrush2FrameShow.Checked       = (value == "True"); break;
                             case "Slot3FrameShow":    chbBrush3FrameShow.Checked       = (value == "True"); break;
@@ -1248,17 +1263,17 @@ Invalidate(new Rectangle(
             /**/
             if (!lblPointerLevel.Enabled)
                 return;
-            if (chbBrush1FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush1Width.Value, (int)nudBrush1Height.Value, chbBrush1Shape.Checked);
-            if (chbBrush2FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush2Width.Value, (int)nudBrush2Height.Value, chbBrush2Shape.Checked);
-            if (chbBrush3FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, chbBrush3Shape.Checked);
+            if (chbBrush1FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush1Width.Value, (int)nudBrush1Height.Value, chbBrush1RectangleShape.Checked);
+            if (chbBrush2FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush2Width.Value, (int)nudBrush2Height.Value, chbBrush2RectangleShape.Checked);
+            if (chbBrush3FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, chbBrush3RectangleShape.Checked);
             /**/
         }
 
-        private void DrawBrushContour(Graphics g, int width, int height, bool shape)
+        private void DrawBrushContour(Graphics g, int width, int height, bool isRectangle)
         {
             int ix = ((mapX - ((width  - 1) >> 1)) << zoom) - hScrollBar.Value;
             int iy = ((mapY - ((height - 1) >> 1)) << zoom) - vScrollBar.Value;
-            if (shape)
+            if (isRectangle)
                 g.DrawRectangle(
                     new Pen(Color.Black),
                     ix + hScrollBar.Left,
@@ -1310,7 +1325,11 @@ Invalidate(new Rectangle(
             if (e != null)
                 if (e.OldValue == e.NewValue)
                     return;
-            Invalidate();
+            Invalidate(new Rectangle(
+                hScrollBar.Left,
+                vScrollBar.Top,
+                hScrollBar.Right,
+                vScrollBar.Bottom));
         }
 
         private void pnlCorner_DoubleClick(object sender, EventArgs e) => new AboutBox().ShowDialog();
@@ -1369,9 +1388,9 @@ Invalidate(new Rectangle(
                 file.WriteLine("Slot1Distribution\t" + btnBrush1Distribution.ImageIndex);
                 file.WriteLine("Slot2Distribution\t" + btnBrush2Distribution.ImageIndex);
                 file.WriteLine("Slot3Distribution\t" + btnBrush3Distribution.ImageIndex);
-                file.WriteLine("Slot1Shape\t"        + chbBrush1Shape.Checked);
-                file.WriteLine("Slot2Shape\t"        + chbBrush2Shape.Checked);
-                file.WriteLine("Slot3Shape\t"        + chbBrush3Shape.Checked);
+                file.WriteLine("Slot1Shape\t"        + chbBrush1RectangleShape.Checked);
+                file.WriteLine("Slot2Shape\t"        + chbBrush2RectangleShape.Checked);
+                file.WriteLine("Slot3Shape\t"        + chbBrush3RectangleShape.Checked);
                 file.WriteLine("Slot1FrameShow\t"    + chbBrush1FrameShow.Checked);
                 file.WriteLine("Slot2FrameShow\t"    + chbBrush2FrameShow.Checked);
                 file.WriteLine("Slot3FrameShow\t"    + chbBrush3FrameShow.Checked);
@@ -1522,13 +1541,13 @@ Invalidate(new Rectangle(
             tbBrush2ValueHex.Visible = tbBrush2ForceHex.Visible =
             tbBrush3ValueHex.Visible = tbBrush3ForceHex.Visible = chbHexValues.Checked;
 
-        private void nudBrush1Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref brush1ForceMask, ref brush1Buffer, btnBrush1Distribution.ImageIndex, nudBrush1Width, nudBrush1Height, chbBrush1Shape);
-        private void nudBrush2Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref brush2ForceMask, ref brush2Buffer, btnBrush2Distribution.ImageIndex, nudBrush2Width, nudBrush2Height, chbBrush2Shape);
-        private void nudBrush3Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref brush3ForceMask, ref brush3Buffer, btnBrush3Distribution.ImageIndex, nudBrush3Width, nudBrush3Height, chbBrush3Shape);
+        private void nudBrush1Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref brush1ForceMask, ref brush1Buffer, btnBrush1Distribution.ImageIndex, nudBrush1Width, nudBrush1Height, chbBrush1RectangleShape);
+        private void nudBrush2Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref brush2ForceMask, ref brush2Buffer, btnBrush2Distribution.ImageIndex, nudBrush2Width, nudBrush2Height, chbBrush2RectangleShape);
+        private void nudBrush3Size_ValueChanged(object sender, EventArgs e) => CreateToolForceMask(ref brush3ForceMask, ref brush3Buffer, btnBrush3Distribution.ImageIndex, nudBrush3Width, nudBrush3Height, chbBrush3RectangleShape);
 
-        private void btnBrush1Distribution_Click(object sender, EventArgs e) => CreateToolForceMask(ref brush1ForceMask, ref brush1Buffer, btnBrush1Distribution.ImageIndex += (1 < btnBrush1Distribution.ImageIndex) ? -2 : 1, nudBrush1Width, nudBrush1Height, chbBrush1Shape);
-        private void btnBrush2Distribution_Click(object sender, EventArgs e) => CreateToolForceMask(ref brush2ForceMask, ref brush2Buffer, btnBrush2Distribution.ImageIndex += (1 < btnBrush2Distribution.ImageIndex) ? -2 : 1, nudBrush2Width, nudBrush2Height, chbBrush2Shape);
-        private void btnBrush3Distribution_Click(object sender, EventArgs e) => CreateToolForceMask(ref brush3ForceMask, ref brush3Buffer, btnBrush3Distribution.ImageIndex += (1 < btnBrush3Distribution.ImageIndex) ? -2 : 1, nudBrush3Width, nudBrush3Height, chbBrush3Shape);
+        private void btnBrush1Distribution_Click(object sender, EventArgs e) => CreateToolForceMask(ref brush1ForceMask, ref brush1Buffer, btnBrush1Distribution.ImageIndex += (1 < btnBrush1Distribution.ImageIndex) ? -2 : 1, nudBrush1Width, nudBrush1Height, chbBrush1RectangleShape);
+        private void btnBrush2Distribution_Click(object sender, EventArgs e) => CreateToolForceMask(ref brush2ForceMask, ref brush2Buffer, btnBrush2Distribution.ImageIndex += (1 < btnBrush2Distribution.ImageIndex) ? -2 : 1, nudBrush2Width, nudBrush2Height, chbBrush2RectangleShape);
+        private void btnBrush3Distribution_Click(object sender, EventArgs e) => CreateToolForceMask(ref brush3ForceMask, ref brush3Buffer, btnBrush3Distribution.ImageIndex += (1 < btnBrush3Distribution.ImageIndex) ? -2 : 1, nudBrush3Width, nudBrush3Height, chbBrush3RectangleShape);
 
         private void CreateToolForceMask(ref float[,] mask, ref int[,] brush, int distributionShape, NumericUpDown nudWidth, NumericUpDown nudHeight, CheckBox chbSquareShape)
         {

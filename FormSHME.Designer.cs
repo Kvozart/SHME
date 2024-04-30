@@ -131,7 +131,7 @@
             this.label25 = new System.Windows.Forms.Label();
             this.nudBrush3Width = new System.Windows.Forms.NumericUpDown();
             this.nudBrush3ValueDecimal = new System.Windows.Forms.NumericUpDown();
-            this.chbBrush3Shape = new System.Windows.Forms.CheckBox();
+            this.chbBrush3RectangleShape = new System.Windows.Forms.CheckBox();
             this.ilToolShape = new System.Windows.Forms.ImageList(this.components);
             this.label27 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
@@ -144,7 +144,7 @@
             this.label24 = new System.Windows.Forms.Label();
             this.btnBrush2Distribution = new System.Windows.Forms.Button();
             this.nudBrush2ValueDecimal = new System.Windows.Forms.NumericUpDown();
-            this.chbBrush2Shape = new System.Windows.Forms.CheckBox();
+            this.chbBrush2RectangleShape = new System.Windows.Forms.CheckBox();
             this.nudBrush2Width = new System.Windows.Forms.NumericUpDown();
             this.label26 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
@@ -157,7 +157,7 @@
             this.tbBrush1ValueHex = new System.Windows.Forms.TextBox();
             this.nudBrush1ValueDecimal = new System.Windows.Forms.NumericUpDown();
             this.nudBrush1ForceDecimal = new System.Windows.Forms.NumericUpDown();
-            this.chbBrush1Shape = new System.Windows.Forms.CheckBox();
+            this.chbBrush1RectangleShape = new System.Windows.Forms.CheckBox();
             this.label19 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
@@ -1520,7 +1520,7 @@
             this.pnlBrush3.Controls.Add(this.label25);
             this.pnlBrush3.Controls.Add(this.nudBrush3Width);
             this.pnlBrush3.Controls.Add(this.nudBrush3ValueDecimal);
-            this.pnlBrush3.Controls.Add(this.chbBrush3Shape);
+            this.pnlBrush3.Controls.Add(this.chbBrush3RectangleShape);
             this.pnlBrush3.Controls.Add(this.label27);
             this.pnlBrush3.Controls.Add(this.label30);
             this.pnlBrush3.Location = new System.Drawing.Point(0, 116);
@@ -1700,22 +1700,22 @@
             // 
             // chbBrush3Shape
             // 
-            this.chbBrush3Shape.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chbBrush3Shape.BackColor = System.Drawing.SystemColors.Control;
-            this.chbBrush3Shape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbBrush3Shape.BackgroundImage")));
-            this.chbBrush3Shape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.chbBrush3Shape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbBrush3Shape.ImageList = this.ilToolShape;
-            this.chbBrush3Shape.Location = new System.Drawing.Point(28, 20);
-            this.chbBrush3Shape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.chbBrush3Shape.Name = "chbBrush3Shape";
-            this.chbBrush3Shape.Size = new System.Drawing.Size(20, 20);
-            this.chbBrush3Shape.TabIndex = 14;
-            this.chbBrush3Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip.SetToolTip(this.chbBrush3Shape, "Brush shape");
-            this.chbBrush3Shape.UseVisualStyleBackColor = false;
-            this.chbBrush3Shape.CheckedChanged += new System.EventHandler(this.chbBrushXShape_CheckedChanged);
-            this.chbBrush3Shape.BackgroundImageChanged += new System.EventHandler(this.nudBrush3Size_ValueChanged);
+            this.chbBrush3RectangleShape.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbBrush3RectangleShape.BackColor = System.Drawing.SystemColors.Control;
+            this.chbBrush3RectangleShape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbBrush3Shape.BackgroundImage")));
+            this.chbBrush3RectangleShape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbBrush3RectangleShape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbBrush3RectangleShape.ImageList = this.ilToolShape;
+            this.chbBrush3RectangleShape.Location = new System.Drawing.Point(28, 20);
+            this.chbBrush3RectangleShape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.chbBrush3RectangleShape.Name = "chbBrush3Shape";
+            this.chbBrush3RectangleShape.Size = new System.Drawing.Size(20, 20);
+            this.chbBrush3RectangleShape.TabIndex = 14;
+            this.chbBrush3RectangleShape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chbBrush3RectangleShape, "Brush shape");
+            this.chbBrush3RectangleShape.UseVisualStyleBackColor = false;
+            this.chbBrush3RectangleShape.CheckedChanged += new System.EventHandler(this.chbBrushXShape_CheckedChanged);
+            this.chbBrush3RectangleShape.BackgroundImageChanged += new System.EventHandler(this.nudBrush3Size_ValueChanged);
             // 
             // ilToolShape
             // 
@@ -1760,7 +1760,7 @@
             this.pnlBrush2.Controls.Add(this.label24);
             this.pnlBrush2.Controls.Add(this.btnBrush2Distribution);
             this.pnlBrush2.Controls.Add(this.nudBrush2ValueDecimal);
-            this.pnlBrush2.Controls.Add(this.chbBrush2Shape);
+            this.pnlBrush2.Controls.Add(this.chbBrush2RectangleShape);
             this.pnlBrush2.Controls.Add(this.nudBrush2Width);
             this.pnlBrush2.Controls.Add(this.label26);
             this.pnlBrush2.Controls.Add(this.label29);
@@ -1908,22 +1908,22 @@
             // 
             // chbBrush2Shape
             // 
-            this.chbBrush2Shape.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chbBrush2Shape.BackColor = System.Drawing.SystemColors.Control;
-            this.chbBrush2Shape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbBrush2Shape.BackgroundImage")));
-            this.chbBrush2Shape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.chbBrush2Shape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbBrush2Shape.ImageList = this.ilToolShape;
-            this.chbBrush2Shape.Location = new System.Drawing.Point(28, 20);
-            this.chbBrush2Shape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.chbBrush2Shape.Name = "chbBrush2Shape";
-            this.chbBrush2Shape.Size = new System.Drawing.Size(20, 20);
-            this.chbBrush2Shape.TabIndex = 13;
-            this.chbBrush2Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip.SetToolTip(this.chbBrush2Shape, "Brush shape");
-            this.chbBrush2Shape.UseVisualStyleBackColor = false;
-            this.chbBrush2Shape.CheckedChanged += new System.EventHandler(this.chbBrushXShape_CheckedChanged);
-            this.chbBrush2Shape.BackgroundImageChanged += new System.EventHandler(this.nudBrush2Size_ValueChanged);
+            this.chbBrush2RectangleShape.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbBrush2RectangleShape.BackColor = System.Drawing.SystemColors.Control;
+            this.chbBrush2RectangleShape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbBrush2Shape.BackgroundImage")));
+            this.chbBrush2RectangleShape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbBrush2RectangleShape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbBrush2RectangleShape.ImageList = this.ilToolShape;
+            this.chbBrush2RectangleShape.Location = new System.Drawing.Point(28, 20);
+            this.chbBrush2RectangleShape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.chbBrush2RectangleShape.Name = "chbBrush2Shape";
+            this.chbBrush2RectangleShape.Size = new System.Drawing.Size(20, 20);
+            this.chbBrush2RectangleShape.TabIndex = 13;
+            this.chbBrush2RectangleShape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chbBrush2RectangleShape, "Brush shape");
+            this.chbBrush2RectangleShape.UseVisualStyleBackColor = false;
+            this.chbBrush2RectangleShape.CheckedChanged += new System.EventHandler(this.chbBrushXShape_CheckedChanged);
+            this.chbBrush2RectangleShape.BackgroundImageChanged += new System.EventHandler(this.nudBrush2Size_ValueChanged);
             // 
             // nudBrush2Width
             // 
@@ -1986,7 +1986,7 @@
             this.pnlBrush1.Controls.Add(this.tbBrush1ValueHex);
             this.pnlBrush1.Controls.Add(this.nudBrush1ValueDecimal);
             this.pnlBrush1.Controls.Add(this.nudBrush1ForceDecimal);
-            this.pnlBrush1.Controls.Add(this.chbBrush1Shape);
+            this.pnlBrush1.Controls.Add(this.chbBrush1RectangleShape);
             this.pnlBrush1.Controls.Add(this.label19);
             this.pnlBrush1.Controls.Add(this.label23);
             this.pnlBrush1.Controls.Add(this.label28);
@@ -2147,22 +2147,22 @@
             // 
             // chbBrush1Shape
             // 
-            this.chbBrush1Shape.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chbBrush1Shape.BackColor = System.Drawing.SystemColors.Control;
-            this.chbBrush1Shape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbBrush1Shape.BackgroundImage")));
-            this.chbBrush1Shape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.chbBrush1Shape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbBrush1Shape.ImageList = this.ilToolShape;
-            this.chbBrush1Shape.Location = new System.Drawing.Point(28, 20);
-            this.chbBrush1Shape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.chbBrush1Shape.Name = "chbBrush1Shape";
-            this.chbBrush1Shape.Size = new System.Drawing.Size(20, 20);
-            this.chbBrush1Shape.TabIndex = 12;
-            this.chbBrush1Shape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip.SetToolTip(this.chbBrush1Shape, "Brush shape");
-            this.chbBrush1Shape.UseVisualStyleBackColor = false;
-            this.chbBrush1Shape.CheckedChanged += new System.EventHandler(this.chbBrushXShape_CheckedChanged);
-            this.chbBrush1Shape.BackgroundImageChanged += new System.EventHandler(this.nudBrush1Size_ValueChanged);
+            this.chbBrush1RectangleShape.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbBrush1RectangleShape.BackColor = System.Drawing.SystemColors.Control;
+            this.chbBrush1RectangleShape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbBrush1Shape.BackgroundImage")));
+            this.chbBrush1RectangleShape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbBrush1RectangleShape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbBrush1RectangleShape.ImageList = this.ilToolShape;
+            this.chbBrush1RectangleShape.Location = new System.Drawing.Point(28, 20);
+            this.chbBrush1RectangleShape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.chbBrush1RectangleShape.Name = "chbBrush1Shape";
+            this.chbBrush1RectangleShape.Size = new System.Drawing.Size(20, 20);
+            this.chbBrush1RectangleShape.TabIndex = 12;
+            this.chbBrush1RectangleShape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chbBrush1RectangleShape, "Brush shape");
+            this.chbBrush1RectangleShape.UseVisualStyleBackColor = false;
+            this.chbBrush1RectangleShape.CheckedChanged += new System.EventHandler(this.chbBrushXShape_CheckedChanged);
+            this.chbBrush1RectangleShape.BackgroundImageChanged += new System.EventHandler(this.nudBrush1Size_ValueChanged);
             // 
             // label19
             // 
@@ -2292,13 +2292,13 @@
             this.cbbZoom.IntegralHeight = false;
             this.cbbZoom.ItemHeight = 16;
             this.cbbZoom.Items.AddRange(new object[] {
-            "x64",
-            "x32",
-            "x16",
-            " x8",
-            " x4",
+            " x1",
             " x2",
-            " x1"});
+            " x4",
+            " x8",
+            "x16",
+            "x32",
+            "x64"});
             this.cbbZoom.Location = new System.Drawing.Point(29, 1);
             this.cbbZoom.Margin = new System.Windows.Forms.Padding(1);
             this.cbbZoom.Name = "cbbZoom";
@@ -2894,9 +2894,9 @@
         private System.Windows.Forms.NumericUpDown nudBrush3Width;
         private System.Windows.Forms.NumericUpDown nudBrush2Width;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.CheckBox chbBrush3Shape;
-        private System.Windows.Forms.CheckBox chbBrush2Shape;
-        private System.Windows.Forms.CheckBox chbBrush1Shape;
+        private System.Windows.Forms.CheckBox chbBrush3RectangleShape;
+        private System.Windows.Forms.CheckBox chbBrush2RectangleShape;
+        private System.Windows.Forms.CheckBox chbBrush1RectangleShape;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.ImageList ilToolShape;
         private System.Windows.Forms.Label label22;
