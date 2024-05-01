@@ -75,6 +75,24 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormCPlay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCPlay.Designer.cs">
+      <DependentUpon>FormCPlay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormADrive.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormADrive.Designer.cs">
+      <DependentUpon>FormADrive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormItems.Designer.cs">
+      <DependentUpon>FormItems.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormResize.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +122,15 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCPlay.resx">
+      <DependentUpon>FormCPlay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormADrive.resx">
+      <DependentUpon>FormADrive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormItems.resx">
+      <DependentUpon>FormItems.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormResize.resx">
       <DependentUpon>FormResize.cs</DependentUpon>
@@ -202,6 +229,20 @@
     <None Include="Resources\toolLevelFlatenDown.png" />
     <None Include="Resources\eye.png" />
     <None Include="Resources\reload.png" />
+    <None Include="Resources\content.png" />
+    <None Include="Resources\rotateLeft.png" />
+    <None Include="Resources\rotateRight.png" />
+    <None Include="Resources\deleteAll.png" />
+    <None Include="Resources\equal.png" />
+    <None Include="Resources\equalNo.png" />
+    <None Include="Resources\filter.png" />
+    <None Include="Resources\execute.png" />
+    <None Include="Resources\compare.png" />
+    <None Include="Resources\bulletEmpty.png" />
+    <None Include="Resources\bulletMinus.png" />
+    <None Include="Resources\bulletPlus.png" />
+    <None Include="Resources\checkerEmpty.png" />
+    <None Include="Resources\checkerFilled.png" />
     <Content Include="zlib1.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

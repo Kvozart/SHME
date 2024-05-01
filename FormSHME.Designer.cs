@@ -187,6 +187,9 @@
             this.btnToolStretch = new System.Windows.Forms.Button();
             this.btnToolFlatenDown = new System.Windows.Forms.Button();
             this.btnToolFlatenUp = new System.Windows.Forms.Button();
+            this.chbADrive = new System.Windows.Forms.CheckBox();
+            this.chbCPlay = new System.Windows.Forms.CheckBox();
+            this.chbItems = new System.Windows.Forms.CheckBox();
             this.pnlZoomGrid = new System.Windows.Forms.Panel();
             this.pnlToolSelect = new System.Windows.Forms.Panel();
             this.rbToolUseBrush3 = new System.Windows.Forms.RadioButton();
@@ -1698,17 +1701,17 @@
             0});
             this.nudBrush3ValueDecimal.ValueChanged += new System.EventHandler(this.nudBrush3Value_ValueChanged);
             // 
-            // chbBrush3Shape
+            // chbBrush3RectangleShape
             // 
             this.chbBrush3RectangleShape.Appearance = System.Windows.Forms.Appearance.Button;
             this.chbBrush3RectangleShape.BackColor = System.Drawing.SystemColors.Control;
-            this.chbBrush3RectangleShape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbBrush3Shape.BackgroundImage")));
+            this.chbBrush3RectangleShape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbBrush3RectangleShape.BackgroundImage")));
             this.chbBrush3RectangleShape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.chbBrush3RectangleShape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chbBrush3RectangleShape.ImageList = this.ilToolShape;
             this.chbBrush3RectangleShape.Location = new System.Drawing.Point(28, 20);
             this.chbBrush3RectangleShape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.chbBrush3RectangleShape.Name = "chbBrush3Shape";
+            this.chbBrush3RectangleShape.Name = "chbBrush3RectangleShape";
             this.chbBrush3RectangleShape.Size = new System.Drawing.Size(20, 20);
             this.chbBrush3RectangleShape.TabIndex = 14;
             this.chbBrush3RectangleShape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1906,17 +1909,17 @@
             0});
             this.nudBrush2ValueDecimal.ValueChanged += new System.EventHandler(this.nudBrush2Value_ValueChanged);
             // 
-            // chbBrush2Shape
+            // chbBrush2RectangleShape
             // 
             this.chbBrush2RectangleShape.Appearance = System.Windows.Forms.Appearance.Button;
             this.chbBrush2RectangleShape.BackColor = System.Drawing.SystemColors.Control;
-            this.chbBrush2RectangleShape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbBrush2Shape.BackgroundImage")));
+            this.chbBrush2RectangleShape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbBrush2RectangleShape.BackgroundImage")));
             this.chbBrush2RectangleShape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.chbBrush2RectangleShape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chbBrush2RectangleShape.ImageList = this.ilToolShape;
             this.chbBrush2RectangleShape.Location = new System.Drawing.Point(28, 20);
             this.chbBrush2RectangleShape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.chbBrush2RectangleShape.Name = "chbBrush2Shape";
+            this.chbBrush2RectangleShape.Name = "chbBrush2RectangleShape";
             this.chbBrush2RectangleShape.Size = new System.Drawing.Size(20, 20);
             this.chbBrush2RectangleShape.TabIndex = 13;
             this.chbBrush2RectangleShape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2145,17 +2148,17 @@
             0,
             0});
             // 
-            // chbBrush1Shape
+            // chbBrush1RectangleShape
             // 
             this.chbBrush1RectangleShape.Appearance = System.Windows.Forms.Appearance.Button;
             this.chbBrush1RectangleShape.BackColor = System.Drawing.SystemColors.Control;
-            this.chbBrush1RectangleShape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbBrush1Shape.BackgroundImage")));
+            this.chbBrush1RectangleShape.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chbBrush1RectangleShape.BackgroundImage")));
             this.chbBrush1RectangleShape.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.chbBrush1RectangleShape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chbBrush1RectangleShape.ImageList = this.ilToolShape;
             this.chbBrush1RectangleShape.Location = new System.Drawing.Point(28, 20);
             this.chbBrush1RectangleShape.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.chbBrush1RectangleShape.Name = "chbBrush1Shape";
+            this.chbBrush1RectangleShape.Name = "chbBrush1RectangleShape";
             this.chbBrush1RectangleShape.Size = new System.Drawing.Size(20, 20);
             this.chbBrush1RectangleShape.TabIndex = 12;
             this.chbBrush1RectangleShape.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2299,11 +2302,11 @@
             "x16",
             "x32",
             "x64"});
-            this.cbbZoom.Location = new System.Drawing.Point(29, 1);
+            this.cbbZoom.Location = new System.Drawing.Point(39, 2);
             this.cbbZoom.Margin = new System.Windows.Forms.Padding(1);
             this.cbbZoom.Name = "cbbZoom";
             this.cbbZoom.Size = new System.Drawing.Size(44, 24);
-            this.cbbZoom.TabIndex = 5;
+            this.cbbZoom.TabIndex = 2;
             this.toolTip.SetToolTip(this.cbbZoom, "Select zoom");
             this.cbbZoom.SelectedIndexChanged += new System.EventHandler(this.cbbZoom_SelectedIndexChanged);
             // 
@@ -2313,11 +2316,11 @@
             this.btnHistoryForward.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnHistoryForward.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnHistoryForward.Image = global::SHME.Properties.Resources.historyForwardHi;
-            this.btnHistoryForward.Location = new System.Drawing.Point(124, 1);
+            this.btnHistoryForward.Location = new System.Drawing.Point(137, 2);
             this.btnHistoryForward.Margin = new System.Windows.Forms.Padding(1);
             this.btnHistoryForward.Name = "btnHistoryForward";
             this.btnHistoryForward.Size = new System.Drawing.Size(24, 24);
-            this.btnHistoryForward.TabIndex = 3;
+            this.btnHistoryForward.TabIndex = 4;
             this.btnHistoryForward.Text = "0";
             this.btnHistoryForward.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnHistoryForward.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
@@ -2331,11 +2334,11 @@
             this.btnHistoryBackward.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnHistoryBackward.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnHistoryBackward.Image = global::SHME.Properties.Resources.historyBackHi;
-            this.btnHistoryBackward.Location = new System.Drawing.Point(96, 1);
+            this.btnHistoryBackward.Location = new System.Drawing.Point(111, 2);
             this.btnHistoryBackward.Margin = new System.Windows.Forms.Padding(1);
             this.btnHistoryBackward.Name = "btnHistoryBackward";
             this.btnHistoryBackward.Size = new System.Drawing.Size(24, 24);
-            this.btnHistoryBackward.TabIndex = 2;
+            this.btnHistoryBackward.TabIndex = 3;
             this.btnHistoryBackward.Text = "0";
             this.btnHistoryBackward.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnHistoryBackward.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
@@ -2349,11 +2352,12 @@
             this.chbGrid.BackColor = System.Drawing.Color.LightGray;
             this.chbGrid.BackgroundImage = global::SHME.Properties.Resources.grid;
             this.chbGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.chbGrid.Location = new System.Drawing.Point(1, 1);
+            this.chbGrid.Location = new System.Drawing.Point(2, 2);
             this.chbGrid.Margin = new System.Windows.Forms.Padding(1);
             this.chbGrid.Name = "chbGrid";
             this.chbGrid.Size = new System.Drawing.Size(25, 25);
             this.chbGrid.TabIndex = 1;
+            this.chbGrid.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip.SetToolTip(this.chbGrid, "Switch grid");
             this.chbGrid.UseVisualStyleBackColor = false;
             this.chbGrid.CheckedChanged += new System.EventHandler(this.cbbGrid_CheckedChanged);
@@ -2363,7 +2367,7 @@
             this.pbZoomOut.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pbZoomOut.Image = global::SHME.Properties.Resources.MoveDown;
             this.pbZoomOut.InitialImage = null;
-            this.pbZoomOut.Location = new System.Drawing.Point(76, 13);
+            this.pbZoomOut.Location = new System.Drawing.Point(83, 14);
             this.pbZoomOut.Margin = new System.Windows.Forms.Padding(0);
             this.pbZoomOut.Name = "pbZoomOut";
             this.pbZoomOut.Size = new System.Drawing.Size(16, 12);
@@ -2378,7 +2382,7 @@
             this.pbZoomIn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pbZoomIn.Image = global::SHME.Properties.Resources.MoveUp;
             this.pbZoomIn.InitialImage = null;
-            this.pbZoomIn.Location = new System.Drawing.Point(76, 1);
+            this.pbZoomIn.Location = new System.Drawing.Point(83, 2);
             this.pbZoomIn.Margin = new System.Windows.Forms.Padding(0);
             this.pbZoomIn.Name = "pbZoomIn";
             this.pbZoomIn.Size = new System.Drawing.Size(16, 12);
@@ -2571,6 +2575,54 @@
             this.btnToolFlatenUp.UseVisualStyleBackColor = true;
             this.btnToolFlatenUp.Click += new System.EventHandler(this.btnTool_Click);
             // 
+            // chbADrive
+            // 
+            this.chbADrive.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbADrive.BackColor = System.Drawing.Color.LightGray;
+            this.chbADrive.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbADrive.Location = new System.Drawing.Point(207, 2);
+            this.chbADrive.Margin = new System.Windows.Forms.Padding(1);
+            this.chbADrive.Name = "chbADrive";
+            this.chbADrive.Size = new System.Drawing.Size(31, 25);
+            this.chbADrive.TabIndex = 6;
+            this.chbADrive.Text = "AD";
+            this.chbADrive.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chbADrive, "Auto Drive");
+            this.chbADrive.UseVisualStyleBackColor = false;
+            this.chbADrive.CheckedChanged += new System.EventHandler(this.chbADrive_CheckedChanged);
+            // 
+            // chbCPlay
+            // 
+            this.chbCPlay.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbCPlay.BackColor = System.Drawing.Color.LightGray;
+            this.chbCPlay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbCPlay.Location = new System.Drawing.Point(240, 2);
+            this.chbCPlay.Margin = new System.Windows.Forms.Padding(1);
+            this.chbCPlay.Name = "chbCPlay";
+            this.chbCPlay.Size = new System.Drawing.Size(31, 25);
+            this.chbCPlay.TabIndex = 7;
+            this.chbCPlay.Text = "CP";
+            this.chbCPlay.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chbCPlay, "Course Play");
+            this.chbCPlay.UseVisualStyleBackColor = false;
+            this.chbCPlay.CheckedChanged += new System.EventHandler(this.chbCPlay_CheckedChanged);
+            // 
+            // chbItems
+            // 
+            this.chbItems.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbItems.BackColor = System.Drawing.Color.LightGray;
+            this.chbItems.BackgroundImage = global::SHME.Properties.Resources.content;
+            this.chbItems.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbItems.Location = new System.Drawing.Point(174, 2);
+            this.chbItems.Margin = new System.Windows.Forms.Padding(1);
+            this.chbItems.Name = "chbItems";
+            this.chbItems.Size = new System.Drawing.Size(31, 25);
+            this.chbItems.TabIndex = 5;
+            this.chbItems.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chbItems, "Items");
+            this.chbItems.UseVisualStyleBackColor = false;
+            this.chbItems.CheckedChanged += new System.EventHandler(this.chbItems_CheckedChanged);
+            // 
             // pnlZoomGrid
             // 
             this.pnlZoomGrid.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -2579,6 +2631,9 @@
             this.pnlZoomGrid.BackColor = System.Drawing.SystemColors.Control;
             this.pnlZoomGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pnlZoomGrid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlZoomGrid.Controls.Add(this.chbItems);
+            this.pnlZoomGrid.Controls.Add(this.chbCPlay);
+            this.pnlZoomGrid.Controls.Add(this.chbADrive);
             this.pnlZoomGrid.Controls.Add(this.btnHistoryForward);
             this.pnlZoomGrid.Controls.Add(this.btnHistoryBackward);
             this.pnlZoomGrid.Controls.Add(this.chbGrid);
@@ -2589,7 +2644,7 @@
             this.pnlZoomGrid.Margin = new System.Windows.Forms.Padding(0);
             this.pnlZoomGrid.Name = "pnlZoomGrid";
             this.pnlZoomGrid.Padding = new System.Windows.Forms.Padding(1);
-            this.pnlZoomGrid.Size = new System.Drawing.Size(152, 30);
+            this.pnlZoomGrid.Size = new System.Drawing.Size(275, 31);
             this.pnlZoomGrid.TabIndex = 1;
             // 
             // pnlToolSelect
@@ -2672,12 +2727,11 @@
             // 
             // label15
             // 
-            this.label15.AutoSize = true;
             this.label15.BackColor = System.Drawing.Color.Transparent;
-            this.label15.Location = new System.Drawing.Point(72, 14);
+            this.label15.Location = new System.Drawing.Point(4, 14);
             this.label15.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(34, 13);
+            this.label15.Size = new System.Drawing.Size(102, 17);
             this.label15.TabIndex = 27;
             this.label15.Text = "Brush";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -2781,7 +2835,6 @@
             this.pnlZoomGrid.ResumeLayout(false);
             this.pnlZoomGrid.PerformLayout();
             this.pnlToolSelect.ResumeLayout(false);
-            this.pnlToolSelect.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2954,6 +3007,9 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiRefreash;
         private System.Windows.Forms.ToolStripMenuItem tsmiSaveAs;
         private System.Windows.Forms.CheckBox chbMultiTouch;
+        private System.Windows.Forms.CheckBox chbADrive;
+        private System.Windows.Forms.CheckBox chbCPlay;
+        private System.Windows.Forms.CheckBox chbItems;
     }
 }
 

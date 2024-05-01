@@ -72,8 +72,12 @@ namespace SHME
         bool lockDrawing = true;
         int zoom = 0; // 1:1 (2^zoom)
         byte[] bBuffer; // Raw byte data
-        HeightMap HMap = new HeightMap();
+        HeightMap      HMap = new HeightMap();
         TopologicalMap TMap = new TopologicalMap();
+
+        FormItems  FIs = new FormItems();
+        FormADrive FAD = new FormADrive();
+        FormCPlay  FCP = new FormCPlay();
 
         List<HistoryRecord> historyBackward = new List<HistoryRecord>();
         List<HistoryRecord> historyForward  = new List<HistoryRecord>();
@@ -712,10 +716,13 @@ namespace SHME
         {
             mapXl = mapX;
             mapYl = mapY;
+            // Mouse XY on canvas
             msX = e.X - hScrollBar.Left;
             msY = e.Y - vScrollBar.Top;
+            // Mouse XY on map
             mapX = (msX + hScrollBar.Value) >> zoom;
             mapY = (msY + vScrollBar.Value) >> zoom;
+            // Update
             ToolAction(sender, e, true);
         }
 
@@ -1029,11 +1036,7 @@ mapY = (msY + vScrollBar.Value) >> zoom;//
             lblPointerPosition.Text = "-" + PointerSpliter + "-";
             lblPointerLevel.Enabled = false;
             lblPointerLevel.Text = "-";
-            Invalidate(new Rectangle(
-                hScrollBar.Left,
-                vScrollBar.Top,
-                hScrollBar.Right,
-                vScrollBar.Bottom));
+            ToolShadow_Update();
         }
         #endregion
 
@@ -1695,5 +1698,38 @@ mapY = (msY + vScrollBar.Value) >> zoom;//
             btnHistoryForward. Enabled = false;
         }
         #endregion
+
+        #region Additional
+        private void chbItems_CheckedChanged(object sender, EventArgs e)
+        {
+            //
+            if (FIs.Visible)
+                FIs.Hide();
+            else
+                FIs.Show();
+            //
+        }
+
+        private void chbADrive_CheckedChanged(object sender, EventArgs e)
+        {
+            //
+            if (FAD.Visible)
+                FAD.Hide();
+            else
+                FAD.Show();
+            //
+        }
+
+        private void chbCPlay_CheckedChanged(object sender, EventArgs e)
+        {
+            //
+            if (FCP.Visible)
+                FCP.Hide();
+            else
+                FCP.Show();
+            //
+        }
+        #endregion
+
     }
 }

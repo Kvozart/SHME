@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormResize));
             this.button1 = new System.Windows.Forms.Button();
             this.nudHeight = new System.Windows.Forms.NumericUpDown();
             this.nudWidth = new System.Windows.Forms.NumericUpDown();
@@ -177,7 +178,13 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.lblOldWidth);
             this.Controls.Add(this.label4);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormResize";
+            this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Resize";
             ((System.ComponentModel.ISupportInitialize)(this.nudHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).EndInit();

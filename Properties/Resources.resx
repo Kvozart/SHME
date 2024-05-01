@@ -235,4 +235,46 @@
   <data name="reload" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\reload.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="content" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\content.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bulletEmpty" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bulletEmpty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bulletMinus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bulletMinus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bulletPlus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bulletPlus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkerEmpty" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\checkerEmpty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="checkerFilled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\checkerFilled.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="compare" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\compare.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deleteAll" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\deleteAll.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="equal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\equal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="equalNo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\equalNo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="execute" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\execute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="filter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\filter.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rotateLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rotateLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rotateRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rotateRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
