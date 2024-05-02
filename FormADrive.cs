@@ -12,9 +12,11 @@ namespace SHME
 {
     public partial class FormADrive : Form
     {
-        public FormADrive()
+        Form Main;
+        public FormADrive(Form main)
         {
             InitializeComponent();
+            Main = main;
         }
 
         private void FormADrive_FormClosing(object sender, FormClosingEventArgs e)

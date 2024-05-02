@@ -12,9 +12,11 @@ namespace SHME
 {
     public partial class FormCPlay : Form
     {
-        public FormCPlay()
+        Form Main;
+        public FormCPlay(Form main)
         {
             InitializeComponent();
+            Main = main;
         }
 
         private void FormCPlay_FormClosing(object sender, FormClosingEventArgs e)

@@ -52,7 +52,6 @@
             this.btnPositionAlign = new System.Windows.Forms.Button();
             this.btnRotationAlign = new System.Windows.Forms.Button();
             this.btnFindAndReplace = new System.Windows.Forms.Button();
-            this.btnLinesSave = new System.Windows.Forms.Button();
             this.btnFileLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnFilterDelete = new System.Windows.Forms.Button();
@@ -64,14 +63,14 @@
             this.btnLinesCheckAll = new System.Windows.Forms.Button();
             this.btnLinesUncheckAll = new System.Windows.Forms.Button();
             this.btnLinesReload = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnFileReload = new System.Windows.Forms.Button();
             this.clbLines = new System.Windows.Forms.CheckedListBox();
             this.tvFilters = new System.Windows.Forms.TreeView();
             this.il3State = new System.Windows.Forms.ImageList(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.pnlFilters = new System.Windows.Forms.Panel();
+            this.pnlItems = new System.Windows.Forms.Panel();
+            this.gbFindAndReplace = new System.Windows.Forms.GroupBox();
+            this.gbEdit = new System.Windows.Forms.GroupBox();
             this.btnPositionXsub = new System.Windows.Forms.Button();
             this.btnRotationZsub = new System.Windows.Forms.Button();
             this.btnPositionXadd = new System.Windows.Forms.Button();
@@ -87,19 +86,19 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.gbRotationRange = new System.Windows.Forms.GroupBox();
             this.cbRotationRange = new System.Windows.Forms.CheckBox();
             this.nudRotationXMax = new System.Windows.Forms.NumericUpDown();
             this.nudRotationYMax = new System.Windows.Forms.NumericUpDown();
             this.nudRotationZMax = new System.Windows.Forms.NumericUpDown();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gbPositionRange = new System.Windows.Forms.GroupBox();
             this.cbPositionRange = new System.Windows.Forms.CheckBox();
             this.nudPositionZMax = new System.Windows.Forms.NumericUpDown();
             this.nudPositionYMax = new System.Windows.Forms.NumericUpDown();
             this.nudPositionXMax = new System.Windows.Forms.NumericUpDown();
             this.tbLine = new System.Windows.Forms.TextBox();
             this.splitter1 = new System.Windows.Forms.Splitter();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.pnlMain = new System.Windows.Forms.Panel();
             this.timer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationZMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationYMin)).BeginInit();
@@ -111,19 +110,19 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationOffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionStep)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionOffset)).BeginInit();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.pnlFilters.SuspendLayout();
+            this.pnlItems.SuspendLayout();
+            this.gbFindAndReplace.SuspendLayout();
+            this.gbEdit.SuspendLayout();
+            this.gbRotationRange.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationXMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationYMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationZMax)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.gbPositionRange.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionZMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionYMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionXMax)).BeginInit();
-            this.panel3.SuspendLayout();
+            this.pnlMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbFilter
@@ -134,6 +133,7 @@
             this.tbFilter.Name = "tbFilter";
             this.tbFilter.Size = new System.Drawing.Size(200, 20);
             this.tbFilter.TabIndex = 1;
+            this.tbFilter.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbFilter_KeyPress);
             // 
             // tbFile
             // 
@@ -431,7 +431,7 @@
             this.btnInvertSelection.Location = new System.Drawing.Point(40, 28);
             this.btnInvertSelection.Name = "btnInvertSelection";
             this.btnInvertSelection.Size = new System.Drawing.Size(20, 20);
-            this.btnInvertSelection.TabIndex = 19;
+            this.btnInvertSelection.TabIndex = 7;
             this.toolTip.SetToolTip(this.btnInvertSelection, "Exclude all");
             this.btnInvertSelection.UseVisualStyleBackColor = true;
             this.btnInvertSelection.Click += new System.EventHandler(this.btnInvertSelection_Click);
@@ -446,7 +446,7 @@
             this.btnSelect.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(20, 20);
-            this.btnSelect.TabIndex = 18;
+            this.btnSelect.TabIndex = 5;
             this.btnSelect.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.toolTip.SetToolTip(this.btnSelect, "Demand all");
             this.btnSelect.UseVisualStyleBackColor = true;
@@ -461,7 +461,7 @@
             this.btnDeselect.Location = new System.Drawing.Point(20, 28);
             this.btnDeselect.Name = "btnDeselect";
             this.btnDeselect.Size = new System.Drawing.Size(20, 20);
-            this.btnDeselect.TabIndex = 17;
+            this.btnDeselect.TabIndex = 6;
             this.toolTip.SetToolTip(this.btnDeselect, "Deselect all");
             this.btnDeselect.UseVisualStyleBackColor = true;
             this.btnDeselect.Click += new System.EventHandler(this.btnDeselect_Click);
@@ -506,22 +506,6 @@
             this.btnFindAndReplace.UseVisualStyleBackColor = true;
             this.btnFindAndReplace.Click += new System.EventHandler(this.btnFindAndReplace_Click);
             // 
-            // btnLinesSave
-            // 
-            this.btnLinesSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLinesSave.AutoEllipsis = true;
-            this.btnLinesSave.BackgroundImage = global::SHME.Properties.Resources.save;
-            this.btnLinesSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnLinesSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLinesSave.Location = new System.Drawing.Point(1082, 344);
-            this.btnLinesSave.Name = "btnLinesSave";
-            this.btnLinesSave.Size = new System.Drawing.Size(20, 20);
-            this.btnLinesSave.TabIndex = 20;
-            this.toolTip.SetToolTip(this.btnLinesSave, "Apply");
-            this.btnLinesSave.UseVisualStyleBackColor = true;
-            this.btnLinesSave.Visible = false;
-            this.btnLinesSave.Click += new System.EventHandler(this.btnLinesSave_Click);
-            // 
             // btnFileLoad
             // 
             this.btnFileLoad.BackgroundImage = global::SHME.Properties.Resources.load;
@@ -561,7 +545,7 @@
             this.btnFilterDelete.Location = new System.Drawing.Point(180, 28);
             this.btnFilterDelete.Name = "btnFilterDelete";
             this.btnFilterDelete.Size = new System.Drawing.Size(20, 20);
-            this.btnFilterDelete.TabIndex = 2;
+            this.btnFilterDelete.TabIndex = 3;
             this.toolTip.SetToolTip(this.btnFilterDelete, "Remove selected rule");
             this.btnFilterDelete.UseVisualStyleBackColor = true;
             this.btnFilterDelete.Visible = false;
@@ -592,7 +576,7 @@
             this.btnFilterDeleteAll.Location = new System.Drawing.Point(204, 28);
             this.btnFilterDeleteAll.Name = "btnFilterDeleteAll";
             this.btnFilterDeleteAll.Size = new System.Drawing.Size(20, 20);
-            this.btnFilterDeleteAll.TabIndex = 3;
+            this.btnFilterDeleteAll.TabIndex = 4;
             this.toolTip.SetToolTip(this.btnFilterDeleteAll, "Clear all rules");
             this.btnFilterDeleteAll.UseVisualStyleBackColor = true;
             this.btnFilterDeleteAll.Visible = false;
@@ -663,7 +647,7 @@
             this.btnLinesReload.BackgroundImage = global::SHME.Properties.Resources.reload;
             this.btnLinesReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnLinesReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLinesReload.Location = new System.Drawing.Point(1062, 324);
+            this.btnLinesReload.Location = new System.Drawing.Point(1082, 344);
             this.btnLinesReload.Name = "btnLinesReload";
             this.btnLinesReload.Size = new System.Drawing.Size(20, 20);
             this.btnLinesReload.TabIndex = 24;
@@ -672,19 +656,19 @@
             this.btnLinesReload.Visible = false;
             this.btnLinesReload.Click += new System.EventHandler(this.btnLinesReload_Click);
             // 
-            // button1
+            // btnFileReload
             // 
-            this.button1.BackgroundImage = global::SHME.Properties.Resources.reload;
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(28, 8);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(20, 20);
-            this.button1.TabIndex = 25;
-            this.toolTip.SetToolTip(this.button1, "Reload file");
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnFileReload.BackgroundImage = global::SHME.Properties.Resources.reload;
+            this.btnFileReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnFileReload.FlatAppearance.BorderSize = 0;
+            this.btnFileReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFileReload.Location = new System.Drawing.Point(28, 8);
+            this.btnFileReload.Name = "btnFileReload";
+            this.btnFileReload.Size = new System.Drawing.Size(20, 20);
+            this.btnFileReload.TabIndex = 25;
+            this.toolTip.SetToolTip(this.btnFileReload, "Reload file");
+            this.btnFileReload.UseVisualStyleBackColor = true;
+            this.btnFileReload.Click += new System.EventHandler(this.btnFileReload_Click);
             // 
             // clbLines
             // 
@@ -708,11 +692,11 @@
             this.tvFilters.CausesValidation = false;
             this.tvFilters.FullRowSelect = true;
             this.tvFilters.HideSelection = false;
+            this.tvFilters.HotTracking = true;
             this.tvFilters.LabelEdit = true;
             this.tvFilters.Location = new System.Drawing.Point(0, 48);
             this.tvFilters.Name = "tvFilters";
             this.tvFilters.ShowLines = false;
-            this.tvFilters.ShowNodeToolTips = true;
             this.tvFilters.ShowPlusMinus = false;
             this.tvFilters.ShowRootLines = false;
             this.tvFilters.Size = new System.Drawing.Size(224, 316);
@@ -732,81 +716,81 @@
             this.il3State.Images.SetKeyName(1, "equal.png");
             this.il3State.Images.SetKeyName(2, "equalNo.png");
             // 
-            // panel1
+            // pnlFilters
             // 
-            this.panel1.Controls.Add(this.tvFilters);
-            this.panel1.Controls.Add(this.btnFilterDeleteAll);
-            this.panel1.Controls.Add(this.tbFilter);
-            this.panel1.Controls.Add(this.btnFilterAdd);
-            this.panel1.Controls.Add(this.btnFilterDelete);
-            this.panel1.Controls.Add(this.btnSelect);
-            this.panel1.Controls.Add(this.btnDeselect);
-            this.panel1.Controls.Add(this.btnInvertSelection);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(224, 364);
-            this.panel1.TabIndex = 15;
+            this.pnlFilters.Controls.Add(this.tvFilters);
+            this.pnlFilters.Controls.Add(this.btnFilterDeleteAll);
+            this.pnlFilters.Controls.Add(this.tbFilter);
+            this.pnlFilters.Controls.Add(this.btnFilterAdd);
+            this.pnlFilters.Controls.Add(this.btnFilterDelete);
+            this.pnlFilters.Controls.Add(this.btnSelect);
+            this.pnlFilters.Controls.Add(this.btnDeselect);
+            this.pnlFilters.Controls.Add(this.btnInvertSelection);
+            this.pnlFilters.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlFilters.Location = new System.Drawing.Point(0, 0);
+            this.pnlFilters.Name = "pnlFilters";
+            this.pnlFilters.Size = new System.Drawing.Size(224, 364);
+            this.pnlFilters.TabIndex = 15;
             // 
-            // panel2
+            // pnlItems
             // 
-            this.panel2.Controls.Add(this.groupBox4);
-            this.panel2.Controls.Add(this.groupBox3);
-            this.panel2.Controls.Add(this.groupBox2);
-            this.panel2.Controls.Add(this.groupBox1);
-            this.panel2.Controls.Add(this.tbLine);
-            this.panel2.Controls.Add(this.nudPositionStep);
-            this.panel2.Controls.Add(this.nudRotationOffset);
-            this.panel2.Controls.Add(this.btnLinesCheckAll);
-            this.panel2.Controls.Add(this.btnLinesUncheckAll);
-            this.panel2.Controls.Add(this.nudPositionOffset);
-            this.panel2.Controls.Add(this.nudRotationStep);
-            this.panel2.Controls.Add(this.btnRotationAlign);
-            this.panel2.Controls.Add(this.label6);
-            this.panel2.Controls.Add(this.btnPositionAlign);
-            this.panel2.Controls.Add(this.label5);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(232, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(870, 116);
-            this.panel2.TabIndex = 22;
+            this.pnlItems.Controls.Add(this.gbFindAndReplace);
+            this.pnlItems.Controls.Add(this.gbEdit);
+            this.pnlItems.Controls.Add(this.gbRotationRange);
+            this.pnlItems.Controls.Add(this.gbPositionRange);
+            this.pnlItems.Controls.Add(this.tbLine);
+            this.pnlItems.Controls.Add(this.nudPositionStep);
+            this.pnlItems.Controls.Add(this.nudRotationOffset);
+            this.pnlItems.Controls.Add(this.btnLinesCheckAll);
+            this.pnlItems.Controls.Add(this.btnLinesUncheckAll);
+            this.pnlItems.Controls.Add(this.nudPositionOffset);
+            this.pnlItems.Controls.Add(this.nudRotationStep);
+            this.pnlItems.Controls.Add(this.btnRotationAlign);
+            this.pnlItems.Controls.Add(this.label6);
+            this.pnlItems.Controls.Add(this.btnPositionAlign);
+            this.pnlItems.Controls.Add(this.label5);
+            this.pnlItems.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlItems.Location = new System.Drawing.Point(232, 0);
+            this.pnlItems.Name = "pnlItems";
+            this.pnlItems.Size = new System.Drawing.Size(870, 116);
+            this.pnlItems.TabIndex = 22;
             // 
-            // groupBox4
+            // gbFindAndReplace
             // 
-            this.groupBox4.Controls.Add(this.btnFind);
-            this.groupBox4.Controls.Add(this.btnFindAndReplace);
-            this.groupBox4.Controls.Add(this.tbReplace);
-            this.groupBox4.Controls.Add(this.tbFind);
-            this.groupBox4.Location = new System.Drawing.Point(612, 0);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(232, 68);
-            this.groupBox4.TabIndex = 32;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Find and replace";
+            this.gbFindAndReplace.Controls.Add(this.btnFind);
+            this.gbFindAndReplace.Controls.Add(this.btnFindAndReplace);
+            this.gbFindAndReplace.Controls.Add(this.tbReplace);
+            this.gbFindAndReplace.Controls.Add(this.tbFind);
+            this.gbFindAndReplace.Location = new System.Drawing.Point(612, 0);
+            this.gbFindAndReplace.Name = "gbFindAndReplace";
+            this.gbFindAndReplace.Size = new System.Drawing.Size(232, 68);
+            this.gbFindAndReplace.TabIndex = 32;
+            this.gbFindAndReplace.TabStop = false;
+            this.gbFindAndReplace.Text = "Find and replace";
             // 
-            // groupBox3
+            // gbEdit
             // 
-            this.groupBox3.Controls.Add(this.btnPositionXsub);
-            this.groupBox3.Controls.Add(this.btnRotationZsub);
-            this.groupBox3.Controls.Add(this.btnPositionXadd);
-            this.groupBox3.Controls.Add(this.btnRotationYsub);
-            this.groupBox3.Controls.Add(this.btnPositionYadd);
-            this.groupBox3.Controls.Add(this.btnRotationXsub);
-            this.groupBox3.Controls.Add(this.btnPositionZadd);
-            this.groupBox3.Controls.Add(this.btnRotationZadd);
-            this.groupBox3.Controls.Add(this.btnPositionYsub);
-            this.groupBox3.Controls.Add(this.btnRotationYadd);
-            this.groupBox3.Controls.Add(this.btnPositionZsub);
-            this.groupBox3.Controls.Add(this.btnRotationXadd);
-            this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Controls.Add(this.label11);
-            this.groupBox3.Location = new System.Drawing.Point(332, 0);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(116, 88);
-            this.groupBox3.TabIndex = 31;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Shift / Rotate";
+            this.gbEdit.Controls.Add(this.btnPositionXsub);
+            this.gbEdit.Controls.Add(this.btnRotationZsub);
+            this.gbEdit.Controls.Add(this.btnPositionXadd);
+            this.gbEdit.Controls.Add(this.btnRotationYsub);
+            this.gbEdit.Controls.Add(this.btnPositionYadd);
+            this.gbEdit.Controls.Add(this.btnRotationXsub);
+            this.gbEdit.Controls.Add(this.btnPositionZadd);
+            this.gbEdit.Controls.Add(this.btnRotationZadd);
+            this.gbEdit.Controls.Add(this.btnPositionYsub);
+            this.gbEdit.Controls.Add(this.btnRotationYadd);
+            this.gbEdit.Controls.Add(this.btnPositionZsub);
+            this.gbEdit.Controls.Add(this.btnRotationXadd);
+            this.gbEdit.Controls.Add(this.label9);
+            this.gbEdit.Controls.Add(this.label10);
+            this.gbEdit.Controls.Add(this.label11);
+            this.gbEdit.Location = new System.Drawing.Point(332, 0);
+            this.gbEdit.Name = "gbEdit";
+            this.gbEdit.Size = new System.Drawing.Size(116, 88);
+            this.gbEdit.TabIndex = 31;
+            this.gbEdit.TabStop = false;
+            this.gbEdit.Text = "Shift / Rotate";
             // 
             // btnPositionXsub
             // 
@@ -1000,22 +984,22 @@
             this.label11.Text = "Z";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // groupBox2
+            // gbRotationRange
             // 
-            this.groupBox2.Controls.Add(this.cbRotationRange);
-            this.groupBox2.Controls.Add(this.nudRotationXMin);
-            this.groupBox2.Controls.Add(this.nudRotationXMax);
-            this.groupBox2.Controls.Add(this.nudRotationYMin);
-            this.groupBox2.Controls.Add(this.nudRotationYMax);
-            this.groupBox2.Controls.Add(this.nudRotationZMin);
-            this.groupBox2.Controls.Add(this.nudRotationZMax);
-            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.groupBox2.Location = new System.Drawing.Point(448, 0);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(156, 88);
-            this.groupBox2.TabIndex = 24;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "↻ range";
+            this.gbRotationRange.Controls.Add(this.cbRotationRange);
+            this.gbRotationRange.Controls.Add(this.nudRotationXMin);
+            this.gbRotationRange.Controls.Add(this.nudRotationXMax);
+            this.gbRotationRange.Controls.Add(this.nudRotationYMin);
+            this.gbRotationRange.Controls.Add(this.nudRotationYMax);
+            this.gbRotationRange.Controls.Add(this.nudRotationZMin);
+            this.gbRotationRange.Controls.Add(this.nudRotationZMax);
+            this.gbRotationRange.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.gbRotationRange.Location = new System.Drawing.Point(448, 0);
+            this.gbRotationRange.Name = "gbRotationRange";
+            this.gbRotationRange.Size = new System.Drawing.Size(156, 88);
+            this.gbRotationRange.TabIndex = 24;
+            this.gbRotationRange.TabStop = false;
+            this.gbRotationRange.Text = "↻ range";
             // 
             // cbRotationRange
             // 
@@ -1025,7 +1009,7 @@
             this.cbRotationRange.Size = new System.Drawing.Size(15, 14);
             this.cbRotationRange.TabIndex = 15;
             this.cbRotationRange.UseVisualStyleBackColor = true;
-            this.cbRotationRange.CheckedChanged += new System.EventHandler(this.btnFilterLines_Click);
+            this.cbRotationRange.CheckedChanged += new System.EventHandler(this.RangeFilter_Click);
             // 
             // nudRotationXMax
             // 
@@ -1102,22 +1086,22 @@
             0});
             this.nudRotationZMax.ValueChanged += new System.EventHandler(this.RotationRange_Change);
             // 
-            // groupBox1
+            // gbPositionRange
             // 
-            this.groupBox1.Controls.Add(this.cbPositionRange);
-            this.groupBox1.Controls.Add(this.nudPositionZMin);
-            this.groupBox1.Controls.Add(this.nudPositionZMax);
-            this.groupBox1.Controls.Add(this.nudPositionYMin);
-            this.groupBox1.Controls.Add(this.nudPositionYMax);
-            this.groupBox1.Controls.Add(this.nudPositionXMin);
-            this.groupBox1.Controls.Add(this.nudPositionXMax);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.groupBox1.Location = new System.Drawing.Point(168, 0);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(164, 88);
-            this.groupBox1.TabIndex = 23;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "• range";
+            this.gbPositionRange.Controls.Add(this.cbPositionRange);
+            this.gbPositionRange.Controls.Add(this.nudPositionZMin);
+            this.gbPositionRange.Controls.Add(this.nudPositionZMax);
+            this.gbPositionRange.Controls.Add(this.nudPositionYMin);
+            this.gbPositionRange.Controls.Add(this.nudPositionYMax);
+            this.gbPositionRange.Controls.Add(this.nudPositionXMin);
+            this.gbPositionRange.Controls.Add(this.nudPositionXMax);
+            this.gbPositionRange.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.gbPositionRange.Location = new System.Drawing.Point(168, 0);
+            this.gbPositionRange.Name = "gbPositionRange";
+            this.gbPositionRange.Size = new System.Drawing.Size(164, 88);
+            this.gbPositionRange.TabIndex = 23;
+            this.gbPositionRange.TabStop = false;
+            this.gbPositionRange.Text = "• range";
             // 
             // cbPositionRange
             // 
@@ -1127,7 +1111,7 @@
             this.cbPositionRange.Size = new System.Drawing.Size(15, 14);
             this.cbPositionRange.TabIndex = 14;
             this.cbPositionRange.UseVisualStyleBackColor = true;
-            this.cbPositionRange.CheckedChanged += new System.EventHandler(this.btnFilterLines_Click);
+            this.cbPositionRange.CheckedChanged += new System.EventHandler(this.RangeFilter_Click);
             // 
             // nudPositionZMax
             // 
@@ -1227,39 +1211,36 @@
             this.splitter1.TabIndex = 23;
             this.splitter1.TabStop = false;
             // 
-            // panel3
+            // pnlMain
             // 
-            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.pnlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel3.Controls.Add(this.btnLinesReload);
-            this.panel3.Controls.Add(this.btnLinesSave);
-            this.panel3.Controls.Add(this.clbLines);
-            this.panel3.Controls.Add(this.panel2);
-            this.panel3.Controls.Add(this.splitter1);
-            this.panel3.Controls.Add(this.panel1);
-            this.panel3.Location = new System.Drawing.Point(4, 32);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1102, 364);
-            this.panel3.TabIndex = 24;
-            // 
-            // timer
-            // 
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            this.pnlMain.Controls.Add(this.btnLinesReload);
+            this.pnlMain.Controls.Add(this.clbLines);
+            this.pnlMain.Controls.Add(this.pnlItems);
+            this.pnlMain.Controls.Add(this.splitter1);
+            this.pnlMain.Controls.Add(this.pnlFilters);
+            this.pnlMain.Location = new System.Drawing.Point(4, 32);
+            this.pnlMain.Name = "pnlMain";
+            this.pnlMain.Size = new System.Drawing.Size(1102, 364);
+            this.pnlMain.TabIndex = 24;
             // 
             // FormItems
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1111, 399);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.btnFileReload);
+            this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.btnFileLoad);
             this.Controls.Add(this.tbFile);
             this.Controls.Add(this.btnSave);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(972, 240);
             this.Name = "FormItems";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SHME: FS Items";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormItems_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationZMin)).EndInit();
@@ -1272,24 +1253,24 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationOffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionStep)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionOffset)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.pnlFilters.ResumeLayout(false);
+            this.pnlFilters.PerformLayout();
+            this.pnlItems.ResumeLayout(false);
+            this.pnlItems.PerformLayout();
+            this.gbFindAndReplace.ResumeLayout(false);
+            this.gbFindAndReplace.PerformLayout();
+            this.gbEdit.ResumeLayout(false);
+            this.gbRotationRange.ResumeLayout(false);
+            this.gbRotationRange.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationXMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationYMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationZMax)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gbPositionRange.ResumeLayout(false);
+            this.gbPositionRange.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionZMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionYMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionXMax)).EndInit();
-            this.panel3.ResumeLayout(false);
+            this.pnlMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1320,16 +1301,15 @@
         private System.Windows.Forms.Button btnDeselect;
         private System.Windows.Forms.Button btnSelect;
         private System.Windows.Forms.Button btnInvertSelection;
-        private System.Windows.Forms.Button btnLinesSave;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.CheckedListBox clbLines;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel pnlFilters;
+        private System.Windows.Forms.Panel pnlItems;
         private System.Windows.Forms.TextBox tbLine;
         private System.Windows.Forms.Button btnFilterDeleteAll;
         private System.Windows.Forms.ImageList il3State;
         private System.Windows.Forms.Splitter splitter1;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.Button btnPositionXsub;
         private System.Windows.Forms.Button btnPositionXadd;
         private System.Windows.Forms.TreeView tvFilters;
@@ -1339,8 +1319,8 @@
         private System.Windows.Forms.NumericUpDown nudPositionYMax;
         private System.Windows.Forms.NumericUpDown nudRotationYMax;
         private System.Windows.Forms.NumericUpDown nudPositionZMax;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gbRotationRange;
+        private System.Windows.Forms.GroupBox gbPositionRange;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
@@ -1356,16 +1336,16 @@
         private System.Windows.Forms.Button btnRotationYsub;
         private System.Windows.Forms.Button btnRotationZadd;
         private System.Windows.Forms.Button btnRotationYadd;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox gbEdit;
         private System.Windows.Forms.Button btnLinesCheckAll;
         private System.Windows.Forms.Button btnLinesUncheckAll;
         private System.Windows.Forms.Button btnLinesReload;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox gbFindAndReplace;
         private System.Windows.Forms.Button btnFindAndReplace;
         private System.Windows.Forms.TextBox tbReplace;
         private System.Windows.Forms.TextBox tbFind;
         private System.Windows.Forms.Button btnFind;
+        private System.Windows.Forms.Button btnFileReload;
         private System.Windows.Forms.Timer timer;
-        private System.Windows.Forms.Button button1;
     }
 }

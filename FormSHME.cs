@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using LibPNGsharp;
+using static SHME.FormItems;
 
 namespace SHME
 {
@@ -75,9 +76,9 @@ namespace SHME
         HeightMap      HMap = new HeightMap();
         TopologicalMap TMap = new TopologicalMap();
 
-        FormItems  FIs = new FormItems();
-        FormADrive FAD = new FormADrive();
-        FormCPlay  FCP = new FormCPlay();
+        FormItems  FIs;
+        FormADrive FAD;
+        FormCPlay  FCP;
 
         List<HistoryRecord> historyBackward = new List<HistoryRecord>();
         List<HistoryRecord> historyForward  = new List<HistoryRecord>();
@@ -179,6 +180,9 @@ namespace SHME
                 GenerateTMap(HMap.Width, HMap.Height, false);
 
             this.MouseWheel+= new System.Windows.Forms.MouseEventHandler(this.FormSHME_MouseScroll);
+            FIs = new FormItems (this);
+            FAD = new FormADrive(this);
+            FCP = new FormCPlay (this);
         }
 
         #region Theme pages
@@ -710,6 +714,7 @@ namespace SHME
                     for (int x = 0; x < HMap.Width; x++)
                         HMap.Changed[x, y] = 0;
             ToolAction(sender, e, false);
+cbbZoom.Focus();
         }
 
         private void pbHMap_MouseMove(object sender, MouseEventArgs e)
@@ -967,20 +972,12 @@ namespace SHME
             if ((chbLimitMax.Checked || chbLimitMin.Checked) && (x != HMap.MaxLevel || y != HMap.MinLevel))
             {
                 BuildSpectrum(0, 0, -1, -1);
-                Invalidate(new Rectangle(
-                    hScrollBar.Left,
-                    vScrollBar.Top,
-                    hScrollBar.Right,
-                    vScrollBar.Bottom));
+                Canvas_Update();
             }
             else
             {
                 BuildSpectrum(iL, iT, iR, iB);
-                Invalidate(new Rectangle(
-                    hScrollBar.Left,
-                    vScrollBar.Top,
-                    hScrollBar.Right,
-                    vScrollBar.Bottom));
+                Canvas_Update();
                 /*Invalidate(new Rectangle(
                     hScrollBar.Left + (historyRecord.Left   << zoom) - hScrollBar.Value,
                     vScrollBar.Top  + (historyRecord.Top    << zoom) - vScrollBar.Value,
@@ -988,6 +985,15 @@ namespace SHME
                     vScrollBar.Top  + (historyRecord.Bottom << zoom) - vScrollBar.Value));*/
             }
             ShowStatistics();
+        }
+
+        public void Canvas_Update()
+        {
+            Invalidate(new Rectangle(
+                hScrollBar.Left,
+                vScrollBar.Top,
+                hScrollBar.Right,
+                vScrollBar.Bottom));
         }
 
         private void FormSHME_MouseUp(object sender, MouseEventArgs e)
@@ -1005,17 +1011,12 @@ namespace SHME
             HistoryAdd();
             
 BuildSpectrum(0, 0, -1, -1);
-Invalidate(new Rectangle(
-    hScrollBar.Left,
-    vScrollBar.Top,
-    hScrollBar.Right,
-    vScrollBar.Bottom));
+Canvas_Update();
         }
 
         private void FormSHME_MouseEnter(object sender, EventArgs e)
         {
             pnlToolSelect.Visible = false;
-            cbbZoom.Focus();
         }
         
         private void FormSHME_MouseScroll(object sender, MouseEventArgs e)//Ok
@@ -1166,15 +1167,17 @@ mapY = (msY + vScrollBar.Value) >> zoom;//
             return "";
         }
 
-        private void cbbGrid_CheckedChanged(object sender, EventArgs e) => Invalidate();
+        private void cbbGrid_CheckedChanged(object sender, EventArgs e) => Canvas_Update();
 
         private void FormSHME_Paint(object sender, PaintEventArgs e)
         {
             if (lockDrawing) return;
-            int l = e.ClipRectangle.Left   - hScrollBar.Left,
-                t = e.ClipRectangle.Top    - vScrollBar.Top,
-                r = e.ClipRectangle.Right  - hScrollBar.Left + hScrollBar.Value,
-                b = e.ClipRectangle.Bottom - vScrollBar.Top  + vScrollBar.Value;
+            int xShift = hScrollBar.Left - hScrollBar.Value,
+                yShift = vScrollBar.Top  - vScrollBar.Value;
+            int l = e.ClipRectangle.Left - hScrollBar.Left,
+                t = e.ClipRectangle.Top  - vScrollBar.Top,
+                r = e.ClipRectangle.Right  - xShift,
+                b = e.ClipRectangle.Bottom - yShift;
             // Limit
             if (l < 0) l = 0;
             if (t < 0) t = 0;
@@ -1187,12 +1190,12 @@ mapY = (msY + vScrollBar.Value) >> zoom;//
             // Optimisation
             if (w < 1 || h < 1) return;
 
-            int x, y, iy, offset = 0;
+            int x, y, z, iy, offset = 0;
             int[] buffer = new int[w * h];
             // Draw TMap
             if (chbShowTMap.Checked)
             {
-                int tw = TMap.Width,  hw = HMap.Width  - 1,
+                int tw = TMap.Width, hw = HMap.Width - 1,
                     th = TMap.Height, hh = HMap.Height - 1;
                 int zhw = hw << zoom,
                     zhh = hh << zoom;
@@ -1260,15 +1263,36 @@ mapY = (msY + vScrollBar.Value) >> zoom;//
             // Transfer
             Bitmap img = new Bitmap(w, h, w << 2, PixelFormat.Format32bppRgb, Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0));
             e.Graphics.DrawImageUnscaled(img,
-                l + hScrollBar.Left - hScrollBar.Value,
-                t + vScrollBar.Top  - vScrollBar.Value
+                l + xShift,
+                t + yShift
                 );
             /**/
-            if (!lblPointerLevel.Enabled)
-                return;
-            if (chbBrush1FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush1Width.Value, (int)nudBrush1Height.Value, chbBrush1RectangleShape.Checked);
-            if (chbBrush2FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush2Width.Value, (int)nudBrush2Height.Value, chbBrush2RectangleShape.Checked);
-            if (chbBrush3FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, chbBrush3RectangleShape.Checked);
+            if (lblPointerLevel.Enabled)
+            {
+                if (chbBrush1FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush1Width.Value, (int)nudBrush1Height.Value, chbBrush1RectangleShape.Checked);
+                if (chbBrush2FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush2Width.Value, (int)nudBrush2Height.Value, chbBrush2RectangleShape.Checked);
+                if (chbBrush3FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, chbBrush3RectangleShape.Checked);
+            }
+            l = 1 << zoom;
+            t = 1;
+            if (FIs.Visible)
+                foreach (LineValues line in FIs.LinesBuffer)
+                    if (0 < line.P.start)
+                    {
+                        x = ((int)((HMap.Width  + line.P.x) * l) >> 1) + xShift;
+                        y = ((int)((HMap.Height + line.P.z) * l) >> 1) + yShift;   
+                        e.Graphics.DrawRectangle(new Pen(Color.Black), x - 5, y - 5, 10, 10);
+                        e.Graphics.DrawLine(new Pen(Color.Red), x - 4, y - 4, x + 4, y + 4);
+                        e.Graphics.DrawLine(new Pen(Color.Red), x + 4, y - 4, x - 4, y + 4);
+                    }
+            if (FAD.Visible)
+            {
+
+            }
+            if (FCP.Visible)
+            {
+
+            }
             /**/
         }
 
@@ -1328,11 +1352,7 @@ mapY = (msY + vScrollBar.Value) >> zoom;//
             if (e != null)
                 if (e.OldValue == e.NewValue)
                     return;
-            Invalidate(new Rectangle(
-                hScrollBar.Left,
-                vScrollBar.Top,
-                hScrollBar.Right,
-                vScrollBar.Bottom));
+            Canvas_Update();
         }
 
         private void pnlCorner_DoubleClick(object sender, EventArgs e) => new AboutBox().ShowDialog();
@@ -1410,6 +1430,10 @@ mapY = (msY + vScrollBar.Value) >> zoom;//
                 file.WriteLine("LimitMax\t" + chbLimitMax.Checked);
                 file.WriteLine("LimitMin\t" + chbLimitMin.Checked);
             }
+            // Save modules options
+            FIs.OptionSave();
+            //FAD.SaveOption();
+            //FCP.SaveOption();
         }
         #endregion
 
@@ -1702,34 +1726,24 @@ mapY = (msY + vScrollBar.Value) >> zoom;//
         #region Additional
         private void chbItems_CheckedChanged(object sender, EventArgs e)
         {
-            //
-            if (FIs.Visible)
-                FIs.Hide();
-            else
-                FIs.Show();
-            //
+            if (FIs.Visible) FIs.Hide();
+            else             FIs.Show();
+            Canvas_Update();
         }
 
         private void chbADrive_CheckedChanged(object sender, EventArgs e)
         {
-            //
-            if (FAD.Visible)
-                FAD.Hide();
-            else
-                FAD.Show();
-            //
+            if (FAD.Visible) FAD.Hide();
+            else             FAD.Show();
+            Canvas_Update();
         }
 
         private void chbCPlay_CheckedChanged(object sender, EventArgs e)
         {
-            //
-            if (FCP.Visible)
-                FCP.Hide();
-            else
-                FCP.Show();
-            //
+            if (FCP.Visible) FCP.Hide();
+            else             FCP.Show();
+            Canvas_Update();
         }
         #endregion
-
     }
 }
