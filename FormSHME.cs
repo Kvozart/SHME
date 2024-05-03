@@ -222,7 +222,7 @@ namespace SHME
             tbByteLo.Text = BytePresets[0, (sender as ComboBox).SelectedIndex];
             tbByteHi.Text = BytePresets[1, (sender as ComboBox).SelectedIndex];
             lockDrawing = false;
-            BuildSpectrum(0, 0, -1, -1);
+            BuildSpectrumMap(0, 0, -1, -1);
             Invalidate();
         }
 
@@ -244,7 +244,7 @@ namespace SHME
                 spectrumColors[i] = (SpectrumColorControls[i].BackColor = SpectrumPresets[p, i]).ToArgb();
             DrawSpectrumSample();
             lockDrawing = false;
-            BuildSpectrum(0, 0, -1, -1);
+            BuildSpectrumMap(0, 0, -1, -1);
             Invalidate();
         }
 
@@ -265,7 +265,7 @@ namespace SHME
         private void HMapOption_Changed(object sender, EventArgs e)
         {
             if (lockDrawing) return;
-            BuildSpectrum(0, 0, -1, -1);
+            BuildSpectrumMap(0, 0, -1, -1);
             Invalidate();
         }
         #endregion
@@ -365,14 +365,14 @@ namespace SHME
 
         private void ShowStatistics()//Ok
         {
-            lblHeightMin.Text = HMap.MinLevel.ToString() + " x" + HMap.MinLevel.ToString("X4");
-            lblHeightMax.Text = HMap.MaxLevel.ToString() + " x" + HMap.MaxLevel.ToString("X4");
-            lblHeightAvg.Text = HMap.AvgLevel.ToString() + " x" + HMap.AvgLevel.ToString("X4");
+            lblHeightMin.Text = HMap.MinLevel.ToString() + "\rx" + HMap.MinLevel.ToString("X4");
+            lblHeightMax.Text = HMap.MaxLevel.ToString() + "\rx" + HMap.MaxLevel.ToString("X4");
+            lblHeightAvg.Text = HMap.AvgLevel.ToString() + "\rx" + HMap.AvgLevel.ToString("X4");
             var s = (HMap.MinLevel + HMap.MaxLevel) >> 1;
-            lblHeightMid.Text = s + " x" + s.ToString("X4");
+            lblHeightMid.Text = s + "\rx" + s.ToString("X4");
         }
 
-        private void BuildSpectrum(int left, int top, int right, int bottom)//Ok
+        private void BuildSpectrumMap(int left, int top, int right, int bottom)//Ok
         {
             if (lockDrawing) return;
             // Get limits
@@ -495,7 +495,7 @@ namespace SHME
             lblHMapSizes.Text = HMap.Width + XYSpliter + HMap.Height;
             HMap.BuildStatistics(0, -1);
             ShowStatistics();
-            BuildSpectrum(0, 0, -1, -1);
+            BuildSpectrumMap(0, 0, -1, -1);
             if (switchto)
                 chbShowHMap.Checked = true;
             zoom = 0;
@@ -710,11 +710,10 @@ namespace SHME
             lockMouse = false;
             // Clearing if released
             if (!chbMultiTouch.Checked && (0 < historyForward.Count))
-                for (int y = 0; y < HMap.Height; y++)
-                    for (int x = 0; x < HMap.Width; x++)
+                for (int y = HMap.Height - 1; 0 <= y; y--)
+                    for (int x = HMap.Width - 1; 0 <= x; x--)
                         HMap.Changed[x, y] = 0;
             ToolAction(sender, e, false);
-cbbZoom.Focus();
         }
 
         private void pbHMap_MouseMove(object sender, MouseEventArgs e)
@@ -731,16 +730,36 @@ cbbZoom.Focus();
             ToolAction(sender, e, true);
         }
 
-        private void ToolShadow_Update()
+        private void FormSHME_MouseUp(object sender, MouseEventArgs e)//Ok
         {
-            int w, h;
-            w = Math.Max((int)nudBrush1Width. Value, Math.Max((int)nudBrush2Width. Value, (int)nudBrush3Width. Value));
-            h = Math.Max((int)nudBrush1Height.Value, Math.Max((int)nudBrush2Height.Value, (int)nudBrush3Height.Value));
-            Invalidate(new Rectangle(
-                hScrollBar.Left + ((Math.Min(mapXl, mapX) - ((w - 1) >> 1)) << zoom) - hScrollBar.Value - 1,
-                vScrollBar.Top  + ((Math.Min(mapYl, mapY) - ((h - 1) >> 1)) << zoom) - vScrollBar.Value - 1,
-                ((w + Math.Abs(mapXl - mapX)) << zoom) + 2,
-                ((h + Math.Abs(mapYl - mapY)) << zoom) + 2));
+            if (historyRecord == null) return;
+            // Clear change level board
+            if (!chbMultiTouch.Checked)
+            {
+                for (int y = historyRecord.Top; y <= historyRecord.Bottom; y++)
+                    for (int x = historyRecord.Left; x <= historyRecord.Right; x++)
+                        HMap.Changed[x, y] = 0;
+                stateMap = null;
+            }
+            // Fix record
+            HistoryAdd();
+            ToolShadow_Update();
+        }
+
+        private void FormSHME_ShowValues()//Ok
+        {
+            if (!lblPointerLevel.Enabled) return;
+            UInt16 mapXYLevel = HMap.Levels[mapX, mapY];
+            lblPointerPosition.Text = mapX + PointerSpliter + mapY;
+            lblPointerLevel.Text = mapXYLevel.ToString() + "\rx" + mapXYLevel.ToString("X4");
+        }
+
+        private void FormSHME_HideValues()//Ok
+        {
+            lblPointerPosition.Text = "-" + PointerSpliter + "-";
+            lblPointerLevel.Enabled = false;
+            lblPointerLevel.Text = "-";
+            ToolShadow_Update();
         }
 
         private void ToolAction(object sender, MouseEventArgs e, bool moving)
@@ -785,9 +804,8 @@ cbbZoom.Focus();
                                 vScrollBar.Value = scY;
                                 ScrollBar_Scroll(null, null);
                             }
-                            else
-                                ToolShadow_Update();
                         }
+                        ToolShadow_Update();
                     }
                     // Switching active layer
                     else if (toolID == 1)
@@ -814,11 +832,9 @@ cbbZoom.Focus();
             else
                 lblPointerLevel.Enabled = true;
             // Show level under pointer
-            UInt16 mapXYLevel = HMap.Levels[mapX, mapY];
             if (moving)
             {
-                lblPointerPosition.Text = mapX + PointerSpliter + mapY;
-                lblPointerLevel.Text = mapXYLevel.ToString() + " x" + mapXYLevel.ToString("X4");
+                FormSHME_ShowValues();
                 if (e.Button == MouseButtons.None)
                     ToolShadow_Update();
             }
@@ -827,11 +843,13 @@ cbbZoom.Focus();
             if (toolID < 4 || chbShowTMap.Checked) return;
 
             // Probe
+            UInt16 value;
             if (toolID == (int)btnToolProbe.Tag)//Ok
             {
-                     if (toolBrush == 0) nudBrush1ValueDecimal.Value = mapXYLevel;
-                else if (toolBrush == 1) nudBrush2ValueDecimal.Value = mapXYLevel;
-                else                     nudBrush3ValueDecimal.Value = mapXYLevel;
+                value = HMap.Levels[mapX, mapY];
+                     if (toolBrush == 0) nudBrush1ValueDecimal.Value = value;
+                else if (toolBrush == 1) nudBrush2ValueDecimal.Value = value;
+                else                     nudBrush3ValueDecimal.Value = value;
                 return;
             }
 
@@ -844,7 +862,6 @@ cbbZoom.Focus();
             int sizeW, sizeH;
             int[,] brush;
             float[,] mask;
-            UInt16 value;
             float force;
             if (toolBrush == 0)
             {
@@ -892,8 +909,8 @@ cbbZoom.Focus();
                 // Level probe
                 if (toolID != (int)btnToolPencil.Tag)
                     value = (moving)
-                        ? levelValue
-                        : (levelValue = mapXYLevel); // Store at first contact and use
+                        ?  levelValue
+                        : (levelValue = HMap.Levels[mapX, mapY]); // Store at first contact and use
                 // Apply FlatenUp, FlatenDown
                 if (toolID == (int)btnToolFlatenUp.Tag)
                     for (y = iT; y <= iB; y++)
@@ -971,73 +988,52 @@ cbbZoom.Focus();
             HMap.BuildStatistics(iT, iB);
             if ((chbLimitMax.Checked || chbLimitMin.Checked) && (x != HMap.MaxLevel || y != HMap.MinLevel))
             {
-                BuildSpectrum(0, 0, -1, -1);
+                BuildSpectrumMap(0, 0, -1, -1);
                 Canvas_Update();
             }
             else
             {
-                BuildSpectrum(iL, iT, iR, iB);
-                Canvas_Update();
-                /*Invalidate(new Rectangle(
-                    hScrollBar.Left + (historyRecord.Left   << zoom) - hScrollBar.Value,
-                    vScrollBar.Top  + (historyRecord.Top    << zoom) - vScrollBar.Value,
-                    hScrollBar.Left + (historyRecord.Right  << zoom) - hScrollBar.Value,
-                    vScrollBar.Top  + (historyRecord.Bottom << zoom) - vScrollBar.Value));*/
+                BuildSpectrumMap(iL, iT, iR, iB);
+                ToolShadow_Update();
             }
+            if (!moving)
+                FormSHME_ShowValues();
             ShowStatistics();
         }
 
-        public void Canvas_Update()
+        private void ToolShadow_Update()
         {
+            int w, h;
+            w = Math.Max((int)nudBrush1Width .Value, Math.Max((int)nudBrush2Width .Value, (int)nudBrush3Width .Value));
+            h = Math.Max((int)nudBrush1Height.Value, Math.Max((int)nudBrush2Height.Value, (int)nudBrush3Height.Value));
+            Invalidate(new Rectangle(
+                hScrollBar.Left + ((Math.Min(mapXl, mapX) - ((w - 1) >> 1)) << zoom) - hScrollBar.Value,
+                vScrollBar.Top  + ((Math.Min(mapYl, mapY) - ((h - 1) >> 1)) << zoom) - vScrollBar.Value,
+                ((w + Math.Abs(mapXl - mapX)) << zoom),
+                ((h + Math.Abs(mapYl - mapY)) << zoom)));
+        }
+
+        public void Canvas_Update() =>//Ok
             Invalidate(new Rectangle(
                 hScrollBar.Left,
                 vScrollBar.Top,
-                hScrollBar.Right,
-                vScrollBar.Bottom));
-        }
+                hScrollBar.Width,
+                vScrollBar.Height));
 
-        private void FormSHME_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (historyRecord == null) return;
-            // Clear change level board
-            if (!chbMultiTouch.Checked)
-            {
-                for (int y = historyRecord.Top; y <= historyRecord.Bottom; y++)
-                    for (int x = historyRecord.Left; x <= historyRecord.Right; x++)
-                        HMap.Changed[x, y] = 0;
-                stateMap = null;
-            }
-            // Fix record
-            HistoryAdd();
-            
-BuildSpectrum(0, 0, -1, -1);
-Canvas_Update();
-        }
-
-        private void FormSHME_MouseEnter(object sender, EventArgs e)
-        {
-            pnlToolSelect.Visible = false;
-        }
+        private void FormSHME_MouseEnter(object sender, EventArgs e) => pnlToolSelect.Visible = false;
         
+        private void FormSHME_MouseLeave(object sender, EventArgs e) => FormSHME_HideValues();//Ok
+
         private void FormSHME_MouseScroll(object sender, MouseEventArgs e)//Ok
         {
             if (!lblPointerLevel.Enabled) return;
-            SetZoom((e.Delta < 0) 
-                ? zoom - 1 
+            SetZoom((e.Delta < 0)
+                ? zoom - 1
                 : zoom + 1,
                 false);
-mapX = (msX + hScrollBar.Value) >> zoom;//
-mapY = (msY + vScrollBar.Value) >> zoom;//
-        }
-
-        private void FormSHME_MouseLeave(object sender, EventArgs e) => FormSHME_HideValues();//Ok
-
-        private void FormSHME_HideValues()//Ok
-        {
-            lblPointerPosition.Text = "-" + PointerSpliter + "-";
-            lblPointerLevel.Enabled = false;
-            lblPointerLevel.Text = "-";
-            ToolShadow_Update();
+            //Update brush location before redraw
+            mapX = (msX + hScrollBar.Value) >> zoom;
+            mapY = (msY + vScrollBar.Value) >> zoom;
         }
         #endregion
 
@@ -1172,30 +1168,31 @@ mapY = (msY + vScrollBar.Value) >> zoom;//
         private void FormSHME_Paint(object sender, PaintEventArgs e)
         {
             if (lockDrawing) return;
-            int xShift = hScrollBar.Left - hScrollBar.Value,
-                yShift = vScrollBar.Top  - vScrollBar.Value;
-            int l = e.ClipRectangle.Left - hScrollBar.Left,
-                t = e.ClipRectangle.Top  - vScrollBar.Top,
-                r = e.ClipRectangle.Right  - xShift,
-                b = e.ClipRectangle.Bottom - yShift;
-            // Limit
-            if (l < 0) l = 0;
-            if (t < 0) t = 0;
-            l += hScrollBar.Value;
-            t += vScrollBar.Value;
-            if ((HMap.Width  << zoom) <= r) r = (HMap.Width  << zoom) - 1;
-            if ((HMap.Height << zoom) <= b) b = (HMap.Height << zoom) - 1;
-            int w = r - l + 1,
-                h = b - t + 1;
+            int xShift = hScrollBar.Left - hScrollBar.Value, // x shift of scope on map
+                yShift = vScrollBar.Top  - vScrollBar.Value; // y shift of scope on map
+            int portL = e.ClipRectangle.Left   - xShift,
+                portT = e.ClipRectangle.Top    - yShift,
+                portR = e.ClipRectangle.Right  - xShift,
+                portB = e.ClipRectangle.Bottom - yShift;
+            // Limit port by map area
+            if (portL < 0) portL = 0;
+            if (portT < 0) portT = 0;
+            // Limit port by zoomed map
+            if ((HMap.Width  << zoom) <= portR) portR = (HMap.Width  << zoom) - 1;
+            if ((HMap.Height << zoom) <= portB) portB = (HMap.Height << zoom) - 1;
+            int portW = portR - portL + 1,
+                portH = portB - portT + 1;
             // Optimisation
-            if (w < 1 || h < 1) return;
+            if (portW < 1 || portH < 1) return;
 
-            int x, y, z, iy, offset = 0;
-            int[] buffer = new int[w * h];
+            int[] buffer = new int[portW * portH];
+            int x, y, sx, sy, ix, iy, offset = 0;
+            int step = 1 << zoom;
+
             // Draw TMap
             if (chbShowTMap.Checked)
             {
-                int tw = TMap.Width, hw = HMap.Width - 1,
+                int tw = TMap.Width,  hw = HMap.Width  - 1,
                     th = TMap.Height, hh = HMap.Height - 1;
                 int zhw = hw << zoom,
                     zhh = hh << zoom;
@@ -1203,20 +1200,21 @@ mapY = (msY + vScrollBar.Value) >> zoom;//
                 if (((tw % hw == 0) && (th % hh == 0)) || ((hw % tw == 0) && (hh % th == 0)))
                 {
                     int delta = 1 << zoom >> 1;
-                    int ld = (l < delta) ? delta : l;
-                    int rd = (r - delta < zhw) ? r : zhw + delta - 1;
-                    int bd = (b - delta < zhh) ? b : zhh + delta - 1;
-                    if (t < delta)
-                        offset += ((y = delta) - t) * w;
+                    int ld = (portL < delta) ? delta : portL;
+                    int rd = (portR - delta < zhw) ? portR : zhw + delta - 1;
+                    int bd = (portB - delta < zhh) ? portB : zhh + delta - 1;
+                    sx = ld - portL;      // skip to the drawing start
+                    ix = sx + portR - rd; // skip to the next drawing start
+                    if (portT < delta)
+                        offset += ((y = delta) - portT) * portW + sx;
                     else
-                        y = t;
+                        y = portT;
                     for (; y <= bd; y++)
                     {
                         iy = ((y - delta) * th / zhh) * tw;
-                        offset += ld - l;
                         for (x = ld; x <= rd; x++)
                             buffer[offset++] = TMap.Pixels[((x - delta) * tw / zhw) + iy];
-                        offset += r - rd;
+                        offset += ix;
                     }
                 }
                 // Other
@@ -1224,97 +1222,96 @@ mapY = (msY + vScrollBar.Value) >> zoom;//
                 {
                     hw++;
                     hh++;
-                    for (y = t; y <= b; y++)
+                    sx = portR * tw;    ix = portL * tw;
+                    sy = portB * th;
+                    for (y = portT * th; y <= sy; y += th)
                     {
-                        iy = (y * th / hh >> zoom) * tw;
-                        for (x = l; x <= r; x++)
-                            buffer[offset++] = TMap.Pixels[((x * tw / hw) >> zoom) + iy];
+                        iy = (y / hh >> zoom) * tw;
+                        for (x = ix; x <= sx; x += tw)
+                            buffer[offset++] = TMap.Pixels[((x / hw) >> zoom) + iy];
                     }
                 }
             }
             // Draw HMap
             else
-                for (y = t; y <= b; y++)
+                for (y = portT; y <= portB; y++)
                 {
                     iy = (y >> zoom) * HMap.Width;
-                    for (x = l; x <= r; x++)
-                        buffer[offset++] = HMap.Pixels[(x >> zoom) + iy];
+                    for (x = portL; x <= portR; x++)
+                        buffer[offset++] = HMap.Pixels[(x >> zoom) + iy]; //Projecting to map with >> is faster
                 }
+
             // Add grid
             if (chbGrid.Checked && (2 < zoom))
             {
-                int step = 1 << zoom,
-                    mask = step - 1;
+                int mask = step - 1;
                 // Horizontal
-                for (y = mask - t & mask; y < h; y += step)
+                offset = ((mask - portT) & mask) * portW;
+                sy = portW * step;
+                for (y = (mask - portT) & mask; y < portH; y += step)
                 {
-                    offset = y * w;
-                    for (x = l & 1; x < w; x += 2)
-                        buffer[offset + x] = (0 < (x & 2)) ? GridColor0 : GridColor1;
+                    for (x = portL & 1; x < portW; x += 2)
+                        buffer[offset + x] = (0 == ((x + portL) & 3)) ? GridColor0 : GridColor1; // "& 2" is "0-1-"
+                    offset += sy;
                 }
                 // Vertical
-                for (y = t & 1; y < h; y += 2)
+                offset = (portT & 1) * portW;
+                ix = mask - portL & mask;
+                sy = portW << 1;
+                for (y = portT & 1; y < portH; y += 2)
                 {
-                    offset = y * w;
-                    for (x = mask - l & mask; x < w; x += step)
-                        buffer[offset + x] = (0 < (y & 2)) ? GridColor0 : GridColor1;
+                    for (x = ix; x < portW; x += step)
+                        buffer[offset + x] = (0 == ((y + portT) & 3)) ? GridColor0 : GridColor1; // "& 2" is "0-1-"
+                    offset += sy;
                 }
             }
             // Transfer
-            Bitmap img = new Bitmap(w, h, w << 2, PixelFormat.Format32bppRgb, Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0));
-            e.Graphics.DrawImageUnscaled(img,
-                l + xShift,
-                t + yShift
-                );
-            /**/
+            Bitmap img = new Bitmap(portW, portH, portW << 2, PixelFormat.Format32bppRgb, Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0));
+            e.Graphics.DrawImageUnscaled(img, portL + xShift, portT + yShift);
+
+            // Add brushes
             if (lblPointerLevel.Enabled)
             {
-                if (chbBrush1FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush1Width.Value, (int)nudBrush1Height.Value, chbBrush1RectangleShape.Checked);
-                if (chbBrush2FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush2Width.Value, (int)nudBrush2Height.Value, chbBrush2RectangleShape.Checked);
-                if (chbBrush3FrameShow.Checked) DrawBrushContour(e.Graphics, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, chbBrush3RectangleShape.Checked);
+                x = (mapX << zoom) + xShift;
+                y = (mapY << zoom) + yShift;
+                if (chbBrush1FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush1Width.Value, (int)nudBrush1Height.Value, chbBrush1RectangleShape.Checked);
+                if (chbBrush2FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush2Width.Value, (int)nudBrush2Height.Value, chbBrush2RectangleShape.Checked);
+                if (chbBrush3FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, chbBrush3RectangleShape.Checked);
             }
-            l = 1 << zoom;
-            t = 1;
-            if (FIs.Visible)
+            // Calculate window port to map area
+            double mapAreaL = (portL << 1 >> zoom) - HMap.Width,
+                   mapAreaR = (portR << 1 >> zoom) - HMap.Width,
+                   mapAreaT = (portT << 1 >> zoom) - HMap.Height,
+                   mapAreaB = (portB << 1 >> zoom) - HMap.Height;
+            // Add Items
+            if (chbItems.Checked)
                 foreach (LineValues line in FIs.LinesBuffer)
                     if (0 < line.P.start)
-                    {
-                        x = ((int)((HMap.Width  + line.P.x) * l) >> 1) + xShift;
-                        y = ((int)((HMap.Height + line.P.z) * l) >> 1) + yShift;   
-                        e.Graphics.DrawRectangle(new Pen(Color.Black), x - 5, y - 5, 10, 10);
-                        e.Graphics.DrawLine(new Pen(Color.Red), x - 4, y - 4, x + 4, y + 4);
-                        e.Graphics.DrawLine(new Pen(Color.Red), x + 4, y - 4, x - 4, y + 4);
-                    }
-            if (FAD.Visible)
+                        if (mapAreaL <= line.P.x && line.P.x <= mapAreaR)
+                            if (mapAreaT <= line.P.z && line.P.z <= mapAreaB)
+                            {
+                                x = ((int)((HMap.Width  + line.P.x) * step) >> 1) + xShift;
+                                y = ((int)((HMap.Height + line.P.z) * step) >> 1) + yShift;
+                                e.Graphics.DrawRectangle(new Pen(Color.Black), x - 5, y - 5,    10,    10);
+                                e.Graphics.DrawLine     (new Pen(Color.Red),   x - 4, y - 4, x + 4, y + 4);
+                                e.Graphics.DrawLine     (new Pen(Color.Red),   x + 4, y - 4, x - 4, y + 4);
+                            }
+            if (chbADrive.Checked)
             {
 
             }
-            if (FCP.Visible)
+            if (chbCPlay.Checked)
             {
 
             }
-            /**/
         }
 
-        private void DrawBrushContour(Graphics g, int width, int height, bool isRectangle)
+        private void DrawBrushContour(Graphics g, int x, int y, int width, int height, bool isRectangle)//Ok
         {
-            int ix = ((mapX - ((width  - 1) >> 1)) << zoom) - hScrollBar.Value;
-            int iy = ((mapY - ((height - 1) >> 1)) << zoom) - vScrollBar.Value;
-            if (isRectangle)
-                g.DrawRectangle(
-                    new Pen(Color.Black),
-                    ix + hScrollBar.Left,
-                    iy + vScrollBar.Top,
-                    (width  << zoom) - 1,
-                    (height << zoom) - 1);
-            else
-                g.DrawEllipse(
-                    new Pen(Color.Black),
-                    ix + hScrollBar.Left,
-                    iy + vScrollBar.Top,
-                    (width  << zoom) - 1,
-                    (height << zoom) - 1
-                    );
+            x -= ((width  - 1) >> 1) << zoom;    width  = (width  << zoom) - 1;
+            y -= ((height - 1) >> 1) << zoom;    height = (height << zoom) - 1;
+            if (isRectangle) g.DrawRectangle(new Pen(Color.Black), x, y, width, height);
+            else             g.DrawEllipse  (new Pen(Color.Black), x, y, width, height);
         }
 
         private void FormSHME_Resize(object sender, EventArgs e)//
@@ -1704,10 +1701,11 @@ mapY = (msY + vScrollBar.Value) >> zoom;//
             if (src != null && !historyRecord.ResizeAction)
             {
                 chbMultiTouch.Checked = (0 < historyBackward.Count) ? historyBackward[0].MultiTouch : false;
-                BuildSpectrum(historyRecord.Left, historyRecord.Top, historyRecord.Right, historyRecord.Bottom);
+                BuildSpectrumMap(historyRecord.Left, historyRecord.Top, historyRecord.Right, historyRecord.Bottom);
                 HMap.BuildStatistics(historyRecord.Top, historyRecord.Bottom);
+                FormSHME_ShowValues();
                 ShowStatistics();
-                Invalidate();
+                Canvas_Update();
             }
             historyRecord = null;
         }
@@ -1724,25 +1722,17 @@ mapY = (msY + vScrollBar.Value) >> zoom;//
         #endregion
 
         #region Additional
-        private void chbItems_CheckedChanged(object sender, EventArgs e)
-        {
-            if (FIs.Visible) FIs.Hide();
-            else             FIs.Show();
-            Canvas_Update();
-        }
+        private void IAC_CheckedChanged(object sender, EventArgs e) => Canvas_Update();
 
-        private void chbADrive_CheckedChanged(object sender, EventArgs e)
-        {
-            if (FAD.Visible) FAD.Hide();
-            else             FAD.Show();
-            Canvas_Update();
-        }
+        private void chbItems_MouseUp (object sender, MouseEventArgs e) => IAC_MouseUp(FIs, e);
+        private void chbADrive_MouseUp(object sender, MouseEventArgs e) => IAC_MouseUp(FAD, e);
+        private void chbCPlay_MouseUp (object sender, MouseEventArgs e) => IAC_MouseUp(FCP, e);
 
-        private void chbCPlay_CheckedChanged(object sender, EventArgs e)
+        private void IAC_MouseUp(Form form, MouseEventArgs e)
         {
-            if (FCP.Visible) FCP.Hide();
-            else             FCP.Show();
-            Canvas_Update();
+            if (e.Button == MouseButtons.Right)
+                if (form.Visible) form.Hide();
+                else              form.Show();
         }
         #endregion
     }

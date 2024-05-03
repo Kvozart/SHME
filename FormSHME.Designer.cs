@@ -2352,6 +2352,8 @@
             this.chbGrid.BackColor = System.Drawing.Color.LightGray;
             this.chbGrid.BackgroundImage = global::SHME.Properties.Resources.grid;
             this.chbGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbGrid.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.chbGrid.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chbGrid.Location = new System.Drawing.Point(2, 2);
             this.chbGrid.Margin = new System.Windows.Forms.Padding(1);
             this.chbGrid.Name = "chbGrid";
@@ -2579,24 +2581,31 @@
             // 
             this.chbADrive.Appearance = System.Windows.Forms.Appearance.Button;
             this.chbADrive.BackColor = System.Drawing.Color.LightGray;
+            this.chbADrive.BackgroundImage = global::SHME.Properties.Resources.ADrive;
             this.chbADrive.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.chbADrive.Location = new System.Drawing.Point(207, 2);
+            this.chbADrive.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.chbADrive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbADrive.Image = global::SHME.Properties.Resources.markOption;
+            this.chbADrive.Location = new System.Drawing.Point(203, 2);
             this.chbADrive.Margin = new System.Windows.Forms.Padding(1);
             this.chbADrive.Name = "chbADrive";
-            this.chbADrive.Size = new System.Drawing.Size(31, 25);
+            this.chbADrive.Size = new System.Drawing.Size(27, 25);
             this.chbADrive.TabIndex = 6;
-            this.chbADrive.Text = "AD";
             this.chbADrive.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip.SetToolTip(this.chbADrive, "Auto Drive");
             this.chbADrive.UseVisualStyleBackColor = false;
-            this.chbADrive.CheckedChanged += new System.EventHandler(this.chbADrive_CheckedChanged);
+            this.chbADrive.CheckedChanged += new System.EventHandler(this.IAC_CheckedChanged);
+            this.chbADrive.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chbADrive_MouseUp);
             // 
             // chbCPlay
             // 
             this.chbCPlay.Appearance = System.Windows.Forms.Appearance.Button;
             this.chbCPlay.BackColor = System.Drawing.Color.LightGray;
             this.chbCPlay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.chbCPlay.Location = new System.Drawing.Point(240, 2);
+            this.chbCPlay.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.chbCPlay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbCPlay.Image = global::SHME.Properties.Resources.markOption;
+            this.chbCPlay.Location = new System.Drawing.Point(232, 2);
             this.chbCPlay.Margin = new System.Windows.Forms.Padding(1);
             this.chbCPlay.Name = "chbCPlay";
             this.chbCPlay.Size = new System.Drawing.Size(31, 25);
@@ -2605,7 +2614,8 @@
             this.chbCPlay.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip.SetToolTip(this.chbCPlay, "Course Play");
             this.chbCPlay.UseVisualStyleBackColor = false;
-            this.chbCPlay.CheckedChanged += new System.EventHandler(this.chbCPlay_CheckedChanged);
+            this.chbCPlay.CheckedChanged += new System.EventHandler(this.IAC_CheckedChanged);
+            this.chbCPlay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chbCPlay_MouseUp);
             // 
             // chbItems
             // 
@@ -2613,15 +2623,21 @@
             this.chbItems.BackColor = System.Drawing.Color.LightGray;
             this.chbItems.BackgroundImage = global::SHME.Properties.Resources.content;
             this.chbItems.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbItems.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chbItems.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.chbItems.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbItems.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.chbItems.Image = global::SHME.Properties.Resources.markOption;
             this.chbItems.Location = new System.Drawing.Point(174, 2);
             this.chbItems.Margin = new System.Windows.Forms.Padding(1);
             this.chbItems.Name = "chbItems";
-            this.chbItems.Size = new System.Drawing.Size(31, 25);
+            this.chbItems.Size = new System.Drawing.Size(27, 25);
             this.chbItems.TabIndex = 5;
             this.chbItems.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip.SetToolTip(this.chbItems, "Items");
             this.chbItems.UseVisualStyleBackColor = false;
-            this.chbItems.CheckedChanged += new System.EventHandler(this.chbItems_CheckedChanged);
+            this.chbItems.CheckedChanged += new System.EventHandler(this.IAC_CheckedChanged);
+            this.chbItems.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chbItems_MouseUp);
             // 
             // pnlZoomGrid
             // 
@@ -2644,7 +2660,7 @@
             this.pnlZoomGrid.Margin = new System.Windows.Forms.Padding(0);
             this.pnlZoomGrid.Name = "pnlZoomGrid";
             this.pnlZoomGrid.Padding = new System.Windows.Forms.Padding(1);
-            this.pnlZoomGrid.Size = new System.Drawing.Size(275, 31);
+            this.pnlZoomGrid.Size = new System.Drawing.Size(267, 31);
             this.pnlZoomGrid.TabIndex = 1;
             // 
             // pnlToolSelect
