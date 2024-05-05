@@ -1,19 +1,18 @@
 ﻿using System;
-using System.IO;
-using System.Globalization;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using static System.Windows.Forms.LinkLabel;
-using static System.Net.Mime.MediaTypeNames;
-using System.Reflection;
+using System.Windows.Forms;
 
 namespace SHME
 {
     public partial class FormItems : Form
     {
         FormSHME Main;
-        NumberFormatInfo NFI = new CultureInfo("en-US", false).NumberFormat;
+        static readonly String NumberFormat = "f4";
+        static readonly String IniFileName = "Items.ini";
+        static readonly NumberFormatInfo NFI = new CultureInfo("en-US", false).NumberFormat;
 
         public class xyzDouble
         {
@@ -96,10 +95,10 @@ namespace SHME
 
             public String Concatenate() => //
                 A + (0 < P.start 
-                    ? "position=\"" + P.Concatenate("f4", NFI) + '"'
+                    ? "position=\"" + P.Concatenate(NumberFormat, NFI) + '"'
                     : "" ) +
                 B + (0 < R.start 
-                    ? "rotation=\"" + R.Concatenate("f4", NFI) + '"'
+                    ? "rotation=\"" + R.Concatenate(NumberFormat, NFI) + '"'
                     : "" ) +
                 C;
         }
@@ -120,8 +119,8 @@ namespace SHME
         {
             try
             {
-                if (File.Exists("Items.ini"))
-                    using (StreamReader file = File.OpenText("Items.ini"))
+                if (File.Exists(IniFileName))
+                    using (StreamReader file = File.OpenText(IniFileName))
                         while (!file.EndOfStream)
                         {
                             String line = file.ReadLine();
@@ -189,7 +188,7 @@ namespace SHME
 
         public void OptionSave()//Ok
         {
-            using (StreamWriter file = File.CreateText("Items.ini"))
+            using (StreamWriter file = File.CreateText(IniFileName))
             {
                 file.WriteLine("File\t" + tbFile.Text);
                 for (int i = 0; i < tvFilters.Nodes.Count; i++)

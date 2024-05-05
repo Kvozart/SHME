@@ -1468,7 +1468,7 @@ namespace SHME
             }
             // Save modules options
             FIs.OptionSave();
-            //FAD.OptionSave();
+            FAD.OptionSave();
             FCP.OptionSave();
         }
         #endregion

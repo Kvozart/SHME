@@ -317,6 +317,7 @@
             this.nudRotationStep.Size = new System.Drawing.Size(64, 20);
             this.nudRotationStep.TabIndex = 10;
             this.nudRotationStep.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudRotationStep, "Rotation increment step");
             this.nudRotationStep.Value = new decimal(new int[] {
             45,
             0,
@@ -347,6 +348,7 @@
             this.nudRotationOffset.Size = new System.Drawing.Size(64, 20);
             this.nudRotationOffset.TabIndex = 10;
             this.nudRotationOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudRotationOffset, "Rotation increment step offset");
             // 
             // nudPositionStep
             // 
@@ -371,6 +373,7 @@
             this.nudPositionStep.Size = new System.Drawing.Size(64, 20);
             this.nudPositionStep.TabIndex = 10;
             this.nudPositionStep.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudPositionStep, "Position increment step");
             this.nudPositionStep.Value = new decimal(new int[] {
             25,
             0,
@@ -401,6 +404,7 @@
             this.nudPositionOffset.Size = new System.Drawing.Size(64, 20);
             this.nudPositionOffset.TabIndex = 10;
             this.nudPositionOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudPositionOffset, "Position increment step offset");
             // 
             // label5
             // 
@@ -1247,7 +1251,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1000, 240);
             this.Name = "FormItems";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SHME: FS Items";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormItems_FormClosing);

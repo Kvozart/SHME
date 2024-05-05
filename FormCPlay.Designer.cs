@@ -36,7 +36,7 @@
             this.btnSaveRoute = new System.Windows.Forms.Button();
             this.pnlMain = new System.Windows.Forms.Panel();
             this.btnReloadRoute = new System.Windows.Forms.Button();
-            this.clbLines = new System.Windows.Forms.CheckedListBox();
+            this.clbWaypoints = new System.Windows.Forms.CheckedListBox();
             this.pnlItems = new System.Windows.Forms.Panel();
             this.gbStepOffset = new System.Windows.Forms.GroupBox();
             this.btnPositionAlign = new System.Windows.Forms.Button();
@@ -85,6 +85,7 @@
             this.lblX = new System.Windows.Forms.Label();
             this.splitter = new System.Windows.Forms.Splitter();
             this.pnlFilters = new System.Windows.Forms.Panel();
+            this.btnSaveRoutes = new System.Windows.Forms.Button();
             this.chbRouteEnabled = new System.Windows.Forms.CheckBox();
             this.btnRouteInfoSave = new System.Windows.Forms.Button();
             this.tbRouteName = new System.Windows.Forms.TextBox();
@@ -125,7 +126,7 @@
             this.btnFileReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFileReload.FlatAppearance.BorderSize = 0;
             this.btnFileReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFileReload.Location = new System.Drawing.Point(952, 12);
+            this.btnFileReload.Location = new System.Drawing.Point(832, 12);
             this.btnFileReload.Name = "btnFileReload";
             this.btnFileReload.Size = new System.Drawing.Size(20, 20);
             this.btnFileReload.TabIndex = 29;
@@ -151,18 +152,17 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbFile.Location = new System.Drawing.Point(38, 12);
             this.tbFile.Name = "tbFile";
-            this.tbFile.Size = new System.Drawing.Size(908, 20);
+            this.tbFile.Size = new System.Drawing.Size(788, 20);
             this.tbFile.TabIndex = 27;
             // 
             // btnSaveRoute
             // 
-            this.btnSaveRoute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveRoute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveRoute.BackgroundImage = global::SHME.Properties.Resources.save;
             this.btnSaveRoute.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnSaveRoute.Enabled = false;
             this.btnSaveRoute.FlatAppearance.BorderSize = 0;
             this.btnSaveRoute.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnSaveRoute.Location = new System.Drawing.Point(940, 454);
+            this.btnSaveRoute.Location = new System.Drawing.Point(820, 191);
             this.btnSaveRoute.Name = "btnSaveRoute";
             this.btnSaveRoute.Size = new System.Drawing.Size(20, 20);
             this.btnSaveRoute.TabIndex = 28;
@@ -177,13 +177,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlMain.Controls.Add(this.btnSaveRoute);
             this.pnlMain.Controls.Add(this.btnReloadRoute);
-            this.pnlMain.Controls.Add(this.clbLines);
+            this.pnlMain.Controls.Add(this.clbWaypoints);
             this.pnlMain.Controls.Add(this.pnlItems);
             this.pnlMain.Controls.Add(this.splitter);
             this.pnlMain.Controls.Add(this.pnlFilters);
             this.pnlMain.Location = new System.Drawing.Point(12, 38);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(960, 474);
+            this.pnlMain.Size = new System.Drawing.Size(840, 211);
             this.pnlMain.TabIndex = 30;
             // 
             // btnReloadRoute
@@ -192,9 +192,8 @@
             this.btnReloadRoute.AutoEllipsis = true;
             this.btnReloadRoute.BackgroundImage = global::SHME.Properties.Resources.reload;
             this.btnReloadRoute.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnReloadRoute.Enabled = false;
             this.btnReloadRoute.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReloadRoute.Location = new System.Drawing.Point(921, 435);
+            this.btnReloadRoute.Location = new System.Drawing.Point(801, 172);
             this.btnReloadRoute.Name = "btnReloadRoute";
             this.btnReloadRoute.Size = new System.Drawing.Size(20, 20);
             this.btnReloadRoute.TabIndex = 24;
@@ -202,17 +201,17 @@
             this.btnReloadRoute.Visible = false;
             this.btnReloadRoute.Click += new System.EventHandler(this.btnReloadRoute_Click);
             // 
-            // clbLines
+            // clbWaypoints
             // 
-            this.clbLines.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.clbLines.HorizontalScrollbar = true;
-            this.clbLines.IntegralHeight = false;
-            this.clbLines.Location = new System.Drawing.Point(232, 130);
-            this.clbLines.Name = "clbLines";
-            this.clbLines.ScrollAlwaysVisible = true;
-            this.clbLines.Size = new System.Drawing.Size(728, 344);
-            this.clbLines.TabIndex = 21;
-            this.clbLines.SelectedIndexChanged += new System.EventHandler(this.clbLines_SelectedIndexChanged);
+            this.clbWaypoints.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.clbWaypoints.HorizontalScrollbar = true;
+            this.clbWaypoints.IntegralHeight = false;
+            this.clbWaypoints.Location = new System.Drawing.Point(232, 130);
+            this.clbWaypoints.Name = "clbWaypoints";
+            this.clbWaypoints.ScrollAlwaysVisible = true;
+            this.clbWaypoints.Size = new System.Drawing.Size(608, 81);
+            this.clbWaypoints.TabIndex = 21;
+            this.clbWaypoints.SelectedIndexChanged += new System.EventHandler(this.clbWaypoints_SelectedIndexChanged);
             // 
             // pnlItems
             // 
@@ -231,7 +230,7 @@
             this.pnlItems.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlItems.Location = new System.Drawing.Point(232, 0);
             this.pnlItems.Name = "pnlItems";
-            this.pnlItems.Size = new System.Drawing.Size(728, 130);
+            this.pnlItems.Size = new System.Drawing.Size(608, 130);
             this.pnlItems.TabIndex = 22;
             // 
             // gbStepOffset
@@ -258,8 +257,9 @@
             this.btnPositionAlign.Name = "btnPositionAlign";
             this.btnPositionAlign.Size = new System.Drawing.Size(21, 21);
             this.btnPositionAlign.TabIndex = 2;
+            this.toolTip.SetToolTip(this.btnPositionAlign, "Align position. Only X, Z axis");
             this.btnPositionAlign.UseVisualStyleBackColor = true;
-            this.btnPositionAlign.Click += new System.EventHandler(this.btnPositionAlign_Click);
+            this.btnPositionAlign.Click += new System.EventHandler(this.btnAlign_Click);
             // 
             // btnRotationAlign
             // 
@@ -271,7 +271,7 @@
             this.btnRotationAlign.Size = new System.Drawing.Size(21, 21);
             this.btnRotationAlign.TabIndex = 2;
             this.btnRotationAlign.UseVisualStyleBackColor = true;
-            this.btnRotationAlign.Click += new System.EventHandler(this.btnRotationAlign_Click);
+            this.btnRotationAlign.Click += new System.EventHandler(this.btnAlign_Click);
             // 
             // nudRotationStep
             // 
@@ -296,6 +296,7 @@
             this.nudRotationStep.Size = new System.Drawing.Size(64, 20);
             this.nudRotationStep.TabIndex = 10;
             this.nudRotationStep.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudRotationStep, "Rotation increment step");
             this.nudRotationStep.Value = new decimal(new int[] {
             45,
             0,
@@ -326,6 +327,7 @@
             this.nudPositionOffset.Size = new System.Drawing.Size(64, 20);
             this.nudPositionOffset.TabIndex = 10;
             this.nudPositionOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudPositionOffset, "Position increment step offset");
             // 
             // nudRotationOffset
             // 
@@ -350,6 +352,7 @@
             this.nudRotationOffset.Size = new System.Drawing.Size(64, 20);
             this.nudRotationOffset.TabIndex = 10;
             this.nudRotationOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudRotationOffset, "Rotation increment step offset");
             // 
             // nudPositionStep
             // 
@@ -374,6 +377,7 @@
             this.nudPositionStep.Size = new System.Drawing.Size(64, 20);
             this.nudPositionStep.TabIndex = 10;
             this.nudPositionStep.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudPositionStep, "Position increment step");
             this.nudPositionStep.Value = new decimal(new int[] {
             25,
             0,
@@ -388,7 +392,7 @@
             this.btnFind.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFind.FlatAppearance.BorderSize = 0;
             this.btnFind.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFind.Location = new System.Drawing.Point(707, 77);
+            this.btnFind.Location = new System.Drawing.Point(587, 77);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(21, 21);
             this.btnFind.TabIndex = 3;
@@ -402,7 +406,7 @@
             this.btnReplace.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnReplace.FlatAppearance.BorderSize = 0;
             this.btnReplace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReplace.Location = new System.Drawing.Point(707, 103);
+            this.btnReplace.Location = new System.Drawing.Point(587, 103);
             this.btnReplace.Name = "btnReplace";
             this.btnReplace.Size = new System.Drawing.Size(21, 21);
             this.btnReplace.TabIndex = 3;
@@ -457,7 +461,7 @@
             this.chb14.Size = new System.Drawing.Size(30, 20);
             this.chb14.TabIndex = 44;
             this.chb14.UseVisualStyleBackColor = true;
-            this.chb14.CheckedChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.chb14.CheckedChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // btnDeletePoint
             // 
@@ -479,7 +483,7 @@
             this.tb13.Name = "tb13";
             this.tb13.Size = new System.Drawing.Size(29, 20);
             this.tb13.TabIndex = 43;
-            this.tb13.TextChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.tb13.TextChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // tb11
             // 
@@ -487,7 +491,7 @@
             this.tb11.Name = "tb11";
             this.tb11.Size = new System.Drawing.Size(29, 20);
             this.tb11.TabIndex = 4;
-            this.tb11.TextChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.tb11.TextChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // nud12
             // 
@@ -506,7 +510,7 @@
             this.nud12.Size = new System.Drawing.Size(29, 20);
             this.nud12.TabIndex = 42;
             this.toolTip.SetToolTip(this.nud12, "Empty string as -1");
-            this.nud12.ValueChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.nud12.ValueChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // nud05
             // 
@@ -519,7 +523,7 @@
             this.nud05.Name = "nud05";
             this.nud05.Size = new System.Drawing.Size(29, 20);
             this.nud05.TabIndex = 42;
-            this.nud05.ValueChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.nud05.ValueChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // chb10
             // 
@@ -528,7 +532,7 @@
             this.chb10.Size = new System.Drawing.Size(30, 20);
             this.chb10.TabIndex = 40;
             this.chb10.UseVisualStyleBackColor = true;
-            this.chb10.CheckedChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.chb10.CheckedChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // chb09
             // 
@@ -537,7 +541,7 @@
             this.chb09.Size = new System.Drawing.Size(30, 20);
             this.chb09.TabIndex = 39;
             this.chb09.UseVisualStyleBackColor = true;
-            this.chb09.CheckedChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.chb09.CheckedChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // chb08
             // 
@@ -546,7 +550,7 @@
             this.chb08.Size = new System.Drawing.Size(30, 20);
             this.chb08.TabIndex = 38;
             this.chb08.UseVisualStyleBackColor = true;
-            this.chb08.CheckedChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.chb08.CheckedChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // chb07
             // 
@@ -555,7 +559,7 @@
             this.chb07.Size = new System.Drawing.Size(30, 20);
             this.chb07.TabIndex = 37;
             this.chb07.UseVisualStyleBackColor = true;
-            this.chb07.CheckedChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.chb07.CheckedChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // dudAction
             // 
@@ -567,7 +571,7 @@
             this.dudAction.Size = new System.Drawing.Size(29, 20);
             this.dudAction.TabIndex = 34;
             this.toolTip.SetToolTip(this.dudAction, "\"\"/Stop/Engage");
-            this.dudAction.SelectedItemChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.dudAction.SelectedItemChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // nudR
             // 
@@ -592,7 +596,7 @@
             0,
             0,
             -2147483648});
-            this.nudR.ValueChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.nudR.ValueChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // nudX
             // 
@@ -617,7 +621,7 @@
             0,
             0,
             -2147483648});
-            this.nudX.ValueChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.nudX.ValueChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // nudZ
             // 
@@ -642,7 +646,7 @@
             0,
             0,
             -2147483648});
-            this.nudZ.ValueChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.nudZ.ValueChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // nudY
             // 
@@ -667,7 +671,7 @@
             0,
             0,
             -2147483648});
-            this.nudY.ValueChanged += new System.EventHandler(this.Point_ValueChanged);
+            this.nudY.ValueChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // tbReplace
             // 
@@ -675,7 +679,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbReplace.Location = new System.Drawing.Point(424, 104);
             this.tbReplace.Name = "tbReplace";
-            this.tbReplace.Size = new System.Drawing.Size(277, 20);
+            this.tbReplace.Size = new System.Drawing.Size(157, 20);
             this.tbReplace.TabIndex = 1;
             // 
             // lblR
@@ -694,7 +698,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbFind.Location = new System.Drawing.Point(424, 78);
             this.tbFind.Name = "tbFind";
-            this.tbFind.Size = new System.Drawing.Size(277, 20);
+            this.tbFind.Size = new System.Drawing.Size(157, 20);
             this.tbFind.TabIndex = 0;
             // 
             // gbLimit
@@ -717,7 +721,7 @@
             this.gbLimit.Size = new System.Drawing.Size(192, 124);
             this.gbLimit.TabIndex = 23;
             this.gbLimit.TabStop = false;
-            this.gbLimit.Text = "• Limit";
+            this.gbLimit.Text = "Limit";
             // 
             // cbLimitZ
             // 
@@ -727,7 +731,7 @@
             this.cbLimitZ.Size = new System.Drawing.Size(15, 14);
             this.cbLimitZ.TabIndex = 33;
             this.cbLimitZ.UseVisualStyleBackColor = true;
-            this.cbLimitZ.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
+            this.cbLimitZ.CheckedChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // cbLimitY
             // 
@@ -737,7 +741,7 @@
             this.cbLimitY.Size = new System.Drawing.Size(15, 14);
             this.cbLimitY.TabIndex = 32;
             this.cbLimitY.UseVisualStyleBackColor = true;
-            this.cbLimitY.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
+            this.cbLimitY.CheckedChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // cbLimitR
             // 
@@ -747,7 +751,7 @@
             this.cbLimitR.Size = new System.Drawing.Size(15, 14);
             this.cbLimitR.TabIndex = 15;
             this.cbLimitR.UseVisualStyleBackColor = true;
-            this.cbLimitR.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
+            this.cbLimitR.CheckedChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // cbLimitX
             // 
@@ -757,7 +761,7 @@
             this.cbLimitX.Size = new System.Drawing.Size(15, 14);
             this.cbLimitX.TabIndex = 14;
             this.cbLimitX.UseVisualStyleBackColor = true;
-            this.cbLimitX.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
+            this.cbLimitX.CheckedChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // nudLimitRMin
             // 
@@ -782,7 +786,7 @@
             0,
             0,
             -2147483648});
-            this.nudLimitRMin.ValueChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
+            this.nudLimitRMin.ValueChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // nudLimitRMax
             // 
@@ -807,7 +811,7 @@
             0,
             0,
             0});
-            this.nudLimitRMax.ValueChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
+            this.nudLimitRMax.ValueChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // nudLimitZMin
             // 
@@ -832,7 +836,7 @@
             0,
             0,
             -2147483648});
-            this.nudLimitZMin.ValueChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
+            this.nudLimitZMin.ValueChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // nudLimitZMax
             // 
@@ -857,7 +861,7 @@
             0,
             0,
             0});
-            this.nudLimitZMax.ValueChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
+            this.nudLimitZMax.ValueChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // nudLimitYMin
             // 
@@ -882,7 +886,7 @@
             0,
             0,
             -2147483648});
-            this.nudLimitYMin.ValueChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
+            this.nudLimitYMin.ValueChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // nudLimitYMax
             // 
@@ -907,7 +911,7 @@
             0,
             0,
             0});
-            this.nudLimitYMax.ValueChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
+            this.nudLimitYMax.ValueChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // nudLimitXMin
             // 
@@ -932,7 +936,7 @@
             0,
             0,
             -2147483648});
-            this.nudLimitXMin.ValueChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
+            this.nudLimitXMin.ValueChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // nudLimitXMax
             // 
@@ -957,7 +961,7 @@
             0,
             0,
             0});
-            this.nudLimitXMax.ValueChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
+            this.nudLimitXMax.ValueChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // lblZ
             // 
@@ -997,12 +1001,13 @@
             this.splitter.MinimumSize = new System.Drawing.Size(6, 2);
             this.splitter.MinSize = 150;
             this.splitter.Name = "splitter";
-            this.splitter.Size = new System.Drawing.Size(8, 474);
+            this.splitter.Size = new System.Drawing.Size(8, 211);
             this.splitter.TabIndex = 23;
             this.splitter.TabStop = false;
             // 
             // pnlFilters
             // 
+            this.pnlFilters.Controls.Add(this.btnSaveRoutes);
             this.pnlFilters.Controls.Add(this.chbRouteEnabled);
             this.pnlFilters.Controls.Add(this.btnRouteInfoSave);
             this.pnlFilters.Controls.Add(this.tbRouteName);
@@ -1010,12 +1015,26 @@
             this.pnlFilters.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlFilters.Location = new System.Drawing.Point(0, 0);
             this.pnlFilters.Name = "pnlFilters";
-            this.pnlFilters.Size = new System.Drawing.Size(224, 474);
+            this.pnlFilters.Size = new System.Drawing.Size(224, 211);
             this.pnlFilters.TabIndex = 15;
+            // 
+            // btnSaveRoutes
+            // 
+            this.btnSaveRoutes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveRoutes.BackgroundImage = global::SHME.Properties.Resources.save;
+            this.btnSaveRoutes.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnSaveRoutes.FlatAppearance.BorderSize = 0;
+            this.btnSaveRoutes.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnSaveRoutes.Location = new System.Drawing.Point(204, 191);
+            this.btnSaveRoutes.Name = "btnSaveRoutes";
+            this.btnSaveRoutes.Size = new System.Drawing.Size(20, 20);
+            this.btnSaveRoutes.TabIndex = 29;
+            this.btnSaveRoutes.UseVisualStyleBackColor = true;
+            this.btnSaveRoutes.Visible = false;
+            this.btnSaveRoutes.Click += new System.EventHandler(this.btnSaveRoutes_Click);
             // 
             // chbRouteEnabled
             // 
-            this.chbRouteEnabled.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chbRouteEnabled.AutoSize = true;
             this.chbRouteEnabled.Enabled = false;
             this.chbRouteEnabled.Location = new System.Drawing.Point(3, 3);
@@ -1039,7 +1058,7 @@
             this.btnRouteInfoSave.TabIndex = 18;
             this.btnRouteInfoSave.UseVisualStyleBackColor = true;
             this.btnRouteInfoSave.Visible = false;
-            this.btnRouteInfoSave.Click += new System.EventHandler(this.btnRouteRename_Click);
+            this.btnRouteInfoSave.Click += new System.EventHandler(this.btnRouteInfoSave_Click);
             // 
             // tbRouteName
             // 
@@ -1067,7 +1086,7 @@
             this.tvRoutes.ShowLines = false;
             this.tvRoutes.ShowPlusMinus = false;
             this.tvRoutes.ShowRootLines = false;
-            this.tvRoutes.Size = new System.Drawing.Size(224, 448);
+            this.tvRoutes.Size = new System.Drawing.Size(224, 185);
             this.tvRoutes.StateImageList = this.il3State;
             this.tvRoutes.TabIndex = 16;
             this.tvRoutes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvRoutes_AfterSelect);
@@ -1089,14 +1108,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 524);
+            this.ClientSize = new System.Drawing.Size(864, 261);
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.btnFileReload);
             this.Controls.Add(this.btnFileLoad);
             this.Controls.Add(this.tbFile);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(1000, 300);
+            this.MinimumSize = new System.Drawing.Size(880, 300);
             this.Name = "FormCPlay";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "SHME: FS CoursePlay";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormCPlay_FormClosing);
             this.pnlMain.ResumeLayout(false);
@@ -1140,7 +1160,7 @@
         private System.Windows.Forms.Button btnSaveRoute;
         private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.Button btnReloadRoute;
-        private System.Windows.Forms.CheckedListBox clbLines;
+        private System.Windows.Forms.CheckedListBox clbWaypoints;
         private System.Windows.Forms.Panel pnlItems;
         private System.Windows.Forms.GroupBox gbEdit;
         private System.Windows.Forms.Label lblX;
@@ -1196,5 +1216,6 @@
         private System.Windows.Forms.CheckBox chbRouteEnabled;
         private System.Windows.Forms.Button btnSavePoint;
         private System.Windows.Forms.ImageList il3State;
+        private System.Windows.Forms.Button btnSaveRoutes;
     }
 }
