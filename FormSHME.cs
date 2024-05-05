@@ -6,12 +6,28 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using LibPNGsharp;
+using static SHME.FormCPlay;
 using static SHME.FormItems;
 
 namespace SHME
 {
     public partial class FormSHME : Form
     {
+        public static bool ReadTag(String line, String tag, ref String value)
+        {
+            int start = line.IndexOf(tag);
+            if (start < 0)
+                return false;
+            int q1 = line.IndexOf('"', start) + 1; // first "
+            if (q1 < 0)
+                return false;
+            int q2 = line.IndexOf('"', q1); // second "
+            if (q2 < 0)
+                return false;
+            value = line.Substring(q1, q2 - q1);
+            return true;
+        }
+
         #region Constants
         const int GridColor0 = -0x7FAAAAAA; // Dark gray
         const int GridColor1 = -0x7F555555; // Light gray
@@ -1007,10 +1023,10 @@ namespace SHME
             w = Math.Max((int)nudBrush1Width .Value, Math.Max((int)nudBrush2Width .Value, (int)nudBrush3Width .Value));
             h = Math.Max((int)nudBrush1Height.Value, Math.Max((int)nudBrush2Height.Value, (int)nudBrush3Height.Value));
             Invalidate(new Rectangle(
-                hScrollBar.Left + ((Math.Min(mapXl, mapX) - ((w - 1) >> 1)) << zoom) - hScrollBar.Value,
-                vScrollBar.Top  + ((Math.Min(mapYl, mapY) - ((h - 1) >> 1)) << zoom) - vScrollBar.Value,
-                ((w + Math.Abs(mapXl - mapX)) << zoom),
-                ((h + Math.Abs(mapYl - mapY)) << zoom)));
+                hScrollBar.Left + ((Math.Min(mapXl, mapX) - ((w - 1) >> 1)) << zoom) - hScrollBar.Value - 2,
+                vScrollBar.Top  + ((Math.Min(mapYl, mapY) - ((h - 1) >> 1)) << zoom) - vScrollBar.Value - 2,
+                ((w + Math.Abs(mapXl - mapX)) << zoom) + 4,
+                ((h + Math.Abs(mapYl - mapY)) << zoom) + 4));
         }
 
         public void Canvas_Update() =>//Ok
@@ -1150,6 +1166,10 @@ namespace SHME
                             case "LimitMax": chbLimitMax.Checked = (value == "True"); break;
                             case "LimitMin": chbLimitMin.Checked = (value == "True"); break;
 
+                            // Addons
+                            case "ItemsActive" : chbItems .Checked = (value == "True"); break;
+                            case "ADriveActive": chbADrive.Checked = (value == "True"); break;
+                            case "CPlayActive" : chbCPlay .Checked = (value == "True"); break;
                             default:
                                 break;
                         }
@@ -1301,9 +1321,23 @@ namespace SHME
 
             }
             if (chbCPlay.Checked)
-            {
-
-            }
+                if (FCP.SelectedRoute != null)
+                {
+                    sx = sy = iy = 0;
+                    foreach (Waypoint p in FCP.SelectedRoute.Points)
+                    {
+                        x = ((int)((HMap.Width  + p.x) * step) >> 1) + xShift;
+                        y = ((int)((HMap.Height + p.z) * step) >> 1) + yShift;
+                        if (mapAreaL <= p.x + 2 && p.x - 2 <= mapAreaR)
+                            if (mapAreaT <= p.z + 2 && p.z - 2 <= mapAreaB)
+                                e.Graphics.DrawEllipse(new Pen(Color.Black), x - 2, y - 2, 4, 4);
+                        if (0 < iy)
+                            e.Graphics.DrawLine(new Pen(Color.Red), sx, sy, x, y);
+                        sx = x;
+                        sy = y;
+                        iy++;
+                    }
+                }
         }
 
         private void DrawBrushContour(Graphics g, int x, int y, int width, int height, bool isRectangle)//Ok
@@ -1426,11 +1460,16 @@ namespace SHME
                 file.WriteLine("ViewGrid\t" + chbGrid.Checked);
                 file.WriteLine("LimitMax\t" + chbLimitMax.Checked);
                 file.WriteLine("LimitMin\t" + chbLimitMin.Checked);
+
+                // Addons
+                file.WriteLine("ItemsActive\t"  + chbItems .Checked);
+                file.WriteLine("ADriveActive\t" + chbADrive.Checked);
+                file.WriteLine("CPlayActive\t"  + chbCPlay .Checked);
             }
             // Save modules options
             FIs.OptionSave();
-            //FAD.SaveOption();
-            //FCP.SaveOption();
+            //FAD.OptionSave();
+            FCP.OptionSave();
         }
         #endregion
 

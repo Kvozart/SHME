@@ -215,6 +215,7 @@ namespace SHME
             }
         }
 
+        private void btnFileReload_Click(object sender, EventArgs e) => Items_Load(tbFile.Text);//Ok
         private void btnFileLoad_Click(object sender, EventArgs e)//Ok
         {
             dlgOpen.FileName = Path.GetFileName(tbFile.Text);
@@ -243,8 +244,6 @@ namespace SHME
                 MessageBox.Show(exc.Message);
             }
         }
-
-        private void btnFileReload_Click(object sender, EventArgs e) => Items_Load(tbFile.Text);//Ok
 
         private void btnFileSave_Click(object sender, EventArgs e)//Ok
         {

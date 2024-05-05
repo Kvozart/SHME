@@ -139,9 +139,9 @@
             // 
             this.tbFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFile.Location = new System.Drawing.Point(48, 8);
+            this.tbFile.Location = new System.Drawing.Point(64, 12);
             this.tbFile.Name = "tbFile";
-            this.tbFile.Size = new System.Drawing.Size(1031, 20);
+            this.tbFile.Size = new System.Drawing.Size(882, 20);
             this.tbFile.TabIndex = 6;
             // 
             // nudRotationZMin
@@ -302,7 +302,7 @@
             0,
             0,
             131072});
-            this.nudRotationStep.Location = new System.Drawing.Point(28, 40);
+            this.nudRotationStep.Location = new System.Drawing.Point(28, 45);
             this.nudRotationStep.Maximum = new decimal(new int[] {
             180,
             0,
@@ -332,7 +332,7 @@
             0,
             0,
             131072});
-            this.nudRotationOffset.Location = new System.Drawing.Point(96, 40);
+            this.nudRotationOffset.Location = new System.Drawing.Point(98, 46);
             this.nudRotationOffset.Maximum = new decimal(new int[] {
             180,
             0,
@@ -356,7 +356,7 @@
             0,
             0,
             131072});
-            this.nudPositionStep.Location = new System.Drawing.Point(28, 16);
+            this.nudPositionStep.Location = new System.Drawing.Point(28, 19);
             this.nudPositionStep.Maximum = new decimal(new int[] {
             128,
             0,
@@ -386,7 +386,7 @@
             0,
             0,
             196608});
-            this.nudPositionOffset.Location = new System.Drawing.Point(96, 16);
+            this.nudPositionOffset.Location = new System.Drawing.Point(98, 20);
             this.nudPositionOffset.Maximum = new decimal(new int[] {
             128,
             0,
@@ -406,7 +406,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(44, 0);
+            this.label5.Location = new System.Drawing.Point(44, 3);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(30, 15);
             this.label5.TabIndex = 13;
@@ -416,7 +416,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(112, 0);
+            this.label6.Location = new System.Drawing.Point(112, 3);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(36, 15);
             this.label6.TabIndex = 13;
@@ -471,7 +471,7 @@
             this.btnPositionAlign.FlatAppearance.BorderSize = 0;
             this.btnPositionAlign.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPositionAlign.Image = ((System.Drawing.Image)(resources.GetObject("btnPositionAlign.Image")));
-            this.btnPositionAlign.Location = new System.Drawing.Point(4, 16);
+            this.btnPositionAlign.Location = new System.Drawing.Point(4, 19);
             this.btnPositionAlign.Name = "btnPositionAlign";
             this.btnPositionAlign.Size = new System.Drawing.Size(21, 21);
             this.btnPositionAlign.TabIndex = 2;
@@ -484,7 +484,7 @@
             this.btnRotationAlign.FlatAppearance.BorderSize = 0;
             this.btnRotationAlign.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRotationAlign.Image = global::SHME.Properties.Resources.reload;
-            this.btnRotationAlign.Location = new System.Drawing.Point(4, 40);
+            this.btnRotationAlign.Location = new System.Drawing.Point(4, 43);
             this.btnRotationAlign.Name = "btnRotationAlign";
             this.btnRotationAlign.Size = new System.Drawing.Size(21, 21);
             this.btnRotationAlign.TabIndex = 2;
@@ -494,11 +494,12 @@
             // 
             // btnFindAndReplace
             // 
+            this.btnFindAndReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnFindAndReplace.BackgroundImage = global::SHME.Properties.Resources.execute;
             this.btnFindAndReplace.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFindAndReplace.FlatAppearance.BorderSize = 0;
             this.btnFindAndReplace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFindAndReplace.Location = new System.Drawing.Point(204, 40);
+            this.btnFindAndReplace.Location = new System.Drawing.Point(79, 44);
             this.btnFindAndReplace.Name = "btnFindAndReplace";
             this.btnFindAndReplace.Size = new System.Drawing.Size(21, 21);
             this.btnFindAndReplace.TabIndex = 3;
@@ -512,7 +513,7 @@
             this.btnFileLoad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFileLoad.FlatAppearance.BorderSize = 0;
             this.btnFileLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFileLoad.Location = new System.Drawing.Point(8, 8);
+            this.btnFileLoad.Location = new System.Drawing.Point(12, 12);
             this.btnFileLoad.Name = "btnFileLoad";
             this.btnFileLoad.Size = new System.Drawing.Size(20, 20);
             this.btnFileLoad.TabIndex = 2;
@@ -527,7 +528,7 @@
             this.btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSave.FlatAppearance.BorderSize = 0;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Location = new System.Drawing.Point(1083, 8);
+            this.btnSave.Location = new System.Drawing.Point(952, 12);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(20, 20);
             this.btnSave.TabIndex = 8;
@@ -584,11 +585,12 @@
             // 
             // btnFind
             // 
+            this.btnFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnFind.BackgroundImage = global::SHME.Properties.Resources.compare;
             this.btnFind.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFind.FlatAppearance.BorderSize = 0;
             this.btnFind.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFind.Location = new System.Drawing.Point(204, 16);
+            this.btnFind.Location = new System.Drawing.Point(79, 18);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(21, 21);
             this.btnFind.TabIndex = 3;
@@ -598,17 +600,21 @@
             // 
             // tbReplace
             // 
-            this.tbReplace.Location = new System.Drawing.Point(4, 40);
+            this.tbReplace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbReplace.Location = new System.Drawing.Point(4, 45);
             this.tbReplace.Name = "tbReplace";
-            this.tbReplace.Size = new System.Drawing.Size(196, 20);
+            this.tbReplace.Size = new System.Drawing.Size(69, 20);
             this.tbReplace.TabIndex = 1;
             this.toolTip.SetToolTip(this.tbReplace, "Replace with");
             // 
             // tbFind
             // 
-            this.tbFind.Location = new System.Drawing.Point(4, 16);
+            this.tbFind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbFind.Location = new System.Drawing.Point(4, 19);
             this.tbFind.Name = "tbFind";
-            this.tbFind.Size = new System.Drawing.Size(196, 20);
+            this.tbFind.Size = new System.Drawing.Size(69, 20);
             this.tbFind.TabIndex = 0;
             this.toolTip.SetToolTip(this.tbFind, "Look for");
             // 
@@ -647,7 +653,7 @@
             this.btnLinesReload.BackgroundImage = global::SHME.Properties.Resources.reload;
             this.btnLinesReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnLinesReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLinesReload.Location = new System.Drawing.Point(1082, 344);
+            this.btnLinesReload.Location = new System.Drawing.Point(940, 329);
             this.btnLinesReload.Name = "btnLinesReload";
             this.btnLinesReload.Size = new System.Drawing.Size(20, 20);
             this.btnLinesReload.TabIndex = 24;
@@ -662,7 +668,7 @@
             this.btnFileReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFileReload.FlatAppearance.BorderSize = 0;
             this.btnFileReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFileReload.Location = new System.Drawing.Point(28, 8);
+            this.btnFileReload.Location = new System.Drawing.Point(38, 12);
             this.btnFileReload.Name = "btnFileReload";
             this.btnFileReload.Size = new System.Drawing.Size(20, 20);
             this.btnFileReload.TabIndex = 25;
@@ -679,7 +685,7 @@
             this.clbLines.Location = new System.Drawing.Point(232, 116);
             this.clbLines.Name = "clbLines";
             this.clbLines.ScrollAlwaysVisible = true;
-            this.clbLines.Size = new System.Drawing.Size(870, 248);
+            this.clbLines.Size = new System.Drawing.Size(728, 233);
             this.clbLines.TabIndex = 21;
             this.clbLines.MouseClick += new System.Windows.Forms.MouseEventHandler(this.clbLines_MouseClick);
             this.clbLines.SelectedIndexChanged += new System.EventHandler(this.clbLines_SelectedIndexChanged);
@@ -699,7 +705,7 @@
             this.tvFilters.ShowLines = false;
             this.tvFilters.ShowPlusMinus = false;
             this.tvFilters.ShowRootLines = false;
-            this.tvFilters.Size = new System.Drawing.Size(224, 316);
+            this.tvFilters.Size = new System.Drawing.Size(224, 301);
             this.tvFilters.StateImageList = this.il3State;
             this.tvFilters.TabIndex = 16;
             this.tvFilters.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvFilters_AfterLabelEdit);
@@ -729,7 +735,7 @@
             this.pnlFilters.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlFilters.Location = new System.Drawing.Point(0, 0);
             this.pnlFilters.Name = "pnlFilters";
-            this.pnlFilters.Size = new System.Drawing.Size(224, 364);
+            this.pnlFilters.Size = new System.Drawing.Size(224, 349);
             this.pnlFilters.TabIndex = 15;
             // 
             // pnlItems
@@ -752,18 +758,20 @@
             this.pnlItems.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlItems.Location = new System.Drawing.Point(232, 0);
             this.pnlItems.Name = "pnlItems";
-            this.pnlItems.Size = new System.Drawing.Size(870, 116);
+            this.pnlItems.Size = new System.Drawing.Size(728, 116);
             this.pnlItems.TabIndex = 22;
             // 
             // gbFindAndReplace
             // 
+            this.gbFindAndReplace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbFindAndReplace.Controls.Add(this.btnFind);
             this.gbFindAndReplace.Controls.Add(this.btnFindAndReplace);
             this.gbFindAndReplace.Controls.Add(this.tbReplace);
             this.gbFindAndReplace.Controls.Add(this.tbFind);
-            this.gbFindAndReplace.Location = new System.Drawing.Point(612, 0);
+            this.gbFindAndReplace.Location = new System.Drawing.Point(622, 4);
             this.gbFindAndReplace.Name = "gbFindAndReplace";
-            this.gbFindAndReplace.Size = new System.Drawing.Size(232, 68);
+            this.gbFindAndReplace.Size = new System.Drawing.Size(106, 72);
             this.gbFindAndReplace.TabIndex = 32;
             this.gbFindAndReplace.TabStop = false;
             this.gbFindAndReplace.Text = "Find and replace";
@@ -785,7 +793,7 @@
             this.gbEdit.Controls.Add(this.label9);
             this.gbEdit.Controls.Add(this.label10);
             this.gbEdit.Controls.Add(this.label11);
-            this.gbEdit.Location = new System.Drawing.Point(332, 0);
+            this.gbEdit.Location = new System.Drawing.Point(338, 4);
             this.gbEdit.Name = "gbEdit";
             this.gbEdit.Size = new System.Drawing.Size(116, 88);
             this.gbEdit.TabIndex = 31;
@@ -994,7 +1002,7 @@
             this.gbRotationRange.Controls.Add(this.nudRotationZMin);
             this.gbRotationRange.Controls.Add(this.nudRotationZMax);
             this.gbRotationRange.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.gbRotationRange.Location = new System.Drawing.Point(448, 0);
+            this.gbRotationRange.Location = new System.Drawing.Point(460, 3);
             this.gbRotationRange.Name = "gbRotationRange";
             this.gbRotationRange.Size = new System.Drawing.Size(156, 88);
             this.gbRotationRange.TabIndex = 24;
@@ -1096,7 +1104,7 @@
             this.gbPositionRange.Controls.Add(this.nudPositionXMin);
             this.gbPositionRange.Controls.Add(this.nudPositionXMax);
             this.gbPositionRange.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.gbPositionRange.Location = new System.Drawing.Point(168, 0);
+            this.gbPositionRange.Location = new System.Drawing.Point(168, 3);
             this.gbPositionRange.Name = "gbPositionRange";
             this.gbPositionRange.Size = new System.Drawing.Size(164, 88);
             this.gbPositionRange.TabIndex = 23;
@@ -1194,7 +1202,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbLine.Location = new System.Drawing.Point(28, 92);
             this.tbLine.Name = "tbLine";
-            this.tbLine.Size = new System.Drawing.Size(839, 20);
+            this.tbLine.Size = new System.Drawing.Size(697, 20);
             this.tbLine.TabIndex = 21;
             this.tbLine.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbLine_KeyPress);
             this.tbLine.Leave += new System.EventHandler(this.tbLine_Leave);
@@ -1207,7 +1215,7 @@
             this.splitter1.MinimumSize = new System.Drawing.Size(6, 2);
             this.splitter1.MinSize = 150;
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(8, 364);
+            this.splitter1.Size = new System.Drawing.Size(8, 349);
             this.splitter1.TabIndex = 23;
             this.splitter1.TabStop = false;
             // 
@@ -1221,23 +1229,23 @@
             this.pnlMain.Controls.Add(this.pnlItems);
             this.pnlMain.Controls.Add(this.splitter1);
             this.pnlMain.Controls.Add(this.pnlFilters);
-            this.pnlMain.Location = new System.Drawing.Point(4, 32);
+            this.pnlMain.Location = new System.Drawing.Point(12, 38);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(1102, 364);
+            this.pnlMain.Size = new System.Drawing.Size(960, 349);
             this.pnlMain.TabIndex = 24;
             // 
             // FormItems
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1111, 399);
+            this.ClientSize = new System.Drawing.Size(984, 399);
             this.Controls.Add(this.btnFileReload);
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.btnFileLoad);
             this.Controls.Add(this.tbFile);
             this.Controls.Add(this.btnSave);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(972, 240);
+            this.MinimumSize = new System.Drawing.Size(1000, 240);
             this.Name = "FormItems";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
