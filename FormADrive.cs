@@ -23,6 +23,7 @@ namespace SHME
             public List<int> inID, outID;
             public String Line = "";
             public int id = 0;
+            public int canvasX, canvasY;
 
             public void Align(double step, double offset)
             {

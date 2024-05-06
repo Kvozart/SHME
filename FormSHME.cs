@@ -618,10 +618,10 @@ namespace SHME
         private void tsmiClear_Click(object sender, EventArgs e)
         {
             int x, y;
-            historyRecord = new HistoryRecord(HMap, 0, 0, HMap.Width - 1, HMap.Height - 1, chbMultiTouch.Checked);
+            historyRecord = new HistoryRecord(HMap, 0, 0, HMap.MaxX, HMap.MaxY, chbMultiTouch.Checked);
             HistoryAdd();
-            for (y = 0; y < HMap.Height; y++)
-                for (x = 0; x < HMap.Width; x++)
+            for (y = HMap.MaxY; 0 <= y; y--)
+                for (x = HMap.MaxX; 0 <= x; x--)
                     HMap.Levels[x, y] = 0;
             FinishHMapLoading();
         }
@@ -701,7 +701,7 @@ namespace SHME
             if (HMap.Width == dlgResize.newWidth && HMap.Height == dlgResize.newHeight)
                 return;
             // Register
-            historyRecord = new HistoryRecord(HMap, 0, 0, HMap.Width - 1, HMap.Height - 1, chbMultiTouch.Checked, true);
+            historyRecord = new HistoryRecord(HMap, 0, 0, HMap.MaxX, HMap.MaxY, chbMultiTouch.Checked, true);
             HistoryAdd();
             // Transit
             HMap.SetSize(dlgResize.newWidth, dlgResize.newHeight, true);
@@ -722,7 +722,7 @@ namespace SHME
                 if (chbMultiTouch.Tag == ((0 < historyBackward.Count) ? historyBackward[0] : null))
                     return;
                 // Store state and push history
-                historyRecord = new HistoryRecord(HMap, 0, 0, HMap.Width - 1, HMap.Height - 1, false);
+                historyRecord = new HistoryRecord(HMap, 0, 0, HMap.MaxX, HMap.MaxY, false);
                 FormSHME_MouseUp(null, null);
                 stateMap = null;
             }
@@ -741,8 +741,8 @@ namespace SHME
             lockMouse = false;
             // Clearing if released
             if (!chbMultiTouch.Checked && (0 < historyForward.Count))
-                for (int y = HMap.Height - 1; 0 <= y; y--)
-                    for (int x = HMap.Width - 1; 0 <= x; x--)
+                for (int y = HMap.MaxY; 0 <= y; y--)
+                    for (int x = HMap.MaxX; 0 <= x; x--)
                         HMap.Changed[x, y] = 0;
             ToolAction(sender, e, false);
         }
@@ -853,8 +853,8 @@ namespace SHME
                 }
             }
             // Calculate point on map
-            int mapW = HMap.Width  - 1;
-            int mapH = HMap.Height - 1;
+            int mapW = HMap.MaxX;
+            int mapH = HMap.MaxY;
             // Skip outside
             if (mapX < 0 || mapY < 0 || mapW < mapX || mapH < mapY)
             {
@@ -1210,76 +1210,87 @@ namespace SHME
         private void FormSHME_Paint(object sender, PaintEventArgs e)
         {
             if (lockDrawing) return;
-            int xShift = hScrollBar.Left - hScrollBar.Value, // x shift of scope on map
-                yShift = vScrollBar.Top  - vScrollBar.Value; // y shift of scope on map
-            int portL = e.ClipRectangle.Left   - xShift,
-                portT = e.ClipRectangle.Top    - yShift,
-                portR = e.ClipRectangle.Right  - xShift,
-                portB = e.ClipRectangle.Bottom - yShift;
+            int portL = e.ClipRectangle.X,
+                portT = e.ClipRectangle.Y,
+                portW = e.ClipRectangle.Width,
+                portH = e.ClipRectangle.Height;
             // Limit port by map area
-            if (portL < 0) portL = 0;
-            if (portT < 0) portT = 0;
-            // Limit port by zoomed map
-            if ((HMap.Width  << zoom) <= portR) portR = (HMap.Width  << zoom) - 1;
-            if ((HMap.Height << zoom) <= portB) portB = (HMap.Height << zoom) - 1;
-            int portW = portR - portL + 1,
-                portH = portB - portT + 1;
+            if ((HMap.Width  << zoom) < portW) portW = HMap.Width  << zoom;
+            if ((HMap.Height << zoom) < portH) portH = HMap.Height << zoom;
+            int portR = portL + portW,
+                portB = portT + portH;
             // Optimisation
             if (portW < 1 || portH < 1) return;
+            
+            // Map-to-screan
+            int xShift = hScrollBar.Left - hScrollBar.Value, // x shift of scope on map
+                yShift = vScrollBar.Top  - vScrollBar.Value; // y shift of scope on map
+            int mtsL = portL - xShift,
+                mtsT = portT - yShift,
+                mtsR = portR - xShift,
+                mtsB = portB - yShift;
+            // Limit port by map area
+            if ((HMap.Width  << zoom) < mtsR) mtsR = (HMap.Width  << zoom);
+            if ((HMap.Height << zoom) < mtsB) mtsB = (HMap.Height << zoom);
+            int mtsW = mtsR - mtsL,
+                mtsH = mtsB - mtsT;
+            // Optimisation
+            if (mtsW < 1 || mtsH < 1) return;
 
-            int[] buffer = new int[portW * portH];
+            int[] buffer = new int[mtsW * mtsH];
             int x, y, sx, sy, ix, iy, offset = 0;
             int step = 1 << zoom;
 
             // Draw TMap
             if (chbShowTMap.Checked)
             {
-                int tw = TMap.Width,  hw = HMap.Width  - 1,
-                    th = TMap.Height, hh = HMap.Height - 1;
-                int zhw = hw << zoom,
-                    zhh = hh << zoom;
-                // Normal (TMapSize * proportion + 1)
-                if (((tw % hw == 0) && (th % hh == 0)) || ((hw % tw == 0) && (hh % th == 0)))
+                int tw = TMap.Width,  hMx = HMap.MaxX,
+                    th = TMap.Height, hMy = HMap.MaxY;
+                // Normal (TMapSize : HMapSize + 1)
+                if (((tw % hMx == 0) && (th % hMy == 0)) || ((hMx % tw == 0) && (hMy % th == 0)))
                 {
-                    int delta = 1 << zoom >> 1;
-                    int ld = (portL < delta) ? delta : portL;
-                    int rd = (portR - delta < zhw) ? portR : zhw + delta - 1;
-                    int bd = (portB - delta < zhh) ? portB : zhh + delta - 1;
-                    sx = ld - portL;      // skip to the drawing start
-                    ix = sx + portR - rd; // skip to the next drawing start
-                    if (portT < delta)
-                        offset += ((y = delta) - portT) * portW + sx;
+                    int zhMx = hMx << zoom,
+                        zhMy = hMy << zoom;
+                    int delta = step >> 1;
+                    int ld = (mtsL < delta) ? delta : mtsL;
+                    int rd = (mtsR - delta < zhMx) ? mtsR : zhMx + delta - 1;
+                    int bd = (mtsB - delta < zhMy) ? mtsB : zhMy + delta - 1;
+                    sx = ld - mtsL;      // skip to the drawing start
+                    ix = sx + mtsR - rd; // skip to the next drawing start
+                    if (mtsT < delta)
+                        offset += ((y = delta) - mtsT) * portW + sx;
                     else
-                        y = portT;
-                    for (; y <= bd; y++)
+                        y = mtsT;
+                    for (; y < bd; y++)
                     {
-                        iy = ((y - delta) * th / zhh) * tw;
-                        for (x = ld; x <= rd; x++)
-                            buffer[offset++] = TMap.Pixels[((x - delta) * tw / zhw) + iy];
+                        iy = ((y - delta) * th / zhMy) * tw;
+                        for (x = ld; x < rd; x++)
+                            buffer[offset++] = TMap.Pixels[((x - delta) * tw / zhMx) + iy];
                         offset += ix;
                     }
                 }
                 // Other
                 else
                 {
-                    hw++;
-                    hh++;
-                    sx = portR * tw;    ix = portL * tw;
-                    sy = portB * th;
-                    for (y = portT * th; y <= sy; y += th)
+                    int hw = HMap.Width,
+                        hh = HMap.Height;
+                    ix = mtsL * tw;
+                    sx = mtsR * tw;
+                    sy = mtsB * th;
+                    for (y = mtsT * th; y < sy; y += th)
                     {
                         iy = (y / hh >> zoom) * tw;
-                        for (x = ix; x <= sx; x += tw)
+                        for (x = ix; x < sx; x += tw)
                             buffer[offset++] = TMap.Pixels[((x / hw) >> zoom) + iy];
                     }
                 }
             }
             // Draw HMap
             else
-                for (y = portT; y <= portB; y++)
+                for (y = mtsT; y < mtsB; y++)
                 {
                     iy = (y >> zoom) * HMap.Width;
-                    for (x = portL; x <= portR; x++)
+                    for (x = mtsL; x < mtsR; x++)
                         buffer[offset++] = HMap.Pixels[(x >> zoom) + iy]; //Projecting to map with >> is faster
                 }
 
@@ -1288,29 +1299,28 @@ namespace SHME
             {
                 int mask = step - 1;
                 // Horizontal
-                offset = ((mask - portT) & mask) * portW;
-                sy = portW * step;
-                for (y = (mask - portT) & mask; y < portH; y += step)
+                offset = ((mask - mtsT) & mask) * mtsW;
+                sy = mtsW * step;
+                for (y = (mask - mtsT) & mask; y < mtsH; y += step)
                 {
-                    for (x = portL & 1; x < portW; x += 2)
-                        buffer[offset + x] = (0 == ((x + portL) & 3)) ? GridColor0 : GridColor1; // "& 2" is "0-1-"
+                    for (x = mtsL & 1; x < mtsW; x += 2)
+                        buffer[offset + x] = (0 == ((x + mtsL) & 3)) ? GridColor0 : GridColor1; // "& 2" is "0-1-"
                     offset += sy;
                 }
                 // Vertical
-                offset = (portT & 1) * portW;
-                ix = mask - portL & mask;
-                sy = portW << 1;
-                for (y = portT & 1; y < portH; y += 2)
+                offset = (mtsT & 1) * mtsW;
+                ix = mask - mtsL & mask;
+                sy = mtsW << 1;
+                for (y = mtsT & 1; y < mtsH; y += 2)
                 {
-                    for (x = ix; x < portW; x += step)
-                        buffer[offset + x] = (0 == ((y + portT) & 3)) ? GridColor0 : GridColor1; // "& 2" is "0-1-"
+                    for (x = ix; x < mtsW; x += step)
+                        buffer[offset + x] = (0 == ((y + mtsT) & 3)) ? GridColor0 : GridColor1; // "& 2" is "0-1-"
                     offset += sy;
                 }
             }
             // Transfer
-            Bitmap img = new Bitmap(portW, portH, portW << 2, PixelFormat.Format32bppRgb, Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0));
-            e.Graphics.DrawImageUnscaled(img, portL + xShift, portT + yShift);
-
+            Bitmap img = new Bitmap(mtsW, mtsH, mtsW << 2, PixelFormat.Format32bppRgb, Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0));
+            e.Graphics.DrawImageUnscaled(img, portL, portT);
             // Add brushes
             if (lblPointerLevel.Enabled)
             {
@@ -1321,61 +1331,88 @@ namespace SHME
                 if (chbBrush3FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, chbBrush3RectangleShape.Checked);
             }
             // Calculate window port to map area
-            double mapAreaL = (portL << 1 >> zoom) - HMap.Width,
-                   mapAreaR = (portR << 1 >> zoom) - HMap.Width,
-                   mapAreaT = (portT << 1 >> zoom) - HMap.Height,
-                   mapAreaB = (portB << 1 >> zoom) - HMap.Height;
-            // Add Items
+            double mapAreaL = (mtsL << 1 >> zoom) - HMap.MaxX,
+                   mapAreaR = (mtsR << 1 >> zoom) - HMap.MaxX,
+                   mapAreaT = (mtsT << 1 >> zoom) - HMap.MaxY,
+                   mapAreaB = (mtsB << 1 >> zoom) - HMap.MaxY;
+            // Draw Items
             if (chbItems.Checked)
                 foreach (LineValues line in FIs.LinesBuffer)
                     if (0 < line.P.start)
-                        if (mapAreaL <= line.P.x + 10 && line.P.x - 10 <= mapAreaR)
-                            if (mapAreaT <= line.P.z + 10 && line.P.z - 10 <= mapAreaB)
+                        if (mapAreaL <= line.P.x + 16 && line.P.x - 16 <= mapAreaR)
+                            if (mapAreaT <= line.P.z + 16 && line.P.z - 16 <= mapAreaB)
                             {
-                                x = ((int)((HMap.Width  + line.P.x) * step) >> 1) + xShift;
-                                y = ((int)((HMap.Height + line.P.z) * step) >> 1) + yShift;
+                                x = ((int)((HMap.MaxX + line.P.x) * step) >> 1) + xShift;
+                                y = ((int)((HMap.MaxY + line.P.z) * step) >> 1) + yShift;
                                 e.Graphics.DrawRectangle(new Pen(Color.Black), x - 5, y - 5,    10,    10);
                                 e.Graphics.DrawLine     (new Pen(Color.Red),   x - 4, y - 4, x + 4, y + 4);
                                 e.Graphics.DrawLine     (new Pen(Color.Red),   x + 4, y - 4, x - 4, y + 4);
                             }
+            // Draw ADrive
             if (chbADrive.Checked)
-            {
                 if (FAD.SelectedRoute != null)
                 {
-                    sx = sy = iy = 0;
+                    // Update x,y
                     foreach (FormADrive.Waypoint p in FAD.SelectedRoute.Points)
                     {
-                        x = ((int)((HMap.Width  + p.x) * step) >> 1) + xShift;
-                        y = ((int)((HMap.Height + p.z) * step) >> 1) + yShift;
-                        if (mapAreaL <= p.x + 3 && p.x - 3 <= mapAreaR)
-                            if (mapAreaT <= p.z + 3 && p.z - 3 <= mapAreaB)
-                                e.Graphics.DrawEllipse(new Pen(Color.Black), x - 2, y - 2, 4, 4);
-                        //if (0 < iy)
-                        //    e.Graphics.DrawLine(new Pen(Color.Green), sx, sy, x, y);
-                        sx = x;
-                        sy = y;
-                        iy++;
+                        p.canvasX = ((int)((HMap.MaxX + p.x) * step) >> 1) + xShift;
+                        p.canvasY = ((int)((HMap.MaxY + p.z) * step) >> 1) + yShift;
                     }
+                    // Draw lines
+                    FormADrive.Waypoint p2;
+                    foreach (FormADrive.Waypoint p in FAD.SelectedRoute.Points)
+                    {
+                        foreach (int id in p.inID)
+                        {
+                            if (id < 1) continue;
+                            p2 = FAD.SelectedRoute.Points[id - 1];
+                            e.Graphics.DrawLine(new Pen(Color.Green), p.canvasX, p.canvasY, p2.canvasX, p2.canvasY);
+                        }
+                        foreach (int id in p.outID)
+                        {
+                            if (id < 1) continue;
+                            p2 = FAD.SelectedRoute.Points[id - 1];
+                            e.Graphics.DrawLine(new Pen(Color.Green), p.canvasX, p.canvasY, p2.canvasX, p2.canvasY);
+                        }
+                    }
+                    // Draw points
+                    foreach (FormADrive.Waypoint p in FAD.SelectedRoute.Points)
+                        if (portL <= p.canvasX + 6 && p.canvasX - 6 <= portR)
+                            if (portT <= p.canvasY + 6 && p.canvasY - 6 <= portB)
+                                e.Graphics.DrawEllipse(new Pen(Color.Black), p.canvasX - 2, p.canvasY - 2, 4, 4);
                 }
-            }
+            // Draw CPlay
             if (chbCPlay.Checked)
                 if (FCP.SelectedRoute != null)
                 {
                     sx = sy = iy = 0;
+                    // Update x,y
                     foreach (FormCPlay.Waypoint p in FCP.SelectedRoute.Points)
                     {
-                        x = ((int)((HMap.Width  + p.x) * step) >> 1) + xShift;
-                        y = ((int)((HMap.Height + p.z) * step) >> 1) + yShift;
-                        if (mapAreaL <= p.x + 3 && p.x - 3 <= mapAreaR)
-                            if (mapAreaT <= p.z + 3 && p.z - 3 <= mapAreaB)
-                                e.Graphics.DrawEllipse(new Pen(Color.Black), x - 2, y - 2, 4, 4);
+                        p.canvasX = ((int)((HMap.MaxX + p.x) * step) >> 1) + xShift;
+                        p.canvasY = ((int)((HMap.MaxY + p.z) * step) >> 1) + yShift;
+                    }
+                    // Draw lines
+                    foreach (FormCPlay.Waypoint p in FCP.SelectedRoute.Points)
+                    {
                         if (0 < iy)
-                            e.Graphics.DrawLine(new Pen(Color.Gray), sx, sy, x, y);
-                        sx = x;
-                        sy = y;
+                            e.Graphics.DrawLine(new Pen(Color.Gray), sx, sy, p.canvasX, p.canvasY);
+                        sx = p.canvasX;
+                        sy = p.canvasY;
                         iy++;
                     }
+                    // Draw points
+                    foreach (FormCPlay.Waypoint p in FCP.SelectedRoute.Points)
+                        if (portL <= p.canvasX + 6 && p.canvasX - 6 <= portR)
+                            if (portT <= p.canvasY + 6 && p.canvasY - 6 <= portB)
+                                e.Graphics.DrawEllipse(new Pen(Color.Black), p.canvasX - 2, p.canvasY - 2, 4, 4);
                 }
+
+            /* <<< Test area >>> */
+            //e.Graphics.DrawRectangle(new Pen(Color.Cyan), e.ClipRectangle.Left, e.ClipRectangle.Top, e.ClipRectangle.Width - 1, e.ClipRectangle.Height - 1);
+            //e.Graphics.DrawRectangle(new Pen(Color.Yellow), portL, portT, portW - 1, portH - 1);
+            //this.Text = mtsL + "," + mtsT + " : " + mtsR + "," + mtsB + " : " + mtsW + "," + mtsH;
+            /* <<< Test area >>> */
         }
 
         private void DrawBrushContour(Graphics g, int x, int y, int width, int height, bool isRectangle)//Ok

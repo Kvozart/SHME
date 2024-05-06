@@ -27,6 +27,7 @@ namespace SHME
             public String f13 = "";
             public bool f14 = false;
             public bool Edited = false;
+            public int canvasX, canvasY;
 
             public Waypoint(String line) => Read(line);
 
