@@ -32,6 +32,7 @@ namespace SHME
         const int GridColor0 = -0x7FAAAAAA; // Dark gray
         const int GridColor1 = -0x7F555555; // Light gray
 
+        const String NumberFormat = "X4";
         const String XYSpliter = " x ";
         const String PointerSpliter = " x ";
 
@@ -135,15 +136,15 @@ namespace SHME
                 //
                 btnToolSmooth,
                 btnToolStretch};
-            for (int i = 0; i < ToolControls.Length; i++)
+            for (int i = ToolControls.Length - 1; 0 <= i; i--)
                 ToolControls[i].Tag = i;
 
             // Bind spectrum color boxes
-            SpectrumColorControls = new Button[]{
+            SpectrumColorControls = new Button[] {
                 btnSpectrumColor0, btnSpectrumColor1, btnSpectrumColor2,
                 btnSpectrumColor3, btnSpectrumColor4, btnSpectrumColor5,
                 btnSpectrumColor6, btnSpectrumColor7, btnSpectrumColor8 };
-            for (int i = 0; i < 9; i++)
+            for (int i = spectrumColors.Length - 1; 0 <= i; i--)
             {
                 SpectrumColorControls[i].Tag = i;
                 spectrumColors[i] = (SpectrumColorControls[i].BackColor = SpectrumPresets[0, i]).ToArgb();
@@ -212,56 +213,64 @@ namespace SHME
             HMapOption_Changed(null, null);
         }
 
-        private void cbbMonochromePresets_SelectedIndexChanged(object sender, EventArgs e) =>
+        private void PickColor_Click(object sender, EventArgs e)//Ok
+        {
+            if (dlgColor.ShowDialog() != DialogResult.OK) return;
+            (sender as Control).BackColor = dlgColor.Color;
+            HMapOption_Changed(null, null);
+        }
+
+        // Monochrome
+        private void cbbMonochromePresets_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lockDrawing) return;
+            if (cbbMonochromePresets.SelectedIndex < 0) return;
+            lockDrawing = true;
             btnMonochromeColor.BackColor = MonochromePresets[cbbMonochromePresets.SelectedIndex];
+            lockDrawing = false;
+            HMapOption_Changed(null, null);
+        }
 
         private void btnMonochromeColor_BackColorChanged(object sender, EventArgs e)
         {
             monochromeColor = btnMonochromeColor.BackColor.ToArgb();
-            HMapOption_Changed(null, null);
+            if (!lockDrawing) cbbMonochromePresets.SelectedIndex = -1;
         }
 
-        private void PickColor_Click(object sender, EventArgs e)//Ok
-        {
-            if (dlgColor.ShowDialog() != DialogResult.OK)
-                return;
-            (sender as Control).BackColor = dlgColor.Color;
-            // Update spectrum bar
-            if ((sender as Button).Tag == null) return;
-            DrawSpectrumSample();
-            HMapOption_Changed(null, null);
-        }
-
+        // 2 bytes
         private void cbbBytePresets_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (lockDrawing) return;
+            int p = cbbBytePresets.SelectedIndex;
+            if (p < 0) return;
             lockDrawing = true;
-            tbByteLo.Text = BytePresets[0, (sender as ComboBox).SelectedIndex];
-            tbByteHi.Text = BytePresets[1, (sender as ComboBox).SelectedIndex];
+            tbByteLo.Text = BytePresets[0, p];
+            tbByteHi.Text = BytePresets[1, p];
             lockDrawing = false;
-            BuildSpectrumMap(0, 0, -1, -1);
-            Invalidate();
-        }
-
-        private void textBox_TextChanged(object sender, EventArgs e)
-        {
-            HexTextCheck(sender as TextBox, 6, null, textBox_TextChanged);
-            if (sender == tbByteHi)
-                hiByteMultiplier = Convert.ToInt32(tbByteHi.Text, 16);
-            else
-                loByteMultiplier = Convert.ToInt32(tbByteLo.Text, 16);
             HMapOption_Changed(null, null);
         }
 
+        private void ColorTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!lockDrawing) cbbBytePresets.SelectedIndex = -1;
+            HexTextCheck(sender as TextBox, 6, null, ColorTextBox_TextChanged);
+            if (sender == tbByteHi) hiByteMultiplier = Convert.ToInt32(tbByteHi.Text, 16);
+            else                    loByteMultiplier = Convert.ToInt32(tbByteLo.Text, 16);
+            HMapOption_Changed(null, null);
+        }
+
+        // Spectrum
         private void cbbSpectrumPresets_SelectedIndexChanged(object sender, EventArgs e)//
         {
+            if (lockDrawing) return;
+            int p = cbbSpectrumPresets.SelectedIndex;
+            if (p < 0) return;
             lockDrawing = true;
-            int p = cbbSpectrumStyle.SelectedIndex;
             for (int i = 0; i < 9; i++)
                 spectrumColors[i] = (SpectrumColorControls[i].BackColor = SpectrumPresets[p, i]).ToArgb();
-            DrawSpectrumSample();
             lockDrawing = false;
-            BuildSpectrumMap(0, 0, -1, -1);
-            Invalidate();
+            DrawSpectrumSample();
+            HMapOption_Changed(null, null);
         }
 
         private void DrawSpectrumSample()//O
@@ -275,14 +284,20 @@ namespace SHME
             pbSpectrum.BackgroundImage = img;
         }
 
-        private void btnSpectrumColor_BackColorChanged(object sender, EventArgs e) =>
+        private void btnSpectrumColor_BackColorChanged(object sender, EventArgs e)
+        {
             spectrumColors[(int)(sender as Button).Tag] = (sender as Button).BackColor.ToArgb();
+            if (lockDrawing) return;
+            cbbSpectrumPresets.SelectedIndex = -1;
+            // Update spectrum bar
+            DrawSpectrumSample();
+        }
 
         private void HMapOption_Changed(object sender, EventArgs e)
         {
             if (lockDrawing) return;
             BuildSpectrumMap(0, 0, -1, -1);
-            Invalidate();
+            Canvas_Update();
         }
         #endregion
 
@@ -381,11 +396,11 @@ namespace SHME
 
         private void ShowStatistics()//Ok
         {
-            lblHeightMin.Text = HMap.MinLevel.ToString() + "\rx" + HMap.MinLevel.ToString("X4");
-            lblHeightMax.Text = HMap.MaxLevel.ToString() + "\rx" + HMap.MaxLevel.ToString("X4");
-            lblHeightAvg.Text = HMap.AvgLevel.ToString() + "\rx" + HMap.AvgLevel.ToString("X4");
+            lblHeightMin.Text = HMap.MinLevel.ToString() + "\rx" + HMap.MinLevel.ToString(NumberFormat);
+            lblHeightMax.Text = HMap.MaxLevel.ToString() + "\rx" + HMap.MaxLevel.ToString(NumberFormat);
+            lblHeightAvg.Text = HMap.AvgLevel.ToString() + "\rx" + HMap.AvgLevel.ToString(NumberFormat);
             var s = (HMap.MinLevel + HMap.MaxLevel) >> 1;
-            lblHeightMid.Text = s + "\rx" + s.ToString("X4");
+            lblHeightMid.Text = s + "\rx" + s.ToString(NumberFormat);
         }
 
         private void BuildSpectrumMap(int left, int top, int right, int bottom)//Ok
@@ -767,7 +782,7 @@ namespace SHME
             if (!lblPointerLevel.Enabled) return;
             UInt16 mapXYLevel = HMap.Levels[mapX, mapY];
             lblPointerPosition.Text = mapX + PointerSpliter + mapY;
-            lblPointerLevel.Text = mapXYLevel.ToString() + "\rx" + mapXYLevel.ToString("X4");
+            lblPointerLevel.Text = mapXYLevel.ToString() + "\rx" + mapXYLevel.ToString(NumberFormat);
         }
 
         private void FormSHME_HideValues()//Ok
@@ -826,8 +841,10 @@ namespace SHME
                     // Switching active layer
                     else if (toolID == 1)
                         chbShowHMap.Checked = !chbShowHMap.Checked;
+                    // No more actions on TMap
+                    if (chbShowTMap.Checked) return;
                     // Undo
-                    else if (toolID == 2)
+                    if (toolID == 2)
                         btnHistoryBackward_Click(null, null);
                     // Redo
                     else if (toolID == 3)
@@ -1094,18 +1111,23 @@ namespace SHME
                                 tcThemes.SelectedIndex = i;
                                 break;
                             case "MonochromeRepeat": nudMonochromeRepeat.Value   = CheckInteger(value, 1, 32, 1); break;
-                            case "HiLoByteRepeat":   nudByteRepeat.Value         = CheckInteger(value, 1, 32, 1); break;
-                            case "SpectrumRepeat":   nudSpectrumRepeat.Value     = CheckInteger(value, 1, 32, 1); break;
-                            case "MonochromeColor": btnMonochromeColor.BackColor = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.White;   break;
-                            case "SpectrumColor0":  btnSpectrumColor0.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.Black;   break;
-                            case "SpectrumColor1":  btnSpectrumColor1.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.Blue;    break;
-                            case "SpectrumColor2":  btnSpectrumColor2.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.Cyan;    break;
-                            case "SpectrumColor3":  btnSpectrumColor3.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.Green;   break;
-                            case "SpectrumColor4":  btnSpectrumColor4.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.Yellow;  break;
-                            case "SpectrumColor5":  btnSpectrumColor5.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.Red;     break;
-                            case "SpectrumColor6":  btnSpectrumColor6.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.Magenta; break;
-                            case "SpectrumColor7":  btnSpectrumColor7.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.White;   break;
-                            case "SpectrumColor8":  btnSpectrumColor8.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.Black;   break;
+                            case "HiLoByteRepeat":   nudByteRepeat      .Value   = CheckInteger(value, 1, 32, 1); break;
+                            case "SpectrumRepeat":   nudSpectrumRepeat  .Value   = CheckInteger(value, 1, 32, 1); break;
+
+                            case "MonochromePreset": cbbMonochromePresets.SelectedIndex = CheckInteger(value, -1, cbbMonochromePresets.Items.Count, -1); break;
+                            case "HiLoBytePreset":   cbbBytePresets      .SelectedIndex = CheckInteger(value, -1, cbbBytePresets      .Items.Count, -1); break;
+                            case "SpectrumPreset":   cbbSpectrumPresets  .SelectedIndex = CheckInteger(value, -1, cbbSpectrumPresets  .Items.Count, -1); break;
+
+                            case "MonochromeColor": btnMonochromeColor.BackColor = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.White; break;
+                            case "SpectrumColor0":  btnSpectrumColor0.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[0]); break;
+                            case "SpectrumColor1":  btnSpectrumColor1.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[1]); break;
+                            case "SpectrumColor2":  btnSpectrumColor2.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[2]); break;
+                            case "SpectrumColor3":  btnSpectrumColor3.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[3]); break;
+                            case "SpectrumColor4":  btnSpectrumColor4.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[4]); break;
+                            case "SpectrumColor5":  btnSpectrumColor5.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[5]); break;
+                            case "SpectrumColor6":  btnSpectrumColor6.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[6]); break;
+                            case "SpectrumColor7":  btnSpectrumColor7.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[7]); break;
+                            case "SpectrumColor8":  btnSpectrumColor8.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[8]); break;
                             // Hi/Lo Byte
                             case "HiLoByteHiHex": tbByteHi.Text = value; break;
                             case "HiLoByteLoHex": tbByteLo.Text = value; break;
@@ -1307,8 +1329,8 @@ namespace SHME
             if (chbItems.Checked)
                 foreach (LineValues line in FIs.LinesBuffer)
                     if (0 < line.P.start)
-                        if (mapAreaL <= line.P.x && line.P.x <= mapAreaR)
-                            if (mapAreaT <= line.P.z && line.P.z <= mapAreaB)
+                        if (mapAreaL <= line.P.x + 10 && line.P.x - 10 <= mapAreaR)
+                            if (mapAreaT <= line.P.z + 10 && line.P.z - 10 <= mapAreaB)
                             {
                                 x = ((int)((HMap.Width  + line.P.x) * step) >> 1) + xShift;
                                 y = ((int)((HMap.Height + line.P.z) * step) >> 1) + yShift;
@@ -1318,21 +1340,37 @@ namespace SHME
                             }
             if (chbADrive.Checked)
             {
-
+                if (FAD.SelectedRoute != null)
+                {
+                    sx = sy = iy = 0;
+                    foreach (FormADrive.Waypoint p in FAD.SelectedRoute.Points)
+                    {
+                        x = ((int)((HMap.Width  + p.x) * step) >> 1) + xShift;
+                        y = ((int)((HMap.Height + p.z) * step) >> 1) + yShift;
+                        if (mapAreaL <= p.x + 3 && p.x - 3 <= mapAreaR)
+                            if (mapAreaT <= p.z + 3 && p.z - 3 <= mapAreaB)
+                                e.Graphics.DrawEllipse(new Pen(Color.Black), x - 2, y - 2, 4, 4);
+                        //if (0 < iy)
+                        //    e.Graphics.DrawLine(new Pen(Color.Green), sx, sy, x, y);
+                        sx = x;
+                        sy = y;
+                        iy++;
+                    }
+                }
             }
             if (chbCPlay.Checked)
                 if (FCP.SelectedRoute != null)
                 {
                     sx = sy = iy = 0;
-                    foreach (Waypoint p in FCP.SelectedRoute.Points)
+                    foreach (FormCPlay.Waypoint p in FCP.SelectedRoute.Points)
                     {
                         x = ((int)((HMap.Width  + p.x) * step) >> 1) + xShift;
                         y = ((int)((HMap.Height + p.z) * step) >> 1) + yShift;
-                        if (mapAreaL <= p.x + 2 && p.x - 2 <= mapAreaR)
-                            if (mapAreaT <= p.z + 2 && p.z - 2 <= mapAreaB)
+                        if (mapAreaL <= p.x + 3 && p.x - 3 <= mapAreaR)
+                            if (mapAreaT <= p.z + 3 && p.z - 3 <= mapAreaB)
                                 e.Graphics.DrawEllipse(new Pen(Color.Black), x - 2, y - 2, 4, 4);
                         if (0 < iy)
-                            e.Graphics.DrawLine(new Pen(Color.Red), sx, sy, x, y);
+                            e.Graphics.DrawLine(new Pen(Color.Gray), sx, sy, x, y);
                         sx = x;
                         sy = y;
                         iy++;
@@ -1397,13 +1435,16 @@ namespace SHME
                 //* Pages
                 file.WriteLine("Theme\t" + tcThemes.SelectedTab.Name.Remove(0,2));
                 // Monochrome
+                file.WriteLine("MonochromePreset\t" + cbbMonochromePresets.SelectedIndex);
                 file.WriteLine("MonochromeRepeat\t" + nudMonochromeRepeat.Value);
                 file.WriteLine("MonochromeColor\t" + btnMonochromeColor.BackColor.ToArgb());
                 // Hi/Lo Byte
+                file.WriteLine("HiLoBytePreset\t" + cbbBytePresets.SelectedIndex);
                 file.WriteLine("HiLoByteRepeat\t" + nudByteRepeat.Value);
                 file.WriteLine("HiLoByteHiHex\t" + tbByteHi.Text);
                 file.WriteLine("HiLoByteLoHex\t" + tbByteLo.Text);
                 // Spectrum
+                file.WriteLine("SpectrumPreset\t" + cbbSpectrumPresets.SelectedIndex);
                 file.WriteLine("SpectrumRepeat\t" + nudSpectrumRepeat.Value);
                 file.WriteLine("SpectrumColor0\t" + btnSpectrumColor0.BackColor.ToArgb());
                 file.WriteLine("SpectrumColor1\t" + btnSpectrumColor1.BackColor.ToArgb());
@@ -1480,6 +1521,7 @@ namespace SHME
                 (int)btnToolRMB.Tag,
                 (int)btnToolX1MB.Tag,
                 (int)btnToolX2MB.Tag);
+
         private int AddToolset(int toolL, int toolM, int toolR, int toolX1, int toolX2)//Ok
         {
             int preset = toolL + (toolM << 6) + (toolR << 12) + (toolX1 << 18) + (toolX2 << 24);
@@ -1498,6 +1540,7 @@ namespace SHME
         }
 
         private void btnToolsetRemove_Click(object sender, EventArgs e) => RemoveToolset(cbbToolsetPreset.SelectedIndex);
+
         private bool RemoveToolset(int idx)//Ok
         {
             if (idx < 0 || toolsetPresets.Count <= idx) return false;
@@ -1558,13 +1601,13 @@ namespace SHME
             btnXMB.Tag = ID;
         }
 
-        private void nudBrush1Value_ValueChanged(object sender, EventArgs e) => tbBrush1ValueHex.Text = ((int)nudBrush1ValueDecimal.Value).ToString("X4");
-        private void nudBrush2Value_ValueChanged(object sender, EventArgs e) => tbBrush2ValueHex.Text = ((int)nudBrush2ValueDecimal.Value).ToString("X4");
-        private void nudBrush3Value_ValueChanged(object sender, EventArgs e) => tbBrush3ValueHex.Text = ((int)nudBrush3ValueDecimal.Value).ToString("X4");
+        private void nudBrush1Value_ValueChanged(object sender, EventArgs e) => tbBrush1ValueHex.Text = ((int)nudBrush1ValueDecimal.Value).ToString(NumberFormat);
+        private void nudBrush2Value_ValueChanged(object sender, EventArgs e) => tbBrush2ValueHex.Text = ((int)nudBrush2ValueDecimal.Value).ToString(NumberFormat);
+        private void nudBrush3Value_ValueChanged(object sender, EventArgs e) => tbBrush3ValueHex.Text = ((int)nudBrush3ValueDecimal.Value).ToString(NumberFormat);
 
-        private void nudBrush1Force_ValueChanged(object sender, EventArgs e) => tbBrush1ForceHex.Text = ((int)nudBrush1ForceDecimal.Value).ToString("X4");
-        private void nudBrush2Force_ValueChanged(object sender, EventArgs e) => tbBrush2ForceHex.Text = ((int)nudBrush2ForceDecimal.Value).ToString("X4");
-        private void nudBrush3Force_ValueChanged(object sender, EventArgs e) => tbBrush3ForceHex.Text = ((int)nudBrush3ForceDecimal.Value).ToString("X4");
+        private void nudBrush1Force_ValueChanged(object sender, EventArgs e) => tbBrush1ForceHex.Text = ((int)nudBrush1ForceDecimal.Value).ToString(NumberFormat);
+        private void nudBrush2Force_ValueChanged(object sender, EventArgs e) => tbBrush2ForceHex.Text = ((int)nudBrush2ForceDecimal.Value).ToString(NumberFormat);
+        private void nudBrush3Force_ValueChanged(object sender, EventArgs e) => tbBrush3ForceHex.Text = ((int)nudBrush3ForceDecimal.Value).ToString(NumberFormat);
 
         private void tbBrush1ValueHex_TextChanged(object sender, EventArgs e) => HexTextCheck(tbBrush1ValueHex, 4, nudBrush1ValueDecimal, tbBrush1ValueHex_TextChanged);
         private void tbBrush2ValueHex_TextChanged(object sender, EventArgs e) => HexTextCheck(tbBrush2ValueHex, 4, nudBrush2ValueDecimal, tbBrush2ValueHex_TextChanged);
@@ -1620,7 +1663,7 @@ namespace SHME
             mask  = new float[sizeW, sizeH];
             brush = new   int[sizeW, sizeH];
 
-            // Fast out
+            // Flat square & too small
             if ((sizeW < 3 && sizeH < 3) || (distributionShape == 0 && chbSquareShape.Checked))
             {
                 for (y = 0; y < sizeH; y++)

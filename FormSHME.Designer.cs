@@ -81,7 +81,7 @@
             this.btnSpectrumColor1 = new System.Windows.Forms.Button();
             this.btnSpectrumColor0 = new System.Windows.Forms.Button();
             this.nudSpectrumRepeat = new System.Windows.Forms.NumericUpDown();
-            this.cbbSpectrumStyle = new System.Windows.Forms.ComboBox();
+            this.cbbSpectrumPresets = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.pbSpectrum = new System.Windows.Forms.PictureBox();
@@ -648,7 +648,7 @@
             this.tbByteLo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip.SetToolTip(this.tbByteLo, "6 (3x2) hexadecimals (0-9, A-F) of RGB components");
             this.tbByteLo.WordWrap = false;
-            this.tbByteLo.TextChanged += new System.EventHandler(this.textBox_TextChanged);
+            this.tbByteLo.TextChanged += new System.EventHandler(this.ColorTextBox_TextChanged);
             // 
             // tbByteHi
             // 
@@ -662,7 +662,7 @@
             this.tbByteHi.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip.SetToolTip(this.tbByteHi, "6 (3x2) hexadecimals (0-9, A-F) of RGB components");
             this.tbByteHi.WordWrap = false;
-            this.tbByteHi.TextChanged += new System.EventHandler(this.textBox_TextChanged);
+            this.tbByteHi.TextChanged += new System.EventHandler(this.ColorTextBox_TextChanged);
             // 
             // label3
             // 
@@ -767,7 +767,7 @@
             this.tpSpectrum.Controls.Add(this.btnSpectrumColor1);
             this.tpSpectrum.Controls.Add(this.btnSpectrumColor0);
             this.tpSpectrum.Controls.Add(this.nudSpectrumRepeat);
-            this.tpSpectrum.Controls.Add(this.cbbSpectrumStyle);
+            this.tpSpectrum.Controls.Add(this.cbbSpectrumPresets);
             this.tpSpectrum.Controls.Add(this.label7);
             this.tpSpectrum.Controls.Add(this.label8);
             this.tpSpectrum.Controls.Add(this.pbSpectrum);
@@ -920,25 +920,25 @@
             0});
             this.nudSpectrumRepeat.ValueChanged += new System.EventHandler(this.HMapOption_Changed);
             // 
-            // cbbSpectrumStyle
+            // cbbSpectrumPreset
             // 
-            this.cbbSpectrumStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cbbSpectrumPresets.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbbSpectrumStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbbSpectrumStyle.FormattingEnabled = true;
-            this.cbbSpectrumStyle.Items.AddRange(new object[] {
+            this.cbbSpectrumPresets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbSpectrumPresets.FormattingEnabled = true;
+            this.cbbSpectrumPresets.Items.AddRange(new object[] {
             "KBCGYRMWK",
             "KGYRMBCWK",
             "KRMBCGYWK",
             "KBCRMGYWK",
             "KRMGYBCWK",
             "KGYBCRMWK"});
-            this.cbbSpectrumStyle.Location = new System.Drawing.Point(48, 8);
-            this.cbbSpectrumStyle.Name = "cbbSpectrumStyle";
-            this.cbbSpectrumStyle.Size = new System.Drawing.Size(152, 21);
-            this.cbbSpectrumStyle.TabIndex = 0;
-            this.toolTip.SetToolTip(this.cbbSpectrumStyle, "Spectrum presets");
-            this.cbbSpectrumStyle.SelectedIndexChanged += new System.EventHandler(this.cbbSpectrumPresets_SelectedIndexChanged);
+            this.cbbSpectrumPresets.Location = new System.Drawing.Point(48, 8);
+            this.cbbSpectrumPresets.Name = "cbbSpectrumPreset";
+            this.cbbSpectrumPresets.Size = new System.Drawing.Size(152, 21);
+            this.cbbSpectrumPresets.TabIndex = 0;
+            this.toolTip.SetToolTip(this.cbbSpectrumPresets, "Spectrum presets");
+            this.cbbSpectrumPresets.SelectedIndexChanged += new System.EventHandler(this.cbbSpectrumPresets_SelectedIndexChanged);
             // 
             // label7
             // 
@@ -2930,7 +2930,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btnMonochromeColor;
         private System.Windows.Forms.NumericUpDown nudSpectrumRepeat;
-        private System.Windows.Forms.ComboBox cbbSpectrumStyle;
+        private System.Windows.Forms.ComboBox cbbSpectrumPresets;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.PictureBox pbSpectrum;

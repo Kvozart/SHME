@@ -4,19 +4,76 @@ using System.Drawing;
 
 namespace SHME
 {
+    public static class ReversBits
+    {
+        public static byte[] LookUp2 = {
+            0x0, 0x2, 0x1, 0x3};
+
+        public static byte[] LookUp4 = {
+            0x0, 0x8, 0x4, 0xC,
+            0x2, 0xA, 0x6, 0xE,
+            0x1, 0x9, 0x5, 0xD,
+            0x3, 0xB, 0x7, 0xF};
+
+        public static byte[] LookUp8 = {
+            0x00, 0x80, 0x40, 0xC0, 0x20, 0xA0, 0x60, 0xE0, 0x10, 0x90, 0x50, 0xD0, 0x30, 0xB0, 0x70, 0xF0,
+            0x08, 0x88, 0x48, 0xC8, 0x28, 0xA8, 0x68, 0xE8, 0x18, 0x98, 0x58, 0xD8, 0x38, 0xB8, 0x78, 0xF8,
+            0x04, 0x84, 0x44, 0xC4, 0x24, 0xA4, 0x64, 0xE4, 0x14, 0x94, 0x54, 0xD4, 0x34, 0xB4, 0x74, 0xF4,
+            0x0C, 0x8C, 0x4C, 0xCC, 0x2C, 0xAC, 0x6C, 0xEC, 0x1C, 0x9C, 0x5C, 0xDC, 0x3C, 0xBC, 0x7C, 0xFC,
+            0x02, 0x82, 0x42, 0xC2, 0x22, 0xA2, 0x62, 0xE2, 0x12, 0x92, 0x52, 0xD2, 0x32, 0xB2, 0x72, 0xF2,
+            0x0A, 0x8A, 0x4A, 0xCA, 0x2A, 0xAA, 0x6A, 0xEA, 0x1A, 0x9A, 0x5A, 0xDA, 0x3A, 0xBA, 0x7A, 0xFA,
+            0x06, 0x86, 0x46, 0xC6, 0x26, 0xA6, 0x66, 0xE6, 0x16, 0x96, 0x56, 0xD6, 0x36, 0xB6, 0x76, 0xF6,
+            0x0E, 0x8E, 0x4E, 0xCE, 0x2E, 0xAE, 0x6E, 0xEE, 0x1E, 0x9E, 0x5E, 0xDE, 0x3E, 0xBE, 0x7E, 0xFE,
+            0x01, 0x81, 0x41, 0xC1, 0x21, 0xA1, 0x61, 0xE1, 0x11, 0x91, 0x51, 0xD1, 0x31, 0xB1, 0x71, 0xF1,
+            0x09, 0x89, 0x49, 0xC9, 0x29, 0xA9, 0x69, 0xE9, 0x19, 0x99, 0x59, 0xD9, 0x39, 0xB9, 0x79, 0xF9,
+            0x05, 0x85, 0x45, 0xC5, 0x25, 0xA5, 0x65, 0xE5, 0x15, 0x95, 0x55, 0xD5, 0x35, 0xB5, 0x75, 0xF5,
+            0x0D, 0x8D, 0x4D, 0xCD, 0x2D, 0xAD, 0x6D, 0xED, 0x1D, 0x9D, 0x5D, 0xDD, 0x3D, 0xBD, 0x7D, 0xFD,
+            0x03, 0x83, 0x43, 0xC3, 0x23, 0xA3, 0x63, 0xE3, 0x13, 0x93, 0x53, 0xD3, 0x33, 0xB3, 0x73, 0xF3,
+            0x0B, 0x8B, 0x4B, 0xCB, 0x2B, 0xAB, 0x6B, 0xEB, 0x1B, 0x9B, 0x5B, 0xDB, 0x3B, 0xBB, 0x7B, 0xFB,
+            0x07, 0x87, 0x47, 0xC7, 0x27, 0xA7, 0x67, 0xE7, 0x17, 0x97, 0x57, 0xD7, 0x37, 0xB7, 0x77, 0xF7,
+            0x0F, 0x8F, 0x4F, 0xCF, 0x2F, 0xAF, 0x6F, 0xEF, 0x1F, 0x9F, 0x5F, 0xDF, 0x3F, 0xBF, 0x7F, 0xFF};
+
+        public static int Mirror2(int value) => ((value << 1) | ((value >> 1) & 1)) & 3;
+
+        public static int Mirror4(int value) => ((value << 3) | ((value >> 2) & 4) | ((value >> 2) & 2) | ((value >> 3) & 1)) & 8;
+
+        /// <summary>
+        /// Mirror specified bit count from input value and mirror them to output. Works with 1-64 bits width.
+        /// </summary>
+        /// <param name="value">
+        /// Input value with bits to mirror
+        /// </param>
+        /// <param name="bits">
+        /// Count of bits to mirror
+        /// </param>
+        /// <returns></returns>
+        public static UInt64 Universal(UInt64 value, byte bits = 64)
+        {
+            UInt64 eulav = 0;
+            for (byte i = 0; i < bits; i++)
+            {
+                eulav = (eulav << 1) | (value & 1);
+                value >>= 1;
+            }
+            return eulav;
+        }
+    }
+
     class TopologicalMap
     {
         public const int A = -0x01000000; // 0xFF,00,00,00
         public int[] Pixels { get; private set; } // Color map
-        public int   Width  { get; private set; }// = 0;
-        public int   Height { get; private set; }// = 0;
+        public int   Width  { get; private set; } // = 0;
+        public int   Height { get; private set; } // = 0;
+        public int   MaxX   { get; private set; } // = 0;
+        public int   MaxY   { get; private set; } // = 0;
         public String URL = "";
 
         public void SetSize(int width, int height)
         {
             Pixels = new int[width * height];
-            Width  = width;
-            Height = height;
+            MaxX = (Width  = width ) - 1;
+            MaxY = (Height = height) - 1;
         }
     }
 
@@ -24,9 +81,7 @@ namespace SHME
     {
         public float [,] Changed;
         public UInt16[,] Levels { get; private set; } // Height map
-        public int[] MinLevelAtRow { get; private set; } // Row height minimums
-        public int[] AvgLevelAtRow { get; private set; } // Row height average
-        public int[] MaxLevelAtRow { get; private set; } // Row height maximums
+        int[] AvgLevelAtRow; // Row height average
         public int MinLevel { get; private set; }
         public int AvgLevel { get; private set; }
         public int MaxLevel { get; private set; }
@@ -44,9 +99,7 @@ namespace SHME
         {
             MinLevel = 65535;
             MaxLevel = 0;
-            AvgLevel = 32767;
-            MinLevelAtRow = new int[newHeight];
-            MaxLevelAtRow = new int[newHeight];
+            AvgLevel = 0;
             AvgLevelAtRow = new int[newHeight];
             if (newLevels == null)
             {
@@ -89,27 +142,6 @@ namespace SHME
         }
 
         /// <summary>
-        /// Mirror specified bit count from input value and mirror them to output
-        /// </summary>
-        /// <param name="value">
-        /// Input value with bits to mirror
-        /// </param>
-        /// <param name="bits">
-        /// Count of bits to mirror
-        /// </param>
-        /// <returns></returns>
-        public int  MirrorBits (int  value, byte bits = 32)
-        {
-            int eulav = 0;
-            for (int i = 0; i < bits; i++)
-            {
-                eulav = (eulav << 1) + (value & 1);
-                value >>= 1;
-            }
-            return eulav;
-        }
-
-        /// <summary>
         /// Copy map of specified sizes with levels from buffer
         /// </summary>
         /// <param name="buffer">
@@ -128,53 +160,58 @@ namespace SHME
         /// </param>
         public void SetLevels(byte[] buffer, int bitBlock = 8, int loIdx = 0, int hiIdx = 1, bool pixelBLIndian = false)
         {
-            int x, y, i = 0;
+            int x, y = 0, i = 0, pack = 0;
             if (bitBlock < 8)
             {
-                int mask, pack = 0;
+                int mask;
                 bool pixelBLI = (loIdx != 0) ^ pixelBLIndian; // Double invert :(
                 if (bitBlock == 4)
-                    for (y = 0; y < Height; y++)
+                    for (; y < Height; y++)
                         for (x = 0; x < Width;)
                         {
-                            pack = (pixelBLIndian) ? buffer[i++] : MirrorBits(buffer[i++], 8);
-                            Levels[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 4) : pack & 15) * 0x1111);
+                            pack = (pixelBLIndian) ? buffer[i++] : ReversBits.LookUp8[buffer[i++]];
+                            mask = pixelBLI ? ReversBits.LookUp4[pack & 15] : pack & 15;
+                            Levels[x, y] = (UInt16)((mask << 8) | mask);
                             x++;
                             if (x == Width) break;
-                            pack >>= 4;
-                            Levels[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 4) : pack) * 0x1111);
+                            mask = pixelBLI ? ReversBits.LookUp4[pack >> 4] : pack >> 4;
+                            Levels[x, y] = (UInt16)((mask << 8) | mask);
                             x++;
                         }
                 else if (bitBlock == 2)
-                    for (y = 0; y < Height; y++)
+                    for (; y < Height; y++)
                         for (x = 0; x < Width;)
                         {
-                            pack = (pixelBLIndian) ? buffer[i++] : MirrorBits(buffer[i++], 8);
-                            Levels[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 2) : pack & 3) * 0x5555);
+                            pack = (pixelBLIndian) ? buffer[i++] : ReversBits.LookUp8[buffer[i++]];
+                            Levels[x, y] = (UInt16)((pixelBLI ? ReversBits.Mirror2(pack) : pack & 3) * 0x5555);
                             x++;
                             if (x == Width) break;
                             pack >>= 2;
-                            Levels[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 2) : pack & 3) * 0x5555);
+                            Levels[x, y] = (UInt16)((pixelBLI ? ReversBits.Mirror2(pack) : pack & 3) * 0x5555);
                             x++;
                             if (x == Width) break;
                             pack >>= 2;
-                            Levels[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 2) : pack & 3) * 0x5555);
+                            Levels[x, y] = (UInt16)((pixelBLI ? ReversBits.Mirror2(pack) : pack & 3) * 0x5555);
                             x++;
                             if (x == Width) break;
                             pack >>= 2;
-                            Levels[x, y] = (UInt16)((pixelBLI ? MirrorBits(pack, 2) : pack) * 0x5555);
+                            Levels[x, y] = (UInt16)((pixelBLI ? ReversBits.Mirror2(pack) : pack    ) * 0x5555);
                             x++;
+                            //mask = pixelBLI ? ReversBits.Mirror2(pack) : pack & 3;
+                            //Levels[x, y] = (UInt16)(mask << 12 | mask << 8 | mask << 4 | mask);
                         }
+                // 1 bit bitmap unpacking
                 else
-                    for (y = 0; y < Height; y++)
+                    for (; y < Height; y++)
                     {
                         mask = 256;
                         for (x = 0; x < Width; x++)
                         {
+                            // Load next block
                             if (mask == 256)
                             {
+                                pack = (pixelBLIndian) ? buffer[i++] : ReversBits.LookUp8[buffer[i++]];
                                 mask = 1;
-                                pack = (pixelBLIndian) ? buffer[i++] : MirrorBits(buffer[i++], 8);
                             }
                             Levels[x, y] = (UInt16)((0 < (pack & mask)) ? 65535 : 0);
                             mask <<= 1;
@@ -183,20 +220,26 @@ namespace SHME
             }
             else
             {
-                int blockSize = bitBlock / 8;
+                pack = bitBlock >> 3;
                 // =8bit
-                if (blockSize < 2)
-                    for (y = 0; y < Height; y++)
+                if (pack == 1)
+                    for (; y < Height; y++)
                         for (x = 0; x < Width; x++)
-                            Levels[x, y] = (UInt16)(buffer[i++] * 0x101);
+                        {
+                            pack = buffer[i++];
+                            Levels[x, y] = (UInt16)((pack << 8) | pack);
+                        }
                 // >8bit block
                 else
-                    for (y = 0; y < Height; y++)
+                    for (; y < Height; y++)
                         for (x = 0; x < Width; x++)
+                        {
                             Levels[x, y] = (UInt16)(
-                                (buffer[i * blockSize + hiIdx] << 8) +
-                                 buffer[i++ * blockSize + loIdx]
-                                );
+                                (buffer[i + hiIdx] << 8) |
+                                 buffer[i + loIdx]
+                                 );
+                            i += pack;
+                        }
             }
         }
         #endregion
@@ -220,11 +263,14 @@ namespace SHME
         /// <returns>
         /// Integer of a resulting color
         /// </returns>
-        public static int MixColor(int firstColor, int finalColor, int step, int maxStep) =>
-            A
-            + (((byte)(firstColor >> 16) * (maxStep - step) + (byte)(finalColor >> 16) * step) / maxStep << 16)
-            + (((byte)(firstColor >>  8) * (maxStep - step) + (byte)(finalColor >>  8) * step) / maxStep <<  8)
-            + (((byte)(firstColor      ) * (maxStep - step) + (byte)(finalColor      ) * step) / maxStep      );
+        public static int MixColor(int firstColor, int finalColor, int step, int maxStep)
+        {
+            int delta = maxStep - step;
+            return A
+                + (((byte)(firstColor >> 16) * delta + (byte)(finalColor >> 16) * step) / maxStep << 16)
+                + (((byte)(firstColor >>  8) * delta + (byte)(finalColor >>  8) * step) / maxStep <<  8)
+                + (((byte)(firstColor      ) * delta + (byte)(finalColor      ) * step) / maxStep      );
+        }
 
         /// <summary>
         /// Build map based on color specific color
@@ -243,19 +289,23 @@ namespace SHME
         /// </param>
         public void BuildMonochrome(int left, int top, int right, int bottom, int color, int stretchMin = 0, int stretchMax = 65535, int repeat = 1)
         {
-            int x;
+            int x, offset;
             if (right  < 0) right  = Width  + right;
             if (bottom < 0) bottom = Height + bottom;
             float h, k = (stretchMax - stretchMin); // max 255 target in color component
+            offset = top * Width;
             for (int y = top; y <= bottom; y++)
+            {
                 for (x = left; x <= right; x++)
                 {
                     h = (UInt16)(repeat * (Levels[x, y] - stretchMin)) / k;
-                    Pixels[x + y * Width] = A
+                    Pixels[x + offset] = A
                         + ((byte)((byte)(color >> 16) * h) << 16)
                         + ((byte)((byte)(color >>  8) * h) <<  8)
                         + ((byte)((byte)(color      ) * h)      );
                 }
+                offset += Width;
+            }
         }
 
         /// <summary>
@@ -278,18 +328,22 @@ namespace SHME
         /// </param>
         public void BuildHLBytes(int left, int top, int right, int bottom, int Hi, int Lo, int stretchMin = 0, int stretchMax = 65535, int repeat = 1)
         {
-            int x, h;
+            int x, h, offset;
             if (right  < 0) right  = Width  + right;
             if (bottom < 0) bottom = Height + bottom;
             float k = repeat * 65535 / (float)(stretchMax - stretchMin); // 65535 as max target
+            offset = top * Width;
             for (int y = top; y <= bottom; y++)
+            {
                 for (x = left; x <= right; x++)
                 {
                     h = (UInt16)((Levels[x, y] - stretchMin) * k);
-                    Pixels[x + y * Width] = A
+                    Pixels[x + offset] = A
                         + ((   (h >> 8) * Hi
                         + (byte)h       * Lo) & 0xFFffFF);
                 }
+                offset += Width;
+            }
         }
 
         /// <summary>
@@ -309,7 +363,7 @@ namespace SHME
         /// </param>
         public void BuildSpectrum(int left, int top, int right, int bottom, int[] colors, int stretchMin = 0, int stretchMax = 65535, int repeat = 1)
         {
-            int x, h, segment;
+            int x, h, segment, offset;
             if (right  < 0) right  = Width  + right;
             if (bottom < 0) bottom = Height + bottom;
             float k = (repeat * 65535 / (float)(stretchMax - stretchMin)); // 65535 as max target
@@ -322,51 +376,41 @@ namespace SHME
                 colors = c;
             }
             // Build
+            offset = top * Width;
             for (int y = top; y <= bottom; y++)
+            {
                 for (x = left; x <= right; x++)
                 {
                     h = (UInt16)((Levels[x, y] - stretchMin) * k);
                     //h = (UInt16)((65535*Changed[x, y] - stretchMin) * k); // Display states instead of levels
                     segment = (h >> 13);
-                    Pixels[x + y * Width] = MixColor(colors[segment], colors[segment + 1], (byte)(h >> 5), 255);
+                    Pixels[x + offset] = MixColor(colors[segment], colors[segment + 1], (byte)(h >> 5), 255);
                 }
+                offset += Width;
+            }
         }
         #endregion
 
         public void BuildStatistics(int top, int bottom)
         {
-            int x, y, min, max, avg;
+            int x, y, avg, value;
             if (bottom < 0) bottom = Height + bottom;
             for (y = top; y <= bottom; y++)
             {
                 // Min
-                min = Levels[0, y];
-                max = Levels[0, y];
-                avg = Levels[0, y];
-                for (x = 1; x < Width; x++)
+                avg = 0;
+                for (x = MaxX; 0 <= x; x--)
                 {
-                    if (min > Levels[x, y])
-                        min = Levels[x, y];
-                    if (max < Levels[x, y])
-                        max = Levels[x, y];
-                    avg += Levels[x, y];
+                    avg += value = Levels[x, y];
+                    if (MinLevel > value) MinLevel = value;
+                    if (MaxLevel < value) MaxLevel = value;
                 }
-                MinLevelAtRow[y] = min;
-                MaxLevelAtRow[y] = max;
                 AvgLevelAtRow[y] = avg / Width;
             }
             // Global
-            MinLevel = MinLevelAtRow[0];
-            MaxLevel = MaxLevelAtRow[0];
-            AvgLevel = AvgLevelAtRow[0];
-            for (y = 1; y < Height; y++)
-            {
-                if (MinLevel > MinLevelAtRow[y])
-                    MinLevel = MinLevelAtRow[y];
-                if (MaxLevel < MaxLevelAtRow[y])
-                    MaxLevel = MaxLevelAtRow[y];
+            AvgLevel = 0;
+            for (y = MaxY; 0 <= y; y--)
                 AvgLevel += AvgLevelAtRow[y];
-            }
             AvgLevel /= Height;
         }
     }
