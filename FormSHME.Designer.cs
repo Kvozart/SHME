@@ -920,7 +920,7 @@
             0});
             this.nudSpectrumRepeat.ValueChanged += new System.EventHandler(this.HMapOption_Changed);
             // 
-            // cbbSpectrumPreset
+            // cbbSpectrumPresets
             // 
             this.cbbSpectrumPresets.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -934,7 +934,7 @@
             "KRMGYBCWK",
             "KGYBCRMWK"});
             this.cbbSpectrumPresets.Location = new System.Drawing.Point(48, 8);
-            this.cbbSpectrumPresets.Name = "cbbSpectrumPreset";
+            this.cbbSpectrumPresets.Name = "cbbSpectrumPresets";
             this.cbbSpectrumPresets.Size = new System.Drawing.Size(152, 21);
             this.cbbSpectrumPresets.TabIndex = 0;
             this.toolTip.SetToolTip(this.cbbSpectrumPresets, "Spectrum presets");
@@ -2601,16 +2601,16 @@
             // 
             this.chbCPlay.Appearance = System.Windows.Forms.Appearance.Button;
             this.chbCPlay.BackColor = System.Drawing.Color.LightGray;
+            this.chbCPlay.BackgroundImage = global::SHME.Properties.Resources.fieldScanInfo16;
             this.chbCPlay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.chbCPlay.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.chbCPlay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbCPlay.Image = global::SHME.Properties.Resources.markOption;
+            this.chbCPlay.ImageAlign = System.Drawing.ContentAlignment.TopRight;
             this.chbCPlay.Location = new System.Drawing.Point(232, 2);
             this.chbCPlay.Margin = new System.Windows.Forms.Padding(1);
             this.chbCPlay.Name = "chbCPlay";
             this.chbCPlay.Size = new System.Drawing.Size(31, 25);
             this.chbCPlay.TabIndex = 7;
-            this.chbCPlay.Text = "CP";
             this.chbCPlay.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip.SetToolTip(this.chbCPlay, "Course Play");
             this.chbCPlay.UseVisualStyleBackColor = false;

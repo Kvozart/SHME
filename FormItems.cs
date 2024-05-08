@@ -9,43 +9,57 @@ namespace SHME
 {
     public partial class FormItems : Form
     {
-        FormSHME Main;
-        static readonly String NumberFormat = "f4";
-        static readonly String IniFileName = "Items.ini";
-        static readonly NumberFormatInfo NFI = new CultureInfo("en-US", false).NumberFormat;
+        public const int iconW = 9, iconCX = 4,
+                         iconH = 9, iconCY = 4;
+        public static readonly int[] icon = {
+            0x00000000, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x00000000,
+            0x7F007F00, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x7F007F00,
+            0x7F007F00, 0x00000000, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x00000000, 0x7F007F00,
+            0x7F007F00, 0x00000000, 0x00000000, 0x7FFF0000, 0x00000000, 0x7FFF0000, 0x00000000, 0x00000000, 0x7F007F00,
+            0x7F007F00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F007F00,
+            0x7F007F00, 0x00000000, 0x00000000, 0x7FFF0000, 0x00000000, 0x7FFF0000, 0x00000000, 0x00000000, 0x7F007F00,
+            0x7F007F00, 0x00000000, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x00000000, 0x7F007F00,
+            0x7F007F00, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x7F007F00,
+            0x00000000, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x00000000};
+
+        private static readonly String NumberFormat = "f4";
+        private static readonly String IniFileName = "Items.ini";
+        private static readonly NumberFormatInfo NFI = new CultureInfo("en-US", false).NumberFormat;
 
         public class xyzDouble
         {
-            public int start = 0, end = 0;
+            public int start, end;
             public double x = 0, y = 0, z = 0;
+            public bool present;
 
-            public xyzDouble() { }
-
-            public void Read(String line, String tag, NumberFormatInfo nfi)
+            public void ReadXMLLine(String line, String attribute, NumberFormatInfo nfi)
             {
-                start = line.ToUpper().IndexOf(tag); // position of tag
+                present = false;
                 x = y = z = 0;
                 end = 0;
+                // Find attribute
+                start = line.IndexOf(' ' + attribute); // Position before attribute ' attribute=""'
                 if (start < 0)
                 {
                     start = 0;
                     return;
                 }
-
-                int q1 = line.IndexOf('"', start) + 1; // first "
-                int q2 = line.IndexOf('"', q1); // second "
+                // Extract value
+                int q1, q2;
+                if ((q1 = line.IndexOf('"', start) + 1) < 1) return; // Position first second "
+                if ((q2 = line.IndexOf('"', q1)) < 1) return; // Position after second "
                 string[] v = line.Substring(q1, q2 - q1).Replace("  ", " ").Replace(',', '.').Split(' ');
                 end = q2 + 1;
-
-                if (0 < v.Length) x = Double.Parse(v[0], nfi);
-                if (1 < v.Length) y = Double.Parse(v[1], nfi);
-                if (2 < v.Length) z = Double.Parse(v[2], nfi);
+                // Set XYZ
+                if (0 < v.Length) Double.TryParse(v[0], NumberStyles.Float, nfi, out x);
+                if (1 < v.Length) Double.TryParse(v[1], NumberStyles.Float, nfi, out y);
+                if (2 < v.Length) Double.TryParse(v[2], NumberStyles.Float, nfi, out z);
+                present = true;
             }
 
             public void Align(double step, double offset, Boolean doRotation)
             {
-                if (start < 1 || step == 0)
-                    return;
+                if (present || step == 0) return;
                 if (doRotation)
                     y = Math.Round((y - offset) / step) * step + offset;
                 else
@@ -55,68 +69,71 @@ namespace SHME
                 }
             }
 
-            public String Concatenate(String format, NumberFormatInfo nfi) =>
+            public String GetLine(String format, NumberFormatInfo nfi) =>
                 x.ToString(format, nfi) + " " + 
                 y.ToString(format, nfi) + " " + 
                 z.ToString(format, nfi);
         }
 
-        public class LineValues
+        public class FSItem
         {
-            NumberFormatInfo NFI = new CultureInfo("en-US", false).NumberFormat;
-            public String A = "", B = "", C = "", Text = "";
-            public xyzDouble R = new xyzDouble(),
-                             P = new xyzDouble();
+            public String A = "", B = "", C = "", XMLLine = "", Line = "";
+            public xyzDouble Rotation = new xyzDouble(),
+                             Position = new xyzDouble();
             public bool Edited = false;
 
-            public LineValues(String line) => Read(line, true);
+            public FSItem(String line) => ReadXMLLine(line, true);
 
-            public void Read(String line = null, bool set = false)//
+            public void ReadXMLLine(String line = null, bool set = false)//
             {
-                if (line == null) line = Text;
-                if (set) Text = line;
+                if (line == null) line = XMLLine;
+                if (set) XMLLine = line;
+                Line = line;
 
-                P.Read(line, "POSITION", NFI);
-                R.Read(line, "ROTATION", NFI);
+                Position.ReadXMLLine(line, "position", NFI);
+                Rotation.ReadXMLLine(line, "rotation", NFI);
 
-                if (R.start < P.start)
+                // A + rotation + B + position + C | "" + B + position + C
+                if (Rotation.start < Position.start)
                 {
-                    A = line.Substring(0, R.start);
-                    B = line.Substring(R.end, P.start - R.end);
-                    C = line.Substring(P.end);
+                    A = line.Substring(0, Rotation.start);
+                    B = line.Substring(Rotation.end, Position.start - Rotation.end);
+                    C = line.Substring(Position.end);
                 }
-                else // even if R = P = 0
+                // A + position + B + rotation + C | "" + B + rotation + C | "" + "" + C
+                else
                 {
-                    A = line.Substring(0, P.start);
-                    B = line.Substring(P.end, R.start - P.end);
-                    C = line.Substring(R.end);
+                    A = line.Substring(0, Position.start);
+                    B = line.Substring(Position.end, Rotation.start - Position.end);
+                    C = line.Substring(Rotation.end);
                 }
             }
 
-            public String Concatenate() => //
-                A + (0 < P.start 
-                    ? "position=\"" + P.Concatenate(NumberFormat, NFI) + '"'
+            public String GetXMLLine() => //
+                A + (Position.present
+                    ? " position=\"" + Position.GetLine(NumberFormat, NFI) + '"'
                     : "" ) +
-                B + (0 < R.start 
-                    ? "rotation=\"" + R.Concatenate(NumberFormat, NFI) + '"'
+                B + (Rotation.present
+                    ? " rotation=\"" + Rotation.GetLine(NumberFormat, NFI) + '"'
                     : "" ) +
                 C;
         }
 
+        private bool lockFilter = false;
         private String FileName = "";
-        private List<LineValues> LinesLoaded = new List<LineValues> { };
-        public  List<LineValues> LinesBuffer = new List<LineValues> { };
+        private List<FSItem> FSItems = new List<FSItem> { };
+        public  List<FSItem> FSItemsShown = new List<FSItem> { };
 
         #region Form
-        public FormItems(FormSHME main)//Ok
+        public FormItems()//Ok
         {
-            Main = main;
             InitializeComponent();
             OptionsLoad();
         }
 
-        public void OptionsLoad()
+        public void OptionsLoad()//Ok
         {
+            lockFilter = true;
             try
             {
                 if (File.Exists(IniFileName))
@@ -147,7 +164,7 @@ namespace SHME
                                 case "PositionYMax"  : nudPositionYMax.Value   = (Decimal)Double.Parse(value); break;
                                 case "PositionZMin"  : nudPositionZMin.Value   = (Decimal)Double.Parse(value); break;
                                 case "PositionZMax"  : nudPositionZMax.Value   = (Decimal)Double.Parse(value); break;
-                                case "PositionRange" : cbPositionRange.Checked = (value == "true"); break;
+                                case "PositionRange" : cbLimitPositionX.Checked = (value == "true"); break;
                                 // Rotation
                                 case "RotationStep"  : nudRotationStep.Value   = (Decimal)Double.Parse(value); break;
                                 case "RotationOffset": nudRotationOffset.Value = (Decimal)Double.Parse(value); break;
@@ -157,7 +174,7 @@ namespace SHME
                                 case "RotationYMax"  : nudRotationYMax.Value   = (Decimal)Double.Parse(value); break;
                                 case "RotationZMin"  : nudRotationZMin.Value   = (Decimal)Double.Parse(value); break;
                                 case "RotationZMax"  : nudRotationZMax.Value   = (Decimal)Double.Parse(value); break;
-                                case "RotationRange" : cbRotationRange.Checked = (value == "true"); break;
+                                case "RotationRange" : cbLimitRotationX.Checked = (value == "true"); break;
                                 // Find & Replace
                                 case "Find": tbFind.Text = value.Replace("&#9;", "\t"); break;
                                 case "Replace": tbReplace.Text = value.Replace("&#9;", "\t"); break;
@@ -176,41 +193,43 @@ namespace SHME
             nudPositionStep_ValueChanged(null, null);
             nudRotationStep_ValueChanged(null, null);
             // Load file to edit
+            lockFilter = false;
             if (tbFile.Text != "")
                 Items_Load(tbFile.Text);
         }
 
-        private void FormItems_FormClosing(object sender, FormClosingEventArgs e)//Ok
+        public void OptionsSave()//Ok
         {
-            Hide();
-            e.Cancel = true;
-        }
-
-        public void OptionSave()//Ok
-        {
-            using (StreamWriter file = File.CreateText(IniFileName))
+            try
             {
-                file.WriteLine("File\t" + tbFile.Text);
-                for (int i = 0; i < tvFilters.Nodes.Count; i++)
-                    file.WriteLine("Filter\t" + tvFilters.Nodes[i].Text + "\t" + "*+-"[tvFilters.Nodes[i].StateImageIndex]);
-                // Position
-                file.WriteLine("PositionStep\t"   + nudPositionStep.Value);
-                file.WriteLine("PositionOffset\t" + nudPositionOffset.Value);
-                file.WriteLine("PositionRange\t"  + cbPositionRange.Checked.ToString());
-                file.WriteLine("PositionXMin\t"   + nudPositionXMin.Value); file.WriteLine("PositionXMax\t" + nudPositionXMax.Value);
-                file.WriteLine("PositionYMin\t"   + nudPositionYMin.Value); file.WriteLine("PositionYMax\t" + nudPositionYMax.Value);
-                file.WriteLine("PositionZMin\t"   + nudPositionZMin.Value); file.WriteLine("PositionZMax\t" + nudPositionZMax.Value);
-                // Rotation
-                file.WriteLine("RotationStep\t"   + nudRotationStep.Value);
-                file.WriteLine("RotationOffset\t" + nudRotationOffset.Value);
-                file.WriteLine("RotationRange\t"  + cbRotationRange.Checked.ToString());
-                file.WriteLine("RotationXMin\t"   + nudRotationXMin.Value); file.WriteLine("RotationXMax\t" + nudRotationXMax.Value);
-                file.WriteLine("RotationYMin\t"   + nudRotationYMin.Value); file.WriteLine("RotationYMax\t" + nudRotationYMax.Value);
-                file.WriteLine("RotationZMin\t"   + nudRotationZMin.Value); file.WriteLine("RotationZMax\t" + nudRotationZMax.Value);
-                // Find & Replace
-                file.WriteLine("Find\t" + tbFind.Text.Replace("\t", "&#9;"));
-                file.WriteLine("Replace\t" + tbReplace.Text.Replace("\t", "&#9;"));
-                return;
+                using (StreamWriter file = File.CreateText(IniFileName))
+                {
+                    file.WriteLine("File\t" + tbFile.Text);
+                    for (int i = 0; i < tvFilters.Nodes.Count; i++)
+                        file.WriteLine("Filter\t" + tvFilters.Nodes[i].Text + "\t" + "*+-"[tvFilters.Nodes[i].StateImageIndex]);
+                    // Position
+                    file.WriteLine("PositionStep\t"   + nudPositionStep.Value);
+                    file.WriteLine("PositionOffset\t" + nudPositionOffset.Value);
+                    file.WriteLine("PositionRange\t"  + cbLimitPositionX.Checked.ToString());
+                    file.WriteLine("PositionXMin\t"   + nudPositionXMin.Value); file.WriteLine("PositionXMax\t" + nudPositionXMax.Value);
+                    file.WriteLine("PositionYMin\t"   + nudPositionYMin.Value); file.WriteLine("PositionYMax\t" + nudPositionYMax.Value);
+                    file.WriteLine("PositionZMin\t"   + nudPositionZMin.Value); file.WriteLine("PositionZMax\t" + nudPositionZMax.Value);
+                    // Rotation
+                    file.WriteLine("RotationStep\t"   + nudRotationStep.Value);
+                    file.WriteLine("RotationOffset\t" + nudRotationOffset.Value);
+                    file.WriteLine("RotationRange\t"  + cbLimitRotationX.Checked.ToString());
+                    file.WriteLine("RotationXMin\t"   + nudRotationXMin.Value); file.WriteLine("RotationXMax\t" + nudRotationXMax.Value);
+                    file.WriteLine("RotationYMin\t"   + nudRotationYMin.Value); file.WriteLine("RotationYMax\t" + nudRotationYMax.Value);
+                    file.WriteLine("RotationZMin\t"   + nudRotationZMin.Value); file.WriteLine("RotationZMax\t" + nudRotationZMax.Value);
+                    // Find & Replace
+                    file.WriteLine("Find\t"    + tbFind.Text.Replace("\t", "&#9;"));
+                    file.WriteLine("Replace\t" + tbReplace.Text.Replace("\t", "&#9;"));
+                    return;
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
             }
         }
 
@@ -229,10 +248,10 @@ namespace SHME
         {
             try
             {
-                LinesLoaded.Clear();
+                FSItems.Clear();
                 using (StreamReader file = File.OpenText(fileName))
                     while (!file.EndOfStream)
-                        LinesLoaded.Add(new LineValues(file.ReadLine()));
+                        FSItems.Add(new FSItem(file.ReadLine()));
                 FileName
                     = tbFile.Text
                     = fileName;
@@ -249,9 +268,9 @@ namespace SHME
             try
             {
                 using (StreamWriter file = File.CreateText(FileName))
-                    foreach (LineValues line in LinesLoaded)
+                    foreach (FSItem line in FSItems)
                     {
-                        file.WriteLine(line.Concatenate());
+                        file.WriteLine(line.GetXMLLine());
                     }
             }
             catch (Exception exc)
@@ -260,32 +279,27 @@ namespace SHME
             }
         }
 
-        private void Update_FiltersButtons()
+        private void FormItems_FormClosing(object sender, FormClosingEventArgs e)//Ok
         {
-            btnFilterDelete.   Visible = (tvFilters.SelectedNode != null);
-            btnFilterDeleteAll.Visible = (0 < tvFilters.Nodes.Count);
+            Hide();
+            e.Cancel = true;
         }
         #endregion
 
         #region Filters
-        private void timer_Tick(object sender, EventArgs e)
-        {
-            FilterItems();
-            timer.Enabled = false;
-        }
-
         private void FilterItems()//
         {
-            clbLines.BeginUpdate();
-            clbLines.Items.Clear();
-            LinesBuffer.Clear();
+            if (lockFilter) return;
+            clbItems.BeginUpdate();
+            clbItems.Items.Clear();
+            FSItemsShown.Clear();
             // Select
             bool skip;
             String s;
-            foreach (LineValues line in LinesLoaded)
+            foreach (FSItem item in FSItems)
             {
                 skip = false;
-                s = line.Concatenate();
+                s = item.Line;
                 foreach (TreeNode Filter in tvFilters.Nodes)
                     if (0 < Filter.StateImageIndex)
                         if (s.Contains(Filter.Text) == (2 == Filter.StateImageIndex))
@@ -295,68 +309,98 @@ namespace SHME
                         }
                 if (skip)
                     continue;
-                if (cbPositionRange.Checked)
-                    if (line.P.x < (Double)nudPositionXMin.Value || (Double)nudPositionXMax.Value < line.P.x ||
-                        line.P.y < (Double)nudPositionYMin.Value || (Double)nudPositionYMax.Value < line.P.y ||
-                        line.P.z < (Double)nudPositionZMin.Value || (Double)nudPositionZMax.Value < line.P.z)
+                if (cbLimitPositionX.Checked || cbLimitPositionY.Checked || cbLimitPositionZ.Checked)
+                {
+                    if (!item.Position.present)
                         continue;
-                if (cbRotationRange.Checked)
-                    if (line.R.x < (Double)nudRotationXMin.Value || (Double)nudRotationXMax.Value < line.R.x ||
-                        line.R.y < (Double)nudRotationYMin.Value || (Double)nudRotationYMax.Value < line.R.y ||
-                        line.R.z < (Double)nudRotationZMin.Value || (Double)nudRotationZMax.Value < line.R.z)
+                    if (cbLimitPositionX.Checked) if (item.Position.x < (Double)nudPositionXMin.Value || (Double)nudPositionXMax.Value < item.Position.x) continue;
+                    if (cbLimitPositionY.Checked) if (item.Position.y < (Double)nudPositionYMin.Value || (Double)nudPositionYMax.Value < item.Position.y) continue;
+                    if (cbLimitPositionZ.Checked) if (item.Position.z < (Double)nudPositionZMin.Value || (Double)nudPositionZMax.Value < item.Position.z) continue;
+                }
+                if (cbLimitRotationX.Checked || cbLimitRotationY.Checked || cbLimitRotationZ.Checked)
+                {
+                    if (!item.Rotation.present)
                         continue;
+                    if (cbLimitRotationX.Checked) if (item.Rotation.x < (Double)nudRotationXMin.Value || (Double)nudRotationXMax.Value < item.Rotation.x) continue;
+                    if (cbLimitRotationY.Checked) if (item.Rotation.y < (Double)nudRotationYMin.Value || (Double)nudRotationYMax.Value < item.Rotation.y) continue;
+                    if (cbLimitRotationZ.Checked) if (item.Rotation.z < (Double)nudRotationZMin.Value || (Double)nudRotationZMax.Value < item.Rotation.z) continue;
+                }
                 // Allowed
-                LinesBuffer.Add(line);
-                clbLines.Items.Add(s);
+                FSItemsShown.Add(item);
+                clbItems.Items.Add(s);
             }
-            clbLines.EndUpdate();
-            Main.Canvas_Update();
+            clbItems.EndUpdate();
+            FormSHME.Main.IAC_Update();
         }
 
-        private void btnFilterAdd_Click(object sender, EventArgs e)//Ok
+        private void Update_FiltersButtons()
         {
-            TreeNode tn = tvFilters.Nodes.Add(tbFilter.Text);
-            tn.StateImageIndex = 1;
-            tvFilters.SelectedNode = tn;
+            btnFilterDelete   .Visible = (tvFilters.SelectedNode != null);
+            btnFilterDeleteAll.Visible = (1 < tvFilters.Nodes.Count);
+            btnFilterSave.Visible
+                = btnFilterAdd.Visible
+                = false;
+        }
+
+        private void tvFilters_AfterSelect(object sender, TreeViewEventArgs e)//Ok
+        {
+            tbFilter.Text = (tvFilters.SelectedNode != null)
+                ? tvFilters.SelectedNode.Text
+                : "";
+            Update_FiltersButtons();
+        }
+
+        private void btnFilterSave_Click(object sender, EventArgs e)//Ok
+        {
+            if (sender == btnFilterSave)
+                tvFilters.SelectedNode.Text = tbFilter.Text;
+            else
+                (tvFilters.SelectedNode
+                    = tvFilters.Nodes.Add(tbFilter.Text))
+                    .StateImageIndex = 1;
+            btnFilterAdd.Visible
+                = btnFilterSave.Visible
+                = false;
+            FilterItems();
         }
 
         private void btnFilterDelete_Click(object sender, EventArgs e)//Ok
         {
             tvFilters.SelectedNode.Remove();
-            Update_FiltersButtons();
+            if (tvFilters.SelectedNode == null)
+            {
+                tbFilter.Text = "";
+                Update_FiltersButtons();
+            }
             FilterItems();
         }
 
         private void btnFilterDeleteAll_Click(object sender, EventArgs e)//Ok
         {
             tvFilters.Nodes.Clear();
-            Update_FiltersButtons();
+            tvFilters_AfterSelect(null, null);
             FilterItems();
-        }
-
-        private void tvFilters_AfterSelect(object sender, TreeViewEventArgs e)//Ok
-        {
-            tbFilter.Text = tvFilters.SelectedNode.Text;
-            Update_FiltersButtons();
         }
 
         private void tbFilter_KeyPress(object sender, KeyPressEventArgs e)//Ok
         {
-            if (e.KeyChar != '\r')
-                return;
-            if (tvFilters.SelectedNode == null)
-                btnFilterAdd_Click(null, null);
-            else
-            {
-                tvFilters.SelectedNode.Text = tbFilter.Text;
-                FilterItems();
-            }
+            if (e.KeyChar != '\r') return;
+            if (btnFilterSave.Visible) btnFilterSave_Click(btnFilterSave, null);
+            else                       btnFilterSave_Click(btnFilterAdd,  null);
             e.Handled = true;
         }
 
-        private void RangeFilter_Click(object sender, EventArgs e) => FilterItems();
-        private void PositionRange_Change(object sender, EventArgs e) { if (cbPositionRange.Checked) FilterItems(); }
-        private void RotationRange_Change(object sender, EventArgs e) { if (cbRotationRange.Checked) FilterItems(); }
+        private void tbFilter_TextChanged(object sender, EventArgs e)
+        {
+            if (tvFilters.SelectedNode == null)
+                btnFilterAdd.Visible = (tbFilter.Text != "");
+            else
+                btnFilterAdd.Visible
+                    = btnFilterSave.Visible
+                    = (tbFilter.Text != tvFilters.SelectedNode.Text);
+        }
+
+        private void LimitFilter_Changed(object sender, EventArgs e) => FilterItems();
 
         private void tvFilters_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
@@ -372,14 +416,22 @@ namespace SHME
                 NodeSwitchState((sender as TreeView).SelectedNode);
                 e.Handled = true;
             }
-            if (e.KeyChar == '\r')
+            else if (e.KeyChar == '\r')
             {
                 (sender as TreeView).SelectedNode.BeginEdit();
                 e.Handled = true;
             }
         }
 
-        private void tvFilters_AfterLabelEdit(object sender, NodeLabelEditEventArgs e) => timer.Enabled = true;
+        private void tvFilters_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+        {
+            tbFilter.TextChanged -= tbFilter_TextChanged;
+            tbFilter.Text = (e.Label == null) ? e.Node.Text : e.Label;
+            tbFilter.TextChanged += tbFilter_TextChanged;
+            btnFilterAdd.Visible
+                = btnFilterSave.Visible
+                = false;
+        }
 
         private void NodeSwitchState(TreeNode Node, int increment = 1)
         {
@@ -399,37 +451,41 @@ namespace SHME
         }
         #endregion
 
-        #region Lines
+        #region Items list
         private void btnPositionAlign_Click(object sender, EventArgs e)
         {
             Double step   = (Double)nudPositionStep.Value;
             Double offset = (Double)nudPositionOffset.Value;
-            if (clbLines.CheckedIndices.Count < 1)
+            if (clbItems.CheckedIndices.Count < 1)
                 return;
-            foreach (int i in clbLines.CheckedIndices)
+            foreach (int i in clbItems.CheckedIndices)
             {
-                LinesBuffer[i].P.Align(step, offset, false);
-                clbLines.Items[i] = LinesBuffer[i].Concatenate();
-                LinesBuffer[i].Edited = true;
+                FSItemsShown[i].Position.Align(step, offset, false);
+                clbItems.Items[i]
+                    = FSItemsShown[i].Line
+                    = FSItemsShown[i].GetXMLLine();
+                FSItemsShown[i].Edited = true;
             }
-            btnLinesReload.Visible = true;
-            Main.Canvas_Update();
+            btnItemsReload.Visible = true;
+            FormSHME.Main.IAC_Update();
         }
 
         private void btnRotationAlign_Click(object sender, EventArgs e)
         {
             Double step   = (Double)nudRotationStep.Value;
             Double offset = (Double)nudRotationOffset.Value;
-            if (clbLines.CheckedIndices.Count < 1)
+            if (clbItems.CheckedIndices.Count < 1)
                 return;
-            foreach (int i in clbLines.CheckedIndices)
+            foreach (int i in clbItems.CheckedIndices)
             {
-                LinesBuffer[i].R.Align(step, offset, true);
-                clbLines.Items[i] = LinesBuffer[i].Concatenate();
-                LinesBuffer[i].Edited = true;
+                FSItemsShown[i].Rotation.Align(step, offset, true);
+                clbItems.Items[i]
+                    = FSItemsShown[i].Line
+                    = FSItemsShown[i].GetXMLLine();
+                FSItemsShown[i].Edited = true;
             }
-            btnLinesReload.Visible = true;
-            Main.Canvas_Update();
+            btnItemsReload.Visible = true;
+            FormSHME.Main.IAC_Update();
         }
 
         private void nudPositionStep_ValueChanged(object sender, EventArgs e) =>
@@ -442,133 +498,136 @@ namespace SHME
             nudRotationYMin.Increment = nudRotationYMax.Increment =
             nudRotationZMin.Increment = nudRotationZMax.Increment = nudRotationStep.Value;
 
-        private void clbLines_SelectedIndexChanged(object sender, EventArgs e)
+        private void clbItems_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tbLine.Enabled && clbLines.SelectedItem != null)
-                tbLine.Text = clbLines.SelectedItem.ToString();
+            if (tbLine.Enabled && clbItems.SelectedItem != null)
+                tbLine.Text = clbItems.SelectedItem.ToString();
         }
 
-        private void clbLines_MouseClick(object sender, MouseEventArgs e)
+        private void clbItems_MouseClick(object sender, MouseEventArgs e)
         {
-            if (20 < e.X && 0 <= clbLines.SelectedIndex)
-                clbLines.SetItemChecked(clbLines.SelectedIndex, !clbLines.GetItemChecked(clbLines.SelectedIndex));
+            int i = clbItems.SelectedIndex;
+            if (20 < e.X && 0 <= i)
+                clbItems.SetItemChecked(i, !clbItems.GetItemChecked(i));
         }
 
-        private void btnLinesCheckAll_Click(object sender, EventArgs e)
+        private void btnItemsSetAllChecks_Click(object sender, EventArgs e)
         {
-            for (int i = clbLines.Items.Count - 1; 0 <= i; i--)
-                clbLines.SetItemChecked(i, true);
+            bool newState = (sender == btnItemsCheckAll);
+            for (int i = clbItems.Items.Count - 1; 0 <= i; i--)
+                clbItems.SetItemChecked(i, newState);
         }
 
-        private void btnLinesUncheckAll_Click(object sender, EventArgs e)
+        private void btnItemsInvertChecks_Click(object sender, EventArgs e)
         {
-            for (int i = clbLines.Items.Count - 1; 0 <= i; i--)
-                clbLines.SetItemChecked(i, false);
+            for (int i = clbItems.Items.Count - 1; 0 <= i; i--)
+                clbItems.SetItemChecked(i, !clbItems.GetItemChecked(i));
         }
 
         private void tbLine_Leave(object sender, EventArgs e)
         {
-            if (clbLines.SelectedItem?.ToString() == tbLine.Text)
+            if (clbItems.SelectedItem?.ToString() == tbLine.Text)
                 return;
-            int i = clbLines.SelectedIndex;
-            clbLines.Items[i] = tbLine.Text;
-            LinesBuffer[i].Read(tbLine.Text);
-            LinesBuffer[i].Edited = true;
-            btnLinesReload.Visible = true;
-            Main.Canvas_Update();
+            int i = clbItems.SelectedIndex;
+            clbItems.Items[i]
+                = FSItemsShown[i].Line
+                = tbLine.Text;
+            FSItemsShown[i].ReadXMLLine();
+            FSItemsShown[i].Edited = true;
+            btnItemsReload.Visible = true;
+            FormSHME.Main.IAC_Update();
         }
 
         private void tbLine_KeyPress(object sender, KeyPressEventArgs e)//Ok
         {
-            if (e.KeyChar != '\r')
-                return;
+            if (e.KeyChar != '\r') return;
             tbLine_Leave(null, null);
             e.Handled = true;
         }
 
-        private void PositionIncrement(double x, double y, double z)//Ok
+        private void XYZIncrement(double x, double y, double z, bool doRotation)//Ok
         {
-            if (clbLines.CheckedIndices.Count < 1)
-                return;
-            foreach (int i in clbLines.CheckedIndices)
+            if (clbItems.CheckedIndices.Count < 1) return;
+            foreach (int i in clbItems.CheckedIndices)
             {
-                LinesBuffer[i].P.x += x;
-                LinesBuffer[i].P.y += y;
-                LinesBuffer[i].P.z += z;
-                clbLines.Items[i] = LinesBuffer[i].Concatenate();
-                LinesBuffer[i].Edited = true;
+                if (doRotation)
+                {
+                    FSItemsShown[i].Rotation.x += x;
+                    FSItemsShown[i].Rotation.y += y;
+                    FSItemsShown[i].Rotation.z += z;
+                }
+                else
+                {
+                    FSItemsShown[i].Position.x += x;
+                    FSItemsShown[i].Position.y += y;
+                    FSItemsShown[i].Position.z += z;
+                }
+                clbItems.Items[i]
+                    = FSItemsShown[i].Line
+                    = FSItemsShown[i].GetXMLLine();
+                FSItemsShown[i].Edited = true;
             }
-            btnLinesReload.Visible = true;
-            Main.Canvas_Update();
+            btnItemsReload.Visible = true;
+            FormSHME.Main.IAC_Update();
         }
 
-        private void RotationIncrement(double x, double y, double z)//Ok
-        {
-            if (clbLines.CheckedIndices.Count < 1)
-                return;
-            foreach (int i in clbLines.CheckedIndices)
-            {
-                LinesBuffer[i].R.x += x;
-                LinesBuffer[i].R.y += y;
-                LinesBuffer[i].R.z += z;
-                clbLines.Items[i] = LinesBuffer[i].Concatenate();
-                LinesBuffer[i].Edited = true;
-            }
-            btnLinesReload.Visible = true;
-            Main.Canvas_Update();
-        }
+        private void btnPositionXsub_Click(object sender, EventArgs e) => XYZIncrement(-(Double)nudPositionStep.Value, 0, 0, false);
+        private void btnPositionXadd_Click(object sender, EventArgs e) => XYZIncrement( (Double)nudPositionStep.Value, 0, 0, false);
+        private void btnPositionYsub_Click(object sender, EventArgs e) => XYZIncrement(0, -(Double)nudPositionStep.Value, 0, false);
+        private void btnPositionYadd_Click(object sender, EventArgs e) => XYZIncrement(0,  (Double)nudPositionStep.Value, 0, false);
+        private void btnPositionZsub_Click(object sender, EventArgs e) => XYZIncrement(0, 0, -(Double)nudPositionStep.Value, false);
+        private void btnPositionZadd_Click(object sender, EventArgs e) => XYZIncrement(0, 0,  (Double)nudPositionStep.Value, false);
 
-        private void btnPositionXsub_Click(object sender, EventArgs e) => PositionIncrement(-(Double)nudPositionStep.Value, 0, 0);
-        private void btnPositionXadd_Click(object sender, EventArgs e) => PositionIncrement( (Double)nudPositionStep.Value, 0, 0);
-        private void btnPositionYsub_Click(object sender, EventArgs e) => PositionIncrement(0, -(Double)nudPositionStep.Value, 0);
-        private void btnPositionYadd_Click(object sender, EventArgs e) => PositionIncrement(0,  (Double)nudPositionStep.Value, 0);
-        private void btnPositionZsub_Click(object sender, EventArgs e) => PositionIncrement(0, 0, -(Double)nudPositionStep.Value);
-        private void btnPositionZadd_Click(object sender, EventArgs e) => PositionIncrement(0, 0,  (Double)nudPositionStep.Value);
-
-        private void btnRotationXsub_Click(object sender, EventArgs e) => RotationIncrement(-(Double)nudRotationStep.Value, 0, 0);
-        private void btnRotationXadd_Click(object sender, EventArgs e) => RotationIncrement( (Double)nudRotationStep.Value, 0, 0);
-        private void btnRotationYsub_Click(object sender, EventArgs e) => RotationIncrement(0, -(Double)nudRotationStep.Value, 0);
-        private void btnRotationYadd_Click(object sender, EventArgs e) => RotationIncrement(0,  (Double)nudRotationStep.Value, 0);
-        private void btnRotationZsub_Click(object sender, EventArgs e) => RotationIncrement(0, 0, -(Double)nudRotationStep.Value);
-        private void btnRotationZadd_Click(object sender, EventArgs e) => RotationIncrement(0, 0,  (Double)nudRotationStep.Value);
+        private void btnRotationXsub_Click(object sender, EventArgs e) => XYZIncrement(-(Double)nudRotationStep.Value, 0, 0, true);
+        private void btnRotationXadd_Click(object sender, EventArgs e) => XYZIncrement( (Double)nudRotationStep.Value, 0, 0, true);
+        private void btnRotationYsub_Click(object sender, EventArgs e) => XYZIncrement(0, -(Double)nudRotationStep.Value, 0, true);
+        private void btnRotationYadd_Click(object sender, EventArgs e) => XYZIncrement(0,  (Double)nudRotationStep.Value, 0, true);
+        private void btnRotationZsub_Click(object sender, EventArgs e) => XYZIncrement(0, 0, -(Double)nudRotationStep.Value, true);
+        private void btnRotationZadd_Click(object sender, EventArgs e) => XYZIncrement(0, 0,  (Double)nudRotationStep.Value, true);
 
         private void btnFind_Click(object sender, EventArgs e)//Ok
         {
-            for (int i = LinesBuffer.Count - 1; 0 <= i; i--)
-                clbLines.SetItemChecked(i, clbLines.Items[i].ToString().Contains(tbFind.Text));
+            String f = tbFind.Text;
+            for (int i = FSItemsShown.Count - 1; 0 <= i; i--)
+                clbItems.SetItemChecked(i, FSItemsShown[i].Line.Contains(f));
         }
 
-        private void btnFindAndReplace_Click(object sender, EventArgs e)//Ok
+        private void btnReplace_Click(object sender, EventArgs e)//Ok
         {
-            if (clbLines.CheckedIndices.Count < 1)
+            if (clbItems.CheckedIndices.Count < 1)
                 return;
-            String s;
-            foreach (int i in clbLines.CheckedIndices)
+            String f = tbFind.Text,
+                   r = tbReplace.Text;
+            clbItems.BeginUpdate();
+            foreach (int i in clbItems.CheckedIndices)
             {
-                clbLines.Items[i] = s = clbLines.Items[i].ToString().Replace(tbFind.Text, tbReplace.Text);
-                LinesBuffer[i].Read(s);
-                LinesBuffer[i].Edited = true;
+                clbItems.Items[i]
+                    = FSItemsShown[i].Line
+                    = FSItemsShown[i].Line.Replace(f, r);
+                FSItemsShown[i].ReadXMLLine();
+                FSItemsShown[i].Edited = true;
             }
-            btnLinesReload.Visible = true;
-            Main.Canvas_Update();
+            clbItems.EndUpdate();
+            btnItemsReload.Visible = true;
+            FormSHME.Main.IAC_Update();
         }
 
-        private void btnLinesReload_Click(object sender, EventArgs e)//Ok
+        private void btnItemsReload_Click(object sender, EventArgs e)//Ok
         {
-            clbLines.BeginUpdate();
-            for (int i = LinesBuffer.Count - 1; 0 <= i; i--)
-                if (LinesBuffer[i].Edited)
-                    clbLines.Items[i] = LinesBuffer[i].Text;
-            clbLines.EndUpdate();
+            clbItems.BeginUpdate();
+            for (int i = FSItemsShown.Count - 1; 0 <= i; i--)
+                if (FSItemsShown[i].Edited)
+                    clbItems.Items[i] = FSItemsShown[i].XMLLine;
             // Reset lines
-            for (int i = LinesLoaded.Count - 1; 0 <= i; i--)
-                if (LinesLoaded[i].Edited)
+            for (int i = FSItems.Count - 1; 0 <= i; i--)
+                if (FSItems[i].Edited)
                 {
-                    LinesLoaded[i].Read();
-                    LinesLoaded[i].Edited = false;
+                    FSItems[i].ReadXMLLine();
+                    FSItems[i].Edited = false;
                 }
-            btnLinesReload.Visible = false;
-            Main.Canvas_Update();
+            clbItems.EndUpdate();
+            btnItemsReload.Visible = false;
+            FormSHME.Main.IAC_Update();
         }
         #endregion
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,28 @@ namespace SHME
 {
     public partial class FormCPlay : Form
     {
+        public const int pinW = 5, pinCX = 2,
+                         pinH = 5, pinCY = 2;
+        public static readonly int[] pinWork = {
+            0x00000000, 0x7F7F7F00, 0x7F7F7F00, 0x7F7F7F00, 0x00000000,
+            0x7F7F7F00, 0x7FFF0000, 0x00000000, 0x7FFF0000, 0x7F7F7F00,
+            0x7F7F7F00, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F00,
+            0x7F7F7F00, 0x7FFF0000, 0x00000000, 0x7FFF0000, 0x7F7F7F00,
+            0x00000000, 0x7F7F7F00, 0x7F7F7F00, 0x7F7F7F00, 0x00000000};
+        public static readonly int[] pinStop = {
+            0x00000000, 0x7FFF0000, 0x7FFF0000, 0x7FFF0000, 0x00000000,
+            0x7FFF0000, 0x7FFFFF00, 0x00000000, 0x7FFFFF00, 0x7FFF0000,
+            0x7FFF0000, 0x00000000, 0x00000000, 0x00000000, 0x7FFF0000,
+            0x7FFF0000, 0x7FFFFF00, 0x00000000, 0x7FFFFF00, 0x7FFF0000,
+            0x00000000, 0x7FFF0000, 0x7FFF0000, 0x7FFF0000, 0x00000000};
+        public static readonly int[] pinEngage = {
+            0x00000000, 0x7F00cF00, 0x7F00cF00, 0x7F00cF00, 0x00000000,
+            0x7F00cF00, 0x7F4F4F00, 0x00000000, 0x7F4F4F00, 0x7F00cF00,
+            0x7F00cF00, 0x00000000, 0x00000000, 0x00000000, 0x7F00cF00,
+            0x7F00cF00, 0x7F4F4F00, 0x00000000, 0x7F4F4F00, 0x7F00cF00,
+            0x00000000, 0x7F00cF00, 0x7F00cF00, 0x7F00cF00, 0x00000000};
+        public static Pen pinConection = new Pen(Color.LightGray);
+
         FormSHME Main;
         static readonly String NumberFormat = "f2";
         static readonly String IniFileName = "CPlay.ini";
@@ -435,7 +458,7 @@ namespace SHME
                 SelectedRoute.Points[i].Read();
             }
             clbWaypoints.EndUpdate();
-            Main.Canvas_Update();
+            FormSHME.Main.IAC_Update();
         }
 
         private void Route_Load()
@@ -529,7 +552,7 @@ namespace SHME
                 clbWaypoints.Items.Add(p.Text);
             }
             clbWaypoints.EndUpdate();
-            Main.Canvas_Update();
+            FormSHME.Main.IAC_Update();
         }
         #endregion
 

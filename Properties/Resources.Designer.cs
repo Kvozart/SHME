@@ -173,6 +173,16 @@ namespace SHME.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap checkerHalfFilled {
+            get {
+                object obj = ResourceManager.GetObject("checkerHalfFilled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap circle {
             get {
                 object obj = ResourceManager.GetObject("circle", resourceCulture);
@@ -197,6 +207,16 @@ namespace SHME.Properties {
             get {
                 object obj = ResourceManager.GetObject("content", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
+        /// </summary>
+        internal static System.Drawing.Icon content1 {
+            get {
+                object obj = ResourceManager.GetObject("content1", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -267,6 +287,26 @@ namespace SHME.Properties {
             get {
                 object obj = ResourceManager.GetObject("eye", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap fieldScanInfo16 {
+            get {
+                object obj = ResourceManager.GetObject("fieldScanInfo16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
+        /// </summary>
+        internal static System.Drawing.Icon fieldScanInfo32 {
+            get {
+                object obj = ResourceManager.GetObject("fieldScanInfo32", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -396,6 +436,16 @@ namespace SHME.Properties {
         internal static System.Drawing.Bitmap markOption {
             get {
                 object obj = ResourceManager.GetObject("markOption", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap markRight {
+            get {
+                object obj = ResourceManager.GetObject("markRight", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

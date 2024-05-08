@@ -246,6 +246,11 @@
     <None Include="Resources\ADrive.png" />
     <None Include="Resources\executeNo.png" />
     <None Include="Resources\reuse.png" />
+    <None Include="Resources\content.ico" />
+    <None Include="Resources\fieldScanInfo32.ico" />
+    <None Include="Resources\fieldScanInfo16.png" />
+    <None Include="Resources\markRight.png" />
+    <None Include="Resources\checkerHalfFilled.png" />
     <Content Include="zlib1.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

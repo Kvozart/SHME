@@ -28,6 +28,28 @@ namespace SHME
             return true;
         }
 
+        public static void DrawArrayToArray(int[] aImg, int aImgW, int aImgH, int[] aCanvas, int aCanvasW, int aCanvasH, int x, int y)
+        {
+            int ix, iy, iOffset = 0;
+            int cy = y * aCanvasW, cOffset;
+            for (iy = 0; iy < aImgH; iy++)
+            {
+                cOffset = cy + x;
+                if (0 <= iy + y && iy + y < aCanvasH)
+                    for (ix = 0; ix < aImgW; ix++)
+                    {
+                        if (0xFFFFFF < FormItems.icon[iOffset])
+                            if (0 <= ix + x && ix + x < aCanvasW)
+                                aCanvas[cOffset] = FormItems.icon[iOffset];
+                        cOffset++;
+                        iOffset++;
+                    }
+                else
+                    iOffset += aImgW;
+                cy += aCanvasW;
+            }
+        }
+
         #region Constants
         const int GridColor0 = -0x7FAAAAAA; // Dark gray
         const int GridColor1 = -0x7F555555; // Light gray
@@ -77,6 +99,11 @@ namespace SHME
         #endregion
 
         // Fast access
+        public static FormSHME Main;
+        readonly FormItems  FIs;
+        readonly FormADrive FAD;
+        readonly FormCPlay  FCP;
+
         int monochromeColor  = -1; // White
         int hiByteMultiplier = 0x000100;
         int loByteMultiplier = 0x000001;
@@ -93,10 +120,6 @@ namespace SHME
         HeightMap      HMap = new HeightMap();
         TopologicalMap TMap = new TopologicalMap();
 
-        FormItems  FIs;
-        FormADrive FAD;
-        FormCPlay  FCP;
-
         List<HistoryRecord> historyBackward = new List<HistoryRecord>();
         List<HistoryRecord> historyForward  = new List<HistoryRecord>();
         HistoryRecord historyRecord;
@@ -112,6 +135,7 @@ namespace SHME
 
         public FormSHME()
         {
+            Main = this;
             InitializeComponent();
 
             hScrollBar.LargeChange = hScrollBar.Width;
@@ -197,7 +221,7 @@ namespace SHME
                 GenerateTMap(HMap.Width, HMap.Height, false);
 
             this.MouseWheel+= new System.Windows.Forms.MouseEventHandler(this.FormSHME_MouseScroll);
-            FIs = new FormItems (this);
+            FIs = new FormItems ();
             FAD = new FormADrive(this);
             FCP = new FormCPlay (this);
         }
@@ -1040,13 +1064,13 @@ namespace SHME
             w = Math.Max((int)nudBrush1Width .Value, Math.Max((int)nudBrush2Width .Value, (int)nudBrush3Width .Value));
             h = Math.Max((int)nudBrush1Height.Value, Math.Max((int)nudBrush2Height.Value, (int)nudBrush3Height.Value));
             Invalidate(new Rectangle(
-                hScrollBar.Left + ((Math.Min(mapXl, mapX) - ((w - 1) >> 1)) << zoom) - hScrollBar.Value - 2,
-                vScrollBar.Top  + ((Math.Min(mapYl, mapY) - ((h - 1) >> 1)) << zoom) - vScrollBar.Value - 2,
-                ((w + Math.Abs(mapXl - mapX)) << zoom) + 4,
-                ((h + Math.Abs(mapYl - mapY)) << zoom) + 4));
+                hScrollBar.Left + ((Math.Min(mapXl, mapX) - ((w - 1) >> 1)) << zoom) - hScrollBar.Value,
+                vScrollBar.Top  + ((Math.Min(mapYl, mapY) - ((h - 1) >> 1)) << zoom) - vScrollBar.Value,
+                ((w + Math.Abs(mapXl - mapX)) << zoom),
+                ((h + Math.Abs(mapYl - mapY)) << zoom)));
         }
 
-        public void Canvas_Update() =>//Ok
+        private void Canvas_Update() =>//Ok
             Invalidate(new Rectangle(
                 hScrollBar.Left,
                 vScrollBar.Top,
@@ -1240,6 +1264,7 @@ namespace SHME
             int[] buffer = new int[mtsW * mtsH];
             int x, y, sx, sy, ix, iy, offset = 0;
             int step = 1 << zoom;
+            int delta = step >> 1;
 
             // Draw TMap
             if (chbShowTMap.Checked)
@@ -1251,7 +1276,6 @@ namespace SHME
                 {
                     int zhMx = hMx << zoom,
                         zhMy = hMy << zoom;
-                    int delta = step >> 1;
                     int ld = (mtsL < delta) ? delta : mtsL;
                     int rd = (mtsR - delta < zhMx) ? mtsR : zhMx + delta - 1;
                     int bd = (mtsB - delta < zhMy) ? mtsB : zhMy + delta - 1;
@@ -1318,6 +1342,35 @@ namespace SHME
                     offset += sy;
                 }
             }
+
+            // Draw Items
+            if (chbItems.Checked)
+            {
+                // Calculate window port to map area
+                double mapAreaL = (mtsL << 1 >> zoom) - HMap.MaxX - FormItems.iconW, // HMap points 2 meters apart => full size of icon
+                       mapAreaR = (mtsR << 1 >> zoom) - HMap.MaxX + FormItems.iconW,
+                       mapAreaT = (mtsT << 1 >> zoom) - HMap.MaxY - FormItems.iconH,
+                       mapAreaB = (mtsB << 1 >> zoom) - HMap.MaxY + FormItems.iconH;
+                // Optimisations
+                double dx, dy, mask = (0 < zoom) ? delta : 0.5;
+                sx = (HMap.MaxX << zoom >> 1) + xShift - portL - FormItems.iconCX;
+                sy = (HMap.MaxY << zoom >> 1) + yShift - portT - FormItems.iconCY;
+                // Loop through
+                foreach (FSItem Item in FIs.FSItemsShown)
+                    if (Item.Position.present)
+                    {
+                        dx = Item.Position.x;
+                        dy = Item.Position.z;
+                        if (mapAreaL <= dx && dx <= mapAreaR &&
+                            mapAreaT <= dy && dy <= mapAreaB)
+                            DrawArrayToArray(
+                                FormItems.icon, FormItems.iconW, FormItems.iconH,
+                                buffer, portW, portH,
+                                (int)(dx * mask) + sx,
+                                (int)(dy * mask) + sy);
+                    }
+            }
+
             // Transfer
             Bitmap img = new Bitmap(mtsW, mtsH, mtsW << 2, PixelFormat.Format32bppRgb, Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0));
             e.Graphics.DrawImageUnscaled(img, portL, portT);
@@ -1330,24 +1383,7 @@ namespace SHME
                 if (chbBrush2FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush2Width.Value, (int)nudBrush2Height.Value, chbBrush2RectangleShape.Checked);
                 if (chbBrush3FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, chbBrush3RectangleShape.Checked);
             }
-            // Calculate window port to map area
-            double mapAreaL = (mtsL << 1 >> zoom) - HMap.MaxX,
-                   mapAreaR = (mtsR << 1 >> zoom) - HMap.MaxX,
-                   mapAreaT = (mtsT << 1 >> zoom) - HMap.MaxY,
-                   mapAreaB = (mtsB << 1 >> zoom) - HMap.MaxY;
-            // Draw Items
-            if (chbItems.Checked)
-                foreach (LineValues line in FIs.LinesBuffer)
-                    if (0 < line.P.start)
-                        if (mapAreaL <= line.P.x + 16 && line.P.x - 16 <= mapAreaR)
-                            if (mapAreaT <= line.P.z + 16 && line.P.z - 16 <= mapAreaB)
-                            {
-                                x = ((int)((HMap.MaxX + line.P.x) * step) >> 1) + xShift;
-                                y = ((int)((HMap.MaxY + line.P.z) * step) >> 1) + yShift;
-                                e.Graphics.DrawRectangle(new Pen(Color.Black), x - 5, y - 5,    10,    10);
-                                e.Graphics.DrawLine     (new Pen(Color.Red),   x - 4, y - 4, x + 4, y + 4);
-                                e.Graphics.DrawLine     (new Pen(Color.Red),   x + 4, y - 4, x - 4, y + 4);
-                            }
+
             // Draw ADrive
             if (chbADrive.Checked)
                 if (FAD.SelectedRoute != null)
@@ -1396,7 +1432,7 @@ namespace SHME
                     foreach (FormCPlay.Waypoint p in FCP.SelectedRoute.Points)
                     {
                         if (0 < iy)
-                            e.Graphics.DrawLine(new Pen(Color.Gray), sx, sy, p.canvasX, p.canvasY);
+                            e.Graphics.DrawLine(FormCPlay.pinConection, sx, sy, p.canvasX, p.canvasY);
                         sx = p.canvasX;
                         sy = p.canvasY;
                         iy++;
@@ -1545,7 +1581,7 @@ namespace SHME
                 file.WriteLine("CPlayActive\t"  + chbCPlay .Checked);
             }
             // Save modules options
-            FIs.OptionSave();
+            FIs.OptionsSave();
             FAD.OptionSave();
             FCP.OptionSave();
         }
@@ -1841,6 +1877,11 @@ namespace SHME
         #endregion
 
         #region Additional
+        public void IAC_Update()
+        {
+            if (chbItems.Checked || chbADrive.Checked || chbCPlay.Checked) Canvas_Update();
+        }
+
         private void IAC_CheckedChanged(object sender, EventArgs e) => Canvas_Update();
 
         private void chbItems_MouseUp (object sender, MouseEventArgs e) => IAC_MouseUp(FIs, e);

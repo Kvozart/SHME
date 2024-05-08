@@ -529,7 +529,7 @@ namespace SHME
                 clbWaypoints.Items.Add(p.Line);
             }
             clbWaypoints.EndUpdate();
-            Main.Canvas_Update();
+            FormSHME.Main.IAC_Update();
         }
 
         private void btnPositionAlign_Click(object sender, EventArgs e)
@@ -592,7 +592,7 @@ namespace SHME
             btnSaveRoute.Visible
                 = btnReloadRoute.Visible
                 = true;
-            Main.Canvas_Update();
+            FormSHME.Main.IAC_Update();
         }
 
         private void btnDeletePoint_Click(object sender, EventArgs e)
