@@ -17,7 +17,6 @@ namespace SHME
 
         public HistoryRecord(HeightMap HMap, int left, int top, int right, int bottom, bool multiTouch, bool resizeAction = false)
         {
-            int x, y;
             Left = left;   Right  = right;
             Top  = top;    Bottom = bottom;
             Width  = Right  - Left + 1;

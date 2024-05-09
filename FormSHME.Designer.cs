@@ -304,6 +304,7 @@
             this.lblPointerPosition.TabIndex = 23;
             this.lblPointerPosition.Text = "- x -";
             this.lblPointerPosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.lblPointerPosition, "XZ point and meters from center");
             // 
             // label12
             // 

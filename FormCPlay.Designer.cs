@@ -30,14 +30,17 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCPlay));
-            this.btnFileReload = new System.Windows.Forms.Button();
-            this.btnFileLoad = new System.Windows.Forms.Button();
-            this.tbFile = new System.Windows.Forms.TextBox();
-            this.btnSaveRoute = new System.Windows.Forms.Button();
+            this.btnManagerFileReload = new System.Windows.Forms.Button();
+            this.btnManagerFileLoad = new System.Windows.Forms.Button();
+            this.tbManagerFile = new System.Windows.Forms.TextBox();
+            this.btnRouteSave = new System.Windows.Forms.Button();
             this.pnlMain = new System.Windows.Forms.Panel();
-            this.btnReloadRoute = new System.Windows.Forms.Button();
+            this.btnRouteReload = new System.Windows.Forms.Button();
             this.clbWaypoints = new System.Windows.Forms.CheckedListBox();
             this.pnlItems = new System.Windows.Forms.Panel();
+            this.btnPointsCheckInvert = new System.Windows.Forms.Button();
+            this.btnPointsCheckAll = new System.Windows.Forms.Button();
+            this.btnPointsUncheckAll = new System.Windows.Forms.Button();
             this.gbStepOffset = new System.Windows.Forms.GroupBox();
             this.btnPositionAlign = new System.Windows.Forms.Button();
             this.btnRotationAlign = new System.Windows.Forms.Button();
@@ -48,9 +51,11 @@
             this.btnFind = new System.Windows.Forms.Button();
             this.btnReplace = new System.Windows.Forms.Button();
             this.gbEdit = new System.Windows.Forms.GroupBox();
-            this.btnSavePoint = new System.Windows.Forms.Button();
+            this.btnPointDeleteAll = new System.Windows.Forms.Button();
+            this.btnPointInsert = new System.Windows.Forms.Button();
+            this.btnPointSave = new System.Windows.Forms.Button();
             this.chb14 = new System.Windows.Forms.CheckBox();
-            this.btnDeletePoint = new System.Windows.Forms.Button();
+            this.btnPointDelete = new System.Windows.Forms.Button();
             this.tb13 = new System.Windows.Forms.TextBox();
             this.tb11 = new System.Windows.Forms.TextBox();
             this.nud12 = new System.Windows.Forms.NumericUpDown();
@@ -85,12 +90,12 @@
             this.lblX = new System.Windows.Forms.Label();
             this.splitter = new System.Windows.Forms.Splitter();
             this.pnlFilters = new System.Windows.Forms.Panel();
-            this.btnSaveRoutes = new System.Windows.Forms.Button();
             this.chbRouteEnabled = new System.Windows.Forms.CheckBox();
             this.btnRouteInfoSave = new System.Windows.Forms.Button();
             this.tbRouteName = new System.Windows.Forms.TextBox();
             this.tvRoutes = new System.Windows.Forms.TreeView();
             this.il3State = new System.Windows.Forms.ImageList(this.components);
+            this.btnManagerFileSave = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             this.pnlMain.SuspendLayout();
@@ -119,103 +124,105 @@
             this.pnlFilters.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnFileReload
+            // btnManagerFileReload
             // 
-            this.btnFileReload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnFileReload.BackgroundImage = global::SHME.Properties.Resources.reload;
-            this.btnFileReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnFileReload.FlatAppearance.BorderSize = 0;
-            this.btnFileReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFileReload.Location = new System.Drawing.Point(832, 12);
-            this.btnFileReload.Name = "btnFileReload";
-            this.btnFileReload.Size = new System.Drawing.Size(20, 20);
-            this.btnFileReload.TabIndex = 29;
-            this.btnFileReload.UseVisualStyleBackColor = true;
-            this.btnFileReload.Click += new System.EventHandler(this.btnFileReload_Click);
+            this.btnManagerFileReload.BackgroundImage = global::SHME.Properties.Resources.reload;
+            this.btnManagerFileReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnManagerFileReload.FlatAppearance.BorderSize = 0;
+            this.btnManagerFileReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnManagerFileReload.Location = new System.Drawing.Point(30, 4);
+            this.btnManagerFileReload.Name = "btnManagerFileReload";
+            this.btnManagerFileReload.Size = new System.Drawing.Size(20, 20);
+            this.btnManagerFileReload.TabIndex = 29;
+            this.btnManagerFileReload.UseVisualStyleBackColor = true;
+            this.btnManagerFileReload.Click += new System.EventHandler(this.btnFileReload_Click);
             // 
-            // btnFileLoad
+            // btnManagerFileLoad
             // 
-            this.btnFileLoad.BackgroundImage = global::SHME.Properties.Resources.load;
-            this.btnFileLoad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnFileLoad.FlatAppearance.BorderSize = 0;
-            this.btnFileLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFileLoad.Location = new System.Drawing.Point(12, 12);
-            this.btnFileLoad.Name = "btnFileLoad";
-            this.btnFileLoad.Size = new System.Drawing.Size(20, 20);
-            this.btnFileLoad.TabIndex = 26;
-            this.btnFileLoad.UseVisualStyleBackColor = true;
-            this.btnFileLoad.Click += new System.EventHandler(this.btnFileLoad_Click);
+            this.btnManagerFileLoad.BackgroundImage = global::SHME.Properties.Resources.load;
+            this.btnManagerFileLoad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnManagerFileLoad.FlatAppearance.BorderSize = 0;
+            this.btnManagerFileLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnManagerFileLoad.Location = new System.Drawing.Point(4, 4);
+            this.btnManagerFileLoad.Name = "btnManagerFileLoad";
+            this.btnManagerFileLoad.Size = new System.Drawing.Size(20, 20);
+            this.btnManagerFileLoad.TabIndex = 26;
+            this.btnManagerFileLoad.UseVisualStyleBackColor = true;
+            this.btnManagerFileLoad.Click += new System.EventHandler(this.btnFileLoad_Click);
             // 
-            // tbFile
+            // tbManagerFile
             // 
-            this.tbFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tbManagerFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFile.Location = new System.Drawing.Point(38, 12);
-            this.tbFile.Name = "tbFile";
-            this.tbFile.Size = new System.Drawing.Size(788, 20);
-            this.tbFile.TabIndex = 27;
+            this.tbManagerFile.Location = new System.Drawing.Point(56, 4);
+            this.tbManagerFile.Name = "tbManagerFile";
+            this.tbManagerFile.Size = new System.Drawing.Size(793, 20);
+            this.tbManagerFile.TabIndex = 27;
             // 
-            // btnSaveRoute
+            // btnRouteSave
             // 
-            this.btnSaveRoute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveRoute.BackgroundImage = global::SHME.Properties.Resources.save;
-            this.btnSaveRoute.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnSaveRoute.FlatAppearance.BorderSize = 0;
-            this.btnSaveRoute.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnSaveRoute.Location = new System.Drawing.Point(820, 191);
-            this.btnSaveRoute.Name = "btnSaveRoute";
-            this.btnSaveRoute.Size = new System.Drawing.Size(20, 20);
-            this.btnSaveRoute.TabIndex = 28;
-            this.btnSaveRoute.UseVisualStyleBackColor = true;
-            this.btnSaveRoute.Visible = false;
-            this.btnSaveRoute.Click += new System.EventHandler(this.btnSaveRoute_Click);
+            this.btnRouteSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRouteSave.BackgroundImage = global::SHME.Properties.Resources.save;
+            this.btnRouteSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnRouteSave.FlatAppearance.BorderSize = 0;
+            this.btnRouteSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnRouteSave.Location = new System.Drawing.Point(849, 208);
+            this.btnRouteSave.Name = "btnRouteSave";
+            this.btnRouteSave.Size = new System.Drawing.Size(20, 20);
+            this.btnRouteSave.TabIndex = 28;
+            this.toolTip.SetToolTip(this.btnRouteSave, "Save route");
+            this.btnRouteSave.UseVisualStyleBackColor = true;
+            this.btnRouteSave.Click += new System.EventHandler(this.btnRouteSave_Click);
             // 
             // pnlMain
             // 
             this.pnlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlMain.Controls.Add(this.btnSaveRoute);
-            this.pnlMain.Controls.Add(this.btnReloadRoute);
+            this.pnlMain.Controls.Add(this.btnPointDeleteAll);
+            this.pnlMain.Controls.Add(this.btnRouteSave);
+            this.pnlMain.Controls.Add(this.btnRouteReload);
             this.pnlMain.Controls.Add(this.clbWaypoints);
             this.pnlMain.Controls.Add(this.pnlItems);
             this.pnlMain.Controls.Add(this.splitter);
             this.pnlMain.Controls.Add(this.pnlFilters);
-            this.pnlMain.Location = new System.Drawing.Point(12, 38);
+            this.pnlMain.Location = new System.Drawing.Point(4, 28);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(840, 211);
+            this.pnlMain.Size = new System.Drawing.Size(869, 228);
             this.pnlMain.TabIndex = 30;
             // 
-            // btnReloadRoute
+            // btnRouteReload
             // 
-            this.btnReloadRoute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReloadRoute.AutoEllipsis = true;
-            this.btnReloadRoute.BackgroundImage = global::SHME.Properties.Resources.reload;
-            this.btnReloadRoute.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnReloadRoute.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReloadRoute.Location = new System.Drawing.Point(801, 172);
-            this.btnReloadRoute.Name = "btnReloadRoute";
-            this.btnReloadRoute.Size = new System.Drawing.Size(20, 20);
-            this.btnReloadRoute.TabIndex = 24;
-            this.btnReloadRoute.UseVisualStyleBackColor = true;
-            this.btnReloadRoute.Visible = false;
-            this.btnReloadRoute.Click += new System.EventHandler(this.btnReloadRoute_Click);
+            this.btnRouteReload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRouteReload.BackgroundImage = global::SHME.Properties.Resources.reload;
+            this.btnRouteReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnRouteReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRouteReload.Location = new System.Drawing.Point(830, 189);
+            this.btnRouteReload.Name = "btnRouteReload";
+            this.btnRouteReload.Size = new System.Drawing.Size(20, 20);
+            this.btnRouteReload.TabIndex = 24;
+            this.toolTip.SetToolTip(this.btnRouteReload, "Reload route file");
+            this.btnRouteReload.UseVisualStyleBackColor = true;
+            this.btnRouteReload.Click += new System.EventHandler(this.btnReloadRoute_Click);
             // 
             // clbWaypoints
             // 
             this.clbWaypoints.Dock = System.Windows.Forms.DockStyle.Fill;
             this.clbWaypoints.HorizontalScrollbar = true;
             this.clbWaypoints.IntegralHeight = false;
-            this.clbWaypoints.Location = new System.Drawing.Point(232, 130);
+            this.clbWaypoints.Location = new System.Drawing.Point(232, 126);
             this.clbWaypoints.Name = "clbWaypoints";
             this.clbWaypoints.ScrollAlwaysVisible = true;
-            this.clbWaypoints.Size = new System.Drawing.Size(608, 81);
+            this.clbWaypoints.Size = new System.Drawing.Size(637, 102);
             this.clbWaypoints.TabIndex = 21;
             this.clbWaypoints.SelectedIndexChanged += new System.EventHandler(this.clbWaypoints_SelectedIndexChanged);
             // 
             // pnlItems
             // 
             this.pnlItems.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlItems.Controls.Add(this.btnPointsCheckInvert);
+            this.pnlItems.Controls.Add(this.btnPointsCheckAll);
+            this.pnlItems.Controls.Add(this.btnPointsUncheckAll);
             this.pnlItems.Controls.Add(this.gbStepOffset);
             this.pnlItems.Controls.Add(this.btnFind);
             this.pnlItems.Controls.Add(this.btnReplace);
@@ -230,8 +237,50 @@
             this.pnlItems.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlItems.Location = new System.Drawing.Point(232, 0);
             this.pnlItems.Name = "pnlItems";
-            this.pnlItems.Size = new System.Drawing.Size(608, 130);
+            this.pnlItems.Size = new System.Drawing.Size(637, 126);
             this.pnlItems.TabIndex = 22;
+            // 
+            // btnPointsCheckInvert
+            // 
+            this.btnPointsCheckInvert.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPointsCheckInvert.FlatAppearance.BorderSize = 0;
+            this.btnPointsCheckInvert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPointsCheckInvert.Image = global::SHME.Properties.Resources.checkerHalfFilled;
+            this.btnPointsCheckInvert.Location = new System.Drawing.Point(435, 91);
+            this.btnPointsCheckInvert.Name = "btnPointsCheckInvert";
+            this.btnPointsCheckInvert.Size = new System.Drawing.Size(16, 16);
+            this.btnPointsCheckInvert.TabIndex = 36;
+            this.toolTip.SetToolTip(this.btnPointsCheckInvert, "Invert all checks");
+            this.btnPointsCheckInvert.UseVisualStyleBackColor = true;
+            this.btnPointsCheckInvert.Click += new System.EventHandler(this.btnPointsCheckInvert_Click);
+            // 
+            // btnPointsCheckAll
+            // 
+            this.btnPointsCheckAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPointsCheckAll.FlatAppearance.BorderSize = 0;
+            this.btnPointsCheckAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPointsCheckAll.Image = global::SHME.Properties.Resources.checkerFilled;
+            this.btnPointsCheckAll.Location = new System.Drawing.Point(435, 74);
+            this.btnPointsCheckAll.Name = "btnPointsCheckAll";
+            this.btnPointsCheckAll.Size = new System.Drawing.Size(16, 16);
+            this.btnPointsCheckAll.TabIndex = 34;
+            this.toolTip.SetToolTip(this.btnPointsCheckAll, "Check all");
+            this.btnPointsCheckAll.UseVisualStyleBackColor = true;
+            this.btnPointsCheckAll.Click += new System.EventHandler(this.btnPointsCheckAll_Click);
+            // 
+            // btnPointsUncheckAll
+            // 
+            this.btnPointsUncheckAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPointsUncheckAll.FlatAppearance.BorderSize = 0;
+            this.btnPointsUncheckAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPointsUncheckAll.Image = global::SHME.Properties.Resources.checkerEmpty;
+            this.btnPointsUncheckAll.Location = new System.Drawing.Point(435, 108);
+            this.btnPointsUncheckAll.Name = "btnPointsUncheckAll";
+            this.btnPointsUncheckAll.Size = new System.Drawing.Size(16, 16);
+            this.btnPointsUncheckAll.TabIndex = 35;
+            this.toolTip.SetToolTip(this.btnPointsUncheckAll, "Uncheck all");
+            this.btnPointsUncheckAll.UseVisualStyleBackColor = true;
+            this.btnPointsUncheckAll.Click += new System.EventHandler(this.btnPointsCheckAll_Click);
             // 
             // gbStepOffset
             // 
@@ -241,7 +290,7 @@
             this.gbStepOffset.Controls.Add(this.nudPositionOffset);
             this.gbStepOffset.Controls.Add(this.nudRotationOffset);
             this.gbStepOffset.Controls.Add(this.nudPositionStep);
-            this.gbStepOffset.Location = new System.Drawing.Point(424, 3);
+            this.gbStepOffset.Location = new System.Drawing.Point(435, 1);
             this.gbStepOffset.Name = "gbStepOffset";
             this.gbStepOffset.Size = new System.Drawing.Size(174, 72);
             this.gbStepOffset.TabIndex = 32;
@@ -392,9 +441,9 @@
             this.btnFind.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFind.FlatAppearance.BorderSize = 0;
             this.btnFind.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFind.Location = new System.Drawing.Point(587, 77);
+            this.btnFind.Location = new System.Drawing.Point(613, 76);
             this.btnFind.Name = "btnFind";
-            this.btnFind.Size = new System.Drawing.Size(21, 21);
+            this.btnFind.Size = new System.Drawing.Size(20, 20);
             this.btnFind.TabIndex = 3;
             this.btnFind.UseVisualStyleBackColor = true;
             this.btnFind.Click += new System.EventHandler(this.btnFind_Click);
@@ -402,22 +451,23 @@
             // btnReplace
             // 
             this.btnReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReplace.BackgroundImage = global::SHME.Properties.Resources.reuse;
+            this.btnReplace.BackgroundImage = global::SHME.Properties.Resources.execute;
             this.btnReplace.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnReplace.FlatAppearance.BorderSize = 0;
             this.btnReplace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReplace.Location = new System.Drawing.Point(587, 103);
+            this.btnReplace.Location = new System.Drawing.Point(613, 102);
             this.btnReplace.Name = "btnReplace";
-            this.btnReplace.Size = new System.Drawing.Size(21, 21);
+            this.btnReplace.Size = new System.Drawing.Size(20, 20);
             this.btnReplace.TabIndex = 3;
             this.btnReplace.UseVisualStyleBackColor = true;
             this.btnReplace.Click += new System.EventHandler(this.btnReplace_Click);
             // 
             // gbEdit
             // 
-            this.gbEdit.Controls.Add(this.btnSavePoint);
+            this.gbEdit.Controls.Add(this.btnPointInsert);
+            this.gbEdit.Controls.Add(this.btnPointSave);
             this.gbEdit.Controls.Add(this.chb14);
-            this.gbEdit.Controls.Add(this.btnDeletePoint);
+            this.gbEdit.Controls.Add(this.btnPointDelete);
             this.gbEdit.Controls.Add(this.tb13);
             this.gbEdit.Controls.Add(this.tb11);
             this.gbEdit.Controls.Add(this.nud12);
@@ -431,71 +481,98 @@
             this.gbEdit.Controls.Add(this.nudX);
             this.gbEdit.Controls.Add(this.nudZ);
             this.gbEdit.Controls.Add(this.nudY);
-            this.gbEdit.Location = new System.Drawing.Point(224, 3);
+            this.gbEdit.Location = new System.Drawing.Point(224, 1);
             this.gbEdit.Name = "gbEdit";
-            this.gbEdit.Size = new System.Drawing.Size(194, 124);
+            this.gbEdit.Size = new System.Drawing.Size(205, 121);
             this.gbEdit.TabIndex = 31;
             this.gbEdit.TabStop = false;
             this.gbEdit.Text = "Values";
-            this.gbEdit.Visible = false;
             // 
-            // btnSavePoint
+            // btnPointDeleteAll
             // 
-            this.btnSavePoint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSavePoint.BackgroundImage = global::SHME.Properties.Resources.toolPencil;
-            this.btnSavePoint.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnSavePoint.FlatAppearance.BorderSize = 0;
-            this.btnSavePoint.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnSavePoint.Location = new System.Drawing.Point(170, 69);
-            this.btnSavePoint.Name = "btnSavePoint";
-            this.btnSavePoint.Size = new System.Drawing.Size(24, 24);
-            this.btnSavePoint.TabIndex = 33;
-            this.btnSavePoint.UseVisualStyleBackColor = true;
-            this.btnSavePoint.Visible = false;
-            this.btnSavePoint.Click += new System.EventHandler(this.btnSavePoint_Click);
+            this.btnPointDeleteAll.BackgroundImage = global::SHME.Properties.Resources.deleteAll;
+            this.btnPointDeleteAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPointDeleteAll.FlatAppearance.BorderSize = 0;
+            this.btnPointDeleteAll.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnPointDeleteAll.Location = new System.Drawing.Point(830, 127);
+            this.btnPointDeleteAll.Name = "btnPointDeleteAll";
+            this.btnPointDeleteAll.Size = new System.Drawing.Size(20, 20);
+            this.btnPointDeleteAll.TabIndex = 46;
+            this.toolTip.SetToolTip(this.btnPointDeleteAll, "Remove selected waypoints");
+            this.btnPointDeleteAll.UseVisualStyleBackColor = true;
+            this.btnPointDeleteAll.Click += new System.EventHandler(this.btnPointDeleteAll_Click);
+            // 
+            // btnPointInsert
+            // 
+            this.btnPointInsert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPointInsert.BackgroundImage = global::SHME.Properties.Resources.add;
+            this.btnPointInsert.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPointInsert.FlatAppearance.BorderSize = 0;
+            this.btnPointInsert.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnPointInsert.Location = new System.Drawing.Point(175, 41);
+            this.btnPointInsert.Name = "btnPointInsert";
+            this.btnPointInsert.Size = new System.Drawing.Size(24, 24);
+            this.btnPointInsert.TabIndex = 45;
+            this.btnPointInsert.UseVisualStyleBackColor = true;
+            this.btnPointInsert.Click += new System.EventHandler(this.btnPointInsert_Click);
+            // 
+            // btnPointSave
+            // 
+            this.btnPointSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPointSave.BackgroundImage = global::SHME.Properties.Resources.toolPencil;
+            this.btnPointSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPointSave.FlatAppearance.BorderSize = 0;
+            this.btnPointSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnPointSave.Location = new System.Drawing.Point(175, 93);
+            this.btnPointSave.Name = "btnPointSave";
+            this.btnPointSave.Size = new System.Drawing.Size(24, 24);
+            this.btnPointSave.TabIndex = 33;
+            this.btnPointSave.UseVisualStyleBackColor = true;
+            this.btnPointSave.Visible = false;
+            this.btnPointSave.Click += new System.EventHandler(this.btnPointSave_Click);
             // 
             // chb14
             // 
-            this.chb14.Location = new System.Drawing.Point(159, 44);
+            this.chb14.Location = new System.Drawing.Point(130, 95);
             this.chb14.Name = "chb14";
-            this.chb14.Size = new System.Drawing.Size(30, 20);
+            this.chb14.Size = new System.Drawing.Size(36, 20);
             this.chb14.TabIndex = 44;
             this.chb14.UseVisualStyleBackColor = true;
             this.chb14.CheckedChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
-            // btnDeletePoint
+            // btnPointDelete
             // 
-            this.btnDeletePoint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDeletePoint.BackgroundImage = global::SHME.Properties.Resources.delete;
-            this.btnDeletePoint.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnDeletePoint.FlatAppearance.BorderSize = 0;
-            this.btnDeletePoint.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnDeletePoint.Location = new System.Drawing.Point(170, 98);
-            this.btnDeletePoint.Name = "btnDeletePoint";
-            this.btnDeletePoint.Size = new System.Drawing.Size(24, 24);
-            this.btnDeletePoint.TabIndex = 31;
-            this.btnDeletePoint.UseVisualStyleBackColor = true;
-            this.btnDeletePoint.Click += new System.EventHandler(this.btnDeletePoint_Click);
+            this.btnPointDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPointDelete.BackgroundImage = global::SHME.Properties.Resources.delete;
+            this.btnPointDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPointDelete.FlatAppearance.BorderSize = 0;
+            this.btnPointDelete.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnPointDelete.Location = new System.Drawing.Point(175, 15);
+            this.btnPointDelete.Name = "btnPointDelete";
+            this.btnPointDelete.Size = new System.Drawing.Size(24, 24);
+            this.btnPointDelete.TabIndex = 31;
+            this.btnPointDelete.UseVisualStyleBackColor = true;
+            this.btnPointDelete.Click += new System.EventHandler(this.btnPointDelete_Click);
             // 
             // tb13
             // 
-            this.tb13.Location = new System.Drawing.Point(159, 17);
+            this.tb13.Location = new System.Drawing.Point(130, 69);
             this.tb13.Name = "tb13";
-            this.tb13.Size = new System.Drawing.Size(29, 20);
+            this.tb13.Size = new System.Drawing.Size(36, 20);
             this.tb13.TabIndex = 43;
             this.tb13.TextChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // tb11
             // 
-            this.tb11.Location = new System.Drawing.Point(124, 71);
+            this.tb11.Location = new System.Drawing.Point(130, 17);
             this.tb11.Name = "tb11";
-            this.tb11.Size = new System.Drawing.Size(29, 20);
+            this.tb11.Size = new System.Drawing.Size(36, 20);
             this.tb11.TabIndex = 4;
             this.tb11.TextChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // nud12
             // 
-            this.nud12.Location = new System.Drawing.Point(124, 98);
+            this.nud12.Location = new System.Drawing.Point(130, 43);
             this.nud12.Maximum = new decimal(new int[] {
             2,
             0,
@@ -507,8 +584,9 @@
             0,
             -2147483648});
             this.nud12.Name = "nud12";
-            this.nud12.Size = new System.Drawing.Size(29, 20);
+            this.nud12.Size = new System.Drawing.Size(36, 20);
             this.nud12.TabIndex = 42;
+            this.nud12.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip.SetToolTip(this.nud12, "Empty string as -1");
             this.nud12.ValueChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
@@ -521,42 +599,43 @@
             0,
             0});
             this.nud05.Name = "nud05";
-            this.nud05.Size = new System.Drawing.Size(29, 20);
+            this.nud05.Size = new System.Drawing.Size(36, 20);
             this.nud05.TabIndex = 42;
+            this.nud05.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nud05.ValueChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // chb10
             // 
-            this.chb10.Location = new System.Drawing.Point(123, 44);
+            this.chb10.Location = new System.Drawing.Point(109, 95);
             this.chb10.Name = "chb10";
-            this.chb10.Size = new System.Drawing.Size(30, 20);
+            this.chb10.Size = new System.Drawing.Size(15, 20);
             this.chb10.TabIndex = 40;
             this.chb10.UseVisualStyleBackColor = true;
             this.chb10.CheckedChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // chb09
             // 
-            this.chb09.Location = new System.Drawing.Point(123, 17);
+            this.chb09.Location = new System.Drawing.Point(109, 69);
             this.chb09.Name = "chb09";
-            this.chb09.Size = new System.Drawing.Size(30, 20);
+            this.chb09.Size = new System.Drawing.Size(15, 20);
             this.chb09.TabIndex = 39;
             this.chb09.UseVisualStyleBackColor = true;
             this.chb09.CheckedChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // chb08
             // 
-            this.chb08.Location = new System.Drawing.Point(88, 98);
+            this.chb08.Location = new System.Drawing.Point(88, 95);
             this.chb08.Name = "chb08";
-            this.chb08.Size = new System.Drawing.Size(30, 20);
+            this.chb08.Size = new System.Drawing.Size(15, 20);
             this.chb08.TabIndex = 38;
             this.chb08.UseVisualStyleBackColor = true;
             this.chb08.CheckedChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // chb07
             // 
-            this.chb07.Location = new System.Drawing.Point(88, 71);
+            this.chb07.Location = new System.Drawing.Point(88, 69);
             this.chb07.Name = "chb07";
-            this.chb07.Size = new System.Drawing.Size(30, 20);
+            this.chb07.Size = new System.Drawing.Size(15, 20);
             this.chb07.TabIndex = 37;
             this.chb07.UseVisualStyleBackColor = true;
             this.chb07.CheckedChanged += new System.EventHandler(this.Waypoint_ValueChanged);
@@ -566,9 +645,9 @@
             this.dudAction.Items.Add("");
             this.dudAction.Items.Add("Engage");
             this.dudAction.Items.Add("Stop");
-            this.dudAction.Location = new System.Drawing.Point(88, 44);
+            this.dudAction.Location = new System.Drawing.Point(88, 43);
             this.dudAction.Name = "dudAction";
-            this.dudAction.Size = new System.Drawing.Size(29, 20);
+            this.dudAction.Size = new System.Drawing.Size(36, 20);
             this.dudAction.TabIndex = 34;
             this.toolTip.SetToolTip(this.dudAction, "\"\"/Stop/Engage");
             this.dudAction.SelectedItemChanged += new System.EventHandler(this.Waypoint_ValueChanged);
@@ -576,7 +655,7 @@
             // nudR
             // 
             this.nudR.DecimalPlaces = 2;
-            this.nudR.Location = new System.Drawing.Point(6, 98);
+            this.nudR.Location = new System.Drawing.Point(6, 95);
             this.nudR.Maximum = new decimal(new int[] {
             360,
             0,
@@ -626,7 +705,7 @@
             // nudZ
             // 
             this.nudZ.DecimalPlaces = 2;
-            this.nudZ.Location = new System.Drawing.Point(6, 71);
+            this.nudZ.Location = new System.Drawing.Point(6, 69);
             this.nudZ.Maximum = new decimal(new int[] {
             1024,
             0,
@@ -651,7 +730,7 @@
             // nudY
             // 
             this.nudY.DecimalPlaces = 2;
-            this.nudY.Location = new System.Drawing.Point(6, 44);
+            this.nudY.Location = new System.Drawing.Point(6, 43);
             this.nudY.Maximum = new decimal(new int[] {
             1024,
             0,
@@ -677,15 +756,15 @@
             // 
             this.tbReplace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbReplace.Location = new System.Drawing.Point(424, 104);
+            this.tbReplace.Location = new System.Drawing.Point(457, 102);
             this.tbReplace.Name = "tbReplace";
-            this.tbReplace.Size = new System.Drawing.Size(157, 20);
+            this.tbReplace.Size = new System.Drawing.Size(147, 20);
             this.tbReplace.TabIndex = 1;
             // 
             // lblR
             // 
             this.lblR.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblR.Location = new System.Drawing.Point(204, 101);
+            this.lblR.Location = new System.Drawing.Point(204, 96);
             this.lblR.Name = "lblR";
             this.lblR.Size = new System.Drawing.Size(14, 19);
             this.lblR.TabIndex = 31;
@@ -696,9 +775,9 @@
             // 
             this.tbFind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFind.Location = new System.Drawing.Point(424, 78);
+            this.tbFind.Location = new System.Drawing.Point(457, 76);
             this.tbFind.Name = "tbFind";
-            this.tbFind.Size = new System.Drawing.Size(157, 20);
+            this.tbFind.Size = new System.Drawing.Size(147, 20);
             this.tbFind.TabIndex = 0;
             // 
             // gbLimit
@@ -716,9 +795,9 @@
             this.gbLimit.Controls.Add(this.nudLimitXMin);
             this.gbLimit.Controls.Add(this.nudLimitXMax);
             this.gbLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.gbLimit.Location = new System.Drawing.Point(6, 3);
+            this.gbLimit.Location = new System.Drawing.Point(6, 1);
             this.gbLimit.Name = "gbLimit";
-            this.gbLimit.Size = new System.Drawing.Size(192, 124);
+            this.gbLimit.Size = new System.Drawing.Size(192, 121);
             this.gbLimit.TabIndex = 23;
             this.gbLimit.TabStop = false;
             this.gbLimit.Text = "Limit";
@@ -726,7 +805,7 @@
             // cbLimitZ
             // 
             this.cbLimitZ.AutoSize = true;
-            this.cbLimitZ.Location = new System.Drawing.Point(6, 74);
+            this.cbLimitZ.Location = new System.Drawing.Point(6, 72);
             this.cbLimitZ.Name = "cbLimitZ";
             this.cbLimitZ.Size = new System.Drawing.Size(15, 14);
             this.cbLimitZ.TabIndex = 33;
@@ -736,7 +815,7 @@
             // cbLimitY
             // 
             this.cbLimitY.AutoSize = true;
-            this.cbLimitY.Location = new System.Drawing.Point(6, 47);
+            this.cbLimitY.Location = new System.Drawing.Point(6, 46);
             this.cbLimitY.Name = "cbLimitY";
             this.cbLimitY.Size = new System.Drawing.Size(15, 14);
             this.cbLimitY.TabIndex = 32;
@@ -746,7 +825,7 @@
             // cbLimitR
             // 
             this.cbLimitR.AutoSize = true;
-            this.cbLimitR.Location = new System.Drawing.Point(6, 101);
+            this.cbLimitR.Location = new System.Drawing.Point(6, 98);
             this.cbLimitR.Name = "cbLimitR";
             this.cbLimitR.Size = new System.Drawing.Size(15, 14);
             this.cbLimitR.TabIndex = 15;
@@ -766,7 +845,8 @@
             // nudLimitRMin
             // 
             this.nudLimitRMin.DecimalPlaces = 2;
-            this.nudLimitRMin.Location = new System.Drawing.Point(27, 98);
+            this.nudLimitRMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nudLimitRMin.Location = new System.Drawing.Point(27, 95);
             this.nudLimitRMin.Maximum = new decimal(new int[] {
             360,
             0,
@@ -778,7 +858,7 @@
             0,
             -2147483648});
             this.nudLimitRMin.Name = "nudLimitRMin";
-            this.nudLimitRMin.Size = new System.Drawing.Size(76, 21);
+            this.nudLimitRMin.Size = new System.Drawing.Size(76, 20);
             this.nudLimitRMin.TabIndex = 9;
             this.nudLimitRMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitRMin.Value = new decimal(new int[] {
@@ -791,7 +871,8 @@
             // nudLimitRMax
             // 
             this.nudLimitRMax.DecimalPlaces = 2;
-            this.nudLimitRMax.Location = new System.Drawing.Point(109, 98);
+            this.nudLimitRMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nudLimitRMax.Location = new System.Drawing.Point(109, 95);
             this.nudLimitRMax.Maximum = new decimal(new int[] {
             360,
             0,
@@ -803,7 +884,7 @@
             0,
             -2147483648});
             this.nudLimitRMax.Name = "nudLimitRMax";
-            this.nudLimitRMax.Size = new System.Drawing.Size(76, 21);
+            this.nudLimitRMax.Size = new System.Drawing.Size(76, 20);
             this.nudLimitRMax.TabIndex = 9;
             this.nudLimitRMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitRMax.Value = new decimal(new int[] {
@@ -816,7 +897,8 @@
             // nudLimitZMin
             // 
             this.nudLimitZMin.DecimalPlaces = 2;
-            this.nudLimitZMin.Location = new System.Drawing.Point(27, 71);
+            this.nudLimitZMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nudLimitZMin.Location = new System.Drawing.Point(27, 69);
             this.nudLimitZMin.Maximum = new decimal(new int[] {
             1024,
             0,
@@ -828,7 +910,7 @@
             0,
             -2147483648});
             this.nudLimitZMin.Name = "nudLimitZMin";
-            this.nudLimitZMin.Size = new System.Drawing.Size(76, 21);
+            this.nudLimitZMin.Size = new System.Drawing.Size(76, 20);
             this.nudLimitZMin.TabIndex = 12;
             this.nudLimitZMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitZMin.Value = new decimal(new int[] {
@@ -841,7 +923,8 @@
             // nudLimitZMax
             // 
             this.nudLimitZMax.DecimalPlaces = 2;
-            this.nudLimitZMax.Location = new System.Drawing.Point(109, 71);
+            this.nudLimitZMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nudLimitZMax.Location = new System.Drawing.Point(109, 69);
             this.nudLimitZMax.Maximum = new decimal(new int[] {
             1024,
             0,
@@ -853,7 +936,7 @@
             0,
             -2147483648});
             this.nudLimitZMax.Name = "nudLimitZMax";
-            this.nudLimitZMax.Size = new System.Drawing.Size(76, 21);
+            this.nudLimitZMax.Size = new System.Drawing.Size(76, 20);
             this.nudLimitZMax.TabIndex = 12;
             this.nudLimitZMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitZMax.Value = new decimal(new int[] {
@@ -866,7 +949,8 @@
             // nudLimitYMin
             // 
             this.nudLimitYMin.DecimalPlaces = 2;
-            this.nudLimitYMin.Location = new System.Drawing.Point(27, 44);
+            this.nudLimitYMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nudLimitYMin.Location = new System.Drawing.Point(27, 43);
             this.nudLimitYMin.Maximum = new decimal(new int[] {
             1024,
             0,
@@ -878,7 +962,7 @@
             0,
             -2147483648});
             this.nudLimitYMin.Name = "nudLimitYMin";
-            this.nudLimitYMin.Size = new System.Drawing.Size(76, 21);
+            this.nudLimitYMin.Size = new System.Drawing.Size(76, 20);
             this.nudLimitYMin.TabIndex = 11;
             this.nudLimitYMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitYMin.Value = new decimal(new int[] {
@@ -891,7 +975,8 @@
             // nudLimitYMax
             // 
             this.nudLimitYMax.DecimalPlaces = 2;
-            this.nudLimitYMax.Location = new System.Drawing.Point(109, 44);
+            this.nudLimitYMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nudLimitYMax.Location = new System.Drawing.Point(109, 43);
             this.nudLimitYMax.Maximum = new decimal(new int[] {
             1024,
             0,
@@ -903,7 +988,7 @@
             0,
             -2147483648});
             this.nudLimitYMax.Name = "nudLimitYMax";
-            this.nudLimitYMax.Size = new System.Drawing.Size(76, 21);
+            this.nudLimitYMax.Size = new System.Drawing.Size(76, 20);
             this.nudLimitYMax.TabIndex = 11;
             this.nudLimitYMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitYMax.Value = new decimal(new int[] {
@@ -916,6 +1001,7 @@
             // nudLimitXMin
             // 
             this.nudLimitXMin.DecimalPlaces = 2;
+            this.nudLimitXMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nudLimitXMin.Location = new System.Drawing.Point(27, 17);
             this.nudLimitXMin.Maximum = new decimal(new int[] {
             1024,
@@ -928,7 +1014,7 @@
             0,
             -2147483648});
             this.nudLimitXMin.Name = "nudLimitXMin";
-            this.nudLimitXMin.Size = new System.Drawing.Size(76, 21);
+            this.nudLimitXMin.Size = new System.Drawing.Size(76, 20);
             this.nudLimitXMin.TabIndex = 10;
             this.nudLimitXMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitXMin.Value = new decimal(new int[] {
@@ -941,6 +1027,7 @@
             // nudLimitXMax
             // 
             this.nudLimitXMax.DecimalPlaces = 2;
+            this.nudLimitXMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nudLimitXMax.Location = new System.Drawing.Point(109, 17);
             this.nudLimitXMax.Maximum = new decimal(new int[] {
             1024,
@@ -953,7 +1040,7 @@
             0,
             -2147483648});
             this.nudLimitXMax.Name = "nudLimitXMax";
-            this.nudLimitXMax.Size = new System.Drawing.Size(76, 21);
+            this.nudLimitXMax.Size = new System.Drawing.Size(76, 20);
             this.nudLimitXMax.TabIndex = 10;
             this.nudLimitXMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitXMax.Value = new decimal(new int[] {
@@ -966,7 +1053,7 @@
             // lblZ
             // 
             this.lblZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblZ.Location = new System.Drawing.Point(204, 74);
+            this.lblZ.Location = new System.Drawing.Point(204, 70);
             this.lblZ.Name = "lblZ";
             this.lblZ.Size = new System.Drawing.Size(14, 19);
             this.lblZ.TabIndex = 13;
@@ -976,7 +1063,7 @@
             // lblY
             // 
             this.lblY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblY.Location = new System.Drawing.Point(204, 47);
+            this.lblY.Location = new System.Drawing.Point(204, 44);
             this.lblY.Name = "lblY";
             this.lblY.Size = new System.Drawing.Size(14, 19);
             this.lblY.TabIndex = 13;
@@ -986,7 +1073,7 @@
             // lblX
             // 
             this.lblX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblX.Location = new System.Drawing.Point(204, 20);
+            this.lblX.Location = new System.Drawing.Point(204, 18);
             this.lblX.Name = "lblX";
             this.lblX.Size = new System.Drawing.Size(14, 19);
             this.lblX.TabIndex = 13;
@@ -1001,13 +1088,12 @@
             this.splitter.MinimumSize = new System.Drawing.Size(6, 2);
             this.splitter.MinSize = 150;
             this.splitter.Name = "splitter";
-            this.splitter.Size = new System.Drawing.Size(8, 211);
+            this.splitter.Size = new System.Drawing.Size(8, 228);
             this.splitter.TabIndex = 23;
             this.splitter.TabStop = false;
             // 
             // pnlFilters
             // 
-            this.pnlFilters.Controls.Add(this.btnSaveRoutes);
             this.pnlFilters.Controls.Add(this.chbRouteEnabled);
             this.pnlFilters.Controls.Add(this.btnRouteInfoSave);
             this.pnlFilters.Controls.Add(this.tbRouteName);
@@ -1015,32 +1101,18 @@
             this.pnlFilters.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlFilters.Location = new System.Drawing.Point(0, 0);
             this.pnlFilters.Name = "pnlFilters";
-            this.pnlFilters.Size = new System.Drawing.Size(224, 211);
+            this.pnlFilters.Size = new System.Drawing.Size(224, 228);
             this.pnlFilters.TabIndex = 15;
-            // 
-            // btnSaveRoutes
-            // 
-            this.btnSaveRoutes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveRoutes.BackgroundImage = global::SHME.Properties.Resources.save;
-            this.btnSaveRoutes.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnSaveRoutes.FlatAppearance.BorderSize = 0;
-            this.btnSaveRoutes.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnSaveRoutes.Location = new System.Drawing.Point(204, 191);
-            this.btnSaveRoutes.Name = "btnSaveRoutes";
-            this.btnSaveRoutes.Size = new System.Drawing.Size(20, 20);
-            this.btnSaveRoutes.TabIndex = 29;
-            this.btnSaveRoutes.UseVisualStyleBackColor = true;
-            this.btnSaveRoutes.Visible = false;
-            this.btnSaveRoutes.Click += new System.EventHandler(this.btnSaveRoutes_Click);
             // 
             // chbRouteEnabled
             // 
-            this.chbRouteEnabled.AutoSize = true;
+            this.chbRouteEnabled.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chbRouteEnabled.Enabled = false;
             this.chbRouteEnabled.Location = new System.Drawing.Point(3, 3);
             this.chbRouteEnabled.Name = "chbRouteEnabled";
-            this.chbRouteEnabled.Size = new System.Drawing.Size(15, 14);
+            this.chbRouteEnabled.Size = new System.Drawing.Size(15, 20);
             this.chbRouteEnabled.TabIndex = 19;
+            this.chbRouteEnabled.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip.SetToolTip(this.chbRouteEnabled, "Is route used. Uncheck to disable it in manager (will lose name).");
             this.chbRouteEnabled.UseVisualStyleBackColor = true;
             this.chbRouteEnabled.CheckedChanged += new System.EventHandler(this.RouteInfo_Changed);
@@ -1052,7 +1124,7 @@
             this.btnRouteInfoSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnRouteInfoSave.FlatAppearance.BorderSize = 0;
             this.btnRouteInfoSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRouteInfoSave.Location = new System.Drawing.Point(198, 0);
+            this.btnRouteInfoSave.Location = new System.Drawing.Point(198, 3);
             this.btnRouteInfoSave.Name = "btnRouteInfoSave";
             this.btnRouteInfoSave.Size = new System.Drawing.Size(20, 20);
             this.btnRouteInfoSave.TabIndex = 18;
@@ -1065,7 +1137,7 @@
             this.tbRouteName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbRouteName.Enabled = false;
-            this.tbRouteName.Location = new System.Drawing.Point(24, 1);
+            this.tbRouteName.Location = new System.Drawing.Point(24, 3);
             this.tbRouteName.Name = "tbRouteName";
             this.tbRouteName.Size = new System.Drawing.Size(168, 20);
             this.tbRouteName.TabIndex = 17;
@@ -1081,14 +1153,15 @@
             this.tvRoutes.FullRowSelect = true;
             this.tvRoutes.HideSelection = false;
             this.tvRoutes.LabelEdit = true;
-            this.tvRoutes.Location = new System.Drawing.Point(0, 26);
+            this.tvRoutes.Location = new System.Drawing.Point(0, 29);
             this.tvRoutes.Name = "tvRoutes";
             this.tvRoutes.ShowLines = false;
             this.tvRoutes.ShowPlusMinus = false;
             this.tvRoutes.ShowRootLines = false;
-            this.tvRoutes.Size = new System.Drawing.Size(224, 185);
+            this.tvRoutes.Size = new System.Drawing.Size(224, 199);
             this.tvRoutes.StateImageList = this.il3State;
             this.tvRoutes.TabIndex = 16;
+            this.tvRoutes.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvRoutes_AfterLabelEdit);
             this.tvRoutes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvRoutes_AfterSelect);
             this.tvRoutes.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvRoutes_NodeMouseClick);
             // 
@@ -1099,6 +1172,20 @@
             this.il3State.Images.SetKeyName(0, "bulletMinus.png");
             this.il3State.Images.SetKeyName(1, "execute.png");
             // 
+            // btnManagerFileSave
+            // 
+            this.btnManagerFileSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnManagerFileSave.BackgroundImage = global::SHME.Properties.Resources.save;
+            this.btnManagerFileSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnManagerFileSave.FlatAppearance.BorderSize = 0;
+            this.btnManagerFileSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnManagerFileSave.Location = new System.Drawing.Point(853, 4);
+            this.btnManagerFileSave.Name = "btnManagerFileSave";
+            this.btnManagerFileSave.Size = new System.Drawing.Size(20, 20);
+            this.btnManagerFileSave.TabIndex = 29;
+            this.btnManagerFileSave.UseVisualStyleBackColor = true;
+            this.btnManagerFileSave.Click += new System.EventHandler(this.btnRoutesSave_Click);
+            // 
             // dlgOpen
             // 
             this.dlgOpen.DefaultExt = "xml";
@@ -1108,15 +1195,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(864, 261);
+            this.ClientSize = new System.Drawing.Size(877, 261);
+            this.Controls.Add(this.btnManagerFileSave);
+            this.Controls.Add(this.btnManagerFileReload);
+            this.Controls.Add(this.btnManagerFileLoad);
+            this.Controls.Add(this.tbManagerFile);
             this.Controls.Add(this.pnlMain);
-            this.Controls.Add(this.btnFileReload);
-            this.Controls.Add(this.btnFileLoad);
-            this.Controls.Add(this.tbFile);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(880, 300);
+            this.MinimumSize = new System.Drawing.Size(870, 300);
             this.Name = "FormCPlay";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "SHME: FS CoursePlay";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormCPlay_FormClosing);
             this.pnlMain.ResumeLayout(false);
@@ -1154,12 +1242,12 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnFileReload;
-        private System.Windows.Forms.Button btnFileLoad;
-        private System.Windows.Forms.TextBox tbFile;
-        private System.Windows.Forms.Button btnSaveRoute;
+        private System.Windows.Forms.Button btnManagerFileReload;
+        private System.Windows.Forms.Button btnManagerFileLoad;
+        private System.Windows.Forms.TextBox tbManagerFile;
+        private System.Windows.Forms.Button btnRouteSave;
         private System.Windows.Forms.Panel pnlMain;
-        private System.Windows.Forms.Button btnReloadRoute;
+        private System.Windows.Forms.Button btnRouteReload;
         private System.Windows.Forms.CheckedListBox clbWaypoints;
         private System.Windows.Forms.Panel pnlItems;
         private System.Windows.Forms.GroupBox gbEdit;
@@ -1210,12 +1298,17 @@
         private System.Windows.Forms.TextBox tb11;
         private System.Windows.Forms.NumericUpDown nud12;
         private System.Windows.Forms.GroupBox gbStepOffset;
-        private System.Windows.Forms.Button btnDeletePoint;
+        private System.Windows.Forms.Button btnPointDelete;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.OpenFileDialog dlgOpen;
         private System.Windows.Forms.CheckBox chbRouteEnabled;
-        private System.Windows.Forms.Button btnSavePoint;
+        private System.Windows.Forms.Button btnPointSave;
         private System.Windows.Forms.ImageList il3State;
-        private System.Windows.Forms.Button btnSaveRoutes;
+        private System.Windows.Forms.Button btnManagerFileSave;
+        private System.Windows.Forms.Button btnPointInsert;
+        private System.Windows.Forms.Button btnPointDeleteAll;
+        private System.Windows.Forms.Button btnPointsCheckInvert;
+        private System.Windows.Forms.Button btnPointsCheckAll;
+        private System.Windows.Forms.Button btnPointsUncheckAll;
     }
 }

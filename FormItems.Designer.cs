@@ -71,6 +71,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlItems = new System.Windows.Forms.Panel();
             this.gbAlign = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.gbFindAndReplace = new System.Windows.Forms.GroupBox();
             this.gbEdit = new System.Windows.Forms.GroupBox();
             this.btnPositionXsub = new System.Windows.Forms.Button();
@@ -104,8 +106,6 @@
             this.nudPositionXMax = new System.Windows.Forms.NumericUpDown();
             this.tbLine = new System.Windows.Forms.TextBox();
             this.splitter1 = new System.Windows.Forms.Splitter();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationZMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationYMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationXMin)).BeginInit();
@@ -136,9 +136,9 @@
             // 
             this.tbFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFilter.Location = new System.Drawing.Point(3, 3);
+            this.tbFilter.Location = new System.Drawing.Point(0, 3);
             this.tbFilter.Name = "tbFilter";
-            this.tbFilter.Size = new System.Drawing.Size(218, 20);
+            this.tbFilter.Size = new System.Drawing.Size(221, 20);
             this.tbFilter.TabIndex = 1;
             this.tbFilter.TextChanged += new System.EventHandler(this.tbFilter_TextChanged);
             this.tbFilter.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbFilter_KeyPress);
@@ -147,9 +147,9 @@
             // 
             this.tbFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFile.Location = new System.Drawing.Point(58, 4);
+            this.tbFile.Location = new System.Drawing.Point(58, 3);
             this.tbFile.Name = "tbFile";
-            this.tbFile.Size = new System.Drawing.Size(765, 20);
+            this.tbFile.Size = new System.Drawing.Size(757, 20);
             this.tbFile.TabIndex = 6;
             // 
             // nudRotationZMin
@@ -439,7 +439,6 @@
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(20, 20);
             this.btnSelect.TabIndex = 5;
-            this.btnSelect.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.toolTip.SetToolTip(this.btnSelect, "Demand all");
             this.btnSelect.UseVisualStyleBackColor = true;
             this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
@@ -491,7 +490,7 @@
             this.btnReplace.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnReplace.FlatAppearance.BorderSize = 0;
             this.btnReplace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReplace.Location = new System.Drawing.Point(134, 40);
+            this.btnReplace.Location = new System.Drawing.Point(121, 40);
             this.btnReplace.Name = "btnReplace";
             this.btnReplace.Size = new System.Drawing.Size(20, 20);
             this.btnReplace.TabIndex = 3;
@@ -505,7 +504,7 @@
             this.btnFileLoad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFileLoad.FlatAppearance.BorderSize = 0;
             this.btnFileLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFileLoad.Location = new System.Drawing.Point(6, 4);
+            this.btnFileLoad.Location = new System.Drawing.Point(6, 3);
             this.btnFileLoad.Name = "btnFileLoad";
             this.btnFileLoad.Size = new System.Drawing.Size(20, 20);
             this.btnFileLoad.TabIndex = 2;
@@ -520,7 +519,7 @@
             this.btnFileSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFileSave.FlatAppearance.BorderSize = 0;
             this.btnFileSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFileSave.Location = new System.Drawing.Point(829, 4);
+            this.btnFileSave.Location = new System.Drawing.Point(821, 3);
             this.btnFileSave.Name = "btnFileSave";
             this.btnFileSave.Size = new System.Drawing.Size(20, 20);
             this.btnFileSave.TabIndex = 8;
@@ -586,7 +585,7 @@
             this.btnFind.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFind.FlatAppearance.BorderSize = 0;
             this.btnFind.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFind.Location = new System.Drawing.Point(134, 16);
+            this.btnFind.Location = new System.Drawing.Point(121, 16);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(20, 20);
             this.btnFind.TabIndex = 3;
@@ -600,7 +599,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbReplace.Location = new System.Drawing.Point(4, 40);
             this.tbReplace.Name = "tbReplace";
-            this.tbReplace.Size = new System.Drawing.Size(124, 20);
+            this.tbReplace.Size = new System.Drawing.Size(111, 20);
             this.tbReplace.TabIndex = 1;
             this.toolTip.SetToolTip(this.tbReplace, "Replace with");
             // 
@@ -610,7 +609,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbFind.Location = new System.Drawing.Point(4, 16);
             this.tbFind.Name = "tbFind";
-            this.tbFind.Size = new System.Drawing.Size(124, 20);
+            this.tbFind.Size = new System.Drawing.Size(111, 20);
             this.tbFind.TabIndex = 0;
             this.toolTip.SetToolTip(this.tbFind, "Look for");
             // 
@@ -620,7 +619,7 @@
             this.btnItemsCheckAll.FlatAppearance.BorderSize = 0;
             this.btnItemsCheckAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnItemsCheckAll.Image = global::SHME.Properties.Resources.checkerFilled;
-            this.btnItemsCheckAll.Location = new System.Drawing.Point(6, 119);
+            this.btnItemsCheckAll.Location = new System.Drawing.Point(6, 118);
             this.btnItemsCheckAll.Name = "btnItemsCheckAll";
             this.btnItemsCheckAll.Size = new System.Drawing.Size(16, 16);
             this.btnItemsCheckAll.TabIndex = 17;
@@ -634,7 +633,7 @@
             this.btnItemsUncheckAll.FlatAppearance.BorderSize = 0;
             this.btnItemsUncheckAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnItemsUncheckAll.Image = global::SHME.Properties.Resources.checkerEmpty;
-            this.btnItemsUncheckAll.Location = new System.Drawing.Point(6, 153);
+            this.btnItemsUncheckAll.Location = new System.Drawing.Point(6, 152);
             this.btnItemsUncheckAll.Name = "btnItemsUncheckAll";
             this.btnItemsUncheckAll.Size = new System.Drawing.Size(16, 16);
             this.btnItemsUncheckAll.TabIndex = 17;
@@ -649,7 +648,7 @@
             this.btnItemsReload.BackgroundImage = global::SHME.Properties.Resources.reload;
             this.btnItemsReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnItemsReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnItemsReload.Location = new System.Drawing.Point(830, 259);
+            this.btnItemsReload.Location = new System.Drawing.Point(825, 434);
             this.btnItemsReload.Name = "btnItemsReload";
             this.btnItemsReload.Size = new System.Drawing.Size(19, 19);
             this.btnItemsReload.TabIndex = 24;
@@ -664,7 +663,7 @@
             this.btnFileReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFileReload.FlatAppearance.BorderSize = 0;
             this.btnFileReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFileReload.Location = new System.Drawing.Point(32, 4);
+            this.btnFileReload.Location = new System.Drawing.Point(32, 3);
             this.btnFileReload.Name = "btnFileReload";
             this.btnFileReload.Size = new System.Drawing.Size(20, 20);
             this.btnFileReload.TabIndex = 25;
@@ -678,7 +677,7 @@
             this.btnItemsCheckInvert.FlatAppearance.BorderSize = 0;
             this.btnItemsCheckInvert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnItemsCheckInvert.Image = global::SHME.Properties.Resources.checkerHalfFilled;
-            this.btnItemsCheckInvert.Location = new System.Drawing.Point(6, 136);
+            this.btnItemsCheckInvert.Location = new System.Drawing.Point(6, 135);
             this.btnItemsCheckInvert.Name = "btnItemsCheckInvert";
             this.btnItemsCheckInvert.Size = new System.Drawing.Size(16, 16);
             this.btnItemsCheckInvert.TabIndex = 33;
@@ -711,10 +710,10 @@
             this.clbItems.CheckOnClick = true;
             this.clbItems.HorizontalScrollbar = true;
             this.clbItems.IntegralHeight = false;
-            this.clbItems.Location = new System.Drawing.Point(3, 173);
+            this.clbItems.Location = new System.Drawing.Point(3, 172);
             this.clbItems.Name = "clbItems";
             this.clbItems.ScrollAlwaysVisible = true;
-            this.clbItems.Size = new System.Drawing.Size(846, 105);
+            this.clbItems.Size = new System.Drawing.Size(841, 281);
             this.clbItems.TabIndex = 21;
             this.clbItems.MouseClick += new System.Windows.Forms.MouseEventHandler(this.clbItems_MouseClick);
             this.clbItems.SelectedIndexChanged += new System.EventHandler(this.clbItems_SelectedIndexChanged);
@@ -728,12 +727,12 @@
             this.tvFilters.FullRowSelect = true;
             this.tvFilters.HideSelection = false;
             this.tvFilters.LabelEdit = true;
-            this.tvFilters.Location = new System.Drawing.Point(4, 48);
+            this.tvFilters.Location = new System.Drawing.Point(0, 49);
             this.tvFilters.Name = "tvFilters";
             this.tvFilters.ShowLines = false;
             this.tvFilters.ShowPlusMinus = false;
             this.tvFilters.ShowRootLines = false;
-            this.tvFilters.Size = new System.Drawing.Size(217, 230);
+            this.tvFilters.Size = new System.Drawing.Size(221, 404);
             this.tvFilters.StateImageList = this.il3State;
             this.tvFilters.TabIndex = 16;
             this.tvFilters.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvFilters_AfterLabelEdit);
@@ -759,9 +758,9 @@
             this.pnlFilters.Controls.Add(this.btnDeselect);
             this.pnlFilters.Controls.Add(this.btnInvertSelection);
             this.pnlFilters.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlFilters.Location = new System.Drawing.Point(0, 0);
+            this.pnlFilters.Location = new System.Drawing.Point(4, 4);
             this.pnlFilters.Name = "pnlFilters";
-            this.pnlFilters.Size = new System.Drawing.Size(224, 281);
+            this.pnlFilters.Size = new System.Drawing.Size(224, 453);
             this.pnlFilters.TabIndex = 15;
             // 
             // tableLayoutPanel1
@@ -804,9 +803,9 @@
             this.pnlItems.Controls.Add(this.btnItemsCheckAll);
             this.pnlItems.Controls.Add(this.btnItemsUncheckAll);
             this.pnlItems.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlItems.Location = new System.Drawing.Point(232, 0);
+            this.pnlItems.Location = new System.Drawing.Point(236, 4);
             this.pnlItems.Name = "pnlItems";
-            this.pnlItems.Size = new System.Drawing.Size(852, 281);
+            this.pnlItems.Size = new System.Drawing.Size(844, 453);
             this.pnlItems.TabIndex = 22;
             // 
             // gbAlign
@@ -819,12 +818,33 @@
             this.gbAlign.Controls.Add(this.nudPositionOffset);
             this.gbAlign.Controls.Add(this.nudRotationOffset);
             this.gbAlign.Controls.Add(this.nudPositionStep);
-            this.gbAlign.Location = new System.Drawing.Point(6, 30);
+            this.gbAlign.Location = new System.Drawing.Point(6, 28);
             this.gbAlign.Name = "gbAlign";
             this.gbAlign.Size = new System.Drawing.Size(170, 80);
             this.gbAlign.TabIndex = 34;
             this.gbAlign.TabStop = false;
             this.gbAlign.Text = "Aling";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label5.Location = new System.Drawing.Point(47, 62);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(32, 15);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Step";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label6.Location = new System.Drawing.Point(112, 62);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(38, 15);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Offset";
             // 
             // gbFindAndReplace
             // 
@@ -834,9 +854,9 @@
             this.gbFindAndReplace.Controls.Add(this.btnReplace);
             this.gbFindAndReplace.Controls.Add(this.tbReplace);
             this.gbFindAndReplace.Controls.Add(this.tbFind);
-            this.gbFindAndReplace.Location = new System.Drawing.Point(688, 30);
+            this.gbFindAndReplace.Location = new System.Drawing.Point(688, 28);
             this.gbFindAndReplace.Name = "gbFindAndReplace";
-            this.gbFindAndReplace.Size = new System.Drawing.Size(161, 66);
+            this.gbFindAndReplace.Size = new System.Drawing.Size(148, 66);
             this.gbFindAndReplace.TabIndex = 32;
             this.gbFindAndReplace.TabStop = false;
             this.gbFindAndReplace.Text = "Find and replace";
@@ -858,7 +878,7 @@
             this.gbEdit.Controls.Add(this.label9);
             this.gbEdit.Controls.Add(this.label10);
             this.gbEdit.Controls.Add(this.label11);
-            this.gbEdit.Location = new System.Drawing.Point(378, 30);
+            this.gbEdit.Location = new System.Drawing.Point(378, 28);
             this.gbEdit.Name = "gbEdit";
             this.gbEdit.Size = new System.Drawing.Size(116, 90);
             this.gbEdit.TabIndex = 31;
@@ -1069,7 +1089,7 @@
             this.gbLimitRotation.Controls.Add(this.nudRotationZMin);
             this.gbLimitRotation.Controls.Add(this.nudRotationZMax);
             this.gbLimitRotation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.gbLimitRotation.Location = new System.Drawing.Point(500, 30);
+            this.gbLimitRotation.Location = new System.Drawing.Point(500, 28);
             this.gbLimitRotation.Name = "gbLimitRotation";
             this.gbLimitRotation.Size = new System.Drawing.Size(182, 90);
             this.gbLimitRotation.TabIndex = 24;
@@ -1190,7 +1210,7 @@
             this.gbLimitPosition.Controls.Add(this.nudPositionXMin);
             this.gbLimitPosition.Controls.Add(this.nudPositionXMax);
             this.gbLimitPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.gbLimitPosition.Location = new System.Drawing.Point(184, 30);
+            this.gbLimitPosition.Location = new System.Drawing.Point(184, 28);
             this.gbLimitPosition.Name = "gbLimitPosition";
             this.gbLimitPosition.Size = new System.Drawing.Size(188, 90);
             this.gbLimitPosition.TabIndex = 23;
@@ -1303,11 +1323,11 @@
             // 
             this.tbLine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbLine.Location = new System.Drawing.Point(28, 122);
+            this.tbLine.Location = new System.Drawing.Point(28, 120);
             this.tbLine.Multiline = true;
             this.tbLine.Name = "tbLine";
             this.tbLine.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbLine.Size = new System.Drawing.Size(821, 45);
+            this.tbLine.Size = new System.Drawing.Size(816, 45);
             this.tbLine.TabIndex = 21;
             this.tbLine.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbLine_KeyPress);
             this.tbLine.Leave += new System.EventHandler(this.tbLine_Leave);
@@ -1315,48 +1335,28 @@
             // splitter1
             // 
             this.splitter1.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.splitter1.Location = new System.Drawing.Point(224, 0);
+            this.splitter1.Location = new System.Drawing.Point(228, 4);
             this.splitter1.MinExtra = 450;
             this.splitter1.MinimumSize = new System.Drawing.Size(6, 2);
             this.splitter1.MinSize = 150;
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(8, 281);
+            this.splitter1.Size = new System.Drawing.Size(8, 453);
             this.splitter1.TabIndex = 23;
             this.splitter1.TabStop = false;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(112, 62);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(38, 15);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "Offset";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(47, 62);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 15);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Step";
             // 
             // FormItems
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1084, 281);
+            this.ClientSize = new System.Drawing.Size(1084, 461);
             this.Controls.Add(this.pnlItems);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.pnlFilters);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1100, 320);
             this.Name = "FormItems";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.Padding = new System.Windows.Forms.Padding(4);
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SHME: FS Items";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormItems_FormClosing);

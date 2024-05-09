@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using LibPNGsharp;
+using static SHME.FormADrive;
 using static SHME.FormCPlay;
 using static SHME.FormItems;
 
@@ -13,22 +16,50 @@ namespace SHME
 {
     public partial class FormSHME : Form
     {
-        public static bool ReadTag(String line, String tag, ref String value)
+        static public void SetNUD(NumericUpDown nud, String s, NumberFormatInfo nfi)
         {
-            int start = line.IndexOf(tag);
-            if (start < 0)
-                return false;
-            int q1 = line.IndexOf('"', start) + 1; // first "
-            if (q1 < 0)
-                return false;
-            int q2 = line.IndexOf('"', q1); // second "
-            if (q2 < 0)
-                return false;
-            value = line.Substring(q1, q2 - q1);
-            return true;
+            double d = 0;
+            Double.TryParse(s, NumberStyles.Float, nfi, out d);
+            Decimal v = (Decimal)d;
+            nud.Value = (nud.Maximum < v)
+                ? nud.Maximum
+                : (nud.Minimum > v)
+                    ? nud.Minimum
+                    : v;
         }
 
-        public static void DrawArrayToArray(int[] aImg, int aImgW, int aImgH, int[] aCanvas, int aCanvasW, int aCanvasH, int x, int y)
+        static public void SetNUD360(NumericUpDown nud, String s, NumberFormatInfo nfi)
+        {
+            double v = 0,
+                min = (double)nud.Minimum,
+                max = (double)nud.Maximum;
+            double range = max - min;
+            Double.TryParse(s, NumberStyles.Float, nfi, out v);
+            v = (0 < v && max < v) ? v - Math.Floor  (v / range) * range // loop back
+              : (0 > v && min > v) ? v + Math.Ceiling(v / range) * range // loop back
+              : v;
+            nud.Value = (Decimal)v;
+        }
+
+        public static int ReadTag(String line, String attribute, out String value, out int end)
+        {
+            end= 0;
+            value = "";
+            // Find attribute
+            int start = line.IndexOf(' ' + attribute + '=');
+            if (start < 0)
+                if (start < 0)
+                    return 0;
+            // Extract value
+            int q1, q2;
+            if ((q1 = line.IndexOf('"', start) + 1) < 1) return 0; // Position first second "
+            if ((q2 = line.IndexOf('"', q1)) < 1) return 0; // Position after second "
+            value = line.Substring(q1, q2 - q1);
+            end = q2 + 1;
+            return start;
+        }
+
+        public static void DrawArrayToArray(int[] aCanvas, int aCanvasW, int aCanvasH, int[] aImg, int aImgW, int aImgH, int x, int y)
         {
             int ix, iy, iOffset = 0;
             int cy = y * aCanvasW, cOffset;
@@ -38,9 +69,9 @@ namespace SHME
                 if (0 <= iy + y && iy + y < aCanvasH)
                     for (ix = 0; ix < aImgW; ix++)
                     {
-                        if (0xFFFFFF < FormItems.icon[iOffset])
+                        if (0xFFFFFF < aImg[iOffset])
                             if (0 <= ix + x && ix + x < aCanvasW)
-                                aCanvas[cOffset] = FormItems.icon[iOffset];
+                                aCanvas[cOffset] = aImg[iOffset];
                         cOffset++;
                         iOffset++;
                     }
@@ -222,8 +253,8 @@ namespace SHME
 
             this.MouseWheel+= new System.Windows.Forms.MouseEventHandler(this.FormSHME_MouseScroll);
             FIs = new FormItems ();
-            FAD = new FormADrive(this);
-            FCP = new FormCPlay (this);
+            FAD = new FormADrive();
+            FCP = new FormCPlay ();
         }
 
         #region Theme pages
@@ -805,7 +836,7 @@ namespace SHME
         {
             if (!lblPointerLevel.Enabled) return;
             UInt16 mapXYLevel = HMap.Levels[mapX, mapY];
-            lblPointerPosition.Text = mapX + PointerSpliter + mapY;
+            lblPointerPosition.Text = mapX + PointerSpliter + mapY + "\r" + ((mapX << 1) - HMap.Width) + " m " + ((mapY << 1) - HMap.Height);
             lblPointerLevel.Text = mapXYLevel.ToString() + "\rx" + mapXYLevel.ToString(NumberFormat);
         }
 
@@ -1234,8 +1265,8 @@ namespace SHME
         private void FormSHME_Paint(object sender, PaintEventArgs e)
         {
             if (lockDrawing) return;
-            int portL = e.ClipRectangle.X,
-                portT = e.ClipRectangle.Y,
+            int portL = e.ClipRectangle.Left,
+                portT = e.ClipRectangle.Top,
                 portW = e.ClipRectangle.Width,
                 portH = e.ClipRectangle.Height;
             // Limit port by map area
@@ -1343,37 +1374,87 @@ namespace SHME
                 }
             }
 
+            // Calculate window port to map area
+            double mapAreaL = (mtsL << 1 >> zoom) - HMap.MaxX, // HMap points 2 meters apart => full size of icon
+                   mapAreaR = (mtsR << 1 >> zoom) - HMap.MaxX,
+                   mapAreaT = (mtsT << 1 >> zoom) - HMap.MaxY,
+                   mapAreaB = (mtsB << 1 >> zoom) - HMap.MaxY;
+            // Optimisations
+            double dx, dy, shift = (0 < zoom) ? delta : 0.5;
+            sx = (HMap.MaxX << zoom >> 1) + xShift - portL;
+            sy = (HMap.MaxY << zoom >> 1) + yShift - portT;
+
             // Draw Items
             if (chbItems.Checked)
             {
-                // Calculate window port to map area
-                double mapAreaL = (mtsL << 1 >> zoom) - HMap.MaxX - FormItems.iconW, // HMap points 2 meters apart => full size of icon
-                       mapAreaR = (mtsR << 1 >> zoom) - HMap.MaxX + FormItems.iconW,
-                       mapAreaT = (mtsT << 1 >> zoom) - HMap.MaxY - FormItems.iconH,
-                       mapAreaB = (mtsB << 1 >> zoom) - HMap.MaxY + FormItems.iconH;
-                // Optimisations
-                double dx, dy, mask = (0 < zoom) ? delta : 0.5;
-                sx = (HMap.MaxX << zoom >> 1) + xShift - portL - FormItems.iconCX;
-                sy = (HMap.MaxY << zoom >> 1) + yShift - portT - FormItems.iconCY;
+                double maLC = mapAreaL - FormItems.iconW,
+                       maRC = mapAreaR + FormItems.iconW,
+                       maTC = mapAreaT - FormItems.iconH,
+                       maBC = mapAreaB + FormItems.iconH;
+                x = sx - FormItems.iconCX;
+                y = sy - FormItems.iconCY;
                 // Loop through
-                foreach (FSItem Item in FIs.FSItemsShown)
+                foreach (FSItem Item in FIs.FSItemsShow)
                     if (Item.Position.present)
                     {
                         dx = Item.Position.x;
                         dy = Item.Position.z;
-                        if (mapAreaL <= dx && dx <= mapAreaR &&
-                            mapAreaT <= dy && dy <= mapAreaB)
-                            DrawArrayToArray(
+                        if (maLC <= dx && dx <= maRC &&
+                            maTC <= dy && dy <= maBC)
+                            DrawArrayToArray(buffer, mtsW, mtsH,
                                 FormItems.icon, FormItems.iconW, FormItems.iconH,
-                                buffer, portW, portH,
-                                (int)(dx * mask) + sx,
-                                (int)(dy * mask) + sy);
+                                (int)(dx * shift) + x,
+                                (int)(dy * shift) + y);
                     }
             }
+
+            // Draw CPlay
+            if (chbCPlay.Checked)
+                if (FCP.SelectedRoute != null)
+                {
+                    double maLC = mapAreaL - FormCPlay.pinW,
+                           maRC = mapAreaR + FormCPlay.pinW,
+                           maTC = mapAreaT - FormCPlay.pinH,
+                           maBC = mapAreaB + FormCPlay.pinH;
+                    x = sx - FormCPlay.pinCX;
+                    y = sy - FormCPlay.pinCY;
+                    foreach (CPWaypoint p in FCP.WaypointsShow)
+                        if (maLC <= p.x && p.x <= maRC &&
+                            maTC <= p.z && p.z <= maBC)
+                            DrawArrayToArray(buffer, mtsW, mtsH,
+                                (p.Action == "" ) ? FormCPlay.pinWork
+                              : (p.Action == "S") ? FormCPlay.pinStop
+                                                  : FormCPlay.pinEngage,
+                                FormCPlay.pinW, FormCPlay.pinH,
+                                (int)(p.x * shift) + x,
+                                (int)(p.z * shift) + y);
+                }
+
+            // Draw ADrive
+            if (chbADrive.Checked)
+                if (FAD.SelectedRoute != null)
+                {
+                    double maLC = mapAreaL - FormADrive.pinW,
+                           maRC = mapAreaR + FormADrive.pinW,
+                           maTC = mapAreaT - FormADrive.pinH,
+                           maBC = mapAreaB + FormADrive.pinH;
+                    x = sx - FormADrive.pinCX;
+                    y = sy - FormADrive.pinCY;
+                    foreach (FormADrive.Waypoint p in FAD.SelectedRoute.Points)
+                        if (maLC <= p.x && p.x <= maRC &&
+                            maTC <= p.z && p.z <= maBC)
+                            DrawArrayToArray(buffer, mtsW, mtsH,
+                                (p.flag) ? FormADrive.pinFlaged
+                                         : FormADrive.pinNormal,
+                                FormADrive.pinW, FormADrive.pinH,
+                                (int)(p.x * shift) + x,
+                                (int)(p.z * shift) + y);
+                }
 
             // Transfer
             Bitmap img = new Bitmap(mtsW, mtsH, mtsW << 2, PixelFormat.Format32bppRgb, Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0));
             e.Graphics.DrawImageUnscaled(img, portL, portT);
+
             // Add brushes
             if (lblPointerLevel.Enabled)
             {
@@ -1388,60 +1469,54 @@ namespace SHME
             if (chbADrive.Checked)
                 if (FAD.SelectedRoute != null)
                 {
+                    List<Waypoint> WPs = FAD.SelectedRoute.Points;
                     // Update x,y
-                    foreach (FormADrive.Waypoint p in FAD.SelectedRoute.Points)
+                    foreach (FormADrive.Waypoint p in WPs)
                     {
                         p.canvasX = ((int)((HMap.MaxX + p.x) * step) >> 1) + xShift;
                         p.canvasY = ((int)((HMap.MaxY + p.z) * step) >> 1) + yShift;
                     }
                     // Draw lines
                     FormADrive.Waypoint p2;
-                    foreach (FormADrive.Waypoint p in FAD.SelectedRoute.Points)
+                    for (iy = WPs.Count - 1; 0 <= iy; iy--)
                     {
-                        foreach (int id in p.inID)
+                        // Bidirectinal
+                        var bd = WPs[iy].inID.Intersect(WPs[iy].outID);
+                        foreach (int id in bd)
+                        //if (WPs[iy].Show || WPs[id - 1].Show) ;
                         {
                             if (id < 1) continue;
                             p2 = FAD.SelectedRoute.Points[id - 1];
-                            e.Graphics.DrawLine(new Pen(Color.Green), p.canvasX, p.canvasY, p2.canvasX, p2.canvasY);
+                            e.Graphics.DrawLine(FormADrive.pinConectionBD, WPs[iy].canvasX, WPs[iy].canvasY, p2.canvasX, p2.canvasY);
                         }
-                        foreach (int id in p.outID)
+                        // Omnidirectional
+                        var od = WPs[iy].inID.Union(WPs[iy].outID).Except(bd);
+                        foreach (int id in od)
+                        //if (WPs[iy].Show || WPs[id - 1].Show) ;
                         {
                             if (id < 1) continue;
                             p2 = FAD.SelectedRoute.Points[id - 1];
-                            e.Graphics.DrawLine(new Pen(Color.Green), p.canvasX, p.canvasY, p2.canvasX, p2.canvasY);
+                            e.Graphics.DrawLine(FormADrive.pinConectionOD, WPs[iy].canvasX, WPs[iy].canvasY, p2.canvasX, p2.canvasY);
                         }
                     }
-                    // Draw points
-                    foreach (FormADrive.Waypoint p in FAD.SelectedRoute.Points)
-                        if (portL <= p.canvasX + 6 && p.canvasX - 6 <= portR)
-                            if (portT <= p.canvasY + 6 && p.canvasY - 6 <= portB)
-                                e.Graphics.DrawEllipse(new Pen(Color.Black), p.canvasX - 2, p.canvasY - 2, 4, 4);
                 }
             // Draw CPlay
             if (chbCPlay.Checked)
                 if (FCP.SelectedRoute != null)
                 {
-                    sx = sy = iy = 0;
                     // Update x,y
-                    foreach (FormCPlay.Waypoint p in FCP.SelectedRoute.Points)
+                    foreach (CPWaypoint p in FCP.SelectedRoute.Waypoints)
                     {
                         p.canvasX = ((int)((HMap.MaxX + p.x) * step) >> 1) + xShift;
                         p.canvasY = ((int)((HMap.MaxY + p.z) * step) >> 1) + yShift;
                     }
                     // Draw lines
-                    foreach (FormCPlay.Waypoint p in FCP.SelectedRoute.Points)
-                    {
-                        if (0 < iy)
-                            e.Graphics.DrawLine(FormCPlay.pinConection, sx, sy, p.canvasX, p.canvasY);
-                        sx = p.canvasX;
-                        sy = p.canvasY;
-                        iy++;
-                    }
-                    // Draw points
-                    foreach (FormCPlay.Waypoint p in FCP.SelectedRoute.Points)
-                        if (portL <= p.canvasX + 6 && p.canvasX - 6 <= portR)
-                            if (portT <= p.canvasY + 6 && p.canvasY - 6 <= portB)
-                                e.Graphics.DrawEllipse(new Pen(Color.Black), p.canvasX - 2, p.canvasY - 2, 4, 4);
+                    List<CPWaypoint> WPs = FCP.SelectedRoute.Waypoints;
+                    for (iy = WPs.Count - 1; 0 < iy; iy--)
+                        if (WPs[iy].Show || WPs[iy - 1].Show)
+                            e.Graphics.DrawLine(FormCPlay.pinConection,
+                                WPs[iy - 1].canvasX, WPs[iy - 1].canvasY,
+                                WPs[iy    ].canvasX, WPs[iy    ].canvasY);
                 }
 
             /* <<< Test area >>> */
@@ -1879,7 +1954,8 @@ namespace SHME
         #region Additional
         public void IAC_Update()
         {
-            if (chbItems.Checked || chbADrive.Checked || chbCPlay.Checked) Canvas_Update();
+            if (chbItems.Checked || chbADrive.Checked || chbCPlay.Checked)
+                Canvas_Update();
         }
 
         private void IAC_CheckedChanged(object sender, EventArgs e) => Canvas_Update();

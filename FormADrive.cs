@@ -1,19 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using static SHME.FormADrive;
 
 namespace SHME
 {
     public partial class FormADrive : Form
     {
-        FormSHME Main;
-        static readonly String FloatFormat = "f2";
-        static readonly String IniFileName = "ADrive.ini";
-        static readonly NumberFormatInfo NFI = new CultureInfo("en-US", false).NumberFormat;
+        public const int pinW = 5, pinCX = 2,
+                         pinH = 5, pinCY = 2;
+        public static readonly int[] pinNormal = {
+            0x00000000, 0x7F00A000, 0x7F00A000, 0x7F00A000, 0x00000000,
+            0x7F00A000, 0x7F00A000, 0x00000000, 0x7F00A000, 0x7F00A000,
+            0x7F00A000, 0x00000000, 0x00000000, 0x00000000, 0x7F00A000,
+            0x7F00A000, 0x7F00A000, 0x00000000, 0x7F00A000, 0x7F00A000,
+            0x00000000, 0x7F00A000, 0x7F00A000, 0x7F00A000, 0x00000000};
+        public static readonly int[] pinFlaged = {
+            0x00000000, 0x7FEEEE00, 0x7FEEEE00, 0x7FEEEE00, 0x00000000,
+            0x7FEEEE00, 0x7FEEEE00, 0x00000000, 0x7FEEEE00, 0x7FEEEE00,
+            0x7FEEEE00, 0x00000000, 0x00000000, 0x00000000, 0x7FEEEE00,
+            0x7FEEEE00, 0x7FEEEE00, 0x00000000, 0x7FEEEE00, 0x7FEEEE00,
+            0x00000000, 0x7FEEEE00, 0x7FEEEE00, 0x7FEEEE00, 0x00000000};
+        public static readonly Pen pinConectionOD = new Pen(Color.Green);
+        public static readonly Pen pinConectionBD = new Pen(Color.Blue);
+
+        private const String FloatFormat = "f2";
+        private const String IniFileName = "ADrive.ini";
+        private static readonly NumberFormatInfo NFI = new CultureInfo("en-US", false).NumberFormat;
 
         public class Waypoint
         {
@@ -51,9 +67,10 @@ namespace SHME
 
             public void Read(String line)
             {
+                int tmp;
                 String s = "";
-                if (FormSHME.ReadTag(line, " n=", ref s)) name = s;
-                if (FormSHME.ReadTag(line, " i=", ref s)) int.TryParse(s, NumberStyles.Integer, NFI, out id);
+                FormSHME.ReadTag(line, " n=", out name, out tmp);
+                if (0 < FormSHME.ReadTag(line, " i=", out s, out tmp)) int.TryParse(s, out id);
             }
 
             public String GetLine() => 
@@ -77,10 +94,11 @@ namespace SHME
 
             public void Read(String line)
             {
+                int tmp;
                 String s = "";
-                if (FormSHME.ReadTag(line, " n=", ref s)) name = s;
-                if (FormSHME.ReadTag(line, " g=", ref s)) group = s;
-                if (FormSHME.ReadTag(line, " i=", ref s)) int.TryParse(s, NumberStyles.Integer, NFI, out point);
+                FormSHME.ReadTag(line, " n=", out name, out tmp);
+                FormSHME.ReadTag(line, " g=", out group, out tmp);
+                if (0 < FormSHME.ReadTag(line, " i=", out s, out tmp)) int.TryParse(s, out point);
             }
 
             public String GetLine() =>
@@ -110,12 +128,13 @@ namespace SHME
 
             public Route(String line)
             {
+                int tmp;
                 String s = "";
-                if (FormSHME.ReadTag(line, "name", ref s)) name = s;
-                if (FormSHME.ReadTag(line, "fileName", ref s)) fileName = s;
-                if (FormSHME.ReadTag(line, "map", ref s)) map = s;
-                if (FormSHME.ReadTag(line, "revision", ref s)) revision = s;
-                if (FormSHME.ReadTag(line, "date", ref s)) date = s;
+                FormSHME.ReadTag(line, "name", out name, out tmp);
+                FormSHME.ReadTag(line, "fileName", out fileName, out tmp);
+                FormSHME.ReadTag(line, "map", out map, out tmp);
+                FormSHME.ReadTag(line, "revision", out revision, out tmp);
+                FormSHME.ReadTag(line, "date", out date, out tmp);
             }
 
             public String Concatenate()
@@ -140,9 +159,8 @@ namespace SHME
         private Waypoint SelectedWaypoint = null;
 
         #region Form
-        public FormADrive(FormSHME main)//Ok
+        public FormADrive()//Ok
         {
-            Main = main;
             InitializeComponent();
             OptionsLoad();
         }
@@ -170,14 +188,14 @@ namespace SHME
                                 case "File" : tbFile.Text = value; break;
                                 case "Route": selectRouteFile   = value; break;
                                 // Position
-                                case "PositionStep"  : FormCPlay.SetNUD(nudPositionStep,   value); break;
-                                case "PositionOffset": FormCPlay.SetNUD(nudPositionOffset, value); break;
-                                case "LimitXMin"     : FormCPlay.SetNUD(nudLimitXMin,      value); break;
-                                case "LimitXMax"     : FormCPlay.SetNUD(nudLimitXMax,      value); break;
-                                case "LimitYMin"     : FormCPlay.SetNUD(nudLimitYMin,      value); break;
-                                case "LimitYMax"     : FormCPlay.SetNUD(nudLimitYMax,      value); break;
-                                case "LimitZMin"     : FormCPlay.SetNUD(nudLimitZMin,      value); break;
-                                case "LimitZMax"     : FormCPlay.SetNUD(nudLimitZMax,      value); break;
+                                case "PositionStep"  : FormSHME.SetNUD(nudPositionStep,   value, NFI); break;
+                                case "PositionOffset": FormSHME.SetNUD(nudPositionOffset, value, NFI); break;
+                                case "LimitXMin"     : FormSHME.SetNUD(nudLimitXMin,      value, NFI); break;
+                                case "LimitXMax"     : FormSHME.SetNUD(nudLimitXMax,      value, NFI); break;
+                                case "LimitYMin"     : FormSHME.SetNUD(nudLimitYMin,      value, NFI); break;
+                                case "LimitYMax"     : FormSHME.SetNUD(nudLimitYMax,      value, NFI); break;
+                                case "LimitZMin"     : FormSHME.SetNUD(nudLimitZMin,      value, NFI); break;
+                                case "LimitZMax"     : FormSHME.SetNUD(nudLimitZMax,      value, NFI); break;
                                 case "LimitX"        : cbLimitX.Checked = (value == "true"); break;
                                 case "LimitY"        : cbLimitY.Checked = (value == "true"); break;
                                 case "LimitZ"        : cbLimitZ.Checked = (value == "true"); break;
