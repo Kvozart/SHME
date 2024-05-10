@@ -60,7 +60,7 @@
             this.tbFind = new System.Windows.Forms.TextBox();
             this.btnItemsCheckAll = new System.Windows.Forms.Button();
             this.btnItemsUncheckAll = new System.Windows.Forms.Button();
-            this.btnItemsReload = new System.Windows.Forms.Button();
+            this.btnItemsUnroll = new System.Windows.Forms.Button();
             this.btnFileReload = new System.Windows.Forms.Button();
             this.btnItemsCheckInvert = new System.Windows.Forms.Button();
             this.btnFilterAdd = new System.Windows.Forms.Button();
@@ -151,6 +151,7 @@
             this.tbFile.Name = "tbFile";
             this.tbFile.Size = new System.Drawing.Size(757, 20);
             this.tbFile.TabIndex = 6;
+            this.toolTip.SetToolTip(this.tbFile, "Path to file with objects");
             // 
             // nudRotationZMin
             // 
@@ -310,7 +311,7 @@
             0,
             0,
             131072});
-            this.nudRotationStep.Location = new System.Drawing.Point(30, 42);
+            this.nudRotationStep.Location = new System.Drawing.Point(6, 43);
             this.nudRotationStep.Maximum = new decimal(new int[] {
             180,
             0,
@@ -341,7 +342,7 @@
             0,
             0,
             131072});
-            this.nudRotationOffset.Location = new System.Drawing.Point(100, 42);
+            this.nudRotationOffset.Location = new System.Drawing.Point(102, 42);
             this.nudRotationOffset.Maximum = new decimal(new int[] {
             180,
             0,
@@ -366,7 +367,7 @@
             0,
             0,
             131072});
-            this.nudPositionStep.Location = new System.Drawing.Point(30, 16);
+            this.nudPositionStep.Location = new System.Drawing.Point(6, 17);
             this.nudPositionStep.Maximum = new decimal(new int[] {
             128,
             0,
@@ -397,7 +398,7 @@
             0,
             0,
             196608});
-            this.nudPositionOffset.Location = new System.Drawing.Point(100, 16);
+            this.nudPositionOffset.Location = new System.Drawing.Point(102, 16);
             this.nudPositionOffset.Maximum = new decimal(new int[] {
             128,
             0,
@@ -462,7 +463,7 @@
             this.btnPositionAlign.FlatAppearance.BorderSize = 0;
             this.btnPositionAlign.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPositionAlign.Image = ((System.Drawing.Image)(resources.GetObject("btnPositionAlign.Image")));
-            this.btnPositionAlign.Location = new System.Drawing.Point(6, 16);
+            this.btnPositionAlign.Location = new System.Drawing.Point(76, 16);
             this.btnPositionAlign.Name = "btnPositionAlign";
             this.btnPositionAlign.Size = new System.Drawing.Size(20, 20);
             this.btnPositionAlign.TabIndex = 2;
@@ -475,7 +476,7 @@
             this.btnRotationAlign.FlatAppearance.BorderSize = 0;
             this.btnRotationAlign.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRotationAlign.Image = global::SHME.Properties.Resources.reload;
-            this.btnRotationAlign.Location = new System.Drawing.Point(6, 42);
+            this.btnRotationAlign.Location = new System.Drawing.Point(76, 42);
             this.btnRotationAlign.Name = "btnRotationAlign";
             this.btnRotationAlign.Size = new System.Drawing.Size(20, 20);
             this.btnRotationAlign.TabIndex = 2;
@@ -641,21 +642,21 @@
             this.btnItemsUncheckAll.UseVisualStyleBackColor = true;
             this.btnItemsUncheckAll.Click += new System.EventHandler(this.btnItemsSetAllChecks_Click);
             // 
-            // btnItemsReload
+            // btnItemsUnroll
             // 
-            this.btnItemsReload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnItemsReload.AutoEllipsis = true;
-            this.btnItemsReload.BackgroundImage = global::SHME.Properties.Resources.reload;
-            this.btnItemsReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnItemsReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnItemsReload.Location = new System.Drawing.Point(825, 434);
-            this.btnItemsReload.Name = "btnItemsReload";
-            this.btnItemsReload.Size = new System.Drawing.Size(19, 19);
-            this.btnItemsReload.TabIndex = 24;
-            this.toolTip.SetToolTip(this.btnItemsReload, "Undo");
-            this.btnItemsReload.UseVisualStyleBackColor = true;
-            this.btnItemsReload.Visible = false;
-            this.btnItemsReload.Click += new System.EventHandler(this.btnItemsReload_Click);
+            this.btnItemsUnroll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnItemsUnroll.AutoEllipsis = true;
+            this.btnItemsUnroll.BackgroundImage = global::SHME.Properties.Resources.reload;
+            this.btnItemsUnroll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnItemsUnroll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnItemsUnroll.Location = new System.Drawing.Point(825, 254);
+            this.btnItemsUnroll.Name = "btnItemsUnroll";
+            this.btnItemsUnroll.Size = new System.Drawing.Size(19, 19);
+            this.btnItemsUnroll.TabIndex = 24;
+            this.toolTip.SetToolTip(this.btnItemsUnroll, "Undo");
+            this.btnItemsUnroll.UseVisualStyleBackColor = true;
+            this.btnItemsUnroll.Visible = false;
+            this.btnItemsUnroll.Click += new System.EventHandler(this.btnItemsUnroll_Click);
             // 
             // btnFileReload
             // 
@@ -713,7 +714,7 @@
             this.clbItems.Location = new System.Drawing.Point(3, 172);
             this.clbItems.Name = "clbItems";
             this.clbItems.ScrollAlwaysVisible = true;
-            this.clbItems.Size = new System.Drawing.Size(841, 281);
+            this.clbItems.Size = new System.Drawing.Size(841, 101);
             this.clbItems.TabIndex = 21;
             this.clbItems.MouseClick += new System.Windows.Forms.MouseEventHandler(this.clbItems_MouseClick);
             this.clbItems.SelectedIndexChanged += new System.EventHandler(this.clbItems_SelectedIndexChanged);
@@ -732,7 +733,7 @@
             this.tvFilters.ShowLines = false;
             this.tvFilters.ShowPlusMinus = false;
             this.tvFilters.ShowRootLines = false;
-            this.tvFilters.Size = new System.Drawing.Size(221, 404);
+            this.tvFilters.Size = new System.Drawing.Size(221, 224);
             this.tvFilters.StateImageList = this.il3State;
             this.tvFilters.TabIndex = 16;
             this.tvFilters.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvFilters_AfterLabelEdit);
@@ -760,7 +761,7 @@
             this.pnlFilters.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlFilters.Location = new System.Drawing.Point(4, 4);
             this.pnlFilters.Name = "pnlFilters";
-            this.pnlFilters.Size = new System.Drawing.Size(224, 453);
+            this.pnlFilters.Size = new System.Drawing.Size(224, 273);
             this.pnlFilters.TabIndex = 15;
             // 
             // tableLayoutPanel1
@@ -787,7 +788,7 @@
             // 
             // pnlItems
             // 
-            this.pnlItems.Controls.Add(this.btnItemsReload);
+            this.pnlItems.Controls.Add(this.btnItemsUnroll);
             this.pnlItems.Controls.Add(this.clbItems);
             this.pnlItems.Controls.Add(this.btnFileReload);
             this.pnlItems.Controls.Add(this.tbFile);
@@ -805,7 +806,7 @@
             this.pnlItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlItems.Location = new System.Drawing.Point(236, 4);
             this.pnlItems.Name = "pnlItems";
-            this.pnlItems.Size = new System.Drawing.Size(844, 453);
+            this.pnlItems.Size = new System.Drawing.Size(844, 273);
             this.pnlItems.TabIndex = 22;
             // 
             // gbAlign
@@ -820,7 +821,7 @@
             this.gbAlign.Controls.Add(this.nudPositionStep);
             this.gbAlign.Location = new System.Drawing.Point(6, 28);
             this.gbAlign.Name = "gbAlign";
-            this.gbAlign.Size = new System.Drawing.Size(170, 80);
+            this.gbAlign.Size = new System.Drawing.Size(172, 80);
             this.gbAlign.TabIndex = 34;
             this.gbAlign.TabStop = false;
             this.gbAlign.Text = "Aling";
@@ -830,7 +831,7 @@
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(47, 62);
+            this.label5.Location = new System.Drawing.Point(23, 63);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(32, 15);
             this.label5.TabIndex = 13;
@@ -1340,7 +1341,7 @@
             this.splitter1.MinimumSize = new System.Drawing.Size(6, 2);
             this.splitter1.MinSize = 150;
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(8, 453);
+            this.splitter1.Size = new System.Drawing.Size(8, 273);
             this.splitter1.TabIndex = 23;
             this.splitter1.TabStop = false;
             // 
@@ -1348,7 +1349,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1084, 461);
+            this.ClientSize = new System.Drawing.Size(1084, 281);
             this.Controls.Add(this.pnlItems);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.pnlFilters);
@@ -1358,7 +1359,7 @@
             this.Padding = new System.Windows.Forms.Padding(4);
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SHME: FS Items";
+            this.Text = "SHME: FS Objects";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormItems_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationZMin)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationYMin)).EndInit();
@@ -1452,7 +1453,7 @@
         private System.Windows.Forms.GroupBox gbEdit;
         private System.Windows.Forms.Button btnItemsCheckAll;
         private System.Windows.Forms.Button btnItemsUncheckAll;
-        private System.Windows.Forms.Button btnItemsReload;
+        private System.Windows.Forms.Button btnItemsUnroll;
         private System.Windows.Forms.GroupBox gbFindAndReplace;
         private System.Windows.Forms.Button btnReplace;
         private System.Windows.Forms.TextBox tbReplace;

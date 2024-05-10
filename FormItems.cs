@@ -22,7 +22,7 @@ namespace SHME
             0x7F007F00, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x7F007F00,
             0x00000000, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x00000000};
 
-        private const String NumberFormat = "f4";
+        private const String FloatFormat = "f4";
         private const String IniFileName = "Items.ini";
         private static readonly NumberFormatInfo NFI = new CultureInfo("en-US", false).NumberFormat;
 
@@ -36,7 +36,7 @@ namespace SHME
             {
                 present = false;
                 x = y = z = 0;
-                start = FormSHME.ReadTag(line, attribute, out line, out end);
+                start = FormSHME.ReadTagsAttribute(line, attribute, out line, out end);
                 if (start < 1) return;
                 // Extract value
                 string[] v = line.Replace("  ", " ").Replace(',', '.').Split(' ');
@@ -46,9 +46,10 @@ namespace SHME
                 present = true;
             }
 
-            public void Align(double step, double offset, Boolean doRotation)
+            public bool Align(double step, double offset, Boolean doRotation)
             {
-                if (present || step == 0) return;
+                if (step == 0 && offset == 0) return false;
+                double ix = x, iy = y, iz = z;
                 if (doRotation)
                     y = Math.Round((y - offset) / step) * step + offset;
                 else
@@ -56,6 +57,7 @@ namespace SHME
                     x = Math.Round((x - offset) / step) * step + offset;
                     z = Math.Round((z - offset) / step) * step + offset;
                 }
+                return ix != x || iy != y || iz != z;
             }
 
             public void Increment(double stepX, double stepY, double stepZ)
@@ -65,26 +67,27 @@ namespace SHME
                 z += stepZ;
             }
 
-            public String GetLine(NumberFormatInfo nfi) =>
-                x.ToString(NumberFormat, nfi) + " " + 
-                y.ToString(NumberFormat, nfi) + " " + 
-                z.ToString(NumberFormat, nfi);
+            public String GetLine() =>
+                x.ToString(FloatFormat, NFI) + " " + 
+                y.ToString(FloatFormat, NFI) + " " + 
+                z.ToString(FloatFormat, NFI);
         }
 
         public class FSItem
         {
-            public String A = "", B = "", C = "", XMLLine = "", Line = "";
+            public String A = "", B = "", C = "";
             public xyzDouble Rotation = new xyzDouble(),
                              Position = new xyzDouble();
-            public bool Edited = false, Show;
+            // Own
+            public String XMLLine = "", Line = "";
+            public bool Edited = false, Show, Shown;
 
             public FSItem(String line) => ReadXMLLine(line, true);
 
             public void ReadXMLLine(String line = null, bool set = false)//
             {
                 if (line == null) line = XMLLine;
-                if (set) XMLLine = line;
-                Line = line;
+                if (set) XMLLine = Line = line;
 
                 Position.ReadXMLLine(line, "position", NFI);
                 Rotation.ReadXMLLine(line, "rotation", NFI);
@@ -105,17 +108,14 @@ namespace SHME
                 }
             }
 
-            public String GetXMLLine() => //
-                A + (Position.present
-                    ? " position=\"" + Position.GetLine(NFI) + '"'
-                    : "" ) +
-                B + (Rotation.present
-                    ? " rotation=\"" + Rotation.GetLine(NFI) + '"'
-                    : "" ) +
-                C;
+            public String GetXMLLine() => (Edited)
+                ? A + (Position.present ? " position=\"" + Position.GetLine() + '"' : "" ) +
+                  B + (Rotation.present ? " rotation=\"" + Rotation.GetLine() + '"' : "" ) +
+                  C
+                : XMLLine;
         }
 
-        private bool lockFilter = false;
+        private bool lockFilter = true;
         private String FileName = "";
         private List<FSItem> FSItems = new List<FSItem> { };
         public  List<FSItem> FSItemsShow = new List<FSItem> { };
@@ -208,23 +208,29 @@ namespace SHME
                     foreach (TreeNode tn in tvFilters.Nodes)
                         file.WriteLine("Filter\t" + tn.Text + "\t" + "*+-"[tn.StateImageIndex]);
                     // Position
-                    file.WriteLine("PositionStep\t"   + nudPositionStep.Value);
-                    file.WriteLine("PositionOffset\t" + nudPositionOffset.Value);
+                    file.WriteLine("PositionStep\t"   + nudPositionStep.Value.ToString(NFI));
+                    file.WriteLine("PositionOffset\t" + nudPositionOffset.Value.ToString(NFI));
                     file.WriteLine("PositionLimitX\t" + cbLimitPositionX.Checked.ToString());
                     file.WriteLine("PositionLimitY\t" + cbLimitPositionY.Checked.ToString());
                     file.WriteLine("PositionLimitZ\t" + cbLimitPositionZ.Checked.ToString());
-                    file.WriteLine("PositionXMin\t"   + nudPositionXMin.Value);    file.WriteLine("PositionXMax\t" + nudPositionXMax.Value);
-                    file.WriteLine("PositionYMin\t"   + nudPositionYMin.Value);    file.WriteLine("PositionYMax\t" + nudPositionYMax.Value);
-                    file.WriteLine("PositionZMin\t"   + nudPositionZMin.Value);    file.WriteLine("PositionZMax\t" + nudPositionZMax.Value);
+                    file.WriteLine("PositionXMin\t"   + nudPositionXMin.Value.ToString(NFI));
+                    file.WriteLine("PositionXMax\t"   + nudPositionXMax.Value.ToString(NFI));
+                    file.WriteLine("PositionYMin\t"   + nudPositionYMin.Value.ToString(NFI));
+                    file.WriteLine("PositionYMax\t"   + nudPositionYMax.Value.ToString(NFI));
+                    file.WriteLine("PositionZMin\t"   + nudPositionZMin.Value.ToString(NFI));
+                    file.WriteLine("PositionZMax\t"   + nudPositionZMax.Value.ToString(NFI));
                     // Rotation
-                    file.WriteLine("RotationStep\t"   + nudRotationStep.Value);
-                    file.WriteLine("RotationOffset\t" + nudRotationOffset.Value);
+                    file.WriteLine("RotationStep\t"   + nudRotationStep.Value.ToString(NFI));
+                    file.WriteLine("RotationOffset\t" + nudRotationOffset.Value.ToString(NFI));
                     file.WriteLine("RotationLimitX\t" + cbLimitRotationX.Checked.ToString());
                     file.WriteLine("RotationLimitY\t" + cbLimitRotationY.Checked.ToString());
                     file.WriteLine("RotationLimitZ\t" + cbLimitRotationZ.Checked.ToString());
-                    file.WriteLine("RotationXMin\t"   + nudRotationXMin.Value);    file.WriteLine("RotationXMax\t" + nudRotationXMax.Value);
-                    file.WriteLine("RotationYMin\t"   + nudRotationYMin.Value);    file.WriteLine("RotationYMax\t" + nudRotationYMax.Value);
-                    file.WriteLine("RotationZMin\t"   + nudRotationZMin.Value);    file.WriteLine("RotationZMax\t" + nudRotationZMax.Value);
+                    file.WriteLine("RotationXMin\t"   + nudRotationXMin.Value.ToString(NFI));
+                    file.WriteLine("RotationXMax\t"   + nudRotationXMax.Value.ToString(NFI));
+                    file.WriteLine("RotationYMin\t"   + nudRotationYMin.Value.ToString(NFI));
+                    file.WriteLine("RotationYMax\t"   + nudRotationYMax.Value.ToString(NFI));
+                    file.WriteLine("RotationZMin\t"   + nudRotationZMin.Value.ToString(NFI)); 
+                    file.WriteLine("RotationZMax\t"   + nudRotationZMax.Value.ToString(NFI));
                     // Find & Replace
                     file.WriteLine("Find\t"    + tbFind   .Text.Replace("\t", "&#9;"));
                     file.WriteLine("Replace\t" + tbReplace.Text.Replace("\t", "&#9;"));
@@ -274,7 +280,9 @@ namespace SHME
                 using (StreamWriter file = File.CreateText(FileName))
                     foreach (FSItem line in FSItems)
                     {
-                        file.WriteLine(line.GetXMLLine());
+                        if (line.Edited) line.XMLLine = line.GetXMLLine();
+                        file.WriteLine(line.XMLLine);
+                        line.Edited = false;
                     }
             }
             catch (Exception exc)
@@ -302,9 +310,7 @@ namespace SHME
 
         private void tvFilters_AfterSelect(object sender, TreeViewEventArgs e)//Ok
         {
-            tbFilter.Text = (tvFilters.SelectedNode != null)
-                ? tvFilters.SelectedNode.Text
-                : "";
+            tbFilter.Text = tvFilters.SelectedNode?.Text ?? "";
             Update_FiltersButtons();
         }
 
@@ -358,7 +364,12 @@ namespace SHME
                     = (tbFilter.Text != tvFilters.SelectedNode.Text);
         }
 
-        private void LimitFilter_Changed(object sender, EventArgs e) => FilterItems();
+        private void LimitFilter_Changed(object sender, EventArgs e)
+        {
+            if (cbLimitPositionX.Checked || cbLimitPositionX.Checked || cbLimitPositionZ.Checked ||
+                cbLimitRotationX.Checked || cbLimitRotationX.Checked || cbLimitRotationZ.Checked)
+                FilterItems();
+        }
 
         private void tvFilters_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
@@ -383,8 +394,10 @@ namespace SHME
 
         private void tvFilters_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
+            String s = e.Label ?? e.Node.Text;
+            if (tbFilter.Text == s) return;
             tbFilter.TextChanged -= tbFilter_TextChanged;
-            tbFilter.Text = e.Label ?? e.Node.Text;
+            tbFilter.Text = s;
             tbFilter.TextChanged += tbFilter_TextChanged;
             btnFilterAdd.Visible
                 = btnFilterSave.Visible
@@ -417,15 +430,15 @@ namespace SHME
             clbItems.Items.Clear();
             FSItemsShow.Clear();
             // Prepare
-            Double minPX   = (Double)nudPositionXMin.Value,   maxPX = (Double)nudPositionXMax.Value,
-                   minPY   = (Double)nudPositionYMin.Value,   maxPY = (Double)nudPositionYMax.Value,
-                   minPZ   = (Double)nudPositionZMin.Value,   maxPZ = (Double)nudPositionZMax.Value,
-                   minRX   = (Double)nudRotationXMin.Value,   maxRX = (Double)nudRotationXMax.Value,
-                   minRY   = (Double)nudRotationYMin.Value,   maxRY = (Double)nudRotationYMax.Value,
-                   minRZ   = (Double)nudRotationZMin.Value,   maxRZ = (Double)nudRotationZMax.Value;
-            bool limitPX   =     cbLimitPositionX.Checked,  limitRX =     cbLimitRotationX.Checked,
-                 limitPY   =     cbLimitPositionY.Checked,  limitRY =     cbLimitRotationY.Checked,
-                 limitPZ   =     cbLimitPositionZ.Checked,  limitRZ =     cbLimitRotationZ.Checked;
+            Double minPX = (Double)nudPositionXMin.Value,  maxPX = (Double)nudPositionXMax.Value,
+                   minPY = (Double)nudPositionYMin.Value,  maxPY = (Double)nudPositionYMax.Value,
+                   minPZ = (Double)nudPositionZMin.Value,  maxPZ = (Double)nudPositionZMax.Value,
+                   minRX = (Double)nudRotationXMin.Value,  maxRX = (Double)nudRotationXMax.Value,
+                   minRY = (Double)nudRotationYMin.Value,  maxRY = (Double)nudRotationYMax.Value,
+                   minRZ = (Double)nudRotationZMin.Value,  maxRZ = (Double)nudRotationZMax.Value;
+            bool limitPX =     cbLimitPositionX.Checked, limitRX =     cbLimitRotationX.Checked,
+                 limitPY =     cbLimitPositionY.Checked, limitRY =     cbLimitRotationY.Checked,
+                 limitPZ =     cbLimitPositionZ.Checked, limitRZ =     cbLimitRotationZ.Checked;
             bool limitP = (limitPX || limitPY || limitPZ),
                  limitR = (limitRX || limitRY || limitRZ);
             bool skip;
@@ -435,9 +448,9 @@ namespace SHME
                 item.Show
                     = skip
                     = false;
-                foreach (TreeNode Filter in tvFilters.Nodes)
-                    if (0 < Filter.StateImageIndex)
-                        if (item.Line.Contains(Filter.Text) == (2 == Filter.StateImageIndex))
+                foreach (TreeNode filter in tvFilters.Nodes)
+                    if (0 < filter.StateImageIndex)
+                        if (item.Line.Contains(filter.Text) == (2 == filter.StateImageIndex))
                         {
                             skip = true;
                             break;
@@ -475,13 +488,15 @@ namespace SHME
                 return;
             foreach (int i in clbItems.CheckedIndices)
             {
-                FSItemsShow[i].Position.Align(step, offset, false);
-                clbItems.Items[i]
-                    = FSItemsShow[i].Line
-                    = FSItemsShow[i].GetXMLLine();
-                FSItemsShow[i].Edited = true;
+                if (FSItemsShow[i].Position.Align(step, offset, false))
+                {
+                    FSItemsShow[i].Edited = true;
+                    clbItems.Items[i]
+                        = FSItemsShow[i].Line
+                        = FSItemsShow[i].GetXMLLine();
+                }
             }
-            btnItemsReload.Visible = true;
+            btnItemsUnroll.Visible = true;
             FormSHME.Main.IAC_Update();
         }
 
@@ -493,13 +508,15 @@ namespace SHME
                 return;
             foreach (int i in clbItems.CheckedIndices)
             {
-                FSItemsShow[i].Rotation.Align(step, offset, true);
-                clbItems.Items[i]
-                    = FSItemsShow[i].Line
-                    = FSItemsShow[i].GetXMLLine();
-                FSItemsShow[i].Edited = true;
+                if (FSItemsShow[i].Rotation.Align(step, offset, true))
+                {
+                    FSItemsShow[i].Edited = true;
+                    clbItems.Items[i]
+                        = FSItemsShow[i].Line
+                        = FSItemsShow[i].GetXMLLine();
+                }
             }
-            btnItemsReload.Visible = true;
+            btnItemsUnroll.Visible = true;
             FormSHME.Main.IAC_Update();
         }
 
@@ -547,9 +564,9 @@ namespace SHME
             clbItems.Items[i]
                 = FSItemsShow[i].Line
                 = tbLine.Text;
-            FSItemsShow[i].ReadXMLLine();
             FSItemsShow[i].Edited = true;
-            btnItemsReload.Visible = true;
+            FSItemsShow[i].ReadXMLLine(tbLine.Text);
+            btnItemsUnroll.Visible = true;
             FormSHME.Main.IAC_Update();
         }
 
@@ -569,12 +586,12 @@ namespace SHME
                 item = FSItemsShow[i];
                 if (doRotation) item.Rotation.Increment(x, y, z);
                 else            item.Position.Increment(x, y, z);
+                item.Edited = true;
                 clbItems.Items[i]
                     = item.Line
                     = item.GetXMLLine();
-                item.Edited = true;
             }
-            btnItemsReload.Visible = true;
+            btnItemsUnroll.Visible = true;
             FormSHME.Main.IAC_Update();
         }
 
@@ -615,15 +632,15 @@ namespace SHME
                 clbItems.Items[i]
                     = item.Line
                     = item.Line.Replace(f, r);
-                item.ReadXMLLine();
                 item.Edited = true;
+                item.ReadXMLLine(item.Line);
             }
             clbItems.EndUpdate();
-            btnItemsReload.Visible = true;
+            btnItemsUnroll.Visible = true;
             FormSHME.Main.IAC_Update();
         }
 
-        private void btnItemsReload_Click(object sender, EventArgs e)//Ok
+        private void btnItemsUnroll_Click(object sender, EventArgs e)//Ok
         {
             clbItems.BeginUpdate();
             for (int i = FSItemsShow.Count - 1; 0 <= i; i--)
@@ -637,7 +654,7 @@ namespace SHME
                     FSItems[i].Edited = false;
                 }
             clbItems.EndUpdate();
-            btnItemsReload.Visible = false;
+            btnItemsUnroll.Visible = false;
             FormSHME.Main.IAC_Update();
         }
         #endregion

@@ -18,14 +18,12 @@ namespace SHME
     {
         static public void SetNUD(NumericUpDown nud, String s, NumberFormatInfo nfi)
         {
-            double d = 0;
+            double d;
             Double.TryParse(s, NumberStyles.Float, nfi, out d);
             Decimal v = (Decimal)d;
-            nud.Value = (nud.Maximum < v)
-                ? nud.Maximum
-                : (nud.Minimum > v)
-                    ? nud.Minimum
-                    : v;
+            nud.Value = (nud.Maximum < v) ? nud.Maximum
+                      : (nud.Minimum > v) ? nud.Minimum
+                                          : v;
         }
 
         static public void SetNUD360(NumericUpDown nud, String s, NumberFormatInfo nfi)
@@ -37,11 +35,11 @@ namespace SHME
             Double.TryParse(s, NumberStyles.Float, nfi, out v);
             v = (0 < v && max < v) ? v - Math.Floor  (v / range) * range // loop back
               : (0 > v && min > v) ? v + Math.Ceiling(v / range) * range // loop back
-              : v;
+                                   : v;
             nud.Value = (Decimal)v;
         }
 
-        public static int ReadTag(String line, String attribute, out String value, out int end)
+        public static int ReadTagsAttribute(String line, String attribute, out String value, out int end)
         {
             end= 0;
             value = "";
@@ -53,7 +51,7 @@ namespace SHME
             // Extract value
             int q1, q2;
             if ((q1 = line.IndexOf('"', start) + 1) < 1) return 0; // Position first second "
-            if ((q2 = line.IndexOf('"', q1)) < 1) return 0; // Position after second "
+            if ((q2 = line.IndexOf('"', q1   )    ) < 1) return 0; // Position after second "
             value = line.Substring(q1, q2 - q1);
             end = q2 + 1;
             return start;
@@ -1394,17 +1392,20 @@ namespace SHME
                 x = sx - FormItems.iconCX;
                 y = sy - FormItems.iconCY;
                 // Loop through
-                foreach (FSItem Item in FIs.FSItemsShow)
-                    if (Item.Position.present)
+                foreach (FSItem item in FIs.FSItemsShow)
+                    if (item.Position.present)
                     {
-                        dx = Item.Position.x;
-                        dy = Item.Position.z;
-                        if (maLC <= dx && dx <= maRC &&
-                            maTC <= dy && dy <= maBC)
+                        dx = item.Position.x;
+                        dy = item.Position.z;
+                        if (maLC <= dx && dx < maRC &&
+                            maTC <= dy && dy < maBC)
+                        {
                             DrawArrayToArray(buffer, mtsW, mtsH,
                                 FormItems.icon, FormItems.iconW, FormItems.iconH,
                                 (int)(dx * shift) + x,
                                 (int)(dy * shift) + y);
+                            item.Shown = true;
+                        }
                     }
             }
 
@@ -1419,15 +1420,18 @@ namespace SHME
                     x = sx - FormCPlay.pinCX;
                     y = sy - FormCPlay.pinCY;
                     foreach (CPWaypoint p in FCP.WaypointsShow)
-                        if (maLC <= p.x && p.x <= maRC &&
-                            maTC <= p.z && p.z <= maBC)
+                        if (maLC <= p.x && p.x < maRC &&
+                            maTC <= p.z && p.z < maBC)
+                        {
                             DrawArrayToArray(buffer, mtsW, mtsH,
-                                (p.Action == "" ) ? FormCPlay.pinWork
+                                (p.Action == "") ? FormCPlay.pinWork
                               : (p.Action == "S") ? FormCPlay.pinStop
                                                   : FormCPlay.pinEngage,
                                 FormCPlay.pinW, FormCPlay.pinH,
                                 (int)(p.x * shift) + x,
                                 (int)(p.z * shift) + y);
+                            p.Shown = true;
+                        }
                 }
 
             // Draw ADrive
@@ -1440,15 +1444,18 @@ namespace SHME
                            maBC = mapAreaB + FormADrive.pinH;
                     x = sx - FormADrive.pinCX;
                     y = sy - FormADrive.pinCY;
-                    foreach (FormADrive.Waypoint p in FAD.SelectedRoute.Points)
-                        if (maLC <= p.x && p.x <= maRC &&
-                            maTC <= p.z && p.z <= maBC)
+                    foreach (FormADrive.ADWaypoint p in FAD.SelectedRoute.Waypoints)
+                        if (maLC <= p.x && p.x < maRC &&
+                            maTC <= p.z && p.z < maBC)
+                        {
                             DrawArrayToArray(buffer, mtsW, mtsH,
                                 (p.flag) ? FormADrive.pinFlaged
                                          : FormADrive.pinNormal,
                                 FormADrive.pinW, FormADrive.pinH,
                                 (int)(p.x * shift) + x,
                                 (int)(p.z * shift) + y);
+                            p.Shown = true;
+                        }
                 }
 
             // Transfer
@@ -1469,34 +1476,26 @@ namespace SHME
             if (chbADrive.Checked)
                 if (FAD.SelectedRoute != null)
                 {
-                    List<Waypoint> WPs = FAD.SelectedRoute.Points;
+                    List<ADWaypoint> WPs = FAD.SelectedRoute.Waypoints;
                     // Update x,y
-                    foreach (FormADrive.Waypoint p in WPs)
+                    foreach (FormADrive.ADWaypoint p in WPs)
                     {
                         p.canvasX = ((int)((HMap.MaxX + p.x) * step) >> 1) + xShift;
                         p.canvasY = ((int)((HMap.MaxY + p.z) * step) >> 1) + yShift;
                     }
                     // Draw lines
-                    FormADrive.Waypoint p2;
+                    FormADrive.ADWaypoint p2;
                     for (iy = WPs.Count - 1; 0 <= iy; iy--)
                     {
-                        // Bidirectinal
-                        var bd = WPs[iy].inID.Intersect(WPs[iy].outID);
-                        foreach (int id in bd)
+                        var bd = WPs[iy].Links;
+                        foreach (ADLink l in bd)
                         //if (WPs[iy].Show || WPs[id - 1].Show) ;
                         {
-                            if (id < 1) continue;
-                            p2 = FAD.SelectedRoute.Points[id - 1];
-                            e.Graphics.DrawLine(FormADrive.pinConectionBD, WPs[iy].canvasX, WPs[iy].canvasY, p2.canvasX, p2.canvasY);
-                        }
-                        // Omnidirectional
-                        var od = WPs[iy].inID.Union(WPs[iy].outID).Except(bd);
-                        foreach (int id in od)
-                        //if (WPs[iy].Show || WPs[id - 1].Show) ;
-                        {
-                            if (id < 1) continue;
-                            p2 = FAD.SelectedRoute.Points[id - 1];
-                            e.Graphics.DrawLine(FormADrive.pinConectionOD, WPs[iy].canvasX, WPs[iy].canvasY, p2.canvasX, p2.canvasY);
+                            p2 = FAD.SelectedRoute.Waypoints[l.waypoint];
+                            e.Graphics.DrawLine(
+                                (l.direction == 3) ? ADLink.BD : ADLink.OD,
+                                WPs[iy].canvasX, WPs[iy].canvasY,
+                                     p2.canvasX,      p2.canvasY);
                         }
                     }
                 }

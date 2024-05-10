@@ -5,6 +5,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using static SHME.FormADrive;
 
 namespace SHME
 {
@@ -24,139 +26,174 @@ namespace SHME
             0x7FEEEE00, 0x00000000, 0x00000000, 0x00000000, 0x7FEEEE00,
             0x7FEEEE00, 0x7FEEEE00, 0x00000000, 0x7FEEEE00, 0x7FEEEE00,
             0x00000000, 0x7FEEEE00, 0x7FEEEE00, 0x7FEEEE00, 0x00000000};
-        public static readonly Pen pinConectionOD = new Pen(Color.Green);
-        public static readonly Pen pinConectionBD = new Pen(Color.Blue);
 
         private const String FloatFormat = "f2";
         private const String IniFileName = "ADrive.ini";
         private static readonly NumberFormatInfo NFI = new CultureInfo("en-US", false).NumberFormat;
 
-        public class Waypoint
+        public class ADLink
         {
-            public double x, y, z;
-            public bool flag = false;
-            public bool Edited = false;
-            public List<int> inID, outID;
-            public String Line = "";
-            public int id = 0;
-            public int canvasX, canvasY;
+            public int  waypoint  = 0;
+            public byte direction = 0;
+            public static readonly Pen OD = new Pen(Color.Green);
+            public static readonly Pen BD = new Pen(Color.Blue);
 
-            public void Align(double step, double offset)
+            public ADLink(byte setDirection, int setWaypoint)
             {
-                if (step == 0)
-                    return;
-                x = Math.Round((x - offset) / step) * step + offset;
-                z = Math.Round((z - offset) / step) * step + offset;
-            }
-
-            public String GetLine(String format) =>
-                id + "# " +
-                x.ToString(format, NFI) + ", " +
-                y.ToString(format, NFI) + ", " +
-                z.ToString(format, NFI) + ", " +
-                flag;
-        }
-
-        public class Waygroup
-        {
-            public String name = "";
-            public int id = 0;
-            public String Line = "";
-
-            public Waygroup(String line) => Read(line);
-
-            public void Read(String line)
-            {
-                int tmp;
-                String s = "";
-                FormSHME.ReadTag(line, " n=", out name, out tmp);
-                if (0 < FormSHME.ReadTag(line, " i=", out s, out tmp)) int.TryParse(s, out id);
-            }
-
-            public String GetLine() => 
-                "#" + id.ToString() + " " + name;
-
-            public String Concatenate() =>
-                "<g n=\"" + name +
-                "\" i=\"" + id.ToString() +
-                "\"/>";
-        }
-
-        public class Waymarker
-        {
-            public String name = "";
-            public String group = "";
-            public int groupID = 0;
-            public int point = 1;
-            public String Line = "";
-
-            public Waymarker(String line) => Read(line);
-
-            public void Read(String line)
-            {
-                int tmp;
-                String s = "";
-                FormSHME.ReadTag(line, " n=", out name, out tmp);
-                FormSHME.ReadTag(line, " g=", out group, out tmp);
-                if (0 < FormSHME.ReadTag(line, " i=", out s, out tmp)) int.TryParse(s, out point);
+                direction = setDirection;
+                waypoint  = setWaypoint;
             }
 
             public String GetLine() =>
-                "#" + point.ToString() +
-                " " + name +
-                " | " + group;
-
-            public String Concatenate() =>
-                "<m i=\"" + point.ToString() +
-                "\" n=\"" + name +
-                "\" g=\"" + group +
-                "\"/>";
+                "#" + waypoint;
         }
 
-        public class Route
+        public class ADWaypoint
         {
-            public String map = "";
-            public String name = "";
-            public String date = "";
-            public String fileName = "";
-            public String revision = "";
-            public List<String> lines = new List<String>();
-            // In file
-            public List<Waypoint>  Points  = new List<Waypoint>();
-            public List<Waygroup>  Groups  = new List<Waygroup>();
-            public List<Waymarker> Markers = new List<Waymarker>();
+            public double x, y, z;
+            public bool flag = false;
+            public List<ADLink> Links = new List<ADLink>();
+            public int id = 0;
+            // Own
+            public String XMLLine = "", Line = "";
+            public bool Edited = false, Show, Shown;
+            public int canvasX, canvasY;
 
-            public Route(String line)
+            public bool Align(double step, double offset)
             {
-                int tmp;
-                String s = "";
-                FormSHME.ReadTag(line, "name", out name, out tmp);
-                FormSHME.ReadTag(line, "fileName", out fileName, out tmp);
-                FormSHME.ReadTag(line, "map", out map, out tmp);
-                FormSHME.ReadTag(line, "revision", out revision, out tmp);
-                FormSHME.ReadTag(line, "date", out date, out tmp);
+                if (step == 0 && offset == 0) return false;
+                double ix = x, iz = z;
+                x = Math.Round((x - offset) / step) * step + offset;
+                z = Math.Round((z - offset) / step) * step + offset;
+                return ix != x || iz != z;
             }
 
-            public String Concatenate()
-            {
-                String s =
-                    "<route name=\"" + name +
-                    "\" fileName=\"" + fileName +
-                    "\" map=\"" + map +
-                    "\" revision=\"" + revision +
-                    "\" date=\"" + date +
-                    "\">\r\n";
-                foreach (String l in lines)
-                    s += l + "\r\n";
-                s += "</route>";
-                return s;
-            }
+            public String GetLine() =>
+                '#' + id + ' ' +
+                  x.ToString(FloatFormat, NFI) + ", " +
+                  y.ToString(FloatFormat, NFI) + ", " +
+                  z.ToString(FloatFormat, NFI) + ", " +
+                  flag;
+
+            public String GetXMLLine() => (Edited)
+                ? GetLine()
+                : XMLLine;
         }
 
-        private String ManagerFileName = "", SelectedRouteFileName = "";
-        private List<Route> Routes = new List<Route> { };
-        public Route SelectedRoute = null;
-        private Waypoint SelectedWaypoint = null;
+        public class ADGroup
+        {
+            public String name = "";
+            public int order = 0;
+            // Own
+            public String XMLLine = "", Line = "";
+            public bool Edited = false;
+
+            public ADGroup(String line) => ReadXMLLine(Line = line, true);
+            public void ReadXMLLine(String line = null, bool set = false)
+            {
+                if (line == null) line = XMLLine;
+                if (set) XMLLine = Line = line;
+
+                int tmp;
+                FormSHME.ReadTagsAttribute(line, "n", out name, out tmp);
+                if (0 < FormSHME.ReadTagsAttribute(line, "i", out line, out tmp)) int.TryParse(line, out order);
+            }
+
+            public String GetLine() =>
+                "#" + order + " " + name;
+
+            public String GetXMLLine() => (Edited)
+                ? "        <g n=\"" + name +
+                  "\" i=\"" + order +
+                  "\"/>"
+                : XMLLine;
+        }
+
+        public class ADMarker
+        {
+            public String name = "";
+            public String groupName = "";
+            public String waypoint = "1";
+            // Own
+            public int waypointID = 1;
+            public String XMLLine = "", Line = "";
+            public int groupID = 0;
+            public bool Edited = false, Show, Shown;
+
+            public ADMarker(String line) => ReadXMLLine(line, true);
+            public void ReadXMLLine(String line = null, bool set = false)
+            {
+                if (line == null) line = XMLLine;
+                if (set) XMLLine = Line = line;
+
+                int tmp;
+                FormSHME.ReadTagsAttribute(line, "n", out name, out tmp);
+                FormSHME.ReadTagsAttribute(line, "g", out groupName, out tmp);
+                if (FormSHME.ReadTagsAttribute(line, "i", out waypoint, out tmp) < 1) waypoint = "1";
+                int.TryParse(waypoint, out waypointID);
+                waypointID--;
+            }
+
+            public String GetLine() =>
+                "#" + waypointID +
+                " " + name +
+                " <" + groupName +
+                ">";
+
+            public String GetXMLLine() => (Edited)
+                ? "        <m i=\"" + waypointID +
+                  "\" n=\"" + name +
+                  "\" g=\"" + groupName +
+                  "\"/>"
+                : XMLLine;
+        }
+
+        public class ADRoute
+        {
+            public String name;
+            public String fileName;
+            public String map;
+            public String revision;
+            public String date;
+            public List<String> otherLines = new List<String>();
+            public String XMLLine, Line = "";
+            public bool InfoEdited = false;
+            // Route file
+            public List<ADWaypoint> Waypoints = new List<ADWaypoint>();
+            public List<ADMarker>   Markers   = new List<ADMarker>();
+            public List<ADGroup>    Groups    = new List<ADGroup>();
+            public bool Edited = false;
+
+            public ADRoute(String line) => ReadXMLLine(line, true);
+            public void ReadXMLLine(String line = null, bool set = false)//
+            {
+                if (line == null) line = XMLLine;
+                if (set) XMLLine = Line = line;
+
+                int tmp;
+                FormSHME.ReadTagsAttribute(line, "name",     out name,     out tmp);
+                FormSHME.ReadTagsAttribute(line, "fileName", out fileName, out tmp);
+                FormSHME.ReadTagsAttribute(line, "map",      out map,      out tmp);
+                FormSHME.ReadTagsAttribute(line, "revision", out revision, out tmp);
+                FormSHME.ReadTagsAttribute(line, "date",     out date,     out tmp);
+            }
+
+            public String GetXMLLine() => ((InfoEdited)
+                ? "<route name=\""     + name +
+                      "\" fileName=\"" + fileName +
+                      "\" map=\""      + map +
+                      "\" revision=\"" + revision +
+                      "\" date=\""     + date +
+                      "\">\r\n"
+                : XMLLine + "\r\n")
+                + String.Join("\r\n", otherLines) + "\r\n</route>";
+        }
+
+        private bool lockFilter = true;
+        private String ManagerFileName = "", RouteFilesPath = "";
+        private List<ADRoute> Routes = new List<ADRoute> { };
+        public ADRoute SelectedRoute = null;
+        private ADWaypoint SelectedWaypoint = null;
 
         #region Form
         public FormADrive()//Ok
@@ -167,6 +204,7 @@ namespace SHME
 
         public void OptionsLoad()//Ok
         {
+            lockFilter = true;
             String selectRouteFile = "";
             try
             {
@@ -185,8 +223,8 @@ namespace SHME
                             // Action
                             switch (option)
                             {
-                                case "File" : tbFile.Text = value; break;
-                                case "Route": selectRouteFile   = value; break;
+                                case "File" : tbManagerFile.Text = value; break;
+                                case "Route": selectRouteFile    = value; break;
                                 // Position
                                 case "PositionStep"  : FormSHME.SetNUD(nudPositionStep,   value, NFI); break;
                                 case "PositionOffset": FormSHME.SetNUD(nudPositionOffset, value, NFI); break;
@@ -196,9 +234,9 @@ namespace SHME
                                 case "LimitYMax"     : FormSHME.SetNUD(nudLimitYMax,      value, NFI); break;
                                 case "LimitZMin"     : FormSHME.SetNUD(nudLimitZMin,      value, NFI); break;
                                 case "LimitZMax"     : FormSHME.SetNUD(nudLimitZMax,      value, NFI); break;
-                                case "LimitX"        : cbLimitX.Checked = (value == "true"); break;
-                                case "LimitY"        : cbLimitY.Checked = (value == "true"); break;
-                                case "LimitZ"        : cbLimitZ.Checked = (value == "true"); break;
+                                case "LimitX"        : cbLimitX.Checked = (value.ToLower() == "true"); break;
+                                case "LimitY"        : cbLimitY.Checked = (value.ToLower() == "true"); break;
+                                case "LimitZ"        : cbLimitZ.Checked = (value.ToLower() == "true"); break;
                                 default:
                                     break;
                             }
@@ -212,8 +250,9 @@ namespace SHME
             // Update states
             nudPositionStep_ValueChanged(null, null);
             // Load file to edit
-            if (tbFile.Text != "")
-                Routes_Load(tbFile.Text, selectRouteFile);
+            lockFilter = false;
+            if (tbManagerFile.Text != "")
+                Routes_Load(tbManagerFile.Text, selectRouteFile);
         }
 
         public void OptionSave()//Ok
@@ -222,20 +261,20 @@ namespace SHME
             {
                 using (StreamWriter file = File.CreateText(IniFileName))
                 {
-                    file.WriteLine("File\t" + tbFile.Text);
+                    file.WriteLine("File\t" + tbManagerFile.Text);
                     if (SelectedRoute != null) file.WriteLine("Route\t" + SelectedRoute.fileName);
                     // Position
-                    file.WriteLine("PositionStep\t"   + nudPositionStep  .Value);
-                    file.WriteLine("PositionOffset\t" + nudPositionOffset.Value);
-                    file.WriteLine("LimitX\t" + cbLimitX.Checked.ToString());
-                    file.WriteLine("LimitY\t" + cbLimitY.Checked.ToString());
-                    file.WriteLine("LimitZ\t" + cbLimitZ.Checked.ToString());
-                    file.WriteLine("LimitXMin\t" + nudLimitXMin.Value);
-                    file.WriteLine("LimitYMin\t" + nudLimitYMin.Value);
-                    file.WriteLine("LimitZMin\t" + nudLimitZMin.Value);
-                    file.WriteLine("LimitXMax\t" + nudLimitXMax.Value);
-                    file.WriteLine("LimitYMax\t" + nudLimitYMax.Value);
-                    file.WriteLine("LimitZMax\t" + nudLimitZMax.Value);
+                    file.WriteLine("PositionStep\t"   + nudPositionStep  .Value.ToString(NFI));
+                    file.WriteLine("PositionOffset\t" + nudPositionOffset.Value.ToString(NFI));
+                    file.WriteLine("LimitXMin\t"      + nudLimitXMin     .Value.ToString(NFI));
+                    file.WriteLine("LimitXMax\t"      + nudLimitXMax     .Value.ToString(NFI));
+                    file.WriteLine("LimitYMin\t"      + nudLimitYMin     .Value.ToString(NFI));
+                    file.WriteLine("LimitYMax\t"      + nudLimitYMax     .Value.ToString(NFI));
+                    file.WriteLine("LimitZMin\t"      + nudLimitZMin     .Value.ToString(NFI));
+                    file.WriteLine("LimitZMax\t"      + nudLimitZMax     .Value.ToString(NFI));
+                    file.WriteLine("LimitX\t"         + cbLimitX.Checked       .ToString());
+                    file.WriteLine("LimitY\t"         + cbLimitY.Checked       .ToString());
+                    file.WriteLine("LimitZ\t"         + cbLimitZ.Checked       .ToString());
                     return;
                 }
             }
@@ -253,12 +292,12 @@ namespace SHME
         #endregion
 
         #region Routes
-        private void btnFileReload_Click(object sender, EventArgs e) => Routes_Load(tbFile.Text, SelectedRoute?.fileName);//Ok
-        private void btnFileLoad_Click(object sender, EventArgs e)//Ok
+        private void btnManagerReload_Click(object sender, EventArgs e) => Routes_Load(tbManagerFile.Text, SelectedRoute?.fileName);//Ok
+        private void btnManagerLoad_Click(object sender, EventArgs e)//Ok
         {
-            dlgOpen.FileName = Path.GetFileName(tbFile.Text);
-            if (tbFile.Text != "")
-                dlgOpen.InitialDirectory = Path.GetFullPath(tbFile.Text).Replace(Path.GetFileName(tbFile.Text), "");
+            dlgOpen.FileName = Path.GetFileName(tbManagerFile.Text);
+            if (tbManagerFile.Text != "")
+                dlgOpen.InitialDirectory = Path.GetFullPath(tbManagerFile.Text).Replace(Path.GetFileName(tbManagerFile.Text), "");
             if (dlgOpen.ShowDialog() != DialogResult.OK)
                 return;
             Routes_Load(dlgOpen.FileName);
@@ -268,7 +307,7 @@ namespace SHME
         {
             try
             {
-                Route r;
+                ADRoute r;
                 String s;
                 TreeNode n, sn = null;
                 Routes.Clear();
@@ -282,14 +321,12 @@ namespace SHME
                         if (!s.Contains("<route "))
                             continue;
                         // Add route record
-                        r = new Route(s);
-                        Routes.Add(r);
+                        Routes.Add(r = new ADRoute(s));
                         while (!file.EndOfStream)
                         {
                             s = file.ReadLine();
-                            if (s.Contains("</route>"))
-                                break;
-                            r.lines.Add(s);
+                            if (s.Contains("</route>")) break;
+                            r.otherLines.Add(s);
                         }
                         // Add to list
                         tvRoutes.Nodes.Add(n = new TreeNode(r.name));
@@ -297,9 +334,10 @@ namespace SHME
                             sn = n;
                         n.Tag = r;
                     }
-                ManagerFileName
-                    = tbFile.Text
-                    = fileName;
+                RouteFilesPath = Path.GetDirectoryName(
+                    tbManagerFile.Text
+                        = ManagerFileName
+                        = fileName);
                 tvRoutes.EndUpdate();
                 if (sn != null)
                 {
@@ -320,45 +358,66 @@ namespace SHME
             // Reset states
             btnRouteInfoSave.Visible = false;
             tbRouteName.Enabled = (tvRoutes.SelectedNode != null);
-            SelectedRoute = (tvRoutes.SelectedNode?.Tag as Route);
+            SelectedRoute = (tvRoutes.SelectedNode?.Tag as ADRoute);
             // Apply values
             tbRouteName.Text = SelectedRoute.name;
             Route_Load();
         }
 
-        private void Route_ValueChanged(object sender, EventArgs e) =>
-            btnRouteInfoSave.Visible = ((tvRoutes.SelectedNode.Tag as Route).name != tbRouteName.Text);
+        private void RouteInfo_ValueChanged(object sender, EventArgs e) =>
+            btnRouteInfoSave.Visible = ((tvRoutes.SelectedNode.Tag as ADRoute).name != tbRouteName.Text);
 
         private void tbRouteName_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar != '\r') return;
-            btnRouteNameSave_Click(null, null);
+            btnRouteInfoSave_Click(null, null);
             e.Handled = true;
         }
 
-        private void btnRouteNameSave_Click(object sender, EventArgs e)
+        private void tvRoutes_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            if (tvRoutes.SelectedNode == null) return;
-            Route r = (tvRoutes.SelectedNode.Tag as Route);
+            String s = e.Label ?? e.Node.Text;
+            if (tbRouteName.Text == s) return;
+            tbRouteName.TextChanged -= RouteInfo_ValueChanged;
+            tbRouteName.Text
+                = SelectedRoute.name
+                = s;
+            SelectedRoute.InfoEdited = true;
+            SelectedRoute.Line = SelectedRoute.GetXMLLine();
+            tbRouteName.TextChanged += RouteInfo_ValueChanged;
+            btnRouteInfoSave.Visible = false;
+        }
+
+        private void btnRouteInfoSave_Click(object sender, EventArgs e)
+        {
+            ADRoute r = (tvRoutes.SelectedNode?.Tag as ADRoute);
+            if (r == null) return;
             tvRoutes.SelectedNode.Text
                 = r.name
                 = tbRouteName.Text;
+            r.InfoEdited = true;
+            r.Line = r.GetXMLLine();
             // Update UI
             btnRouteInfoSave.Visible = false;
         }
 
-        private void btnSaveRoutes_Click(object sender, EventArgs e)//Ok
+        private void btnRoutesSave_Click(object sender, EventArgs e)//Ok
         {
             try
             {
                 using (StreamWriter file = File.CreateText(ManagerFileName))
                 {
                     file.WriteLine("<autoDriveRoutesManager>\r\n    <routes>");
-                    foreach (Route r in Routes)
-                        file.WriteLine("        " + r.Concatenate());
+                    foreach (ADRoute r in Routes)
+                    {
+                        file.WriteLine((r.InfoEdited)
+                            ? r.XMLLine = r.Line
+                            : r.XMLLine);
+                        r.InfoEdited = false;
+                    }
                     file.WriteLine("    </routes>\r\n</autoDriveRoutesManager>");
                 }
-                btnSaveRoutes.Visible = false;
+                btnManagerFileSave.Visible = false;
             }
             catch (Exception exc)
             {
@@ -368,12 +427,126 @@ namespace SHME
         #endregion
 
         #region Route
+        private void btnRouteReload_Click(object sender, EventArgs e) => Route_Load();
+        private void Route_Load()
+        {
+
+            //gbEdit.Enabled = false;
+            if (SelectedRoute == null)
+                return;
+            try
+            {
+                clbWaypoints.BeginUpdate();     clbWaypoints.Items.Clear();
+                cbbLinkPoint.BeginUpdate();     cbbLinkPoint.Items.Clear();
+                tvLinks.BeginUpdate();          tvLinks.Nodes.Clear();
+                //
+                cbbMarkerPoint.BeginUpdate();   cbbMarkerPoint.Items.Clear();
+                cbbMarkerGroup.BeginUpdate();   cbbMarkerGroup.Items.Clear();
+                clbMarkers.BeginUpdate();       clbMarkers.Items.Clear();
+                //
+                clbGroups.BeginUpdate();        clbGroups.Items.Clear();
+                // Prepare
+                int q1, q2;
+                String s, tag;
+                double[] x    = new double[0],
+                         y    = new double[0],
+                         z    = new double[0];
+                String[] flag = new String[0],
+                         iIDs = new String[0],
+                         oIDs = new String[0];
+                SelectedRoute.Groups.Clear();
+                SelectedRoute.Markers.Clear();
+                SelectedRoute.Waypoints.Clear();
+                using (StreamReader file = File.OpenText(RouteFilesPath + "\\routes\\" + SelectedRoute.fileName))
+                    while (!file.EndOfStream)
+                    {
+                        s = file.ReadLine();
+                        // Get container
+                        q1 = s.IndexOf("<") + 1;
+                        if (q1 < 1) continue;
+                        q2 = s.IndexOf(">", q1);
+                        if (q2 < 1) continue;
+                        tag = s.Substring(q1, q2 - q1);
+                        // Case
+                        switch (tag)
+                        {
+                            case "x"    : x    = BreakLine_Float(ExtractTagContent(s),      ';'); break;
+                            case "y"    : y    = BreakLine_Float(ExtractTagContent(s),      ';'); break;
+                            case "z"    : z    = BreakLine_Float(ExtractTagContent(s),      ';'); break;
+                            case "flags": flag =                 ExtractTagContent(s).Split(';'); break;
+                            case "in"   : iIDs =                 ExtractTagContent(s).Split(';'); break;
+                            case "out"  : oIDs =                 ExtractTagContent(s).Split(';'); break;
+                            default:
+                                tag = tag.Substring(0, 2);
+                                     if (tag == "m ") SelectedRoute.Markers.Add(new ADMarker(s));
+                                else if (tag == "g ") SelectedRoute.Groups .Add(new ADGroup (s));
+                                break;
+                        }
+                    }
+
+                // Sort and add groups
+                SelectedRoute.Groups.Sort((a, b) => (a.order < b.order) ? -1 : (a.order > b.order) ? 1 : 0);
+                foreach (ADGroup g in SelectedRoute.Groups)
+                {
+                    cbbMarkerGroup.Items.Add(s = g.GetLine());
+                    clbGroups.Items.Add(s);
+                }
+                // Build and add points
+                ADWaypoint p;
+                q2 = Math.Max(iIDs.Length,
+                     Math.Max(oIDs.Length,
+                     Math.Max(x   .Length,
+                     Math.Max(y   .Length,
+                     Math.Max(z   .Length,
+                              flag.Length)))));
+                int[] iID, oID;
+                IEnumerable<int> IDBD;
+                for (int i = 0; i < q2; i++)
+                {
+                    SelectedRoute.Waypoints.Add(p = new ADWaypoint());
+                    p.id = i + 1;
+                    if (i < x.Length) p.x = x[i];
+                    if (i < y.Length) p.y = y[i];
+                    if (i < z.Length) p.z = z[i];
+                    if (i < flag.Length) p.flag = (flag[i] == "1");
+                    iID = new int[0];
+                    oID = new int[0];
+                    if (i < iIDs.Length) if (iIDs[i] != "-1") iID = BreakLine_Integer(iIDs[i], ',');
+                    if (i < oIDs.Length) if (oIDs[i] != "-1") oID = BreakLine_Integer(oIDs[i], ',');
+                    IDBD = iID.Intersect(oID);
+                    foreach (int ID in IDBD)             p.Links.Add(new ADLink(3, ID - 1)); // Bidirectional
+                    foreach (int ID in iID.Except(IDBD)) p.Links.Add(new ADLink(2, ID - 1)); // In
+                    foreach (int ID in oID.Except(IDBD)) p.Links.Add(new ADLink(1, ID - 1)); // Out
+                    p.Links.Sort((a, b) => (a.waypoint < b.waypoint) ? -1 : (a.waypoint > b.waypoint) ? 1 : 0);
+                    cbbMarkerPoint.Items.Add(p.Line = p.GetLine());
+                }
+                // Add markers
+                foreach (ADMarker m in SelectedRoute.Markers)
+                {
+                    clbMarkers.Items.Add(m.GetLine());
+                    m.groupID = SelectedRoute.Groups.FindIndex(i => (i.name == m.groupName));
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+            clbWaypoints.EndUpdate();
+            cbbLinkPoint.EndUpdate();
+            tvLinks.EndUpdate();
+            //
+            cbbMarkerPoint.EndUpdate();
+            cbbMarkerGroup.EndUpdate();
+            clbMarkers.EndUpdate();
+            //
+            clbGroups.EndUpdate();
+            FilterWaypoints();
+        }
+
         private void nudPositionStep_ValueChanged(object sender, EventArgs e) => //Ok
             nudLimitXMin.Increment = nudLimitXMax.Increment =
             nudLimitYMin.Increment = nudLimitYMax.Increment =
             nudLimitZMin.Increment = nudLimitZMax.Increment = nudPositionStep.Value;
-
-        private void btnReloadRoute_Click(object sender, EventArgs e) => Route_Load();
 
         private void btnSaveRoute_Click(object sender, EventArgs e)
         {
@@ -386,8 +559,8 @@ namespace SHME
                     //    file.WriteLine("        " + r.Concatenate());
                     //file.WriteLine("    </routes>\r\n</autoDriveRoutesManager>");
                 }
-                btnSaveRoute.Visible
-                    = btnReloadRoute.Visible
+                btnRouteSave.Visible
+                    = btnRouteReload.Visible
                     = false;
             }
             catch (Exception exc)
@@ -426,125 +599,28 @@ namespace SHME
             return v;
         }
 
-        private void Route_Load()
+        private void FilterWaypoints()//Ok
         {
-            gbEdit.Visible
-                = btnReloadRoute.Enabled
-                = btnSaveRoute.Enabled
-                = false;
-            if (SelectedRoute == null)
-                return;
-            try
-            {
-                cbbMarkerPoint.BeginUpdate();    cbbMarkerPoint.Items.Clear();
-                cbbMarkerGroup.BeginUpdate();    cbbMarkerGroup.Items.Clear();
-                clbMarkers.BeginUpdate();        clbMarkers.Items.Clear();
-                clbGroups.BeginUpdate();         clbGroups.Items.Clear();
-                // Prepare
-                int q1, q2;
-                String s, tag;
-                double[] x = new double[0],
-                         y = new double[0],
-                         z = new double[0];
-                int[] flag = new int[0];
-                String[] iID = new String[0],
-                         oID = new String[0];
-                Waypoint p;
-                SelectedRoute.Points.Clear();
-                SelectedRoute.Groups.Clear();
-                SelectedRoute.Markers.Clear();
-                SelectedRouteFileName = tbFile.Text.Replace("routes.xml", "routes\\") + SelectedRoute.fileName;
-                using (StreamReader file = File.OpenText(SelectedRouteFileName))
-                    while (!file.EndOfStream)
-                    {
-                        s = file.ReadLine();
-                        // Get container
-                        q1 = s.IndexOf("<");
-                        if (q1 < 1) continue;
-                        q2 = s.IndexOf(">", q1);
-                        if (q2 < 1) continue;
-                        tag = s.Substring(q1, q2 - q1);
-                        // Case
-                        switch (tag)
-                        {
-                            case "<x": x = BreakLine_Float(ExtractTagContent(s), ';'); break;
-                            case "<y": y = BreakLine_Float(ExtractTagContent(s), ';'); break;
-                            case "<z": z = BreakLine_Float(ExtractTagContent(s), ';'); break;
-                            case "<flags": flag = BreakLine_Integer(ExtractTagContent(s), ';'); break;
-                            case "<in": iID = ExtractTagContent(s).Split(';'); break;
-                            case "<out": oID = ExtractTagContent(s).Split(';'); break;
-                            default:
-                                if (tag.Contains("<m "))
-                                    SelectedRoute.Markers.Add(new Waymarker(tag));
-                                if (tag.Contains("<g "))
-                                    SelectedRoute.Groups.Add(new Waygroup(tag));
-                                break;
-                        }
-                    }
-                // Sort and add groups
-                SelectedRoute.Groups.Sort(delegate (Waygroup a, Waygroup b)
-                    { return (a.id < b.id) ? -1 : (a.id > b.id) ? 1 : 0; });
-                foreach (Waygroup g in SelectedRoute.Groups)
-                {
-                    cbbMarkerGroup.Items.Add(s = g.GetLine());
-                    clbGroups.Items.Add(s);
-                }
-                // Build and add points
-                q2 = Math.Max(
-                    Math.Max(iID.Length, oID.Length),
-                    Math.Max(
-                        Math.Max(x.Length, y.Length),
-                        Math.Max(z.Length, flag.Length)));
-                for (int i = 0; i < q2; i++)
-                {
-                    SelectedRoute.Points.Add(p = new Waypoint());
-                    p.id = i + 1;
-                    if (i < x.Length) p.x = x[i];
-                    if (i < y.Length) p.y = y[i];
-                    if (i < z.Length) p.z = z[i];
-                    if (i < flag.Length) p.flag = (flag[i] != 0);
-                    if (i < iID.Length) p.inID  = BreakLine_Integer(iID[i], ',').ToList();
-                    if (i < oID.Length) p.outID = BreakLine_Integer(oID[i], ',').ToList();
-                    cbbMarkerPoint.Items.Add(p.Line = p.GetLine(FloatFormat));
-                }
-                // Add markers
-                foreach (Waymarker m in SelectedRoute.Markers)
-                {
-                    clbMarkers.Items.Add(m.GetLine());
-                    m.groupID = SelectedRoute.Groups.FindIndex(i => (i.name == m.group));
-                }
-                Waypoints_Show();
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message);
-            }
-            cbbMarkerPoint.EndUpdate();
-            cbbMarkerGroup.EndUpdate();
-            clbMarkers.EndUpdate();
-            clbGroups.EndUpdate();
-        }
-
-        private void cbLimit_ValueChanged(object sender, EventArgs e) => Waypoints_Show();
-
-        private void Waypoints_Show()//Ok
-        {
+            if (lockFilter) return;
             clbWaypoints.BeginUpdate();
             clbWaypoints.Items.Clear();
+            // Prepare
+            Double minX = (Double)nudLimitXMin.Value, maxX = (Double)nudLimitXMax.Value,
+                   minY = (Double)nudLimitYMin.Value, maxY = (Double)nudLimitYMax.Value,
+                   minZ = (Double)nudLimitZMin.Value, maxZ = (Double)nudLimitZMax.Value;
+            bool limitX = cbLimitX.Checked,
+                 limitY = cbLimitY.Checked,
+                 limitZ = cbLimitZ.Checked;
             // Select
-            foreach (Waypoint p in SelectedRoute.Points)
+            foreach (ADWaypoint p in SelectedRoute.Waypoints)
             {
-                if (cbLimitX.Checked)
-                    if (p.x < (Double)nudLimitXMin.Value || (Double)nudLimitXMax.Value < p.x)
-                        continue;
-                if (cbLimitX.Checked)
-                    if (p.y < (Double)nudLimitYMin.Value || (Double)nudLimitYMax.Value < p.y)
-                        continue;
-                if (cbLimitX.Checked)
-                    if (p.z < (Double)nudLimitZMin.Value || (Double)nudLimitZMax.Value < p.z)
-                        continue;
+                p.Show = false;
+                if (cbLimitX.Checked) if (p.x < (Double)nudLimitXMin.Value || (Double)nudLimitXMax.Value < p.x) continue;
+                if (cbLimitY.Checked) if (p.y < (Double)nudLimitYMin.Value || (Double)nudLimitYMax.Value < p.y) continue;
+                if (cbLimitZ.Checked) if (p.z < (Double)nudLimitZMin.Value || (Double)nudLimitZMax.Value < p.z) continue;
                 // Allowed
                 clbWaypoints.Items.Add(p.Line);
+                p.Show = true;
             }
             clbWaypoints.EndUpdate();
             FormSHME.Main.IAC_Update();
@@ -556,48 +632,58 @@ namespace SHME
             Double offset = (Double)nudPositionOffset.Value;
             if (clbWaypoints.CheckedIndices.Count < 1)
                 return;
+            ADWaypoint p;
             clbWaypoints.BeginUpdate();
             foreach (int i in clbWaypoints.CheckedIndices)
             {
-                SelectedRoute.Points[i].Align(step, offset);
-                clbWaypoints.Items[i]
-                    = SelectedRoute.Points[i].Line
-                    = SelectedRoute.Points[i].GetLine(FloatFormat);
-                SelectedRoute.Points[i].Edited = true;
+                p = SelectedRoute.Waypoints[i];
+                if (p.Align(step, offset))
+                {
+                    p.Edited = true;
+                    clbWaypoints.Items[i]
+                        = p.Line
+                        = p.GetLine();
+                }
             }
             // Finish
             clbWaypoints.EndUpdate();
-            btnReloadRoute.Visible
-                = btnSaveRoute.Visible
-                = true;
-            Waypoints_Show();
+            FilterWaypoints();
         }
+        #endregion
 
+        #region Point
         private void clbWaypoints_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btnSavePoint.Visible = false;
+            btnPointSave.Visible = false;
             if (clbWaypoints.SelectedIndex < 0 || SelectedRoute == null)
             {
                 SelectedWaypoint = null;
-                gbEdit.Visible = false;
+                gbWaypoint.Enabled = false;
+                tvLinks.Nodes.Clear();
                 return;
             }
-            SelectedWaypoint = SelectedRoute.Points[clbWaypoints.SelectedIndex];
+            SelectedWaypoint = SelectedRoute.Waypoints[clbWaypoints.SelectedIndex];
             nudX.Value = (decimal)SelectedWaypoint.x;
             nudY.Value = (decimal)SelectedWaypoint.y;
             nudZ.Value = (decimal)SelectedWaypoint.z;
             chbFlag.Checked = SelectedWaypoint.flag;
-            gbEdit.Visible = true;
+            TreeNode tn;
+            foreach (ADLink l in SelectedWaypoint.Links)
+            {
+                tvLinks.Nodes.Add(tn = new TreeNode(SelectedRoute.Waypoints[l.waypoint].Line));
+                tn.StateImageIndex = l.direction;
+            }
+            gbWaypoint.Enabled = true;
         }
 
-        private void PointInfo_Changed(object sender, EventArgs e) =>
-            btnRouteInfoSave.Visible = (
+        private void WaypointInfo_Changed(object sender, EventArgs e) =>
+            btnPointSave.Visible = (
                 (double)nudX.Value != SelectedWaypoint.x ||
                 (double)nudY.Value != SelectedWaypoint.y ||
                 (double)nudZ.Value != SelectedWaypoint.z ||
-                chbFlag.Checked != SelectedWaypoint.flag);
+                chbFlag.Checked    != SelectedWaypoint.flag);
 
-        private void btnSavePoint_Click(object sender, EventArgs e)
+        private void btnWaypointSave_Click(object sender, EventArgs e)
         {
             SelectedWaypoint.x = (double)nudX.Value; 
             SelectedWaypoint.y = (double)nudY.Value;
@@ -606,20 +692,52 @@ namespace SHME
             // Update UI
             clbWaypoints.SelectedItem
                 = SelectedWaypoint.Line
-                = SelectedWaypoint.GetLine(FloatFormat);
-            btnSaveRoute.Visible
-                = btnReloadRoute.Visible
+                = SelectedWaypoint.GetLine();
+            btnRouteSave.Visible
+                = btnRouteReload.Visible
                 = true;
             FormSHME.Main.IAC_Update();
         }
 
-        private void btnDeletePoint_Click(object sender, EventArgs e)
+        private void btnWaypointInsert_Click(object sender, EventArgs e)
+        {
+            //
+        }
+
+        private void btnWaypointDelete_Click(object sender, EventArgs e)
         {
             //
         }
         #endregion
 
-        #region Waymarker
+        #region Links
+        private void tvLinks_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            //
+        }
+
+        private void cbbWaypointLink_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //
+        }
+
+        private void btnLinkInsert_Click(object sender, EventArgs e)
+        {
+            //
+        }
+
+        private void btnLinkSave_Click(object sender, EventArgs e)
+        {
+            //
+        }
+
+        private void btnLinkDelete_Click(object sender, EventArgs e)
+        {
+            //
+        }
+        #endregion
+
+        #region Markers
         private void clbMarkers_SelectedIndexChanged(object sender, EventArgs e)
         {
             btnSaveMarker.Visible = false;
@@ -632,10 +750,10 @@ namespace SHME
                 cbbMarkerPoint.SelectedIndex = -1;
                 return;
             }
-            Waymarker m = SelectedRoute.Markers[id];
+            ADMarker m = SelectedRoute.Markers[id];
             tbMarkerName.Text = m.name;
             cbbMarkerGroup.SelectedIndex = m.groupID;
-            cbbMarkerPoint.SelectedIndex = m.point - 1;
+            cbbMarkerPoint.SelectedIndex = m.waypointID - 1;
             gbMarker.Enabled = true;
         }
 
@@ -643,11 +761,11 @@ namespace SHME
         {
             int id = clbMarkers.SelectedIndex;
             if (id < 0) return;
-            Waymarker m = SelectedRoute.Markers[id];
+            ADMarker m = SelectedRoute.Markers[id];
             btnSaveMarker.Visible = (
                 tbMarkerName.Text != m.name ||
                 cbbMarkerGroup.SelectedIndex != m.groupID ||
-                cbbMarkerPoint.SelectedIndex + 1 != m.point);
+                cbbMarkerPoint.SelectedIndex + 1 != m.waypointID);
         }
 
         private void btnMarkerSave_Click(object sender, EventArgs e)
@@ -655,11 +773,11 @@ namespace SHME
             btnSaveMarker.Visible = false;
             int id = clbMarkers.SelectedIndex;
             if (id < 0) return;
-            Waymarker m = SelectedRoute.Markers[id];
+            ADMarker m = SelectedRoute.Markers[id];
             m.name = tbMarkerName.Text;
             m.groupID = cbbMarkerGroup.SelectedIndex;
-            m.group = SelectedRoute.Groups[m.groupID].name;
-            m.point = cbbMarkerPoint.SelectedIndex + 1;
+            m.groupName = SelectedRoute.Groups[m.groupID].name;
+            m.waypointID = cbbMarkerPoint.SelectedIndex + 1;
             clbMarkers.Items[id]
                 = m.Line
                 = m.GetLine();
@@ -681,7 +799,7 @@ namespace SHME
         }
         #endregion
 
-        #region Waygroup
+        #region Groups
         private void clbGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
             btnSaveGroup.Visible = false;
@@ -693,10 +811,16 @@ namespace SHME
                 return;
             }
             gbGroup.Enabled = true;
-            Waygroup g = SelectedRoute.Groups[clbGroups.SelectedIndex];
-            lblGroupID.Text = g.id.ToString();
+            ADGroup g = SelectedRoute.Groups[clbGroups.SelectedIndex];
+            lblGroupID.Text = g.order.ToString();
             tbGroupName.Text = g.name;
-            btnDeleteGroup.Visible = (g.id != 1);
+            btnDeleteGroup.Visible = (g.order != 1);
+        }
+
+        private void Limit_ValueChanged(object sender, EventArgs e)
+        {
+            if (cbLimitX.Checked || cbLimitX.Checked || cbLimitZ.Checked) ;
+                //FilterWaypoints();
         }
 
         private void Group_ValueChanged(object sender, EventArgs e) =>
@@ -707,18 +831,18 @@ namespace SHME
             int id = clbGroups.SelectedIndex;
             btnSaveGroup.Visible = false;
             if (id < 0) return;
-            Waygroup g = SelectedRoute.Groups[id];
+            ADGroup g = SelectedRoute.Groups[id];
             g.name = tbGroupName.Text;
             g.Line = g.GetLine();
             cbbMarkerGroup.Items[id]
                 = clbGroups.Items[id]
                 = g.Line;
             int i = 0;
-            foreach (Waymarker m in SelectedRoute.Markers)
+            foreach (ADMarker m in SelectedRoute.Markers)
             {
                 if (id == m.groupID)
                 {
-                    m.group = g.Line;
+                    m.groupName = g.Line;
                     clbMarkers.Items[i]
                         = m.Line
                         = m.GetLine();
@@ -742,11 +866,11 @@ namespace SHME
             clbMarkers.BeginUpdate();
             // Update group selectors
             int i = 0;
-            foreach (Waygroup g in SelectedRoute.Groups)
+            foreach (ADGroup g in SelectedRoute.Groups)
             {
                 if (id < i)
                 {
-                    g.id--;
+                    g.order--;
                     clbGroups.Items[i]
                         = cbbMarkerGroup.Items[i]
                         = g.Line
@@ -757,13 +881,13 @@ namespace SHME
             // Update markers
             i = 0;
             String g0Name = SelectedRoute.Groups[0].name;
-            foreach (Waymarker m in SelectedRoute.Markers)
+            foreach (ADMarker m in SelectedRoute.Markers)
             {
                 if (id <= m.groupID)
                     if (id == m.groupID)
                     {
                         m.groupID = 0;
-                        m.group = g0Name;
+                        m.groupName = g0Name;
                         clbMarkers.Items[i] = m.Line = m.GetLine();
                     }
                     else 

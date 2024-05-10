@@ -35,6 +35,7 @@
             this.tbManagerFile = new System.Windows.Forms.TextBox();
             this.btnRouteSave = new System.Windows.Forms.Button();
             this.pnlMain = new System.Windows.Forms.Panel();
+            this.btnRouteClear = new System.Windows.Forms.Button();
             this.btnRouteReload = new System.Windows.Forms.Button();
             this.clbWaypoints = new System.Windows.Forms.CheckedListBox();
             this.pnlItems = new System.Windows.Forms.Panel();
@@ -50,8 +51,7 @@
             this.nudPositionStep = new System.Windows.Forms.NumericUpDown();
             this.btnFind = new System.Windows.Forms.Button();
             this.btnReplace = new System.Windows.Forms.Button();
-            this.gbEdit = new System.Windows.Forms.GroupBox();
-            this.btnPointDeleteAll = new System.Windows.Forms.Button();
+            this.gbWaypoint = new System.Windows.Forms.GroupBox();
             this.btnPointInsert = new System.Windows.Forms.Button();
             this.btnPointSave = new System.Windows.Forms.Button();
             this.chb14 = new System.Windows.Forms.CheckBox();
@@ -70,7 +70,6 @@
             this.nudZ = new System.Windows.Forms.NumericUpDown();
             this.nudY = new System.Windows.Forms.NumericUpDown();
             this.tbReplace = new System.Windows.Forms.TextBox();
-            this.lblR = new System.Windows.Forms.Label();
             this.tbFind = new System.Windows.Forms.TextBox();
             this.gbLimit = new System.Windows.Forms.GroupBox();
             this.cbLimitZ = new System.Windows.Forms.CheckBox();
@@ -85,9 +84,6 @@
             this.nudLimitYMax = new System.Windows.Forms.NumericUpDown();
             this.nudLimitXMin = new System.Windows.Forms.NumericUpDown();
             this.nudLimitXMax = new System.Windows.Forms.NumericUpDown();
-            this.lblZ = new System.Windows.Forms.Label();
-            this.lblY = new System.Windows.Forms.Label();
-            this.lblX = new System.Windows.Forms.Label();
             this.splitter = new System.Windows.Forms.Splitter();
             this.pnlFilters = new System.Windows.Forms.Panel();
             this.chbRouteEnabled = new System.Windows.Forms.CheckBox();
@@ -105,7 +101,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionOffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationOffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionStep)).BeginInit();
-            this.gbEdit.SuspendLayout();
+            this.gbWaypoint.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud05)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudR)).BeginInit();
@@ -135,7 +131,7 @@
             this.btnManagerFileReload.Size = new System.Drawing.Size(20, 20);
             this.btnManagerFileReload.TabIndex = 29;
             this.btnManagerFileReload.UseVisualStyleBackColor = true;
-            this.btnManagerFileReload.Click += new System.EventHandler(this.btnFileReload_Click);
+            this.btnManagerFileReload.Click += new System.EventHandler(this.btnManagerFileReload_Click);
             // 
             // btnManagerFileLoad
             // 
@@ -148,7 +144,7 @@
             this.btnManagerFileLoad.Size = new System.Drawing.Size(20, 20);
             this.btnManagerFileLoad.TabIndex = 26;
             this.btnManagerFileLoad.UseVisualStyleBackColor = true;
-            this.btnManagerFileLoad.Click += new System.EventHandler(this.btnFileLoad_Click);
+            this.btnManagerFileLoad.Click += new System.EventHandler(this.btnManagerFileLoad_Click);
             // 
             // tbManagerFile
             // 
@@ -156,8 +152,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbManagerFile.Location = new System.Drawing.Point(56, 4);
             this.tbManagerFile.Name = "tbManagerFile";
-            this.tbManagerFile.Size = new System.Drawing.Size(793, 20);
+            this.tbManagerFile.Size = new System.Drawing.Size(716, 20);
             this.tbManagerFile.TabIndex = 27;
+            this.toolTip.SetToolTip(this.tbManagerFile, "Path to manager file");
             // 
             // btnRouteSave
             // 
@@ -166,7 +163,7 @@
             this.btnRouteSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnRouteSave.FlatAppearance.BorderSize = 0;
             this.btnRouteSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnRouteSave.Location = new System.Drawing.Point(849, 208);
+            this.btnRouteSave.Location = new System.Drawing.Point(772, 208);
             this.btnRouteSave.Name = "btnRouteSave";
             this.btnRouteSave.Size = new System.Drawing.Size(20, 20);
             this.btnRouteSave.TabIndex = 28;
@@ -179,7 +176,7 @@
             this.pnlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlMain.Controls.Add(this.btnPointDeleteAll);
+            this.pnlMain.Controls.Add(this.btnRouteClear);
             this.pnlMain.Controls.Add(this.btnRouteSave);
             this.pnlMain.Controls.Add(this.btnRouteReload);
             this.pnlMain.Controls.Add(this.clbWaypoints);
@@ -188,8 +185,23 @@
             this.pnlMain.Controls.Add(this.pnlFilters);
             this.pnlMain.Location = new System.Drawing.Point(4, 28);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(869, 228);
+            this.pnlMain.Size = new System.Drawing.Size(792, 228);
             this.pnlMain.TabIndex = 30;
+            // 
+            // btnRouteClear
+            // 
+            this.btnRouteClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRouteClear.BackgroundImage = global::SHME.Properties.Resources.deleteAll;
+            this.btnRouteClear.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnRouteClear.FlatAppearance.BorderSize = 0;
+            this.btnRouteClear.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnRouteClear.Location = new System.Drawing.Point(753, 127);
+            this.btnRouteClear.Name = "btnRouteClear";
+            this.btnRouteClear.Size = new System.Drawing.Size(20, 20);
+            this.btnRouteClear.TabIndex = 46;
+            this.toolTip.SetToolTip(this.btnRouteClear, "Remove selected waypoints");
+            this.btnRouteClear.UseVisualStyleBackColor = true;
+            this.btnRouteClear.Click += new System.EventHandler(this.btnRouteClear_Click);
             // 
             // btnRouteReload
             // 
@@ -197,7 +209,7 @@
             this.btnRouteReload.BackgroundImage = global::SHME.Properties.Resources.reload;
             this.btnRouteReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnRouteReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRouteReload.Location = new System.Drawing.Point(830, 189);
+            this.btnRouteReload.Location = new System.Drawing.Point(753, 189);
             this.btnRouteReload.Name = "btnRouteReload";
             this.btnRouteReload.Size = new System.Drawing.Size(20, 20);
             this.btnRouteReload.TabIndex = 24;
@@ -213,7 +225,7 @@
             this.clbWaypoints.Location = new System.Drawing.Point(232, 126);
             this.clbWaypoints.Name = "clbWaypoints";
             this.clbWaypoints.ScrollAlwaysVisible = true;
-            this.clbWaypoints.Size = new System.Drawing.Size(637, 102);
+            this.clbWaypoints.Size = new System.Drawing.Size(560, 102);
             this.clbWaypoints.TabIndex = 21;
             this.clbWaypoints.SelectedIndexChanged += new System.EventHandler(this.clbWaypoints_SelectedIndexChanged);
             // 
@@ -226,18 +238,14 @@
             this.pnlItems.Controls.Add(this.gbStepOffset);
             this.pnlItems.Controls.Add(this.btnFind);
             this.pnlItems.Controls.Add(this.btnReplace);
-            this.pnlItems.Controls.Add(this.gbEdit);
+            this.pnlItems.Controls.Add(this.gbWaypoint);
             this.pnlItems.Controls.Add(this.tbReplace);
-            this.pnlItems.Controls.Add(this.lblR);
             this.pnlItems.Controls.Add(this.tbFind);
             this.pnlItems.Controls.Add(this.gbLimit);
-            this.pnlItems.Controls.Add(this.lblZ);
-            this.pnlItems.Controls.Add(this.lblY);
-            this.pnlItems.Controls.Add(this.lblX);
             this.pnlItems.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlItems.Location = new System.Drawing.Point(232, 0);
             this.pnlItems.Name = "pnlItems";
-            this.pnlItems.Size = new System.Drawing.Size(637, 126);
+            this.pnlItems.Size = new System.Drawing.Size(560, 126);
             this.pnlItems.TabIndex = 22;
             // 
             // btnPointsCheckInvert
@@ -246,13 +254,13 @@
             this.btnPointsCheckInvert.FlatAppearance.BorderSize = 0;
             this.btnPointsCheckInvert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsCheckInvert.Image = global::SHME.Properties.Resources.checkerHalfFilled;
-            this.btnPointsCheckInvert.Location = new System.Drawing.Point(435, 91);
+            this.btnPointsCheckInvert.Location = new System.Drawing.Point(384, 89);
             this.btnPointsCheckInvert.Name = "btnPointsCheckInvert";
             this.btnPointsCheckInvert.Size = new System.Drawing.Size(16, 16);
             this.btnPointsCheckInvert.TabIndex = 36;
             this.toolTip.SetToolTip(this.btnPointsCheckInvert, "Invert all checks");
             this.btnPointsCheckInvert.UseVisualStyleBackColor = true;
-            this.btnPointsCheckInvert.Click += new System.EventHandler(this.btnPointsCheckInvert_Click);
+            this.btnPointsCheckInvert.Click += new System.EventHandler(this.btnWaypointsCheckInvert_Click);
             // 
             // btnPointsCheckAll
             // 
@@ -260,13 +268,13 @@
             this.btnPointsCheckAll.FlatAppearance.BorderSize = 0;
             this.btnPointsCheckAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsCheckAll.Image = global::SHME.Properties.Resources.checkerFilled;
-            this.btnPointsCheckAll.Location = new System.Drawing.Point(435, 74);
+            this.btnPointsCheckAll.Location = new System.Drawing.Point(384, 72);
             this.btnPointsCheckAll.Name = "btnPointsCheckAll";
             this.btnPointsCheckAll.Size = new System.Drawing.Size(16, 16);
             this.btnPointsCheckAll.TabIndex = 34;
             this.toolTip.SetToolTip(this.btnPointsCheckAll, "Check all");
             this.btnPointsCheckAll.UseVisualStyleBackColor = true;
-            this.btnPointsCheckAll.Click += new System.EventHandler(this.btnPointsCheckAll_Click);
+            this.btnPointsCheckAll.Click += new System.EventHandler(this.btnWaypointsCheckAll_Click);
             // 
             // btnPointsUncheckAll
             // 
@@ -274,13 +282,13 @@
             this.btnPointsUncheckAll.FlatAppearance.BorderSize = 0;
             this.btnPointsUncheckAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsUncheckAll.Image = global::SHME.Properties.Resources.checkerEmpty;
-            this.btnPointsUncheckAll.Location = new System.Drawing.Point(435, 108);
+            this.btnPointsUncheckAll.Location = new System.Drawing.Point(384, 106);
             this.btnPointsUncheckAll.Name = "btnPointsUncheckAll";
             this.btnPointsUncheckAll.Size = new System.Drawing.Size(16, 16);
             this.btnPointsUncheckAll.TabIndex = 35;
             this.toolTip.SetToolTip(this.btnPointsUncheckAll, "Uncheck all");
             this.btnPointsUncheckAll.UseVisualStyleBackColor = true;
-            this.btnPointsUncheckAll.Click += new System.EventHandler(this.btnPointsCheckAll_Click);
+            this.btnPointsUncheckAll.Click += new System.EventHandler(this.btnWaypointsCheckAll_Click);
             // 
             // gbStepOffset
             // 
@@ -290,19 +298,19 @@
             this.gbStepOffset.Controls.Add(this.nudPositionOffset);
             this.gbStepOffset.Controls.Add(this.nudRotationOffset);
             this.gbStepOffset.Controls.Add(this.nudPositionStep);
-            this.gbStepOffset.Location = new System.Drawing.Point(435, 1);
+            this.gbStepOffset.Location = new System.Drawing.Point(384, 3);
             this.gbStepOffset.Name = "gbStepOffset";
-            this.gbStepOffset.Size = new System.Drawing.Size(174, 72);
+            this.gbStepOffset.Size = new System.Drawing.Size(173, 70);
             this.gbStepOffset.TabIndex = 32;
             this.gbStepOffset.TabStop = false;
-            this.gbStepOffset.Text = "Step / Offset";
+            this.gbStepOffset.Text = "Align";
             // 
             // btnPositionAlign
             // 
             this.btnPositionAlign.FlatAppearance.BorderSize = 0;
             this.btnPositionAlign.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPositionAlign.Image = ((System.Drawing.Image)(resources.GetObject("btnPositionAlign.Image")));
-            this.btnPositionAlign.Location = new System.Drawing.Point(6, 19);
+            this.btnPositionAlign.Location = new System.Drawing.Point(76, 17);
             this.btnPositionAlign.Name = "btnPositionAlign";
             this.btnPositionAlign.Size = new System.Drawing.Size(21, 21);
             this.btnPositionAlign.TabIndex = 2;
@@ -315,7 +323,7 @@
             this.btnRotationAlign.FlatAppearance.BorderSize = 0;
             this.btnRotationAlign.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRotationAlign.Image = global::SHME.Properties.Resources.reload;
-            this.btnRotationAlign.Location = new System.Drawing.Point(6, 42);
+            this.btnRotationAlign.Location = new System.Drawing.Point(76, 40);
             this.btnRotationAlign.Name = "btnRotationAlign";
             this.btnRotationAlign.Size = new System.Drawing.Size(21, 21);
             this.btnRotationAlign.TabIndex = 2;
@@ -330,7 +338,7 @@
             0,
             0,
             131072});
-            this.nudRotationStep.Location = new System.Drawing.Point(33, 45);
+            this.nudRotationStep.Location = new System.Drawing.Point(6, 43);
             this.nudRotationStep.Maximum = new decimal(new int[] {
             180,
             0,
@@ -361,7 +369,7 @@
             0,
             0,
             196608});
-            this.nudPositionOffset.Location = new System.Drawing.Point(103, 19);
+            this.nudPositionOffset.Location = new System.Drawing.Point(103, 17);
             this.nudPositionOffset.Maximum = new decimal(new int[] {
             128,
             0,
@@ -386,7 +394,7 @@
             0,
             0,
             131072});
-            this.nudRotationOffset.Location = new System.Drawing.Point(103, 45);
+            this.nudRotationOffset.Location = new System.Drawing.Point(103, 43);
             this.nudRotationOffset.Maximum = new decimal(new int[] {
             180,
             0,
@@ -411,7 +419,7 @@
             0,
             0,
             131072});
-            this.nudPositionStep.Location = new System.Drawing.Point(33, 19);
+            this.nudPositionStep.Location = new System.Drawing.Point(6, 17);
             this.nudPositionStep.Maximum = new decimal(new int[] {
             128,
             0,
@@ -441,7 +449,7 @@
             this.btnFind.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFind.FlatAppearance.BorderSize = 0;
             this.btnFind.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFind.Location = new System.Drawing.Point(613, 76);
+            this.btnFind.Location = new System.Drawing.Point(536, 76);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(20, 20);
             this.btnFind.TabIndex = 3;
@@ -455,66 +463,52 @@
             this.btnReplace.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnReplace.FlatAppearance.BorderSize = 0;
             this.btnReplace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReplace.Location = new System.Drawing.Point(613, 102);
+            this.btnReplace.Location = new System.Drawing.Point(536, 102);
             this.btnReplace.Name = "btnReplace";
             this.btnReplace.Size = new System.Drawing.Size(20, 20);
             this.btnReplace.TabIndex = 3;
             this.btnReplace.UseVisualStyleBackColor = true;
             this.btnReplace.Click += new System.EventHandler(this.btnReplace_Click);
             // 
-            // gbEdit
+            // gbWaypoint
             // 
-            this.gbEdit.Controls.Add(this.btnPointInsert);
-            this.gbEdit.Controls.Add(this.btnPointSave);
-            this.gbEdit.Controls.Add(this.chb14);
-            this.gbEdit.Controls.Add(this.btnPointDelete);
-            this.gbEdit.Controls.Add(this.tb13);
-            this.gbEdit.Controls.Add(this.tb11);
-            this.gbEdit.Controls.Add(this.nud12);
-            this.gbEdit.Controls.Add(this.nud05);
-            this.gbEdit.Controls.Add(this.chb10);
-            this.gbEdit.Controls.Add(this.chb09);
-            this.gbEdit.Controls.Add(this.chb08);
-            this.gbEdit.Controls.Add(this.chb07);
-            this.gbEdit.Controls.Add(this.dudAction);
-            this.gbEdit.Controls.Add(this.nudR);
-            this.gbEdit.Controls.Add(this.nudX);
-            this.gbEdit.Controls.Add(this.nudZ);
-            this.gbEdit.Controls.Add(this.nudY);
-            this.gbEdit.Location = new System.Drawing.Point(224, 1);
-            this.gbEdit.Name = "gbEdit";
-            this.gbEdit.Size = new System.Drawing.Size(205, 121);
-            this.gbEdit.TabIndex = 31;
-            this.gbEdit.TabStop = false;
-            this.gbEdit.Text = "Values";
-            // 
-            // btnPointDeleteAll
-            // 
-            this.btnPointDeleteAll.BackgroundImage = global::SHME.Properties.Resources.deleteAll;
-            this.btnPointDeleteAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnPointDeleteAll.FlatAppearance.BorderSize = 0;
-            this.btnPointDeleteAll.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnPointDeleteAll.Location = new System.Drawing.Point(830, 127);
-            this.btnPointDeleteAll.Name = "btnPointDeleteAll";
-            this.btnPointDeleteAll.Size = new System.Drawing.Size(20, 20);
-            this.btnPointDeleteAll.TabIndex = 46;
-            this.toolTip.SetToolTip(this.btnPointDeleteAll, "Remove selected waypoints");
-            this.btnPointDeleteAll.UseVisualStyleBackColor = true;
-            this.btnPointDeleteAll.Click += new System.EventHandler(this.btnPointDeleteAll_Click);
+            this.gbWaypoint.Controls.Add(this.btnPointInsert);
+            this.gbWaypoint.Controls.Add(this.btnPointSave);
+            this.gbWaypoint.Controls.Add(this.chb14);
+            this.gbWaypoint.Controls.Add(this.btnPointDelete);
+            this.gbWaypoint.Controls.Add(this.tb13);
+            this.gbWaypoint.Controls.Add(this.tb11);
+            this.gbWaypoint.Controls.Add(this.nud12);
+            this.gbWaypoint.Controls.Add(this.nud05);
+            this.gbWaypoint.Controls.Add(this.chb10);
+            this.gbWaypoint.Controls.Add(this.chb09);
+            this.gbWaypoint.Controls.Add(this.chb08);
+            this.gbWaypoint.Controls.Add(this.chb07);
+            this.gbWaypoint.Controls.Add(this.dudAction);
+            this.gbWaypoint.Controls.Add(this.nudR);
+            this.gbWaypoint.Controls.Add(this.nudX);
+            this.gbWaypoint.Controls.Add(this.nudZ);
+            this.gbWaypoint.Controls.Add(this.nudY);
+            this.gbWaypoint.Location = new System.Drawing.Point(186, 3);
+            this.gbWaypoint.Name = "gbWaypoint";
+            this.gbWaypoint.Size = new System.Drawing.Size(192, 119);
+            this.gbWaypoint.TabIndex = 31;
+            this.gbWaypoint.TabStop = false;
+            this.gbWaypoint.Text = "Waypoint";
             // 
             // btnPointInsert
             // 
-            this.btnPointInsert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPointInsert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPointInsert.BackgroundImage = global::SHME.Properties.Resources.add;
             this.btnPointInsert.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnPointInsert.FlatAppearance.BorderSize = 0;
             this.btnPointInsert.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnPointInsert.Location = new System.Drawing.Point(175, 41);
+            this.btnPointInsert.Location = new System.Drawing.Point(162, 41);
             this.btnPointInsert.Name = "btnPointInsert";
             this.btnPointInsert.Size = new System.Drawing.Size(24, 24);
             this.btnPointInsert.TabIndex = 45;
             this.btnPointInsert.UseVisualStyleBackColor = true;
-            this.btnPointInsert.Click += new System.EventHandler(this.btnPointInsert_Click);
+            this.btnPointInsert.Click += new System.EventHandler(this.btnWaypointInsert_Click);
             // 
             // btnPointSave
             // 
@@ -523,17 +517,17 @@
             this.btnPointSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnPointSave.FlatAppearance.BorderSize = 0;
             this.btnPointSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnPointSave.Location = new System.Drawing.Point(175, 93);
+            this.btnPointSave.Location = new System.Drawing.Point(162, 91);
             this.btnPointSave.Name = "btnPointSave";
             this.btnPointSave.Size = new System.Drawing.Size(24, 24);
             this.btnPointSave.TabIndex = 33;
             this.btnPointSave.UseVisualStyleBackColor = true;
             this.btnPointSave.Visible = false;
-            this.btnPointSave.Click += new System.EventHandler(this.btnPointSave_Click);
+            this.btnPointSave.Click += new System.EventHandler(this.btnWaypointSave_Click);
             // 
             // chb14
             // 
-            this.chb14.Location = new System.Drawing.Point(130, 95);
+            this.chb14.Location = new System.Drawing.Point(119, 95);
             this.chb14.Name = "chb14";
             this.chb14.Size = new System.Drawing.Size(36, 20);
             this.chb14.TabIndex = 44;
@@ -547,16 +541,16 @@
             this.btnPointDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnPointDelete.FlatAppearance.BorderSize = 0;
             this.btnPointDelete.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnPointDelete.Location = new System.Drawing.Point(175, 15);
+            this.btnPointDelete.Location = new System.Drawing.Point(162, 15);
             this.btnPointDelete.Name = "btnPointDelete";
             this.btnPointDelete.Size = new System.Drawing.Size(24, 24);
             this.btnPointDelete.TabIndex = 31;
             this.btnPointDelete.UseVisualStyleBackColor = true;
-            this.btnPointDelete.Click += new System.EventHandler(this.btnPointDelete_Click);
+            this.btnPointDelete.Click += new System.EventHandler(this.btnWaypointDelete_Click);
             // 
             // tb13
             // 
-            this.tb13.Location = new System.Drawing.Point(130, 69);
+            this.tb13.Location = new System.Drawing.Point(119, 69);
             this.tb13.Name = "tb13";
             this.tb13.Size = new System.Drawing.Size(36, 20);
             this.tb13.TabIndex = 43;
@@ -564,7 +558,7 @@
             // 
             // tb11
             // 
-            this.tb11.Location = new System.Drawing.Point(130, 17);
+            this.tb11.Location = new System.Drawing.Point(119, 17);
             this.tb11.Name = "tb11";
             this.tb11.Size = new System.Drawing.Size(36, 20);
             this.tb11.TabIndex = 4;
@@ -572,7 +566,7 @@
             // 
             // nud12
             // 
-            this.nud12.Location = new System.Drawing.Point(130, 43);
+            this.nud12.Location = new System.Drawing.Point(119, 43);
             this.nud12.Maximum = new decimal(new int[] {
             2,
             0,
@@ -592,7 +586,7 @@
             // 
             // nud05
             // 
-            this.nud05.Location = new System.Drawing.Point(88, 17);
+            this.nud05.Location = new System.Drawing.Point(77, 17);
             this.nud05.Maximum = new decimal(new int[] {
             0,
             0,
@@ -606,7 +600,7 @@
             // 
             // chb10
             // 
-            this.chb10.Location = new System.Drawing.Point(109, 95);
+            this.chb10.Location = new System.Drawing.Point(98, 95);
             this.chb10.Name = "chb10";
             this.chb10.Size = new System.Drawing.Size(15, 20);
             this.chb10.TabIndex = 40;
@@ -615,7 +609,7 @@
             // 
             // chb09
             // 
-            this.chb09.Location = new System.Drawing.Point(109, 69);
+            this.chb09.Location = new System.Drawing.Point(98, 69);
             this.chb09.Name = "chb09";
             this.chb09.Size = new System.Drawing.Size(15, 20);
             this.chb09.TabIndex = 39;
@@ -624,7 +618,7 @@
             // 
             // chb08
             // 
-            this.chb08.Location = new System.Drawing.Point(88, 95);
+            this.chb08.Location = new System.Drawing.Point(77, 95);
             this.chb08.Name = "chb08";
             this.chb08.Size = new System.Drawing.Size(15, 20);
             this.chb08.TabIndex = 38;
@@ -633,7 +627,7 @@
             // 
             // chb07
             // 
-            this.chb07.Location = new System.Drawing.Point(88, 69);
+            this.chb07.Location = new System.Drawing.Point(77, 69);
             this.chb07.Name = "chb07";
             this.chb07.Size = new System.Drawing.Size(15, 20);
             this.chb07.TabIndex = 37;
@@ -645,7 +639,7 @@
             this.dudAction.Items.Add("");
             this.dudAction.Items.Add("Engage");
             this.dudAction.Items.Add("Stop");
-            this.dudAction.Location = new System.Drawing.Point(88, 43);
+            this.dudAction.Location = new System.Drawing.Point(77, 43);
             this.dudAction.Name = "dudAction";
             this.dudAction.Size = new System.Drawing.Size(36, 20);
             this.dudAction.TabIndex = 34;
@@ -655,7 +649,7 @@
             // nudR
             // 
             this.nudR.DecimalPlaces = 2;
-            this.nudR.Location = new System.Drawing.Point(6, 95);
+            this.nudR.Location = new System.Drawing.Point(12, 95);
             this.nudR.Maximum = new decimal(new int[] {
             360,
             0,
@@ -667,7 +661,7 @@
             0,
             -2147483648});
             this.nudR.Name = "nudR";
-            this.nudR.Size = new System.Drawing.Size(76, 20);
+            this.nudR.Size = new System.Drawing.Size(59, 20);
             this.nudR.TabIndex = 16;
             this.nudR.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudR.Value = new decimal(new int[] {
@@ -692,7 +686,7 @@
             0,
             -2147483648});
             this.nudX.Name = "nudX";
-            this.nudX.Size = new System.Drawing.Size(76, 20);
+            this.nudX.Size = new System.Drawing.Size(65, 20);
             this.nudX.TabIndex = 34;
             this.nudX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudX.Value = new decimal(new int[] {
@@ -717,7 +711,7 @@
             0,
             -2147483648});
             this.nudZ.Name = "nudZ";
-            this.nudZ.Size = new System.Drawing.Size(76, 20);
+            this.nudZ.Size = new System.Drawing.Size(65, 20);
             this.nudZ.TabIndex = 36;
             this.nudZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudZ.Value = new decimal(new int[] {
@@ -742,7 +736,7 @@
             0,
             -2147483648});
             this.nudY.Name = "nudY";
-            this.nudY.Size = new System.Drawing.Size(76, 20);
+            this.nudY.Size = new System.Drawing.Size(65, 20);
             this.nudY.TabIndex = 35;
             this.nudY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudY.Value = new decimal(new int[] {
@@ -756,28 +750,18 @@
             // 
             this.tbReplace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbReplace.Location = new System.Drawing.Point(457, 102);
+            this.tbReplace.Location = new System.Drawing.Point(406, 102);
             this.tbReplace.Name = "tbReplace";
-            this.tbReplace.Size = new System.Drawing.Size(147, 20);
+            this.tbReplace.Size = new System.Drawing.Size(124, 20);
             this.tbReplace.TabIndex = 1;
-            // 
-            // lblR
-            // 
-            this.lblR.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblR.Location = new System.Drawing.Point(204, 96);
-            this.lblR.Name = "lblR";
-            this.lblR.Size = new System.Drawing.Size(14, 19);
-            this.lblR.TabIndex = 31;
-            this.lblR.Text = "↻";
-            this.lblR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tbFind
             // 
             this.tbFind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFind.Location = new System.Drawing.Point(457, 76);
+            this.tbFind.Location = new System.Drawing.Point(406, 76);
             this.tbFind.Name = "tbFind";
-            this.tbFind.Size = new System.Drawing.Size(147, 20);
+            this.tbFind.Size = new System.Drawing.Size(124, 20);
             this.tbFind.TabIndex = 0;
             // 
             // gbLimit
@@ -794,51 +778,63 @@
             this.gbLimit.Controls.Add(this.nudLimitYMax);
             this.gbLimit.Controls.Add(this.nudLimitXMin);
             this.gbLimit.Controls.Add(this.nudLimitXMax);
-            this.gbLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.gbLimit.Location = new System.Drawing.Point(6, 1);
+            this.gbLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.gbLimit.Location = new System.Drawing.Point(6, 3);
             this.gbLimit.Name = "gbLimit";
-            this.gbLimit.Size = new System.Drawing.Size(192, 121);
+            this.gbLimit.Size = new System.Drawing.Size(174, 121);
             this.gbLimit.TabIndex = 23;
             this.gbLimit.TabStop = false;
             this.gbLimit.Text = "Limit";
             // 
             // cbLimitZ
             // 
-            this.cbLimitZ.AutoSize = true;
-            this.cbLimitZ.Location = new System.Drawing.Point(6, 72);
+            this.cbLimitZ.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbLimitZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbLimitZ.Location = new System.Drawing.Point(77, 69);
             this.cbLimitZ.Name = "cbLimitZ";
-            this.cbLimitZ.Size = new System.Drawing.Size(15, 14);
+            this.cbLimitZ.Size = new System.Drawing.Size(20, 20);
             this.cbLimitZ.TabIndex = 33;
+            this.cbLimitZ.Text = "Z";
+            this.cbLimitZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitZ.UseVisualStyleBackColor = true;
             this.cbLimitZ.CheckedChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // cbLimitY
             // 
-            this.cbLimitY.AutoSize = true;
-            this.cbLimitY.Location = new System.Drawing.Point(6, 46);
+            this.cbLimitY.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbLimitY.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbLimitY.Location = new System.Drawing.Point(77, 43);
             this.cbLimitY.Name = "cbLimitY";
-            this.cbLimitY.Size = new System.Drawing.Size(15, 14);
+            this.cbLimitY.Size = new System.Drawing.Size(20, 20);
             this.cbLimitY.TabIndex = 32;
+            this.cbLimitY.Text = "Y";
+            this.cbLimitY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitY.UseVisualStyleBackColor = true;
             this.cbLimitY.CheckedChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // cbLimitR
             // 
-            this.cbLimitR.AutoSize = true;
-            this.cbLimitR.Location = new System.Drawing.Point(6, 98);
+            this.cbLimitR.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbLimitR.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbLimitR.Location = new System.Drawing.Point(77, 95);
             this.cbLimitR.Name = "cbLimitR";
-            this.cbLimitR.Size = new System.Drawing.Size(15, 14);
+            this.cbLimitR.Size = new System.Drawing.Size(20, 20);
             this.cbLimitR.TabIndex = 15;
+            this.cbLimitR.Text = "↻";
+            this.cbLimitR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitR.UseVisualStyleBackColor = true;
             this.cbLimitR.CheckedChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
             // cbLimitX
             // 
-            this.cbLimitX.AutoSize = true;
-            this.cbLimitX.Location = new System.Drawing.Point(6, 20);
+            this.cbLimitX.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbLimitX.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbLimitX.Location = new System.Drawing.Point(77, 17);
             this.cbLimitX.Name = "cbLimitX";
-            this.cbLimitX.Size = new System.Drawing.Size(15, 14);
+            this.cbLimitX.Size = new System.Drawing.Size(20, 20);
             this.cbLimitX.TabIndex = 14;
+            this.cbLimitX.Text = "X";
+            this.cbLimitX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitX.UseVisualStyleBackColor = true;
             this.cbLimitX.CheckedChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
@@ -846,7 +842,7 @@
             // 
             this.nudLimitRMin.DecimalPlaces = 2;
             this.nudLimitRMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nudLimitRMin.Location = new System.Drawing.Point(27, 95);
+            this.nudLimitRMin.Location = new System.Drawing.Point(6, 95);
             this.nudLimitRMin.Maximum = new decimal(new int[] {
             360,
             0,
@@ -858,7 +854,7 @@
             0,
             -2147483648});
             this.nudLimitRMin.Name = "nudLimitRMin";
-            this.nudLimitRMin.Size = new System.Drawing.Size(76, 20);
+            this.nudLimitRMin.Size = new System.Drawing.Size(65, 20);
             this.nudLimitRMin.TabIndex = 9;
             this.nudLimitRMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitRMin.Value = new decimal(new int[] {
@@ -872,7 +868,7 @@
             // 
             this.nudLimitRMax.DecimalPlaces = 2;
             this.nudLimitRMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nudLimitRMax.Location = new System.Drawing.Point(109, 95);
+            this.nudLimitRMax.Location = new System.Drawing.Point(103, 95);
             this.nudLimitRMax.Maximum = new decimal(new int[] {
             360,
             0,
@@ -884,7 +880,7 @@
             0,
             -2147483648});
             this.nudLimitRMax.Name = "nudLimitRMax";
-            this.nudLimitRMax.Size = new System.Drawing.Size(76, 20);
+            this.nudLimitRMax.Size = new System.Drawing.Size(65, 20);
             this.nudLimitRMax.TabIndex = 9;
             this.nudLimitRMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitRMax.Value = new decimal(new int[] {
@@ -898,7 +894,7 @@
             // 
             this.nudLimitZMin.DecimalPlaces = 2;
             this.nudLimitZMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nudLimitZMin.Location = new System.Drawing.Point(27, 69);
+            this.nudLimitZMin.Location = new System.Drawing.Point(6, 69);
             this.nudLimitZMin.Maximum = new decimal(new int[] {
             1024,
             0,
@@ -910,7 +906,7 @@
             0,
             -2147483648});
             this.nudLimitZMin.Name = "nudLimitZMin";
-            this.nudLimitZMin.Size = new System.Drawing.Size(76, 20);
+            this.nudLimitZMin.Size = new System.Drawing.Size(65, 20);
             this.nudLimitZMin.TabIndex = 12;
             this.nudLimitZMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitZMin.Value = new decimal(new int[] {
@@ -924,7 +920,7 @@
             // 
             this.nudLimitZMax.DecimalPlaces = 2;
             this.nudLimitZMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nudLimitZMax.Location = new System.Drawing.Point(109, 69);
+            this.nudLimitZMax.Location = new System.Drawing.Point(103, 69);
             this.nudLimitZMax.Maximum = new decimal(new int[] {
             1024,
             0,
@@ -936,7 +932,7 @@
             0,
             -2147483648});
             this.nudLimitZMax.Name = "nudLimitZMax";
-            this.nudLimitZMax.Size = new System.Drawing.Size(76, 20);
+            this.nudLimitZMax.Size = new System.Drawing.Size(65, 20);
             this.nudLimitZMax.TabIndex = 12;
             this.nudLimitZMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitZMax.Value = new decimal(new int[] {
@@ -950,7 +946,7 @@
             // 
             this.nudLimitYMin.DecimalPlaces = 2;
             this.nudLimitYMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nudLimitYMin.Location = new System.Drawing.Point(27, 43);
+            this.nudLimitYMin.Location = new System.Drawing.Point(6, 43);
             this.nudLimitYMin.Maximum = new decimal(new int[] {
             1024,
             0,
@@ -962,7 +958,7 @@
             0,
             -2147483648});
             this.nudLimitYMin.Name = "nudLimitYMin";
-            this.nudLimitYMin.Size = new System.Drawing.Size(76, 20);
+            this.nudLimitYMin.Size = new System.Drawing.Size(65, 20);
             this.nudLimitYMin.TabIndex = 11;
             this.nudLimitYMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitYMin.Value = new decimal(new int[] {
@@ -976,7 +972,7 @@
             // 
             this.nudLimitYMax.DecimalPlaces = 2;
             this.nudLimitYMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nudLimitYMax.Location = new System.Drawing.Point(109, 43);
+            this.nudLimitYMax.Location = new System.Drawing.Point(103, 43);
             this.nudLimitYMax.Maximum = new decimal(new int[] {
             1024,
             0,
@@ -988,7 +984,7 @@
             0,
             -2147483648});
             this.nudLimitYMax.Name = "nudLimitYMax";
-            this.nudLimitYMax.Size = new System.Drawing.Size(76, 20);
+            this.nudLimitYMax.Size = new System.Drawing.Size(65, 20);
             this.nudLimitYMax.TabIndex = 11;
             this.nudLimitYMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitYMax.Value = new decimal(new int[] {
@@ -1002,7 +998,7 @@
             // 
             this.nudLimitXMin.DecimalPlaces = 2;
             this.nudLimitXMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nudLimitXMin.Location = new System.Drawing.Point(27, 17);
+            this.nudLimitXMin.Location = new System.Drawing.Point(6, 17);
             this.nudLimitXMin.Maximum = new decimal(new int[] {
             1024,
             0,
@@ -1014,7 +1010,7 @@
             0,
             -2147483648});
             this.nudLimitXMin.Name = "nudLimitXMin";
-            this.nudLimitXMin.Size = new System.Drawing.Size(76, 20);
+            this.nudLimitXMin.Size = new System.Drawing.Size(65, 20);
             this.nudLimitXMin.TabIndex = 10;
             this.nudLimitXMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitXMin.Value = new decimal(new int[] {
@@ -1028,7 +1024,7 @@
             // 
             this.nudLimitXMax.DecimalPlaces = 2;
             this.nudLimitXMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nudLimitXMax.Location = new System.Drawing.Point(109, 17);
+            this.nudLimitXMax.Location = new System.Drawing.Point(103, 17);
             this.nudLimitXMax.Maximum = new decimal(new int[] {
             1024,
             0,
@@ -1040,7 +1036,7 @@
             0,
             -2147483648});
             this.nudLimitXMax.Name = "nudLimitXMax";
-            this.nudLimitXMax.Size = new System.Drawing.Size(76, 20);
+            this.nudLimitXMax.Size = new System.Drawing.Size(65, 20);
             this.nudLimitXMax.TabIndex = 10;
             this.nudLimitXMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudLimitXMax.Value = new decimal(new int[] {
@@ -1049,36 +1045,6 @@
             0,
             0});
             this.nudLimitXMax.ValueChanged += new System.EventHandler(this.cbLimit_ValueChanged);
-            // 
-            // lblZ
-            // 
-            this.lblZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblZ.Location = new System.Drawing.Point(204, 70);
-            this.lblZ.Name = "lblZ";
-            this.lblZ.Size = new System.Drawing.Size(14, 19);
-            this.lblZ.TabIndex = 13;
-            this.lblZ.Text = "Z";
-            this.lblZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblY
-            // 
-            this.lblY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblY.Location = new System.Drawing.Point(204, 44);
-            this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(14, 19);
-            this.lblY.TabIndex = 13;
-            this.lblY.Text = "Y";
-            this.lblY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblX
-            // 
-            this.lblX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblX.Location = new System.Drawing.Point(204, 18);
-            this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 19);
-            this.lblX.TabIndex = 13;
-            this.lblX.Text = "X";
-            this.lblX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // splitter
             // 
@@ -1179,12 +1145,12 @@
             this.btnManagerFileSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnManagerFileSave.FlatAppearance.BorderSize = 0;
             this.btnManagerFileSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnManagerFileSave.Location = new System.Drawing.Point(853, 4);
+            this.btnManagerFileSave.Location = new System.Drawing.Point(776, 4);
             this.btnManagerFileSave.Name = "btnManagerFileSave";
             this.btnManagerFileSave.Size = new System.Drawing.Size(20, 20);
             this.btnManagerFileSave.TabIndex = 29;
             this.btnManagerFileSave.UseVisualStyleBackColor = true;
-            this.btnManagerFileSave.Click += new System.EventHandler(this.btnRoutesSave_Click);
+            this.btnManagerFileSave.Click += new System.EventHandler(this.btnManagerFileSave_Click);
             // 
             // dlgOpen
             // 
@@ -1195,14 +1161,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(877, 261);
+            this.ClientSize = new System.Drawing.Size(800, 261);
             this.Controls.Add(this.btnManagerFileSave);
             this.Controls.Add(this.btnManagerFileReload);
             this.Controls.Add(this.btnManagerFileLoad);
             this.Controls.Add(this.tbManagerFile);
             this.Controls.Add(this.pnlMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(870, 300);
+            this.MinimumSize = new System.Drawing.Size(816, 300);
             this.Name = "FormCPlay";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "SHME: FS CoursePlay";
@@ -1215,8 +1181,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionOffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationOffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPositionStep)).EndInit();
-            this.gbEdit.ResumeLayout(false);
-            this.gbEdit.PerformLayout();
+            this.gbWaypoint.ResumeLayout(false);
+            this.gbWaypoint.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud05)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudR)).EndInit();
@@ -1224,7 +1190,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudY)).EndInit();
             this.gbLimit.ResumeLayout(false);
-            this.gbLimit.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudLimitRMin)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudLimitRMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudLimitZMin)).EndInit();
@@ -1250,10 +1215,7 @@
         private System.Windows.Forms.Button btnRouteReload;
         private System.Windows.Forms.CheckedListBox clbWaypoints;
         private System.Windows.Forms.Panel pnlItems;
-        private System.Windows.Forms.GroupBox gbEdit;
-        private System.Windows.Forms.Label lblX;
-        private System.Windows.Forms.Label lblY;
-        private System.Windows.Forms.Label lblZ;
+        private System.Windows.Forms.GroupBox gbWaypoint;
         private System.Windows.Forms.CheckBox cbLimitR;
         private System.Windows.Forms.NumericUpDown nudLimitRMin;
         private System.Windows.Forms.NumericUpDown nudLimitRMax;
@@ -1284,7 +1246,6 @@
         private System.Windows.Forms.NumericUpDown nudX;
         private System.Windows.Forms.NumericUpDown nudR;
         private System.Windows.Forms.NumericUpDown nudZ;
-        private System.Windows.Forms.Label lblR;
         private System.Windows.Forms.CheckBox cbLimitZ;
         private System.Windows.Forms.CheckBox cbLimitY;
         private System.Windows.Forms.DomainUpDown dudAction;
@@ -1306,7 +1267,7 @@
         private System.Windows.Forms.ImageList il3State;
         private System.Windows.Forms.Button btnManagerFileSave;
         private System.Windows.Forms.Button btnPointInsert;
-        private System.Windows.Forms.Button btnPointDeleteAll;
+        private System.Windows.Forms.Button btnRouteClear;
         private System.Windows.Forms.Button btnPointsCheckInvert;
         private System.Windows.Forms.Button btnPointsCheckAll;
         private System.Windows.Forms.Button btnPointsUncheckAll;

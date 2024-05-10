@@ -251,6 +251,9 @@
     <None Include="Resources\fieldScanInfo16.png" />
     <None Include="Resources\markRight.png" />
     <None Include="Resources\checkerHalfFilled.png" />
+    <None Include="Resources\directionBoth.png" />
+    <None Include="Resources\directionLeft.png" />
+    <None Include="Resources\directionRight.png" />
     <Content Include="zlib1.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
