@@ -1424,9 +1424,7 @@ namespace SHME
                             maTC <= p.z && p.z < maBC)
                         {
                             DrawArrayToArray(buffer, mtsW, mtsH,
-                                (p.Action == "") ? FormCPlay.pinWork
-                              : (p.Action == "S") ? FormCPlay.pinStop
-                                                  : FormCPlay.pinEngage,
+                                FormCPlay.pinStates[p.Action],
                                 FormCPlay.pinW, FormCPlay.pinH,
                                 (int)(p.x * shift) + x,
                                 (int)(p.z * shift) + y);
@@ -1491,7 +1489,7 @@ namespace SHME
                         foreach (ADLink l in bd)
                         //if (WPs[iy].Show || WPs[id - 1].Show) ;
                         {
-                            p2 = FAD.SelectedRoute.Waypoints[l.waypoint];
+                            p2 = FAD.SelectedRoute.Waypoints[l.waypointID];
                             e.Graphics.DrawLine(
                                 (l.direction == 3) ? ADLink.BD : ADLink.OD,
                                 WPs[iy].canvasX, WPs[iy].canvasY,

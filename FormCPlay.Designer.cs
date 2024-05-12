@@ -35,12 +35,12 @@
             this.tbManagerFile = new System.Windows.Forms.TextBox();
             this.btnRouteSave = new System.Windows.Forms.Button();
             this.pnlMain = new System.Windows.Forms.Panel();
-            this.btnRouteClear = new System.Windows.Forms.Button();
-            this.btnRouteReload = new System.Windows.Forms.Button();
+            this.btnWaypointsDeleteSelected = new System.Windows.Forms.Button();
             this.clbWaypoints = new System.Windows.Forms.CheckedListBox();
             this.pnlItems = new System.Windows.Forms.Panel();
             this.btnPointsCheckInvert = new System.Windows.Forms.Button();
             this.btnPointsCheckAll = new System.Windows.Forms.Button();
+            this.btnRouteReload = new System.Windows.Forms.Button();
             this.btnPointsUncheckAll = new System.Windows.Forms.Button();
             this.gbStepOffset = new System.Windows.Forms.GroupBox();
             this.btnPositionAlign = new System.Windows.Forms.Button();
@@ -52,8 +52,9 @@
             this.btnFind = new System.Windows.Forms.Button();
             this.btnReplace = new System.Windows.Forms.Button();
             this.gbWaypoint = new System.Windows.Forms.GroupBox();
+            this.cbbAction = new System.Windows.Forms.ComboBox();
             this.btnPointInsert = new System.Windows.Forms.Button();
-            this.btnPointSave = new System.Windows.Forms.Button();
+            this.btnWaypointSave = new System.Windows.Forms.Button();
             this.chb14 = new System.Windows.Forms.CheckBox();
             this.btnPointDelete = new System.Windows.Forms.Button();
             this.tb13 = new System.Windows.Forms.TextBox();
@@ -64,7 +65,6 @@
             this.chb09 = new System.Windows.Forms.CheckBox();
             this.chb08 = new System.Windows.Forms.CheckBox();
             this.chb07 = new System.Windows.Forms.CheckBox();
-            this.dudAction = new System.Windows.Forms.DomainUpDown();
             this.nudR = new System.Windows.Forms.NumericUpDown();
             this.nudX = new System.Windows.Forms.NumericUpDown();
             this.nudZ = new System.Windows.Forms.NumericUpDown();
@@ -84,7 +84,6 @@
             this.nudLimitYMax = new System.Windows.Forms.NumericUpDown();
             this.nudLimitXMin = new System.Windows.Forms.NumericUpDown();
             this.nudLimitXMax = new System.Windows.Forms.NumericUpDown();
-            this.splitter = new System.Windows.Forms.Splitter();
             this.pnlFilters = new System.Windows.Forms.Panel();
             this.chbRouteEnabled = new System.Windows.Forms.CheckBox();
             this.btnRouteInfoSave = new System.Windows.Forms.Button();
@@ -130,6 +129,7 @@
             this.btnManagerFileReload.Name = "btnManagerFileReload";
             this.btnManagerFileReload.Size = new System.Drawing.Size(20, 20);
             this.btnManagerFileReload.TabIndex = 29;
+            this.toolTip.SetToolTip(this.btnManagerFileReload, "Reload manager file.");
             this.btnManagerFileReload.UseVisualStyleBackColor = true;
             this.btnManagerFileReload.Click += new System.EventHandler(this.btnManagerFileReload_Click);
             // 
@@ -143,6 +143,7 @@
             this.btnManagerFileLoad.Name = "btnManagerFileLoad";
             this.btnManagerFileLoad.Size = new System.Drawing.Size(20, 20);
             this.btnManagerFileLoad.TabIndex = 26;
+            this.toolTip.SetToolTip(this.btnManagerFileLoad, "Load manager file.");
             this.btnManagerFileLoad.UseVisualStyleBackColor = true;
             this.btnManagerFileLoad.Click += new System.EventHandler(this.btnManagerFileLoad_Click);
             // 
@@ -152,18 +153,17 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbManagerFile.Location = new System.Drawing.Point(56, 4);
             this.tbManagerFile.Name = "tbManagerFile";
-            this.tbManagerFile.Size = new System.Drawing.Size(716, 20);
+            this.tbManagerFile.Size = new System.Drawing.Size(790, 20);
             this.tbManagerFile.TabIndex = 27;
             this.toolTip.SetToolTip(this.tbManagerFile, "Path to manager file");
             // 
             // btnRouteSave
             // 
-            this.btnRouteSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRouteSave.BackgroundImage = global::SHME.Properties.Resources.save;
             this.btnRouteSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnRouteSave.FlatAppearance.BorderSize = 0;
             this.btnRouteSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnRouteSave.Location = new System.Drawing.Point(772, 208);
+            this.btnRouteSave.Location = new System.Drawing.Point(6, 29);
             this.btnRouteSave.Name = "btnRouteSave";
             this.btnRouteSave.Size = new System.Drawing.Size(20, 20);
             this.btnRouteSave.TabIndex = 28;
@@ -176,64 +176,51 @@
             this.pnlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlMain.Controls.Add(this.btnRouteClear);
-            this.pnlMain.Controls.Add(this.btnRouteSave);
-            this.pnlMain.Controls.Add(this.btnRouteReload);
+            this.pnlMain.Controls.Add(this.btnWaypointsDeleteSelected);
             this.pnlMain.Controls.Add(this.clbWaypoints);
             this.pnlMain.Controls.Add(this.pnlItems);
-            this.pnlMain.Controls.Add(this.splitter);
             this.pnlMain.Controls.Add(this.pnlFilters);
             this.pnlMain.Location = new System.Drawing.Point(4, 28);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(792, 228);
+            this.pnlMain.Size = new System.Drawing.Size(866, 428);
             this.pnlMain.TabIndex = 30;
             // 
-            // btnRouteClear
+            // btnWaypointsDeleteSelected
             // 
-            this.btnRouteClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRouteClear.BackgroundImage = global::SHME.Properties.Resources.deleteAll;
-            this.btnRouteClear.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnRouteClear.FlatAppearance.BorderSize = 0;
-            this.btnRouteClear.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnRouteClear.Location = new System.Drawing.Point(753, 127);
-            this.btnRouteClear.Name = "btnRouteClear";
-            this.btnRouteClear.Size = new System.Drawing.Size(20, 20);
-            this.btnRouteClear.TabIndex = 46;
-            this.toolTip.SetToolTip(this.btnRouteClear, "Remove selected waypoints");
-            this.btnRouteClear.UseVisualStyleBackColor = true;
-            this.btnRouteClear.Click += new System.EventHandler(this.btnRouteClear_Click);
-            // 
-            // btnRouteReload
-            // 
-            this.btnRouteReload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRouteReload.BackgroundImage = global::SHME.Properties.Resources.reload;
-            this.btnRouteReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnRouteReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRouteReload.Location = new System.Drawing.Point(753, 189);
-            this.btnRouteReload.Name = "btnRouteReload";
-            this.btnRouteReload.Size = new System.Drawing.Size(20, 20);
-            this.btnRouteReload.TabIndex = 24;
-            this.toolTip.SetToolTip(this.btnRouteReload, "Reload route file");
-            this.btnRouteReload.UseVisualStyleBackColor = true;
-            this.btnRouteReload.Click += new System.EventHandler(this.btnReloadRoute_Click);
+            this.btnWaypointsDeleteSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnWaypointsDeleteSelected.BackgroundImage = global::SHME.Properties.Resources.deleteAll;
+            this.btnWaypointsDeleteSelected.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnWaypointsDeleteSelected.FlatAppearance.BorderSize = 0;
+            this.btnWaypointsDeleteSelected.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnWaypointsDeleteSelected.Location = new System.Drawing.Point(827, 127);
+            this.btnWaypointsDeleteSelected.Name = "btnWaypointsDeleteSelected";
+            this.btnWaypointsDeleteSelected.Size = new System.Drawing.Size(20, 20);
+            this.btnWaypointsDeleteSelected.TabIndex = 46;
+            this.toolTip.SetToolTip(this.btnWaypointsDeleteSelected, "Remove selected waypoints");
+            this.btnWaypointsDeleteSelected.UseVisualStyleBackColor = true;
+            this.btnWaypointsDeleteSelected.Click += new System.EventHandler(this.btnWaypointsDeleteSelected_Click);
             // 
             // clbWaypoints
             // 
+            this.clbWaypoints.CheckOnClick = true;
             this.clbWaypoints.Dock = System.Windows.Forms.DockStyle.Fill;
             this.clbWaypoints.HorizontalScrollbar = true;
             this.clbWaypoints.IntegralHeight = false;
-            this.clbWaypoints.Location = new System.Drawing.Point(232, 126);
+            this.clbWaypoints.Location = new System.Drawing.Point(280, 126);
             this.clbWaypoints.Name = "clbWaypoints";
             this.clbWaypoints.ScrollAlwaysVisible = true;
-            this.clbWaypoints.Size = new System.Drawing.Size(560, 102);
+            this.clbWaypoints.Size = new System.Drawing.Size(586, 302);
             this.clbWaypoints.TabIndex = 21;
+            this.clbWaypoints.MouseClick += new System.Windows.Forms.MouseEventHandler(this.clbWaypoints_MouseClick);
             this.clbWaypoints.SelectedIndexChanged += new System.EventHandler(this.clbWaypoints_SelectedIndexChanged);
             // 
             // pnlItems
             // 
             this.pnlItems.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.pnlItems.Controls.Add(this.btnPointsCheckInvert);
+            this.pnlItems.Controls.Add(this.btnRouteSave);
             this.pnlItems.Controls.Add(this.btnPointsCheckAll);
+            this.pnlItems.Controls.Add(this.btnRouteReload);
             this.pnlItems.Controls.Add(this.btnPointsUncheckAll);
             this.pnlItems.Controls.Add(this.gbStepOffset);
             this.pnlItems.Controls.Add(this.btnFind);
@@ -243,9 +230,10 @@
             this.pnlItems.Controls.Add(this.tbFind);
             this.pnlItems.Controls.Add(this.gbLimit);
             this.pnlItems.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlItems.Location = new System.Drawing.Point(232, 0);
+            this.pnlItems.Location = new System.Drawing.Point(280, 0);
             this.pnlItems.Name = "pnlItems";
-            this.pnlItems.Size = new System.Drawing.Size(560, 126);
+            this.pnlItems.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.pnlItems.Size = new System.Drawing.Size(586, 126);
             this.pnlItems.TabIndex = 22;
             // 
             // btnPointsCheckInvert
@@ -254,7 +242,7 @@
             this.btnPointsCheckInvert.FlatAppearance.BorderSize = 0;
             this.btnPointsCheckInvert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsCheckInvert.Image = global::SHME.Properties.Resources.checkerHalfFilled;
-            this.btnPointsCheckInvert.Location = new System.Drawing.Point(384, 89);
+            this.btnPointsCheckInvert.Location = new System.Drawing.Point(6, 87);
             this.btnPointsCheckInvert.Name = "btnPointsCheckInvert";
             this.btnPointsCheckInvert.Size = new System.Drawing.Size(16, 16);
             this.btnPointsCheckInvert.TabIndex = 36;
@@ -268,7 +256,7 @@
             this.btnPointsCheckAll.FlatAppearance.BorderSize = 0;
             this.btnPointsCheckAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsCheckAll.Image = global::SHME.Properties.Resources.checkerFilled;
-            this.btnPointsCheckAll.Location = new System.Drawing.Point(384, 72);
+            this.btnPointsCheckAll.Location = new System.Drawing.Point(6, 70);
             this.btnPointsCheckAll.Name = "btnPointsCheckAll";
             this.btnPointsCheckAll.Size = new System.Drawing.Size(16, 16);
             this.btnPointsCheckAll.TabIndex = 34;
@@ -276,13 +264,26 @@
             this.btnPointsCheckAll.UseVisualStyleBackColor = true;
             this.btnPointsCheckAll.Click += new System.EventHandler(this.btnWaypointsCheckAll_Click);
             // 
+            // btnRouteReload
+            // 
+            this.btnRouteReload.BackgroundImage = global::SHME.Properties.Resources.reload;
+            this.btnRouteReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnRouteReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRouteReload.Location = new System.Drawing.Point(6, 3);
+            this.btnRouteReload.Name = "btnRouteReload";
+            this.btnRouteReload.Size = new System.Drawing.Size(20, 20);
+            this.btnRouteReload.TabIndex = 24;
+            this.toolTip.SetToolTip(this.btnRouteReload, "Reload route file");
+            this.btnRouteReload.UseVisualStyleBackColor = true;
+            this.btnRouteReload.Click += new System.EventHandler(this.btnReloadRoute_Click);
+            // 
             // btnPointsUncheckAll
             // 
             this.btnPointsUncheckAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnPointsUncheckAll.FlatAppearance.BorderSize = 0;
             this.btnPointsUncheckAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsUncheckAll.Image = global::SHME.Properties.Resources.checkerEmpty;
-            this.btnPointsUncheckAll.Location = new System.Drawing.Point(384, 106);
+            this.btnPointsUncheckAll.Location = new System.Drawing.Point(6, 104);
             this.btnPointsUncheckAll.Name = "btnPointsUncheckAll";
             this.btnPointsUncheckAll.Size = new System.Drawing.Size(16, 16);
             this.btnPointsUncheckAll.TabIndex = 35;
@@ -298,7 +299,7 @@
             this.gbStepOffset.Controls.Add(this.nudPositionOffset);
             this.gbStepOffset.Controls.Add(this.nudRotationOffset);
             this.gbStepOffset.Controls.Add(this.nudPositionStep);
-            this.gbStepOffset.Location = new System.Drawing.Point(384, 3);
+            this.gbStepOffset.Location = new System.Drawing.Point(410, 3);
             this.gbStepOffset.Name = "gbStepOffset";
             this.gbStepOffset.Size = new System.Drawing.Size(173, 70);
             this.gbStepOffset.TabIndex = 32;
@@ -449,7 +450,7 @@
             this.btnFind.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFind.FlatAppearance.BorderSize = 0;
             this.btnFind.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFind.Location = new System.Drawing.Point(536, 76);
+            this.btnFind.Location = new System.Drawing.Point(562, 76);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(20, 20);
             this.btnFind.TabIndex = 3;
@@ -463,7 +464,7 @@
             this.btnReplace.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnReplace.FlatAppearance.BorderSize = 0;
             this.btnReplace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReplace.Location = new System.Drawing.Point(536, 102);
+            this.btnReplace.Location = new System.Drawing.Point(562, 102);
             this.btnReplace.Name = "btnReplace";
             this.btnReplace.Size = new System.Drawing.Size(20, 20);
             this.btnReplace.TabIndex = 3;
@@ -472,8 +473,9 @@
             // 
             // gbWaypoint
             // 
+            this.gbWaypoint.Controls.Add(this.cbbAction);
             this.gbWaypoint.Controls.Add(this.btnPointInsert);
-            this.gbWaypoint.Controls.Add(this.btnPointSave);
+            this.gbWaypoint.Controls.Add(this.btnWaypointSave);
             this.gbWaypoint.Controls.Add(this.chb14);
             this.gbWaypoint.Controls.Add(this.btnPointDelete);
             this.gbWaypoint.Controls.Add(this.tb13);
@@ -484,17 +486,30 @@
             this.gbWaypoint.Controls.Add(this.chb09);
             this.gbWaypoint.Controls.Add(this.chb08);
             this.gbWaypoint.Controls.Add(this.chb07);
-            this.gbWaypoint.Controls.Add(this.dudAction);
             this.gbWaypoint.Controls.Add(this.nudR);
             this.gbWaypoint.Controls.Add(this.nudX);
             this.gbWaypoint.Controls.Add(this.nudZ);
             this.gbWaypoint.Controls.Add(this.nudY);
-            this.gbWaypoint.Location = new System.Drawing.Point(186, 3);
+            this.gbWaypoint.Location = new System.Drawing.Point(212, 3);
             this.gbWaypoint.Name = "gbWaypoint";
             this.gbWaypoint.Size = new System.Drawing.Size(192, 119);
             this.gbWaypoint.TabIndex = 31;
             this.gbWaypoint.TabStop = false;
             this.gbWaypoint.Text = "Waypoint";
+            // 
+            // cbbAction
+            // 
+            this.cbbAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbAction.FormattingEnabled = true;
+            this.cbbAction.Items.AddRange(new object[] {
+            "",
+            "E",
+            "S"});
+            this.cbbAction.Location = new System.Drawing.Point(77, 43);
+            this.cbbAction.Name = "cbbAction";
+            this.cbbAction.Size = new System.Drawing.Size(36, 21);
+            this.cbbAction.TabIndex = 46;
+            this.cbbAction.SelectedIndexChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // btnPointInsert
             // 
@@ -510,20 +525,20 @@
             this.btnPointInsert.UseVisualStyleBackColor = true;
             this.btnPointInsert.Click += new System.EventHandler(this.btnWaypointInsert_Click);
             // 
-            // btnPointSave
+            // btnWaypointSave
             // 
-            this.btnPointSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPointSave.BackgroundImage = global::SHME.Properties.Resources.toolPencil;
-            this.btnPointSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnPointSave.FlatAppearance.BorderSize = 0;
-            this.btnPointSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnPointSave.Location = new System.Drawing.Point(162, 91);
-            this.btnPointSave.Name = "btnPointSave";
-            this.btnPointSave.Size = new System.Drawing.Size(24, 24);
-            this.btnPointSave.TabIndex = 33;
-            this.btnPointSave.UseVisualStyleBackColor = true;
-            this.btnPointSave.Visible = false;
-            this.btnPointSave.Click += new System.EventHandler(this.btnWaypointSave_Click);
+            this.btnWaypointSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnWaypointSave.BackgroundImage = global::SHME.Properties.Resources.toolPencil;
+            this.btnWaypointSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnWaypointSave.FlatAppearance.BorderSize = 0;
+            this.btnWaypointSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnWaypointSave.Location = new System.Drawing.Point(162, 91);
+            this.btnWaypointSave.Name = "btnWaypointSave";
+            this.btnWaypointSave.Size = new System.Drawing.Size(24, 24);
+            this.btnWaypointSave.TabIndex = 33;
+            this.btnWaypointSave.UseVisualStyleBackColor = true;
+            this.btnWaypointSave.Visible = false;
+            this.btnWaypointSave.Click += new System.EventHandler(this.btnWaypointSave_Click);
             // 
             // chb14
             // 
@@ -634,22 +649,10 @@
             this.chb07.UseVisualStyleBackColor = true;
             this.chb07.CheckedChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
-            // dudAction
-            // 
-            this.dudAction.Items.Add("");
-            this.dudAction.Items.Add("Engage");
-            this.dudAction.Items.Add("Stop");
-            this.dudAction.Location = new System.Drawing.Point(77, 43);
-            this.dudAction.Name = "dudAction";
-            this.dudAction.Size = new System.Drawing.Size(36, 20);
-            this.dudAction.TabIndex = 34;
-            this.toolTip.SetToolTip(this.dudAction, "\"\"/Stop/Engage");
-            this.dudAction.SelectedItemChanged += new System.EventHandler(this.Waypoint_ValueChanged);
-            // 
             // nudR
             // 
             this.nudR.DecimalPlaces = 2;
-            this.nudR.Location = new System.Drawing.Point(12, 95);
+            this.nudR.Location = new System.Drawing.Point(6, 95);
             this.nudR.Maximum = new decimal(new int[] {
             360,
             0,
@@ -661,7 +664,7 @@
             0,
             -2147483648});
             this.nudR.Name = "nudR";
-            this.nudR.Size = new System.Drawing.Size(59, 20);
+            this.nudR.Size = new System.Drawing.Size(65, 20);
             this.nudR.TabIndex = 16;
             this.nudR.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudR.Value = new decimal(new int[] {
@@ -750,18 +753,18 @@
             // 
             this.tbReplace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbReplace.Location = new System.Drawing.Point(406, 102);
+            this.tbReplace.Location = new System.Drawing.Point(413, 102);
             this.tbReplace.Name = "tbReplace";
-            this.tbReplace.Size = new System.Drawing.Size(124, 20);
+            this.tbReplace.Size = new System.Drawing.Size(143, 20);
             this.tbReplace.TabIndex = 1;
             // 
             // tbFind
             // 
             this.tbFind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFind.Location = new System.Drawing.Point(406, 76);
+            this.tbFind.Location = new System.Drawing.Point(413, 76);
             this.tbFind.Name = "tbFind";
-            this.tbFind.Size = new System.Drawing.Size(124, 20);
+            this.tbFind.Size = new System.Drawing.Size(143, 20);
             this.tbFind.TabIndex = 0;
             // 
             // gbLimit
@@ -779,7 +782,7 @@
             this.gbLimit.Controls.Add(this.nudLimitXMin);
             this.gbLimit.Controls.Add(this.nudLimitXMax);
             this.gbLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.gbLimit.Location = new System.Drawing.Point(6, 3);
+            this.gbLimit.Location = new System.Drawing.Point(32, 3);
             this.gbLimit.Name = "gbLimit";
             this.gbLimit.Size = new System.Drawing.Size(174, 121);
             this.gbLimit.TabIndex = 23;
@@ -797,7 +800,7 @@
             this.cbLimitZ.Text = "Z";
             this.cbLimitZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitZ.UseVisualStyleBackColor = true;
-            this.cbLimitZ.CheckedChanged += new System.EventHandler(this.cbLimit_ValueChanged);
+            this.cbLimitZ.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
             // 
             // cbLimitY
             // 
@@ -810,7 +813,7 @@
             this.cbLimitY.Text = "Y";
             this.cbLimitY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitY.UseVisualStyleBackColor = true;
-            this.cbLimitY.CheckedChanged += new System.EventHandler(this.cbLimit_ValueChanged);
+            this.cbLimitY.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
             // 
             // cbLimitR
             // 
@@ -823,7 +826,7 @@
             this.cbLimitR.Text = "↻";
             this.cbLimitR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitR.UseVisualStyleBackColor = true;
-            this.cbLimitR.CheckedChanged += new System.EventHandler(this.cbLimit_ValueChanged);
+            this.cbLimitR.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
             // 
             // cbLimitX
             // 
@@ -836,7 +839,7 @@
             this.cbLimitX.Text = "X";
             this.cbLimitX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitX.UseVisualStyleBackColor = true;
-            this.cbLimitX.CheckedChanged += new System.EventHandler(this.cbLimit_ValueChanged);
+            this.cbLimitX.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
             // 
             // nudLimitRMin
             // 
@@ -1046,18 +1049,6 @@
             0});
             this.nudLimitXMax.ValueChanged += new System.EventHandler(this.cbLimit_ValueChanged);
             // 
-            // splitter
-            // 
-            this.splitter.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.splitter.Location = new System.Drawing.Point(224, 0);
-            this.splitter.MinExtra = 450;
-            this.splitter.MinimumSize = new System.Drawing.Size(6, 2);
-            this.splitter.MinSize = 150;
-            this.splitter.Name = "splitter";
-            this.splitter.Size = new System.Drawing.Size(8, 228);
-            this.splitter.TabIndex = 23;
-            this.splitter.TabStop = false;
-            // 
             // pnlFilters
             // 
             this.pnlFilters.Controls.Add(this.chbRouteEnabled);
@@ -1067,7 +1058,8 @@
             this.pnlFilters.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlFilters.Location = new System.Drawing.Point(0, 0);
             this.pnlFilters.Name = "pnlFilters";
-            this.pnlFilters.Size = new System.Drawing.Size(224, 228);
+            this.pnlFilters.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.pnlFilters.Size = new System.Drawing.Size(280, 428);
             this.pnlFilters.TabIndex = 15;
             // 
             // chbRouteEnabled
@@ -1079,7 +1071,7 @@
             this.chbRouteEnabled.Size = new System.Drawing.Size(15, 20);
             this.chbRouteEnabled.TabIndex = 19;
             this.chbRouteEnabled.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip.SetToolTip(this.chbRouteEnabled, "Is route used. Uncheck to disable it in manager (will lose name).");
+            this.toolTip.SetToolTip(this.chbRouteEnabled, "Uncheck to disable route in manager (will lose name after saving).");
             this.chbRouteEnabled.UseVisualStyleBackColor = true;
             this.chbRouteEnabled.CheckedChanged += new System.EventHandler(this.RouteInfo_Changed);
             // 
@@ -1090,10 +1082,11 @@
             this.btnRouteInfoSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnRouteInfoSave.FlatAppearance.BorderSize = 0;
             this.btnRouteInfoSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRouteInfoSave.Location = new System.Drawing.Point(198, 3);
+            this.btnRouteInfoSave.Location = new System.Drawing.Point(251, 3);
             this.btnRouteInfoSave.Name = "btnRouteInfoSave";
             this.btnRouteInfoSave.Size = new System.Drawing.Size(20, 20);
             this.btnRouteInfoSave.TabIndex = 18;
+            this.toolTip.SetToolTip(this.btnRouteInfoSave, "Apply");
             this.btnRouteInfoSave.UseVisualStyleBackColor = true;
             this.btnRouteInfoSave.Visible = false;
             this.btnRouteInfoSave.Click += new System.EventHandler(this.btnRouteInfoSave_Click);
@@ -1105,7 +1098,7 @@
             this.tbRouteName.Enabled = false;
             this.tbRouteName.Location = new System.Drawing.Point(24, 3);
             this.tbRouteName.Name = "tbRouteName";
-            this.tbRouteName.Size = new System.Drawing.Size(168, 20);
+            this.tbRouteName.Size = new System.Drawing.Size(221, 20);
             this.tbRouteName.TabIndex = 17;
             this.tbRouteName.TextChanged += new System.EventHandler(this.RouteInfo_Changed);
             this.tbRouteName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbRoute_KeyPress);
@@ -1124,7 +1117,7 @@
             this.tvRoutes.ShowLines = false;
             this.tvRoutes.ShowPlusMinus = false;
             this.tvRoutes.ShowRootLines = false;
-            this.tvRoutes.Size = new System.Drawing.Size(224, 199);
+            this.tvRoutes.Size = new System.Drawing.Size(277, 399);
             this.tvRoutes.StateImageList = this.il3State;
             this.tvRoutes.TabIndex = 16;
             this.tvRoutes.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvRoutes_AfterLabelEdit);
@@ -1145,10 +1138,11 @@
             this.btnManagerFileSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnManagerFileSave.FlatAppearance.BorderSize = 0;
             this.btnManagerFileSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnManagerFileSave.Location = new System.Drawing.Point(776, 4);
+            this.btnManagerFileSave.Location = new System.Drawing.Point(850, 4);
             this.btnManagerFileSave.Name = "btnManagerFileSave";
             this.btnManagerFileSave.Size = new System.Drawing.Size(20, 20);
             this.btnManagerFileSave.TabIndex = 29;
+            this.toolTip.SetToolTip(this.btnManagerFileSave, "Save manager file.");
             this.btnManagerFileSave.UseVisualStyleBackColor = true;
             this.btnManagerFileSave.Click += new System.EventHandler(this.btnManagerFileSave_Click);
             // 
@@ -1161,16 +1155,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 261);
+            this.ClientSize = new System.Drawing.Size(874, 461);
             this.Controls.Add(this.btnManagerFileSave);
             this.Controls.Add(this.btnManagerFileReload);
             this.Controls.Add(this.btnManagerFileLoad);
             this.Controls.Add(this.tbManagerFile);
             this.Controls.Add(this.pnlMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(816, 300);
+            this.MinimumSize = new System.Drawing.Size(890, 300);
             this.Name = "FormCPlay";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SHME: FS CoursePlay";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormCPlay_FormClosing);
             this.pnlMain.ResumeLayout(false);
@@ -1233,7 +1228,6 @@
         private System.Windows.Forms.NumericUpDown nudRotationStep;
         private System.Windows.Forms.Button btnRotationAlign;
         private System.Windows.Forms.Button btnPositionAlign;
-        private System.Windows.Forms.Splitter splitter;
         private System.Windows.Forms.Panel pnlFilters;
         private System.Windows.Forms.TreeView tvRoutes;
         private System.Windows.Forms.Button btnFind;
@@ -1248,7 +1242,6 @@
         private System.Windows.Forms.NumericUpDown nudZ;
         private System.Windows.Forms.CheckBox cbLimitZ;
         private System.Windows.Forms.CheckBox cbLimitY;
-        private System.Windows.Forms.DomainUpDown dudAction;
         private System.Windows.Forms.CheckBox chb10;
         private System.Windows.Forms.CheckBox chb09;
         private System.Windows.Forms.CheckBox chb08;
@@ -1263,13 +1256,14 @@
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.OpenFileDialog dlgOpen;
         private System.Windows.Forms.CheckBox chbRouteEnabled;
-        private System.Windows.Forms.Button btnPointSave;
+        private System.Windows.Forms.Button btnWaypointSave;
         private System.Windows.Forms.ImageList il3State;
         private System.Windows.Forms.Button btnManagerFileSave;
         private System.Windows.Forms.Button btnPointInsert;
-        private System.Windows.Forms.Button btnRouteClear;
+        private System.Windows.Forms.Button btnWaypointsDeleteSelected;
         private System.Windows.Forms.Button btnPointsCheckInvert;
         private System.Windows.Forms.Button btnPointsCheckAll;
         private System.Windows.Forms.Button btnPointsUncheckAll;
+        private System.Windows.Forms.ComboBox cbbAction;
     }
 }

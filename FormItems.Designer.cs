@@ -176,7 +176,7 @@
             0,
             0,
             -2147483648});
-            this.nudRotationZMin.ValueChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.nudRotationZMin.ValueChanged += new System.EventHandler(this.LimitFilter_ValueChanged);
             // 
             // nudRotationYMin
             // 
@@ -201,7 +201,7 @@
             0,
             0,
             -2147483648});
-            this.nudRotationYMin.ValueChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.nudRotationYMin.ValueChanged += new System.EventHandler(this.LimitFilter_ValueChanged);
             // 
             // nudRotationXMin
             // 
@@ -226,7 +226,7 @@
             0,
             0,
             -2147483648});
-            this.nudRotationXMin.ValueChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.nudRotationXMin.ValueChanged += new System.EventHandler(this.LimitFilter_ValueChanged);
             // 
             // nudPositionXMin
             // 
@@ -251,7 +251,7 @@
             0,
             0,
             -2147483648});
-            this.nudPositionXMin.ValueChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.nudPositionXMin.ValueChanged += new System.EventHandler(this.LimitFilter_ValueChanged);
             // 
             // nudPositionYMin
             // 
@@ -276,7 +276,7 @@
             0,
             0,
             -2147483648});
-            this.nudPositionYMin.ValueChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.nudPositionYMin.ValueChanged += new System.EventHandler(this.LimitFilter_ValueChanged);
             // 
             // nudPositionZMin
             // 
@@ -301,7 +301,7 @@
             0,
             0,
             -2147483648});
-            this.nudPositionZMin.ValueChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.nudPositionZMin.ValueChanged += new System.EventHandler(this.LimitFilter_ValueChanged);
             // 
             // nudRotationStep
             // 
@@ -467,20 +467,21 @@
             this.btnPositionAlign.Name = "btnPositionAlign";
             this.btnPositionAlign.Size = new System.Drawing.Size(20, 20);
             this.btnPositionAlign.TabIndex = 2;
-            this.toolTip.SetToolTip(this.btnPositionAlign, "Align position. Only X, Z axis");
+            this.toolTip.SetToolTip(this.btnPositionAlign, "Align position of checked items. Only X, Z axis");
             this.btnPositionAlign.UseVisualStyleBackColor = true;
             this.btnPositionAlign.Click += new System.EventHandler(this.btnPositionAlign_Click);
             // 
             // btnRotationAlign
             // 
+            this.btnRotationAlign.BackgroundImage = global::SHME.Properties.Resources.alignRotation;
+            this.btnRotationAlign.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnRotationAlign.FlatAppearance.BorderSize = 0;
             this.btnRotationAlign.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRotationAlign.Image = global::SHME.Properties.Resources.reload;
             this.btnRotationAlign.Location = new System.Drawing.Point(76, 42);
             this.btnRotationAlign.Name = "btnRotationAlign";
             this.btnRotationAlign.Size = new System.Drawing.Size(20, 20);
             this.btnRotationAlign.TabIndex = 2;
-            this.toolTip.SetToolTip(this.btnRotationAlign, "Align rotation. Only Y axis");
+            this.toolTip.SetToolTip(this.btnRotationAlign, "Align rotation of checked items. Only Y axis");
             this.btnRotationAlign.UseVisualStyleBackColor = true;
             this.btnRotationAlign.Click += new System.EventHandler(this.btnRotationAlign_Click);
             // 
@@ -646,10 +647,10 @@
             // 
             this.btnItemsUnroll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnItemsUnroll.AutoEllipsis = true;
-            this.btnItemsUnroll.BackgroundImage = global::SHME.Properties.Resources.reload;
+            this.btnItemsUnroll.BackgroundImage = global::SHME.Properties.Resources.historyBack;
             this.btnItemsUnroll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnItemsUnroll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnItemsUnroll.Location = new System.Drawing.Point(825, 254);
+            this.btnItemsUnroll.Location = new System.Drawing.Point(825, 434);
             this.btnItemsUnroll.Name = "btnItemsUnroll";
             this.btnItemsUnroll.Size = new System.Drawing.Size(19, 19);
             this.btnItemsUnroll.TabIndex = 24;
@@ -714,7 +715,7 @@
             this.clbItems.Location = new System.Drawing.Point(3, 172);
             this.clbItems.Name = "clbItems";
             this.clbItems.ScrollAlwaysVisible = true;
-            this.clbItems.Size = new System.Drawing.Size(841, 101);
+            this.clbItems.Size = new System.Drawing.Size(841, 281);
             this.clbItems.TabIndex = 21;
             this.clbItems.MouseClick += new System.Windows.Forms.MouseEventHandler(this.clbItems_MouseClick);
             this.clbItems.SelectedIndexChanged += new System.EventHandler(this.clbItems_SelectedIndexChanged);
@@ -733,7 +734,7 @@
             this.tvFilters.ShowLines = false;
             this.tvFilters.ShowPlusMinus = false;
             this.tvFilters.ShowRootLines = false;
-            this.tvFilters.Size = new System.Drawing.Size(221, 224);
+            this.tvFilters.Size = new System.Drawing.Size(221, 404);
             this.tvFilters.StateImageList = this.il3State;
             this.tvFilters.TabIndex = 16;
             this.tvFilters.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvFilters_AfterLabelEdit);
@@ -761,7 +762,7 @@
             this.pnlFilters.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlFilters.Location = new System.Drawing.Point(4, 4);
             this.pnlFilters.Name = "pnlFilters";
-            this.pnlFilters.Size = new System.Drawing.Size(224, 273);
+            this.pnlFilters.Size = new System.Drawing.Size(224, 453);
             this.pnlFilters.TabIndex = 15;
             // 
             // tableLayoutPanel1
@@ -806,7 +807,7 @@
             this.pnlItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlItems.Location = new System.Drawing.Point(236, 4);
             this.pnlItems.Name = "pnlItems";
-            this.pnlItems.Size = new System.Drawing.Size(844, 273);
+            this.pnlItems.Size = new System.Drawing.Size(844, 453);
             this.pnlItems.TabIndex = 22;
             // 
             // gbAlign
@@ -1099,30 +1100,33 @@
             // 
             // cbLimitRotationZ
             // 
+            this.cbLimitRotationZ.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitRotationZ.Location = new System.Drawing.Point(6, 64);
             this.cbLimitRotationZ.Name = "cbLimitRotationZ";
             this.cbLimitRotationZ.Size = new System.Drawing.Size(15, 21);
             this.cbLimitRotationZ.TabIndex = 17;
             this.cbLimitRotationZ.UseVisualStyleBackColor = true;
-            this.cbLimitRotationZ.CheckedChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.cbLimitRotationZ.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
             // 
             // cbLimitRotationY
             // 
+            this.cbLimitRotationY.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitRotationY.Location = new System.Drawing.Point(6, 40);
             this.cbLimitRotationY.Name = "cbLimitRotationY";
             this.cbLimitRotationY.Size = new System.Drawing.Size(15, 21);
             this.cbLimitRotationY.TabIndex = 16;
             this.cbLimitRotationY.UseVisualStyleBackColor = true;
-            this.cbLimitRotationY.CheckedChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.cbLimitRotationY.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
             // 
             // cbLimitRotationX
             // 
+            this.cbLimitRotationX.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitRotationX.Location = new System.Drawing.Point(6, 16);
             this.cbLimitRotationX.Name = "cbLimitRotationX";
             this.cbLimitRotationX.Size = new System.Drawing.Size(15, 21);
             this.cbLimitRotationX.TabIndex = 15;
             this.cbLimitRotationX.UseVisualStyleBackColor = true;
-            this.cbLimitRotationX.CheckedChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.cbLimitRotationX.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
             // 
             // nudRotationXMax
             // 
@@ -1147,7 +1151,7 @@
             0,
             0,
             0});
-            this.nudRotationXMax.ValueChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.nudRotationXMax.ValueChanged += new System.EventHandler(this.LimitFilter_ValueChanged);
             // 
             // nudRotationYMax
             // 
@@ -1172,7 +1176,7 @@
             0,
             0,
             0});
-            this.nudRotationYMax.ValueChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.nudRotationYMax.ValueChanged += new System.EventHandler(this.LimitFilter_ValueChanged);
             // 
             // nudRotationZMax
             // 
@@ -1197,7 +1201,7 @@
             0,
             0,
             0});
-            this.nudRotationZMax.ValueChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.nudRotationZMax.ValueChanged += new System.EventHandler(this.LimitFilter_ValueChanged);
             // 
             // gbLimitPosition
             // 
@@ -1220,30 +1224,33 @@
             // 
             // cbLimitPositionZ
             // 
+            this.cbLimitPositionZ.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitPositionZ.Location = new System.Drawing.Point(6, 64);
             this.cbLimitPositionZ.Name = "cbLimitPositionZ";
             this.cbLimitPositionZ.Size = new System.Drawing.Size(15, 21);
             this.cbLimitPositionZ.TabIndex = 16;
             this.cbLimitPositionZ.UseVisualStyleBackColor = true;
-            this.cbLimitPositionZ.CheckedChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.cbLimitPositionZ.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
             // 
             // cbLimitPositionY
             // 
+            this.cbLimitPositionY.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitPositionY.Location = new System.Drawing.Point(6, 40);
             this.cbLimitPositionY.Name = "cbLimitPositionY";
             this.cbLimitPositionY.Size = new System.Drawing.Size(15, 21);
             this.cbLimitPositionY.TabIndex = 15;
             this.cbLimitPositionY.UseVisualStyleBackColor = true;
-            this.cbLimitPositionY.CheckedChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.cbLimitPositionY.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
             // 
             // cbLimitPositionX
             // 
+            this.cbLimitPositionX.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbLimitPositionX.Location = new System.Drawing.Point(6, 16);
             this.cbLimitPositionX.Name = "cbLimitPositionX";
             this.cbLimitPositionX.Size = new System.Drawing.Size(15, 21);
             this.cbLimitPositionX.TabIndex = 14;
             this.cbLimitPositionX.UseVisualStyleBackColor = true;
-            this.cbLimitPositionX.CheckedChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.cbLimitPositionX.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
             // 
             // nudPositionZMax
             // 
@@ -1268,7 +1275,7 @@
             0,
             0,
             0});
-            this.nudPositionZMax.ValueChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.nudPositionZMax.ValueChanged += new System.EventHandler(this.LimitFilter_ValueChanged);
             // 
             // nudPositionYMax
             // 
@@ -1293,7 +1300,7 @@
             0,
             0,
             0});
-            this.nudPositionYMax.ValueChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.nudPositionYMax.ValueChanged += new System.EventHandler(this.LimitFilter_ValueChanged);
             // 
             // nudPositionXMax
             // 
@@ -1318,7 +1325,7 @@
             0,
             0,
             0});
-            this.nudPositionXMax.ValueChanged += new System.EventHandler(this.LimitFilter_Changed);
+            this.nudPositionXMax.ValueChanged += new System.EventHandler(this.LimitFilter_ValueChanged);
             // 
             // tbLine
             // 
@@ -1341,7 +1348,7 @@
             this.splitter1.MinimumSize = new System.Drawing.Size(6, 2);
             this.splitter1.MinSize = 150;
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(8, 273);
+            this.splitter1.Size = new System.Drawing.Size(8, 453);
             this.splitter1.TabIndex = 23;
             this.splitter1.TabStop = false;
             // 
@@ -1349,7 +1356,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1084, 281);
+            this.ClientSize = new System.Drawing.Size(1084, 461);
             this.Controls.Add(this.pnlItems);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.pnlFilters);

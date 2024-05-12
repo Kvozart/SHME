@@ -254,6 +254,9 @@
     <None Include="Resources\directionBoth.png" />
     <None Include="Resources\directionLeft.png" />
     <None Include="Resources\directionRight.png" />
+    <None Include="Resources\alignRotation.png" />
+    <None Include="Resources\gear.png" />
+    <None Include="Resources\checkerInvert.png" />
     <Content Include="zlib1.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

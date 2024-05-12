@@ -39,7 +39,7 @@ namespace SHME
                 start = FormSHME.ReadTagsAttribute(line, attribute, out line, out end);
                 if (start < 1) return;
                 // Extract value
-                string[] v = line.Replace("  ", " ").Replace(',', '.').Split(' ');
+                string[] v = line.Replace("  ", " ").Split(' ');
                 if (0 < v.Length) Double.TryParse(v[0], NumberStyles.Float, nfi, out x);
                 if (1 < v.Length) Double.TryParse(v[1], NumberStyles.Float, nfi, out y);
                 if (2 < v.Length) Double.TryParse(v[2], NumberStyles.Float, nfi, out z);
@@ -62,8 +62,8 @@ namespace SHME
 
             public void Increment(double stepX, double stepY, double stepZ)
             {
-                y += stepX;
-                x += stepY;
+                x += stepX;
+                y += stepY;
                 z += stepZ;
             }
 
@@ -364,13 +364,6 @@ namespace SHME
                     = (tbFilter.Text != tvFilters.SelectedNode.Text);
         }
 
-        private void LimitFilter_Changed(object sender, EventArgs e)
-        {
-            if (cbLimitPositionX.Checked || cbLimitPositionX.Checked || cbLimitPositionZ.Checked ||
-                cbLimitRotationX.Checked || cbLimitRotationX.Checked || cbLimitRotationZ.Checked)
-                FilterItems();
-        }
-
         private void tvFilters_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             e.Node.TreeView.SelectedNode = e.Node;
@@ -380,16 +373,6 @@ namespace SHME
 
         private void tvFilters_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == ' ')
-            {
-                NodeSwitchState((sender as TreeView).SelectedNode);
-                e.Handled = true;
-            }
-            else if (e.KeyChar == '\r')
-            {
-                (sender as TreeView).SelectedNode.BeginEdit();
-                e.Handled = true;
-            }
         }
 
         private void tvFilters_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
@@ -480,6 +463,15 @@ namespace SHME
             FormSHME.Main.IAC_Update();
         }
 
+        private void LimitFilter_ValueChanged(object sender, EventArgs e)
+        {
+            if (cbLimitPositionX.Checked || cbLimitPositionY.Checked || cbLimitPositionZ.Checked ||
+                cbLimitRotationX.Checked || cbLimitRotationY.Checked || cbLimitRotationZ.Checked)
+                FilterItems();
+        }
+
+        private void cbLimit_CheckedChanged(object sender, EventArgs e) => FilterItems();
+
         private void btnPositionAlign_Click(object sender, EventArgs e)
         {
             Double step   = (Double)nudPositionStep.Value;
@@ -532,7 +524,7 @@ namespace SHME
 
         private void clbItems_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tbLine.Enabled && clbItems.SelectedItem != null)
+            if (clbItems.SelectedItem != null)
                 tbLine.Text = clbItems.SelectedItem.ToString();
         }
 
@@ -611,8 +603,9 @@ namespace SHME
 
         private void btnFind_Click(object sender, EventArgs e)//Ok
         {
-            clbItems.BeginUpdate();
             String f = tbFind.Text;
+            if (f == "") return;
+            clbItems.BeginUpdate();
             for (int i = FSItemsShow.Count - 1; 0 <= i; i--)
                 clbItems.SetItemChecked(i, FSItemsShow[i].Line.Contains(f));
             clbItems.EndUpdate();
@@ -620,20 +613,19 @@ namespace SHME
 
         private void btnReplace_Click(object sender, EventArgs e)//Ok
         {
-            if (clbItems.CheckedIndices.Count < 1)
-                return;
+            if (clbItems.CheckedIndices.Count < 1) return;
+            String f = tbFind.Text;    if (f == "") return;
+            String r = tbReplace.Text; if (f ==  r) return;
             FSItem item;
-            String f = tbFind.Text,
-                   r = tbReplace.Text;
             clbItems.BeginUpdate();
             foreach (int i in clbItems.CheckedIndices)
             {
                 item = FSItemsShow[i];
+                item.ReadXMLLine(item.Line.Replace(f, r));
+                item.Edited = true;
                 clbItems.Items[i]
                     = item.Line
-                    = item.Line.Replace(f, r);
-                item.Edited = true;
-                item.ReadXMLLine(item.Line);
+                    = item.GetXMLLine();
             }
             clbItems.EndUpdate();
             btnItemsUnroll.Visible = true;

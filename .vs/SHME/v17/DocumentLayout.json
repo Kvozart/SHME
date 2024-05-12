@@ -7,19 +7,36 @@
       "RelativeMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|solutionrelative:formadrive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|c:\\users\\kvozart\\projects\\shme\\formshme.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|solutionrelative:formshme.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|c:\\users\\kvozart\\projects\\shme\\formcplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|solutionrelative:formcplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|c:\\users\\kvozart\\projects\\shme\\formitems.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|solutionrelative:formitems.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
     {
-      "Orientation": 1,
+      "Orientation": 0,
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedHeight": 320,
-          "SelectedChildIndex": 0,
+          "DockedWidth": 143,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FormCPlay.cs",
+              "DocumentMoniker": "C:\\Users\\Kvozart\\Projects\\SHME\\FormCPlay.cs",
+              "RelativeDocumentMoniker": "FormCPlay.cs",
+              "ToolTip": "C:\\Users\\Kvozart\\Projects\\SHME\\FormCPlay.cs",
+              "RelativeToolTip": "FormCPlay.cs",
+              "ViewState": "AQIAADYBAAAAAAAAAAAAAFgBAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-12T03:15:33.367Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -28,22 +45,22 @@
               "RelativeDocumentMoniker": "FormADrive.cs",
               "ToolTip": "C:\\Users\\Kvozart\\Projects\\SHME\\FormADrive.cs",
               "RelativeToolTip": "FormADrive.cs",
-              "ViewState": "AQIAAOIAAAAAAAAAAAAAAAgBAABEAAAA",
+              "ViewState": "AQIAACoBAAAAAAAAAAAAAFoBAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-09T13:44:24.142Z",
+              "WhenOpened": "2024-05-11T11:34:14.863Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "FormSHME.cs",
-              "DocumentMoniker": "C:\\Users\\Kvozart\\Projects\\SHME\\FormSHME.cs",
-              "RelativeDocumentMoniker": "FormSHME.cs",
-              "ToolTip": "C:\\Users\\Kvozart\\Projects\\SHME\\FormSHME.cs",
-              "RelativeToolTip": "FormSHME.cs",
-              "ViewState": "AQIAAIMFAAAAAAAAAAAEwNUFAABDAAAA",
+              "DocumentIndex": 2,
+              "Title": "FormItems.cs",
+              "DocumentMoniker": "C:\\Users\\Kvozart\\Projects\\SHME\\FormItems.cs",
+              "RelativeDocumentMoniker": "FormItems.cs",
+              "ToolTip": "C:\\Users\\Kvozart\\Projects\\SHME\\FormItems.cs",
+              "RelativeToolTip": "FormItems.cs",
+              "ViewState": "AQIAAEsAAAAAAAAAAAAEwHYBAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-30T18:15:32.66Z",
+              "WhenOpened": "2024-05-11T22:20:22.415Z",
               "EditorCaption": ""
             }
           ]
