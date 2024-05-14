@@ -105,7 +105,6 @@
     <Compile Include="FormCreate.Designer.cs">
       <DependentUpon>FormCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="HistoryRecord.cs" />
     <Compile Include="HMap.cs" />
     <Compile Include="FormSHME.cs">
       <SubType>Form</SubType>
@@ -113,10 +112,7 @@
     <Compile Include="FormSHME.Designer.cs">
       <DependentUpon>FormSHME.cs</DependentUpon>
     </Compile>
-    <Compile Include="NativeMethods.cs" />
-    <Compile Include="PngTypes.cs" />
-    <Compile Include="PngDecoder.cs" />
-    <Compile Include="PngEncoder.cs" />
+    <Compile Include="PngCodec.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutBox.resx">

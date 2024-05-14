@@ -6,14 +6,10 @@ namespace SHME
 {
     public static class ReversBits
     {
-        public static byte[] LookUp2 = {
-            0x0, 0x2, 0x1, 0x3};
+        public static int Mirror2(int value) => ((value & 1) << 1) | ((value >> 1) & 1) ;
 
-        public static byte[] LookUp4 = {
-            0x0, 0x8, 0x4, 0xC,
-            0x2, 0xA, 0x6, 0xE,
-            0x1, 0x9, 0x5, 0xD,
-            0x3, 0xB, 0x7, 0xF};
+        public static int Mirror4(int value) => ((value & 1) << 3) | ((value >> 1) & 2) |
+                                                ((value & 2) << 1) | ((value >> 3) & 1) ;
 
         public static byte[] LookUp8 = {
             0x00, 0x80, 0x40, 0xC0, 0x20, 0xA0, 0x60, 0xE0, 0x10, 0x90, 0x50, 0xD0, 0x30, 0xB0, 0x70, 0xF0,
@@ -32,31 +28,6 @@ namespace SHME
             0x0B, 0x8B, 0x4B, 0xCB, 0x2B, 0xAB, 0x6B, 0xEB, 0x1B, 0x9B, 0x5B, 0xDB, 0x3B, 0xBB, 0x7B, 0xFB,
             0x07, 0x87, 0x47, 0xC7, 0x27, 0xA7, 0x67, 0xE7, 0x17, 0x97, 0x57, 0xD7, 0x37, 0xB7, 0x77, 0xF7,
             0x0F, 0x8F, 0x4F, 0xCF, 0x2F, 0xAF, 0x6F, 0xEF, 0x1F, 0x9F, 0x5F, 0xDF, 0x3F, 0xBF, 0x7F, 0xFF};
-
-        public static int Mirror2(int value) => ((value << 1) | ((value >> 1) & 1)) & 3;
-
-        public static int Mirror4(int value) => ((value << 3) | ((value >> 2) & 4) | ((value >> 2) & 2) | ((value >> 3) & 1)) & 8;
-
-        /// <summary>
-        /// Mirror specified bit count from input value and mirror them to output. Works with 1-64 bits width.
-        /// </summary>
-        /// <param name="value">
-        /// Input value with bits to mirror
-        /// </param>
-        /// <param name="bits">
-        /// Count of bits to mirror
-        /// </param>
-        /// <returns></returns>
-        public static UInt64 Universal(UInt64 value, byte bits = 64)
-        {
-            UInt64 eulav = 0;
-            for (byte i = 0; i < bits; i++)
-            {
-                eulav = (eulav << 1) | (value & 1);
-                value >>= 1;
-            }
-            return eulav;
-        }
     }
 
     class TopologicalMap
@@ -166,40 +137,43 @@ namespace SHME
                 int mask;
                 bool pixelBLI = (loIdx != 0) ^ pixelBLIndian; // Double invert :(
                 if (bitBlock == 4)
-                    for (; y < Height; y++)
-                        for (x = 0; x < Width;)
-                        {
-                            pack = (pixelBLIndian) ? buffer[i++] : ReversBits.LookUp8[buffer[i++]];
-                            mask = pixelBLI ? ReversBits.LookUp4[pack & 15] : pack & 15;
-                            Levels[x, y] = (UInt16)((mask << 8) | mask);
-                            x++;
-                            if (x == Width) break;
-                            mask = pixelBLI ? ReversBits.LookUp4[pack >> 4] : pack >> 4;
-                            Levels[x, y] = (UInt16)((mask << 8) | mask);
-                            x++;
-                        }
+                    if (pixelBLI)
+                        for (; y < Height; y++)
+                            for (x = 0; x < Width;)
+                            {
+                                pack = (pixelBLIndian) ? buffer[i++] : ReversBits.LookUp8[buffer[i++]];
+                                                                         mask = ((pack & 1) << 3) | ((pack & 2) << 1) | ((pack >> 1) & 2) | ((pack >> 3) & 1);    Levels[x++, y] = (UInt16)(mask * 0x1111); // 1111 x 00010001,00010001
+                                if (x == Width) break;    pack >>= 4;    mask = ((pack & 1) << 3) | ((pack & 2) << 1) | ((pack >> 1) & 2) | ((pack >> 3) & 1);    Levels[x++, y] = (UInt16)(mask * 0x1111);
+                            }
+                    else
+                        for (; y < Height; y++)
+                            for (x = 0; x < Width;)
+                            {
+                                pack = (pixelBLIndian) ? buffer[i++] : ReversBits.LookUp8[buffer[i++]];
+                                                                         mask = pack & 15;    Levels[x++, y] = (UInt16)(mask * 0x1111);
+                                if (x == Width) break;    pack >>= 4;    mask = pack;         Levels[x++, y] = (UInt16)(mask * 0x1111);
+                            }
                 else if (bitBlock == 2)
-                    for (; y < Height; y++)
-                        for (x = 0; x < Width;)
-                        {
-                            pack = (pixelBLIndian) ? buffer[i++] : ReversBits.LookUp8[buffer[i++]];
-                            Levels[x, y] = (UInt16)((pixelBLI ? ReversBits.Mirror2(pack) : pack & 3) * 0x5555);
-                            x++;
-                            if (x == Width) break;
-                            pack >>= 2;
-                            Levels[x, y] = (UInt16)((pixelBLI ? ReversBits.Mirror2(pack) : pack & 3) * 0x5555);
-                            x++;
-                            if (x == Width) break;
-                            pack >>= 2;
-                            Levels[x, y] = (UInt16)((pixelBLI ? ReversBits.Mirror2(pack) : pack & 3) * 0x5555);
-                            x++;
-                            if (x == Width) break;
-                            pack >>= 2;
-                            Levels[x, y] = (UInt16)((pixelBLI ? ReversBits.Mirror2(pack) : pack    ) * 0x5555);
-                            x++;
-                            //mask = pixelBLI ? ReversBits.Mirror2(pack) : pack & 3;
-                            //Levels[x, y] = (UInt16)(mask << 12 | mask << 8 | mask << 4 | mask);
-                        }
+                    if (pixelBLI)
+                        for (; y < Height; y++)
+                            for (x = 0; x < Width;)
+                            {
+                                pack = (pixelBLIndian) ? buffer[i++] : ReversBits.LookUp8[buffer[i++]];
+                                                                   Levels[x++, y] = (UInt16)((((pack & 1) << 1) | ((pack >> 1) & 1)) * 0x5555); // 11 x 01010101,01010101
+                                if (x == Width) break; pack >>= 2; Levels[x++, y] = (UInt16)((((pack & 1) << 1) | ((pack >> 1) & 1)) * 0x5555);
+                                if (x == Width) break; pack >>= 2; Levels[x++, y] = (UInt16)((((pack & 1) << 1) | ((pack >> 1) & 1)) * 0x5555);
+                                if (x == Width) break; pack >>= 2; Levels[x++, y] = (UInt16)((((pack & 1) << 1) | ((pack >> 1) & 1)) * 0x5555);
+                            }
+                    else
+                        for (; y < Height; y++)
+                            for (x = 0; x < Width;)
+                            {
+                                pack = (pixelBLIndian) ? buffer[i++] : ReversBits.LookUp8[buffer[i++]];
+                                                                         Levels[x++, y] = (UInt16)((pack & 3) * 0x5555);
+                                if (x == Width) break;    pack >>= 2;    Levels[x++, y] = (UInt16)((pack & 3) * 0x5555);
+                                if (x == Width) break;    pack >>= 2;    Levels[x++, y] = (UInt16)((pack & 3) * 0x5555);
+                                if (x == Width) break;    pack >>= 2;    Levels[x++, y] = (UInt16)((pack    ) * 0x5555);
+                            }
                 // 1 bit bitmap unpacking
                 else
                     for (; y < Height; y++)
@@ -227,17 +201,15 @@ namespace SHME
                         for (x = 0; x < Width; x++)
                         {
                             pack = buffer[i++];
-                            Levels[x, y] = (UInt16)((pack << 8) | pack);
+                            Levels[x, y] = (UInt16)((pack << 8) | pack); // 11111111 x 00000001,00000001
                         }
                 // >8bit block
                 else
                     for (; y < Height; y++)
                         for (x = 0; x < Width; x++)
                         {
-                            Levels[x, y] = (UInt16)(
-                                (buffer[i + hiIdx] << 8) |
-                                 buffer[i + loIdx]
-                                 );
+                            Levels[x, y] = (UInt16)((buffer[i + hiIdx] << 8) |
+                                                     buffer[i + loIdx]       );
                             i += pack;
                         }
             }
@@ -339,8 +311,8 @@ namespace SHME
                 {
                     h = (UInt16)((Levels[x, y] - stretchMin) * k);
                     Pixels[x + offset] = A
-                        + ((   (h >> 8) * Hi
-                        + (byte)h       * Lo) & 0xFFffFF);
+                        + (((h >>  8) * Hi
+                        +   (h & 255) * Lo) & 0xFFffFF);
                 }
                 offset += Width;
             }
@@ -363,7 +335,7 @@ namespace SHME
         /// </param>
         public void BuildSpectrum(int left, int top, int right, int bottom, int[] colors, int stretchMin = 0, int stretchMax = 65535, int repeat = 1)
         {
-            int x, h, segment, offset;
+            int x, h, offset;
             if (right  < 0) right  = Width  + right;
             if (bottom < 0) bottom = Height + bottom;
             float k = (repeat * 65535 / (float)(stretchMax - stretchMin)); // 65535 as max target
@@ -376,15 +348,22 @@ namespace SHME
                 colors = c;
             }
             // Build
+            int step, delta, color0, color1;
             offset = top * Width;
             for (int y = top; y <= bottom; y++)
             {
                 for (x = left; x <= right; x++)
                 {
-                    h = (UInt16)((Levels[x, y] - stretchMin) * k);
                     //h = (UInt16)((65535*Changed[x, y] - stretchMin) * k); // Display states instead of levels
-                    segment = (h >> 13);
-                    Pixels[x + offset] = MixColor(colors[segment], colors[segment + 1], (byte)(h >> 5), 255);
+                    h = (UInt16)((Levels[x, y] - stretchMin) * k);
+                    step = (byte)(h >> 5);
+                    delta = 255 - step;
+                    color0 = colors[(h >> 13)    ];
+                    color1 = colors[(h >> 13) + 1];
+                    Pixels[x + offset] = A
+                        + (((byte)(color0 >> 16) * delta + (byte)(color1 >> 16) * step) / 255 << 16)
+                        + (((byte)(color0 >>  8) * delta + (byte)(color1 >>  8) * step) / 255 <<  8)
+                        + (((byte)(color0      ) * delta + (byte)(color1      ) * step) / 255      );
                 }
                 offset += Width;
             }
@@ -412,6 +391,94 @@ namespace SHME
             for (y = MaxY; 0 <= y; y--)
                 AvgLevel += AvgLevelAtRow[y];
             AvgLevel /= Height;
+        }
+    }
+
+    class HistoryRecord
+    {
+        public bool MultiTouch { get; private set; }
+        public bool ResizeAction { get; private set; }
+        public int Left { get; private set; }
+        public int Top { get; private set; }
+        public int Right { get; private set; }
+        public int Bottom { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+        public UInt16[,] Clip { get; private set; }
+        public float[,] Changed { get; private set; }
+
+        public HistoryRecord(HeightMap HMap, int left, int top, int right, int bottom, bool multiTouch, bool resizeAction = false)
+        {
+            Width = (Right = right) - (Left = left) + 1;
+            Height = (Bottom = bottom) - (Top = top) + 1;
+            Clip = HMap.Levels.Clone() as ushort[,];
+            Changed = HMap.Changed.Clone() as float[,];
+            ResizeAction = resizeAction;
+            MultiTouch = multiTouch;
+        }
+
+        public void Check(int left, int top, int right, int bottom)
+        {
+            if (left < Left) Left = left;
+            if (top < Top) Top = top;
+            if (Right < right) Right = right;
+            if (Bottom < bottom) Bottom = bottom;
+        }
+
+        public void Crop()
+        {
+            int x;
+            Width = Right - Left + 1;
+            Height = Bottom - Top + 1;
+            UInt16[,] newClip = new UInt16[Width, Height];
+            float[,] newChanged = new float[Width, Height];
+            for (int y = 0; y < Height; y++)
+                for (x = 0; x < Width; x++)
+                {
+                    newClip[x, y] = Clip[x + Left, y + Top];
+                    newChanged[x, y] = Changed[x + Left, y + Top];
+                }
+            Clip = newClip;
+            Changed = newChanged;
+        }
+
+        public void Rollback(HeightMap HMap)
+        {
+            // Swap back
+            if (ResizeAction)
+            {
+                // Remember corner
+                Right = HMap.Width - 1;
+                Bottom = HMap.Height - 1;
+                // Switch arrays
+                UInt16[,] oldClip;
+                float[,] oldChanged;
+                HMap.SwapClips(Width, Height, Clip, Changed, out oldClip, out oldChanged);
+                Clip = oldClip;
+                Changed = oldChanged;
+                // Update sizes
+                Width = Right - Left + 1;
+                Height = Bottom - Top + 1;
+            }
+            // Edit back
+            else
+            {
+                int x, y, sx, sy;
+                UInt16 v;
+                float f;
+                for (y = 0; y < Height; y++)
+                    for (x = 0; x < Width; x++)
+                    {
+                        sx = x + Left;
+                        sy = y + Top;
+                        v = HMap.Levels[sx, sy];
+                        f = HMap.Changed[sx, sy];
+                        HMap.Levels[sx, sy] = Clip[x, y];
+                        HMap.Changed[sx, sy] = Changed[x, y];
+                        Clip[x, y] = v;
+                        Changed[x, y] = f;
+                    }
+            }
         }
     }
 }

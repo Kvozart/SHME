@@ -117,8 +117,9 @@ namespace SHME
 
         private bool lockFilter = true;
         private String FileName = "";
-        private List<FSItem> FSItems = new List<FSItem> { };
-        public  List<FSItem> FSItemsShow = new List<FSItem> { };
+        private List<FSItem> FSItems      = new List<FSItem> { };
+        public  List<FSItem> FSItemsShow  = new List<FSItem> { };
+        public  List<FSItem> FSItemsShown = new List<FSItem> { };
 
         #region Form
         public FormItems()//Ok
@@ -373,6 +374,9 @@ namespace SHME
 
         private void tvFilters_KeyPress(object sender, KeyPressEventArgs e)
         {
+            if (e.KeyChar != '\r') return;
+            (sender as TreeView).SelectedNode.BeginEdit();
+            e.Handled = true;
         }
 
         private void tvFilters_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
@@ -409,8 +413,6 @@ namespace SHME
         private void FilterItems()//
         {
             if (lockFilter) return;
-            clbItems.BeginUpdate();
-            clbItems.Items.Clear();
             FSItemsShow.Clear();
             // Prepare
             Double minPX = (Double)nudPositionXMin.Value,  maxPX = (Double)nudPositionXMax.Value,
@@ -455,12 +457,29 @@ namespace SHME
                     if (limitRZ) if (item.Rotation.z < minRZ || maxRZ < item.Rotation.z) continue;
                 }
                 // Allowed
-                clbItems.Items.Add(item.Line);
                 FSItemsShow.Add(item);
                 item.Show = true;
             }
-            clbItems.EndUpdate();
-            FormSHME.Main.IAC_Update();
+            Relist(true);
+            FormSHME.Main.IAC_Redraw();
+        }
+
+        private void chbListVisible_CheckedChanged(object sender, EventArgs e) => Relist(true);
+
+        public void Relist(bool force = false)
+        {
+            if (chbListVisible.Checked || force) // Skip if wasn't checked in first place
+            {
+                FSItemsShown = (chbListVisible.Checked)
+                    ? FormSHME.Main.CheckObjectVisibility(FSItemsShow, iconW, iconH)
+                    : FSItemsShow;
+                // List
+                clbItems.BeginUpdate();
+                clbItems.Items.Clear();
+                foreach (FSItem item in FSItemsShown)
+                    clbItems.Items.Add(item.Line);
+                clbItems.EndUpdate();
+            }
         }
 
         private void LimitFilter_ValueChanged(object sender, EventArgs e)
@@ -489,7 +508,7 @@ namespace SHME
                 }
             }
             btnItemsUnroll.Visible = true;
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void btnRotationAlign_Click(object sender, EventArgs e)
@@ -509,7 +528,7 @@ namespace SHME
                 }
             }
             btnItemsUnroll.Visible = true;
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void nudPositionStep_ValueChanged(object sender, EventArgs e) =>
@@ -559,7 +578,7 @@ namespace SHME
             FSItemsShow[i].Edited = true;
             FSItemsShow[i].ReadXMLLine(tbLine.Text);
             btnItemsUnroll.Visible = true;
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void tbLine_KeyPress(object sender, KeyPressEventArgs e)//Ok
@@ -584,7 +603,7 @@ namespace SHME
                     = item.GetXMLLine();
             }
             btnItemsUnroll.Visible = true;
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void btnPositionXsub_Click(object sender, EventArgs e) => XYZIncrement(-(Double)nudPositionStep.Value, 0, 0, false);
@@ -629,7 +648,7 @@ namespace SHME
             }
             clbItems.EndUpdate();
             btnItemsUnroll.Visible = true;
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void btnItemsUnroll_Click(object sender, EventArgs e)//Ok
@@ -647,7 +666,7 @@ namespace SHME
                 }
             clbItems.EndUpdate();
             btnItemsUnroll.Visible = false;
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
         #endregion
     }

@@ -73,7 +73,6 @@
             this.gbAlign = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.gbFindAndReplace = new System.Windows.Forms.GroupBox();
             this.gbEdit = new System.Windows.Forms.GroupBox();
             this.btnPositionXsub = new System.Windows.Forms.Button();
             this.btnRotationZsub = new System.Windows.Forms.Button();
@@ -106,6 +105,7 @@
             this.nudPositionXMax = new System.Windows.Forms.NumericUpDown();
             this.tbLine = new System.Windows.Forms.TextBox();
             this.splitter1 = new System.Windows.Forms.Splitter();
+            this.chbListVisible = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationZMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationYMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationXMin)).BeginInit();
@@ -120,7 +120,6 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlItems.SuspendLayout();
             this.gbAlign.SuspendLayout();
-            this.gbFindAndReplace.SuspendLayout();
             this.gbEdit.SuspendLayout();
             this.gbLimitRotation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationXMax)).BeginInit();
@@ -492,7 +491,7 @@
             this.btnReplace.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnReplace.FlatAppearance.BorderSize = 0;
             this.btnReplace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReplace.Location = new System.Drawing.Point(121, 40);
+            this.btnReplace.Location = new System.Drawing.Point(805, 92);
             this.btnReplace.Name = "btnReplace";
             this.btnReplace.Size = new System.Drawing.Size(20, 20);
             this.btnReplace.TabIndex = 3;
@@ -587,7 +586,7 @@
             this.btnFind.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFind.FlatAppearance.BorderSize = 0;
             this.btnFind.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFind.Location = new System.Drawing.Point(121, 16);
+            this.btnFind.Location = new System.Drawing.Point(805, 68);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(20, 20);
             this.btnFind.TabIndex = 3;
@@ -599,7 +598,7 @@
             // 
             this.tbReplace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbReplace.Location = new System.Drawing.Point(4, 40);
+            this.tbReplace.Location = new System.Drawing.Point(688, 92);
             this.tbReplace.Name = "tbReplace";
             this.tbReplace.Size = new System.Drawing.Size(111, 20);
             this.tbReplace.TabIndex = 1;
@@ -609,7 +608,7 @@
             // 
             this.tbFind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFind.Location = new System.Drawing.Point(4, 16);
+            this.tbFind.Location = new System.Drawing.Point(688, 68);
             this.tbFind.Name = "tbFind";
             this.tbFind.Size = new System.Drawing.Size(111, 20);
             this.tbFind.TabIndex = 0;
@@ -789,14 +788,18 @@
             // 
             // pnlItems
             // 
+            this.pnlItems.Controls.Add(this.btnFind);
+            this.pnlItems.Controls.Add(this.chbListVisible);
+            this.pnlItems.Controls.Add(this.btnReplace);
             this.pnlItems.Controls.Add(this.btnItemsUnroll);
+            this.pnlItems.Controls.Add(this.tbReplace);
             this.pnlItems.Controls.Add(this.clbItems);
+            this.pnlItems.Controls.Add(this.tbFind);
             this.pnlItems.Controls.Add(this.btnFileReload);
             this.pnlItems.Controls.Add(this.tbFile);
             this.pnlItems.Controls.Add(this.gbAlign);
             this.pnlItems.Controls.Add(this.btnItemsCheckInvert);
             this.pnlItems.Controls.Add(this.btnFileLoad);
-            this.pnlItems.Controls.Add(this.gbFindAndReplace);
             this.pnlItems.Controls.Add(this.gbEdit);
             this.pnlItems.Controls.Add(this.btnFileSave);
             this.pnlItems.Controls.Add(this.gbLimitRotation);
@@ -847,21 +850,6 @@
             this.label6.Size = new System.Drawing.Size(38, 15);
             this.label6.TabIndex = 13;
             this.label6.Text = "Offset";
-            // 
-            // gbFindAndReplace
-            // 
-            this.gbFindAndReplace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbFindAndReplace.Controls.Add(this.btnFind);
-            this.gbFindAndReplace.Controls.Add(this.btnReplace);
-            this.gbFindAndReplace.Controls.Add(this.tbReplace);
-            this.gbFindAndReplace.Controls.Add(this.tbFind);
-            this.gbFindAndReplace.Location = new System.Drawing.Point(688, 28);
-            this.gbFindAndReplace.Name = "gbFindAndReplace";
-            this.gbFindAndReplace.Size = new System.Drawing.Size(148, 66);
-            this.gbFindAndReplace.TabIndex = 32;
-            this.gbFindAndReplace.TabStop = false;
-            this.gbFindAndReplace.Text = "Find and replace";
             // 
             // gbEdit
             // 
@@ -1352,6 +1340,22 @@
             this.splitter1.TabIndex = 23;
             this.splitter1.TabStop = false;
             // 
+            // chbListVisible
+            // 
+            this.chbListVisible.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chbListVisible.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chbListVisible.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chbListVisible.Image = global::SHME.Properties.Resources.eye;
+            this.chbListVisible.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.chbListVisible.Location = new System.Drawing.Point(688, 36);
+            this.chbListVisible.Name = "chbListVisible";
+            this.chbListVisible.Size = new System.Drawing.Size(90, 25);
+            this.chbListVisible.TabIndex = 35;
+            this.chbListVisible.Text = "Only visible";
+            this.chbListVisible.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chbListVisible.UseVisualStyleBackColor = true;
+            this.chbListVisible.CheckedChanged += new System.EventHandler(this.chbListVisible_CheckedChanged);
+            // 
             // FormItems
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1385,8 +1389,6 @@
             this.pnlItems.PerformLayout();
             this.gbAlign.ResumeLayout(false);
             this.gbAlign.PerformLayout();
-            this.gbFindAndReplace.ResumeLayout(false);
-            this.gbFindAndReplace.PerformLayout();
             this.gbEdit.ResumeLayout(false);
             this.gbLimitRotation.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationXMax)).EndInit();
@@ -1461,7 +1463,6 @@
         private System.Windows.Forms.Button btnItemsCheckAll;
         private System.Windows.Forms.Button btnItemsUncheckAll;
         private System.Windows.Forms.Button btnItemsUnroll;
-        private System.Windows.Forms.GroupBox gbFindAndReplace;
         private System.Windows.Forms.Button btnReplace;
         private System.Windows.Forms.TextBox tbReplace;
         private System.Windows.Forms.TextBox tbFind;
@@ -1477,5 +1478,6 @@
         private System.Windows.Forms.Button btnFilterAdd;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox chbListVisible;
     }
 }

@@ -519,7 +519,12 @@ namespace SHME
                 p.Show = true;
             }
             clbWaypoints.EndUpdate();
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
+        }
+
+        public void Relist(bool force = false)
+        {
+
         }
 
         private void nudPositionStep_ValueChanged(object sender, EventArgs e) => //Ok
@@ -606,7 +611,7 @@ namespace SHME
                     WaypointsShow.RemoveAt(i);
                 }
             clbWaypoints.EndUpdate();
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void btnRouteSave_Click(object sender, EventArgs e)
@@ -736,7 +741,7 @@ namespace SHME
         private void btnWaypointSave_Click(object sender, EventArgs e)
         {
             WaypointSave(SelectedWaypoint, clbWaypoints.SelectedIndex);
-            FormSHME.Main.IAC_Update(); // ? Fillter
+            FormSHME.Main.IAC_Redraw(); // ? Fillter
         }
 
         private void btnWaypointInsert_Click(object sender, EventArgs e)
@@ -755,7 +760,7 @@ namespace SHME
             }
             clbWaypoints.Items.Insert(i, "-");
             WaypointSave(SelectedWaypoint, i);
-            FormSHME.Main.IAC_Update(); // ? Fillter
+            FormSHME.Main.IAC_Redraw(); // ? Fillter
         }
 
         private void btnWaypointDelete_Click(object sender, EventArgs e)
@@ -770,7 +775,7 @@ namespace SHME
             if (clbWaypoints.Items.Count <= i) i--;
             if (i < 0) SelectedWaypoint = null;
             clbWaypoints.SelectedIndex = i;
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
         #endregion
     }

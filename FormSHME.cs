@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using LibPNGsharp;
 using static SHME.FormADrive;
@@ -411,7 +412,8 @@ namespace SHME
             ScrollValueCheckAndSet(vScrollBar, ref y, true);
             cbbZoom.SelectedIndex = zoom;
             // Redraw
-            ScrollBar_Scroll(null, null);
+            IAC_Relist();
+            Canvas_Update();
         }
 
         private void BuildLevels()//Ok
@@ -886,7 +888,8 @@ namespace SHME
                                 msY0 = e.Y;
                                 hScrollBar.Value = scX;
                                 vScrollBar.Value = scY;
-                                ScrollBar_Scroll(null, null);
+                                IAC_Relist();
+                                Canvas_Update();
                             }
                         }
                         ToolShadow_Update();
@@ -1260,6 +1263,28 @@ namespace SHME
 
         private void cbbGrid_CheckedChanged(object sender, EventArgs e) => Canvas_Update();
 
+        public List<FSItem> CheckObjectVisibility(List<FSItem> items, int iconW, int iconH)
+        {
+            List<FSItem> itemsShown = new List<FSItem>();
+            double magnitude = 2 / (double)(1 << zoom);
+            double areaL = hScrollBar.Value  * magnitude - HMap.MaxX,
+                   areaT = vScrollBar.Value  * magnitude - HMap.MaxY,
+                   areaR = hScrollBar.Width  * magnitude + areaL,
+                   areaB = vScrollBar.Height * magnitude + areaT;
+            // Mark
+            double maLC = areaL - iconW * magnitude,
+                   maRC = areaR + iconW * magnitude,
+                   maTC = areaT - iconH * magnitude,
+                   maBC = areaB + iconH * magnitude;
+            foreach (FSItem item in items)
+                if (item.Position.present)
+                    if (item.Shown = (maLC <= item.Position.x && item.Position.x < maRC &&
+                                      maTC <= item.Position.z && item.Position.z < maBC))
+                        itemsShown.Add(item);
+            Text = areaL +":"+ areaT +" - "+ areaR + ":" + areaB;
+            return itemsShown;
+        }
+
         private void FormSHME_Paint(object sender, PaintEventArgs e)
         {
             if (lockDrawing) return;
@@ -1392,7 +1417,7 @@ namespace SHME
                 x = sx - FormItems.iconCX;
                 y = sy - FormItems.iconCY;
                 // Loop through
-                foreach (FSItem item in FIs.FSItemsShow)
+                foreach (FSItem item in FIs.FSItemsShown)
                     if (item.Position.present)
                     {
                         dx = item.Position.x;
@@ -1404,7 +1429,6 @@ namespace SHME
                                 FormItems.icon, FormItems.iconW, FormItems.iconH,
                                 (int)(dx * shift) + x,
                                 (int)(dy * shift) + y);
-                            item.Shown = true;
                         }
                     }
             }
@@ -1470,7 +1494,7 @@ namespace SHME
                 if (chbBrush3FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, chbBrush3RectangleShape.Checked);
             }
 
-            // Draw ADrive
+            // Draw ADrive lines
             if (chbADrive.Checked)
                 if (FAD.SelectedRoute != null)
                 {
@@ -1497,7 +1521,7 @@ namespace SHME
                         }
                     }
                 }
-            // Draw CPlay
+            // Draw CPlay lines
             if (chbCPlay.Checked)
                 if (FCP.SelectedRoute != null)
                 {
@@ -1515,12 +1539,6 @@ namespace SHME
                                 WPs[iy - 1].canvasX, WPs[iy - 1].canvasY,
                                 WPs[iy    ].canvasX, WPs[iy    ].canvasY);
                 }
-
-            /* <<< Test area >>> */
-            //e.Graphics.DrawRectangle(new Pen(Color.Cyan), e.ClipRectangle.Left, e.ClipRectangle.Top, e.ClipRectangle.Width - 1, e.ClipRectangle.Height - 1);
-            //e.Graphics.DrawRectangle(new Pen(Color.Yellow), portL, portT, portW - 1, portH - 1);
-            //this.Text = mtsL + "," + mtsT + " : " + mtsR + "," + mtsB + " : " + mtsW + "," + mtsH;
-            /* <<< Test area >>> */
         }
 
         private void DrawBrushContour(Graphics g, int x, int y, int width, int height, bool isRectangle)//Ok
@@ -1536,7 +1554,10 @@ namespace SHME
             bool h = ResizeScrollBar(hScrollBar, hScrollBar.Width);
             bool v = ResizeScrollBar(vScrollBar, vScrollBar.Height);
             if (h | v)
-                ScrollBar_Scroll(null, null);
+            {
+                IAC_Relist();
+                Canvas_Update();
+            }
         }
 
         private bool ResizeScrollBar(ScrollBar scrollBar, int largeChange)
@@ -1564,8 +1585,10 @@ namespace SHME
         private void ScrollBar_Scroll(object sender, ScrollEventArgs e)//
         {
             if (e != null)
-                if (e.OldValue == e.NewValue)
-                    return;
+            {
+                if (e.OldValue == e.NewValue) return;
+                IAC_Relist();
+            }
             Canvas_Update();
         }
 
@@ -1949,7 +1972,14 @@ namespace SHME
         #endregion
 
         #region Additional
-        public void IAC_Update()
+        public void IAC_Relist()
+        {
+            if (chbItems .Checked) FIs?.Relist();
+            if (chbCPlay .Checked) FCP?.Relist();
+            if (chbADrive.Checked) FAD?.Relist();
+        }
+
+        public void IAC_Redraw()
         {
             if (chbItems.Checked || chbADrive.Checked || chbCPlay.Checked)
                 Canvas_Update();

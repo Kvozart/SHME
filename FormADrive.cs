@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using static SHME.FormADrive;
+using static SHME.FormItems;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace SHME
@@ -617,7 +618,12 @@ namespace SHME
                     p.Show = true;
                 }
             clbWaypoints.EndUpdate();
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
+        }
+
+        public void Relist(bool force = false)
+        {
+
         }
 
         private void Limit_ValueChanged(object sender, EventArgs e)
@@ -668,7 +674,7 @@ namespace SHME
                     WaypointsShow.RemoveAt(i);
                 }
             clbWaypoints.EndUpdate();
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void btnRouteSave_Click(object sender, EventArgs e)
@@ -773,7 +779,7 @@ namespace SHME
             cbbLinkPoint.Items[i] = p.Line;
             cbbMarkerWaypoint.Items[i] = p.Line;
             btnPointSave.Visible = false;
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void btnWaypointAdd_Click(object sender, EventArgs e)
@@ -806,7 +812,7 @@ namespace SHME
             // Remove from markers
             cbbMarkerWaypoint.Items.RemoveAt(i);
             SelectedRoute.Markers.RemoveAll(l => (i <= l.waypointIdx) ? (l.waypointIdx-- == i) : false); // Decrement id in search loop
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
         #endregion
 
@@ -893,7 +899,7 @@ namespace SHME
             tvLinks.Nodes[linkID].StateImageIndex = direction;
             SelectedWaypoint.Edited = true;
             tvLinks.EndUpdate();
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void btnLinkAdd_Click(object sender, EventArgs e)
@@ -922,7 +928,7 @@ namespace SHME
             }
             ThatL.direction = (byte)((direction << 1) | (direction >> 1) & 3);
             tvLinks.Nodes[ThisLID].StateImageIndex = direction;
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void btnLinkDelete_Click(object sender, EventArgs e)
@@ -937,7 +943,7 @@ namespace SHME
             tvLinks.Nodes.RemoveAt(li);
             SelectedRoute.Waypoints[pFarID].Edited = true;
             SelectedWaypoint.Edited = true;
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
         #endregion
 
@@ -963,7 +969,7 @@ namespace SHME
                 cbbMarkerGroup.SelectedIndex = marker.groupIdx;
                 cbbMarkerWaypoint.SelectedIndex = marker.waypointIdx;
             }
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void Marker_ValueChanged(object sender, EventArgs e)
@@ -997,7 +1003,7 @@ namespace SHME
             tvMarkers.SelectedNode.Text
                 = marker.Line
                 = marker.GetLine();
-            FormSHME.Main.IAC_Update();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void btnMarkerDelete_Click(object sender, EventArgs e)
@@ -1074,7 +1080,7 @@ namespace SHME
         }
         #endregion
 
-        private void treeView_KeyPress(object sender, KeyPressEventArgs e)
+        public void treeView_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar != '\r') return;
             (sender as TreeView).SelectedNode.BeginEdit();
