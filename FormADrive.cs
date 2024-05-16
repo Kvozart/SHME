@@ -95,8 +95,8 @@ namespace SHME
                 if (set) XMLLine = Line = line;
 
                 int tmp;
-                FormSHME.ReadTagsAttribute(line, "n", out name, out tmp);
-                if (0 < FormSHME.ReadTagsAttribute(line, "i", out line, out tmp)) int.TryParse(line, out order);
+                ReadValue.TagsAttribute(line, "n", out name, out tmp);
+                if (0 < ReadValue.TagsAttribute(line, "i", out line, out tmp)) int.TryParse(line, out order);
             }
 
             public String GetLine() =>
@@ -127,9 +127,9 @@ namespace SHME
                 if (set) XMLLine = Line = line;
 
                 int tmp;
-                FormSHME.ReadTagsAttribute(line, "n", out name, out tmp);
-                FormSHME.ReadTagsAttribute(line, "g", out groupName, out tmp);
-                if (FormSHME.ReadTagsAttribute(line, "i", out waypoint, out tmp) < 1) waypoint = "1";
+                ReadValue.TagsAttribute(line, "n", out name, out tmp);
+                ReadValue.TagsAttribute(line, "g", out groupName, out tmp);
+                if (ReadValue.TagsAttribute(line, "i", out waypoint, out tmp) < 1) waypoint = "1";
                 int.TryParse(waypoint, out waypointIdx);
                 waypointIdx--;
             }
@@ -173,11 +173,11 @@ namespace SHME
                 if (set) XMLLine = Line = line;
 
                 int tmp;
-                FormSHME.ReadTagsAttribute(line, "name", out name, out tmp);
-                FormSHME.ReadTagsAttribute(line, "fileName", out fileName, out tmp);
-                FormSHME.ReadTagsAttribute(line, "map", out map, out tmp);
-                FormSHME.ReadTagsAttribute(line, "revision", out revision, out tmp);
-                FormSHME.ReadTagsAttribute(line, "date", out date, out tmp);
+                ReadValue.TagsAttribute(line, "name", out name, out tmp);
+                ReadValue.TagsAttribute(line, "fileName", out fileName, out tmp);
+                ReadValue.TagsAttribute(line, "map", out map, out tmp);
+                ReadValue.TagsAttribute(line, "revision", out revision, out tmp);
+                ReadValue.TagsAttribute(line, "date", out date, out tmp);
             }
 
             public String GetXMLLine() => ((InfoEdited)
@@ -231,14 +231,14 @@ namespace SHME
                                 case "File": tbManagerFile.Text = value; break;
                                 case "Route": selectRouteFile = value; break;
                                 // Position
-                                case "PositionStep": FormSHME.SetNUD(nudPositionStep, value, NFI); break;
-                                case "PositionOffset": FormSHME.SetNUD(nudPositionOffset, value, NFI); break;
-                                case "LimitXMin": FormSHME.SetNUD(nudLimitXMin, value, NFI); break;
-                                case "LimitXMax": FormSHME.SetNUD(nudLimitXMax, value, NFI); break;
-                                case "LimitYMin": FormSHME.SetNUD(nudLimitYMin, value, NFI); break;
-                                case "LimitYMax": FormSHME.SetNUD(nudLimitYMax, value, NFI); break;
-                                case "LimitZMin": FormSHME.SetNUD(nudLimitZMin, value, NFI); break;
-                                case "LimitZMax": FormSHME.SetNUD(nudLimitZMax, value, NFI); break;
+                                case "PositionStep"  : ReadValue.NUDDouble(nudPositionStep,   value, NFI); break;
+                                case "PositionOffset": ReadValue.NUDDouble(nudPositionOffset, value, NFI); break;
+                                case "LimitXMin"     : ReadValue.NUDDouble(nudLimitXMin,      value, NFI); break;
+                                case "LimitXMax"     : ReadValue.NUDDouble(nudLimitXMax,      value, NFI); break;
+                                case "LimitYMin"     : ReadValue.NUDDouble(nudLimitYMin,      value, NFI); break;
+                                case "LimitYMax"     : ReadValue.NUDDouble(nudLimitYMax,      value, NFI); break;
+                                case "LimitZMin"     : ReadValue.NUDDouble(nudLimitZMin,      value, NFI); break;
+                                case "LimitZMax"     : ReadValue.NUDDouble(nudLimitZMax,      value, NFI); break;
                                 case "LimitX": cbLimitX.Checked = (value.ToLower() == "true"); break;
                                 case "LimitY": cbLimitY.Checked = (value.ToLower() == "true"); break;
                                 case "LimitZ": cbLimitZ.Checked = (value.ToLower() == "true"); break;

@@ -75,6 +75,7 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Basics.cs" />
     <Compile Include="FormCPlay.cs">
       <SubType>Form</SubType>
     </Compile>

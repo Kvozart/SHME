@@ -139,11 +139,11 @@ namespace SHME
 
                 int tmp;
                 String s;
-                        FormSHME.ReadTagsAttribute(line, "fileName", out fileName, out tmp);
-                if (0 < FormSHME.ReadTagsAttribute(line, "isUsed",   out s,        out tmp)) isUsed = (s.ToLower() == "true");
-                if (0 < FormSHME.ReadTagsAttribute(line, "id",       out s,        out tmp)) int.TryParse(s, out id);
-                if (0 < FormSHME.ReadTagsAttribute(line, "parent",   out s,        out tmp)) int.TryParse(s, out parent);
-                        FormSHME.ReadTagsAttribute(line, "name",     out name,     out tmp);
+                        ReadValue.TagsAttribute(line, "fileName", out fileName, out tmp);
+                if (0 < ReadValue.TagsAttribute(line, "isUsed",   out s,        out tmp)) isUsed = (s.ToLower() == "true");
+                if (0 < ReadValue.TagsAttribute(line, "id",       out s,        out tmp)) int.TryParse(s, out id);
+                if (0 < ReadValue.TagsAttribute(line, "parent",   out s,        out tmp)) int.TryParse(s, out parent);
+                        ReadValue.TagsAttribute(line, "name",     out name,     out tmp);
             }
 
             public void ReadXMLLine(String line = null, bool set = false)
@@ -152,10 +152,10 @@ namespace SHME
                 if (set) XMLLine = Line = line;
 
                 int tmp;
-                FormSHME.ReadTagsAttribute(line, "workWidth",           out workWidth,           out tmp);
-                FormSHME.ReadTagsAttribute(line, "numHeadlandLanes",    out numHeadlandLanes,    out tmp);
-                FormSHME.ReadTagsAttribute(line, "headlandDirectionCW", out headlandDirectionCW, out tmp);
-                FormSHME.ReadTagsAttribute(line, "version",             out version,             out tmp);
+                ReadValue.TagsAttribute(line, "workWidth",           out workWidth,           out tmp);
+                ReadValue.TagsAttribute(line, "numHeadlandLanes",    out numHeadlandLanes,    out tmp);
+                ReadValue.TagsAttribute(line, "headlandDirectionCW", out headlandDirectionCW, out tmp);
+                ReadValue.TagsAttribute(line, "version",             out version,             out tmp);
             }
 
             public String GetManagerXMLLine() => (InfoEdited) 
@@ -214,22 +214,22 @@ namespace SHME
                                 case "File" : RouteFilesPath = Path.GetDirectoryName(tbManagerFile.Text = value); break;
                                 case "Route": selectRouteName = value; break;
                                 // Position
-                                case "PositionStep"  : FormSHME.SetNUD(nudPositionStep,   value, NFI); break;
-                                case "PositionOffset": FormSHME.SetNUD(nudPositionOffset, value, NFI); break;
-                                case "LimitXMin"     : FormSHME.SetNUD(nudLimitXMin,      value, NFI); break;
-                                case "LimitXMax"     : FormSHME.SetNUD(nudLimitXMax,      value, NFI); break;
-                                case "LimitYMin"     : FormSHME.SetNUD(nudLimitYMin,      value, NFI); break;
-                                case "LimitYMax"     : FormSHME.SetNUD(nudLimitYMax,      value, NFI); break;
-                                case "LimitZMin"     : FormSHME.SetNUD(nudLimitZMin,      value, NFI); break;
-                                case "LimitZMax"     : FormSHME.SetNUD(nudLimitZMax,      value, NFI); break;
+                                case "PositionStep"  : ReadValue.NUDDouble(nudPositionStep,   value, NFI); break;
+                                case "PositionOffset": ReadValue.NUDDouble(nudPositionOffset, value, NFI); break;
+                                case "LimitXMin"     : ReadValue.NUDDouble(nudLimitXMin,      value, NFI); break;
+                                case "LimitXMax"     : ReadValue.NUDDouble(nudLimitXMax,      value, NFI); break;
+                                case "LimitYMin"     : ReadValue.NUDDouble(nudLimitYMin,      value, NFI); break;
+                                case "LimitYMax"     : ReadValue.NUDDouble(nudLimitYMax,      value, NFI); break;
+                                case "LimitZMin"     : ReadValue.NUDDouble(nudLimitZMin,      value, NFI); break;
+                                case "LimitZMax"     : ReadValue.NUDDouble(nudLimitZMax,      value, NFI); break;
                                 case "LimitX"        : cbLimitX.Checked = (value.ToLower() == "true"); break;
                                 case "LimitY"        : cbLimitY.Checked = (value.ToLower() == "true"); break;
                                 case "LimitZ"        : cbLimitZ.Checked = (value.ToLower() == "true"); break;
                                 // Rotation
-                                case "RotationStep"  : FormSHME.SetNUD(nudRotationStep,   value, NFI); break;
-                                case "RotationOffset": FormSHME.SetNUD(nudRotationOffset, value, NFI); break;
-                                case "LimitRMin"     : FormSHME.SetNUD360(nudLimitRMin,   value, NFI); break;
-                                case "LimitRMax"     : FormSHME.SetNUD360(nudLimitRMax,   value, NFI); break;
+                                case "RotationStep"  : ReadValue.NUDDouble(nudRotationStep,   value, NFI); break;
+                                case "RotationOffset": ReadValue.NUDDouble(nudRotationOffset, value, NFI); break;
+                                case "LimitRMin"     : ReadValue.NUDDouble360(nudLimitRMin,   value, NFI); break;
+                                case "LimitRMax"     : ReadValue.NUDDouble360(nudLimitRMax,   value, NFI); break;
                                 case "LimitR"        : cbLimitR.Checked = (value.ToLower() == "true"); break;
                                 // Find & Replace
                                 case "Find"   : tbFind   .Text = value.Replace("&#9;", "\t"); break;

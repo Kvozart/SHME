@@ -70,6 +70,7 @@
             this.pnlFilters = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlItems = new System.Windows.Forms.Panel();
+            this.cbListVisible = new System.Windows.Forms.CheckBox();
             this.gbAlign = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -105,7 +106,6 @@
             this.nudPositionXMax = new System.Windows.Forms.NumericUpDown();
             this.tbLine = new System.Windows.Forms.TextBox();
             this.splitter1 = new System.Windows.Forms.Splitter();
-            this.chbListVisible = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationZMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationYMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationXMin)).BeginInit();
@@ -468,7 +468,7 @@
             this.btnPositionAlign.TabIndex = 2;
             this.toolTip.SetToolTip(this.btnPositionAlign, "Align position of checked items. Only X, Z axis");
             this.btnPositionAlign.UseVisualStyleBackColor = true;
-            this.btnPositionAlign.Click += new System.EventHandler(this.btnPositionAlign_Click);
+            this.btnPositionAlign.Click += new System.EventHandler(this.btnAlign_Click);
             // 
             // btnRotationAlign
             // 
@@ -482,7 +482,7 @@
             this.btnRotationAlign.TabIndex = 2;
             this.toolTip.SetToolTip(this.btnRotationAlign, "Align rotation of checked items. Only Y axis");
             this.btnRotationAlign.UseVisualStyleBackColor = true;
-            this.btnRotationAlign.Click += new System.EventHandler(this.btnRotationAlign_Click);
+            this.btnRotationAlign.Click += new System.EventHandler(this.btnAlign_Click);
             // 
             // btnReplace
             // 
@@ -789,7 +789,7 @@
             // pnlItems
             // 
             this.pnlItems.Controls.Add(this.btnFind);
-            this.pnlItems.Controls.Add(this.chbListVisible);
+            this.pnlItems.Controls.Add(this.cbListVisible);
             this.pnlItems.Controls.Add(this.btnReplace);
             this.pnlItems.Controls.Add(this.btnItemsUnroll);
             this.pnlItems.Controls.Add(this.tbReplace);
@@ -812,6 +812,23 @@
             this.pnlItems.Name = "pnlItems";
             this.pnlItems.Size = new System.Drawing.Size(844, 453);
             this.pnlItems.TabIndex = 22;
+            // 
+            // cbListVisible
+            // 
+            this.cbListVisible.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbListVisible.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.cbListVisible.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbListVisible.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.cbListVisible.Image = global::SHME.Properties.Resources.eye;
+            this.cbListVisible.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cbListVisible.Location = new System.Drawing.Point(688, 36);
+            this.cbListVisible.Name = "cbListVisible";
+            this.cbListVisible.Size = new System.Drawing.Size(90, 25);
+            this.cbListVisible.TabIndex = 35;
+            this.cbListVisible.Text = "Only visible";
+            this.cbListVisible.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbListVisible.UseVisualStyleBackColor = true;
+            this.cbListVisible.CheckedChanged += new System.EventHandler(this.chbListVisible_CheckedChanged);
             // 
             // gbAlign
             // 
@@ -1340,22 +1357,6 @@
             this.splitter1.TabIndex = 23;
             this.splitter1.TabStop = false;
             // 
-            // chbListVisible
-            // 
-            this.chbListVisible.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chbListVisible.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.chbListVisible.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chbListVisible.Image = global::SHME.Properties.Resources.eye;
-            this.chbListVisible.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.chbListVisible.Location = new System.Drawing.Point(688, 36);
-            this.chbListVisible.Name = "chbListVisible";
-            this.chbListVisible.Size = new System.Drawing.Size(90, 25);
-            this.chbListVisible.TabIndex = 35;
-            this.chbListVisible.Text = "Only visible";
-            this.chbListVisible.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chbListVisible.UseVisualStyleBackColor = true;
-            this.chbListVisible.CheckedChanged += new System.EventHandler(this.chbListVisible_CheckedChanged);
-            // 
             // FormItems
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1478,6 +1479,6 @@
         private System.Windows.Forms.Button btnFilterAdd;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.CheckBox chbListVisible;
+        private System.Windows.Forms.CheckBox cbListVisible;
     }
 }

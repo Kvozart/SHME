@@ -17,48 +17,7 @@ namespace SHME
 {
     public partial class FormSHME : Form
     {
-        static public void SetNUD(NumericUpDown nud, String s, NumberFormatInfo nfi)
-        {
-            double d;
-            Double.TryParse(s, NumberStyles.Float, nfi, out d);
-            Decimal v = (Decimal)d;
-            nud.Value = (nud.Maximum < v) ? nud.Maximum
-                      : (nud.Minimum > v) ? nud.Minimum
-                                          : v;
-        }
-
-        static public void SetNUD360(NumericUpDown nud, String s, NumberFormatInfo nfi)
-        {
-            double v = 0,
-                min = (double)nud.Minimum,
-                max = (double)nud.Maximum;
-            double range = max - min;
-            Double.TryParse(s, NumberStyles.Float, nfi, out v);
-            v = (0 < v && max < v) ? v - Math.Floor  (v / range) * range // loop back
-              : (0 > v && min > v) ? v + Math.Ceiling(v / range) * range // loop back
-                                   : v;
-            nud.Value = (Decimal)v;
-        }
-
-        public static int ReadTagsAttribute(String line, String attribute, out String value, out int end)
-        {
-            end= 0;
-            value = "";
-            // Find attribute
-            int start = line.IndexOf(' ' + attribute + '=');
-            if (start < 0)
-                if (start < 0)
-                    return 0;
-            // Extract value
-            int q1, q2;
-            if ((q1 = line.IndexOf('"', start) + 1) < 1) return 0; // Position first second "
-            if ((q2 = line.IndexOf('"', q1   )    ) < 1) return 0; // Position after second "
-            value = line.Substring(q1, q2 - q1);
-            end = q2 + 1;
-            return start;
-        }
-
-        public static void DrawArrayToArray(int[] aCanvas, int aCanvasW, int aCanvasH, int[] aImg, int aImgW, int aImgH, int x, int y)
+        public void DrawArrayToArray(int[] aCanvas, int aCanvasW, int aCanvasH, int[] aImg, int aImgW, int aImgH, int x, int y)
         {
             int ix, iy, iOffset = 0;
             int cy = y * aCanvasW, cOffset;
@@ -1263,26 +1222,23 @@ namespace SHME
 
         private void cbbGrid_CheckedChanged(object sender, EventArgs e) => Canvas_Update();
 
-        public List<FSItem> CheckObjectVisibility(List<FSItem> items, int iconW, int iconH)
+        public IEnumerable<FSObject> CheckObjectVisibility(IEnumerable<FSObject> objects, int iconW, int iconH)
         {
-            List<FSItem> itemsShown = new List<FSItem>();
+            List<FSObject> objectsShown = new List<FSObject>();
             double magnitude = 2 / (double)(1 << zoom);
-            double areaL = hScrollBar.Value  * magnitude - HMap.MaxX,
-                   areaT = vScrollBar.Value  * magnitude - HMap.MaxY,
-                   areaR = hScrollBar.Width  * magnitude + areaL,
-                   areaB = vScrollBar.Height * magnitude + areaT;
+            double areaL = hScrollBar.Value * magnitude - HMap.MaxX,
+                   areaT = vScrollBar.Value * magnitude - HMap.MaxY;
+            double maLC = areaL -  iconW                      * magnitude,
+                   maTC = areaT -  iconH                      * magnitude,
+                   maRC = areaL + (iconW + hScrollBar.Width ) * magnitude,
+                   maBC = areaT + (iconH + vScrollBar.Height) * magnitude;
             // Mark
-            double maLC = areaL - iconW * magnitude,
-                   maRC = areaR + iconW * magnitude,
-                   maTC = areaT - iconH * magnitude,
-                   maBC = areaB + iconH * magnitude;
-            foreach (FSItem item in items)
-                if (item.Position.present)
-                    if (item.Shown = (maLC <= item.Position.x && item.Position.x < maRC &&
-                                      maTC <= item.Position.z && item.Position.z < maBC))
-                        itemsShown.Add(item);
-            Text = areaL +":"+ areaT +" - "+ areaR + ":" + areaB;
-            return itemsShown;
+            foreach (FSObject obj in objects)
+                if (obj.Position.Present)
+                    if (obj.Shown = (maLC <= obj.Position.X && obj.Position.X < maRC &&
+                                      maTC <= obj.Position.Z && obj.Position.Z < maBC))
+                        objectsShown.Add(obj);
+            return objectsShown;
         }
 
         private void FormSHME_Paint(object sender, PaintEventArgs e)
@@ -1418,10 +1374,10 @@ namespace SHME
                 y = sy - FormItems.iconCY;
                 // Loop through
                 foreach (FSItem item in FIs.FSItemsShown)
-                    if (item.Position.present)
+                    if (item.Position.Present)
                     {
-                        dx = item.Position.x;
-                        dy = item.Position.z;
+                        dx = item.Position.X;
+                        dy = item.Position.Z;
                         if (maLC <= dx && dx < maRC &&
                             maTC <= dy && dy < maBC)
                         {
@@ -1432,7 +1388,6 @@ namespace SHME
                         }
                     }
             }
-
             // Draw CPlay
             if (chbCPlay.Checked)
                 if (FCP.SelectedRoute != null)
@@ -1455,7 +1410,6 @@ namespace SHME
                             p.Shown = true;
                         }
                 }
-
             // Draw ADrive
             if (chbADrive.Checked)
                 if (FAD.SelectedRoute != null)
