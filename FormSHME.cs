@@ -1879,9 +1879,9 @@ namespace SHME
         #region Additional
         public void IAC_Relist()
         {
-            if (chbItems .Checked) FIs?.Relist();
-            if (chbCPlay .Checked) FCP?.Relist();
-            if (chbADrive.Checked) FAD?.Relist();
+            FIs?.Relist();
+            FCP?.Relist();
+            FAD?.Relist();
         }
 
         public void IAC_Redraw()

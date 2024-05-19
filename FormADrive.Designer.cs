@@ -201,6 +201,7 @@
             this.tvRoutes.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvRoutes_AfterLabelEdit);
             this.tvRoutes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvRoutes_AfterSelect);
             this.tvRoutes.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.treeView_KeyPress);
+            this.tvRoutes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvRoutes_MouseDown);
             // 
             // tcADrive
             // 

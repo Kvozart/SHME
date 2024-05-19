@@ -225,6 +225,7 @@ namespace SHME
                                 // Find & Replace
                                 case "Find"   : tbFind   .Text = value.Replace("&#9;", "\t"); break;
                                 case "Replace": tbReplace.Text = value.Replace("&#9;", "\t"); break;
+                                case "ListVisibleOnly": cbListVisible.Checked = (value.ToLower() == "true"); break;
                                 default:
                                     break;
                             }
@@ -273,6 +274,7 @@ namespace SHME
                     // Find & Replace
                     file.WriteLine("Find\t"    + tbFind   .Text.Replace("\t", "&#9;"));
                     file.WriteLine("Replace\t" + tbReplace.Text.Replace("\t", "&#9;"));
+                    file.WriteLine("ListVisibleOnly\t" + cbListVisible.Checked.ToString());
                     return;
                 }
             }
@@ -355,7 +357,13 @@ namespace SHME
             tbRouteName.Enabled
                 = chbRouteEnabled.Enabled
                 = (SelectedRoute != null);
-            if (SelectedRoute == null) return;
+            if (SelectedRoute == null)
+            {
+                chbRouteEnabled.Checked = false;
+                tbRouteName.Text = "";
+                FilterWaypoints();
+                return;
+            }
             // Apply values
             chbRouteEnabled.Checked = SelectedRoute.isUsed;
             tbRouteName.Text = SelectedRoute.name;
@@ -365,9 +373,20 @@ namespace SHME
                 Route_Load();
         }
 
-        private void RouteInfo_Changed(object sender, EventArgs e) => btnRouteInfoSave.Visible = 
-            ((tvRoutes.SelectedNode.Tag as CPRoute).isUsed != chbRouteEnabled.Checked) || 
-            ((tvRoutes.SelectedNode.Tag as CPRoute).name != tbRouteName.Text);
+        private void tvRoutes_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (tvRoutes.GetNodeAt(e.X, e.Y) != null) return;
+            tvRoutes.SelectedNode = null;
+            tvRoutes_AfterSelect(null, null);
+        }
+
+        private void RouteInfo_Changed(object sender, EventArgs e)
+        {
+            if (SelectedRoute == null) return;
+            btnRouteInfoSave.Visible =
+                SelectedRoute.isUsed != chbRouteEnabled.Checked ||
+                SelectedRoute.name   != tbRouteName.Text;
+        } 
 
         private void tvRoutes_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
@@ -498,17 +517,18 @@ namespace SHME
                  limitZ = cbLimitZ.Checked,
                  limitR = cbLimitR.Checked;
             // Select
-            foreach (CPWaypoint p in SelectedRoute.Waypoints)
-            {
-                p.Show= false;
-                if (limitX) if (p.Position.X < minX || maxX < p.Position.X) continue;
-                if (limitY) if (p.Position.Y < minY || maxY < p.Position.Y) continue;
-                if (limitZ) if (p.Position.Z < minZ || maxZ < p.Position.Z) continue;
-                if (limitR) if (p.Position.R < minR || maxR < p.Position.R) continue;
-                // Allowed
-                WaypointsShow.Add(p);
-                p.Show = true;
-            }
+            if (SelectedRoute != null)
+                foreach (CPWaypoint p in SelectedRoute.Waypoints)
+                {
+                    p.Show= false;
+                    if (limitX) if (p.Position.X < minX || maxX < p.Position.X) continue;
+                    if (limitY) if (p.Position.Y < minY || maxY < p.Position.Y) continue;
+                    if (limitZ) if (p.Position.Z < minZ || maxZ < p.Position.Z) continue;
+                    if (limitR) if (p.Position.R < minR || maxR < p.Position.R) continue;
+                    // Allowed
+                    WaypointsShow.Add(p);
+                    p.Show = true;
+                }
             Relist(true);
             FormSHME.Main.IAC_Redraw();
         }

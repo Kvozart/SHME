@@ -250,6 +250,7 @@ namespace SHME
                                 case "LimitX": cbLimitX.Checked = (value.ToLower() == "true"); break;
                                 case "LimitY": cbLimitY.Checked = (value.ToLower() == "true"); break;
                                 case "LimitZ": cbLimitZ.Checked = (value.ToLower() == "true"); break;
+                                case "ListVisibleOnly": cbListVisible.Checked = (value.ToLower() == "true"); break;
                                 default:
                                     break;
                             }
@@ -288,6 +289,7 @@ namespace SHME
                     file.WriteLine("LimitX\t" + cbLimitX.Checked.ToString());
                     file.WriteLine("LimitY\t" + cbLimitY.Checked.ToString());
                     file.WriteLine("LimitZ\t" + cbLimitZ.Checked.ToString());
+                    file.WriteLine("ListVisibleOnly\t" + cbListVisible.Checked.ToString());
                     return;
                 }
             }
@@ -380,6 +382,13 @@ namespace SHME
                 Route_Select();
             else
                 btnRouteReload_Click(null, null);
+        }
+
+        private void tvRoutes_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (tvRoutes.GetNodeAt(e.X, e.Y) != null) return;
+            tvRoutes.SelectedNode = null;
+            tvRoutes_AfterSelect(null, null);
         }
 
         private void tvRoutes_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)

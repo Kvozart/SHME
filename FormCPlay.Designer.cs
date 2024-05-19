@@ -1130,6 +1130,7 @@
             this.tvRoutes.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvRoutes_AfterLabelEdit);
             this.tvRoutes.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvRoutes_AfterSelect);
             this.tvRoutes.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvRoutes_NodeMouseClick);
+            this.tvRoutes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvRoutes_MouseDown);
             // 
             // il3State
             // 
