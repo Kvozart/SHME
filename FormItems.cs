@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -9,9 +10,18 @@ namespace SHME
 {
     public partial class FormItems : Form
     {
-        public const int iconW = 9, iconCX = 4,
-                         iconH = 9, iconCY = 4;
-        public static readonly int[] icon = {
+        public static readonly int[] pinSelection = {
+            0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF,
+            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+            0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF};
+
+        public static readonly int[] pinDefault = {
             0x00000000, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x00000000,
             0x7F007F00, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x7F007F00,
             0x7F007F00, 0x00000000, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x00000000, 0x7F007F00,
@@ -21,6 +31,56 @@ namespace SHME
             0x7F007F00, 0x00000000, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x00000000, 0x7F007F00,
             0x7F007F00, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x7F007F00,
             0x00000000, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x00000000};
+
+        public static FSPins Pins = new FSPins(9, 9, 4, 4,
+            new int[][]{
+                pinDefault},
+            pinSelection,
+            new Pen[]{
+                new Pen(Color.White)}
+            );
+
+        public class FSItem : FSObject
+        {
+            new public static readonly String FloatFormat = "f4";
+
+            public String A = "", B = "", C = "";
+            public XYZRDouble Rotation = new XYZRDouble();
+            // Own
+            int pStart, rStart;
+
+            public FSItem(String line) : base(line) { }
+
+            override public void DecodeXMLLine(String line)
+            {
+                String tmp;
+                if (Position.Present = (0 < (pStart = ReadValue.TagsAttribute(line, "position", out tmp, out int pEnd)))) Position.ReadXMLLine(tmp, FloatPoint);
+                if (Rotation.Present = (0 < (rStart = ReadValue.TagsAttribute(line, "rotation", out tmp, out int rEnd)))) Rotation.ReadXMLLine(tmp, FloatPoint);
+                // A + position + B + rotation + C | "" + 0 + B + rotation + C
+                if (pStart < rStart)
+                {
+                    A = line.Substring(0, pStart);
+                    B = line.Substring(pEnd, rStart - pEnd);
+                    C = line.Substring(rEnd);
+                }
+                // A + rotation + B + position + C | "" + 0 + B + position + C | "" + 0 + "" + 0 + C
+                else
+                {
+                    A = line.Substring(0, rStart);
+                    B = line.Substring(rEnd, pStart - rEnd);
+                    C = line.Substring(pEnd);
+                }
+            }
+
+            override public String BuildListLine() => BuildXMLLine();
+
+            override public String BuildXMLLine() =>
+                A +
+                (Position.Present ? " position=\"" + Position.GetListLine(FloatFormat, FloatPoint) + "\"" : "") +
+                B +
+                (Rotation.Present ? " rotation=\"" + Rotation.GetListLine(FloatFormat, FloatPoint) + "\"" : "") +
+                C;
+        }
 
         private const String IniFileName = "Items.ini";
         private static readonly NumberFormatInfo NFI = new CultureInfo("en-US", false).NumberFormat;
@@ -277,7 +337,7 @@ namespace SHME
 
         private void tvFilters_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e) => UIBasics.TreeView_NodeSwitchStateMouseLR(sender, e, FilterItems);
 
-        private void tvFilters_KeyPress(object sender, KeyPressEventArgs e) => UIBasics.TreeView_BeginEdit(sender, e);
+        private void tvFilters_KeyPress(object sender, KeyPressEventArgs e) => UIBasics.TreeView_KeyPressBeginEdit(sender, e);
 
         private void tvFilters_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
@@ -291,9 +351,9 @@ namespace SHME
                 = false;
         }
 
-        private void btnDeselect_Click       (object sender, EventArgs e) => UIBasics.TreeView_SetStates(sender, 0, FilterItems);
-        private void btnSelect_Click         (object sender, EventArgs e) => UIBasics.TreeView_SetStates(sender, 1, FilterItems);
-        private void btnInvertSelection_Click(object sender, EventArgs e) => UIBasics.TreeView_SetStates(sender, 2, FilterItems);
+        private void btnDeselect_Click       (object sender, EventArgs e) => UIBasics.TreeView_SetStates(tvFilters, 0, FilterItems);
+        private void btnSelect_Click         (object sender, EventArgs e) => UIBasics.TreeView_SetStates(tvFilters, 1, FilterItems);
+        private void btnInvertSelection_Click(object sender, EventArgs e) => UIBasics.TreeView_SetStates(tvFilters, 2, FilterItems);
         #endregion
 
         #region Items list
@@ -356,10 +416,11 @@ namespace SHME
         public void Relist(bool force = false)
         {
             if (lockFilter) return;
+            FormSHME.Main.ProjectObjects(FSItems);
             if (cbListVisible.Checked || force) // Skip if wasn't checked in first place
             {
                 FSItemsShown = (cbListVisible.Checked)
-                    ? FormSHME.Main.CheckObjectVisibility(FSItemsShow, iconW, iconH).Cast<FSItem>().ToList()
+                    ? FormSHME.Main.CheckObjectsVisibility(FSItemsShow, Pins).Cast<FSItem>().ToList()
                     : FSItemsShow;
                 // List
                 clbItems.BeginUpdate();
@@ -381,7 +442,7 @@ namespace SHME
 
         private void btnAlign_Click(object sender, EventArgs e)
         {
-            bool changed, doLocatoin = (sender == btnRotationAlign);
+            bool changed, doLocatoin = (sender == btnPositionAlign);
             Double step   = (Double)(doLocatoin ? nudPositionStep  : nudRotationStep   ).Value;
             Double offset = (Double)(doLocatoin ? nudPositionOffset: nudRotationOffset ).Value;
             if (clbItems.CheckedIndices.Count < 1)
@@ -420,11 +481,10 @@ namespace SHME
                 tbLine.Text = clbItems.SelectedItem.ToString();
         }
 
-        private void clbItems_MouseClick(object sender, MouseEventArgs e) => UIBasics.CheckedListBox_MouseClick(sender, e);
+        private void clbItems_MouseClick(object sender, MouseEventArgs e) => UIBasics.CheckedListBox_MouseClick(clbItems, e);
 
-        private void btnItemsSetAllChecks_Click(object sender, EventArgs e) => UIBasics.CheckedListBox_SetChecks(sender, (sender == btnItemsCheckAll));
-
-        private void btnItemsInvertChecks_Click(object sender, EventArgs e) => UIBasics.CheckedListBox_InvertChecks(sender);
+        private void btnItemsSetChecks_Click   (object sender, EventArgs e) => UIBasics.CheckedListBox_SetChecks   (clbItems, (sender == btnItemsCheckAll));
+        private void btnItemsInvertChecks_Click(object sender, EventArgs e) => UIBasics.CheckedListBox_InvertChecks(clbItems);
 
         private void tbLine_Leave(object sender, EventArgs e)
         {

@@ -38,6 +38,7 @@
             this.tvRoutes = new System.Windows.Forms.TreeView();
             this.tcADrive = new System.Windows.Forms.TabControl();
             this.tpWaypoints = new System.Windows.Forms.TabPage();
+            this.cbListVisible = new System.Windows.Forms.CheckBox();
             this.btnPointsCheckInvert = new System.Windows.Forms.Button();
             this.btnPointsCheckAll = new System.Windows.Forms.Button();
             this.btnPointsUncheckAll = new System.Windows.Forms.Button();
@@ -216,6 +217,7 @@
             // 
             // tpWaypoints
             // 
+            this.tpWaypoints.Controls.Add(this.cbListVisible);
             this.tpWaypoints.Controls.Add(this.btnPointsCheckInvert);
             this.tpWaypoints.Controls.Add(this.btnPointsCheckAll);
             this.tpWaypoints.Controls.Add(this.btnPointsUncheckAll);
@@ -233,18 +235,34 @@
             this.tpWaypoints.Text = "Waypoints";
             this.tpWaypoints.UseVisualStyleBackColor = true;
             // 
+            // cbListVisible
+            // 
+            this.cbListVisible.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbListVisible.BackgroundImage = global::SHME.Properties.Resources.eye;
+            this.cbListVisible.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.cbListVisible.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbListVisible.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.cbListVisible.Location = new System.Drawing.Point(6, 58);
+            this.cbListVisible.Name = "cbListVisible";
+            this.cbListVisible.Size = new System.Drawing.Size(20, 20);
+            this.cbListVisible.TabIndex = 40;
+            this.cbListVisible.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbListVisible.UseVisualStyleBackColor = true;
+            this.cbListVisible.CheckedChanged += new System.EventHandler(this.cbListVisible_CheckedChanged);
+            // 
             // btnPointsCheckInvert
             // 
             this.btnPointsCheckInvert.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnPointsCheckInvert.FlatAppearance.BorderSize = 0;
             this.btnPointsCheckInvert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsCheckInvert.Image = global::SHME.Properties.Resources.checkerHalfFilled;
-            this.btnPointsCheckInvert.Location = new System.Drawing.Point(6, 93);
+            this.btnPointsCheckInvert.Location = new System.Drawing.Point(6, 95);
             this.btnPointsCheckInvert.Name = "btnPointsCheckInvert";
             this.btnPointsCheckInvert.Size = new System.Drawing.Size(16, 16);
             this.btnPointsCheckInvert.TabIndex = 39;
             this.toolTip.SetToolTip(this.btnPointsCheckInvert, "Invert all checks");
             this.btnPointsCheckInvert.UseVisualStyleBackColor = true;
+            this.btnPointsCheckInvert.Click += new System.EventHandler(this.btnPointsInvertChecks_Click);
             // 
             // btnPointsCheckAll
             // 
@@ -252,12 +270,13 @@
             this.btnPointsCheckAll.FlatAppearance.BorderSize = 0;
             this.btnPointsCheckAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsCheckAll.Image = global::SHME.Properties.Resources.checkerFilled;
-            this.btnPointsCheckAll.Location = new System.Drawing.Point(6, 75);
+            this.btnPointsCheckAll.Location = new System.Drawing.Point(6, 79);
             this.btnPointsCheckAll.Name = "btnPointsCheckAll";
             this.btnPointsCheckAll.Size = new System.Drawing.Size(16, 16);
             this.btnPointsCheckAll.TabIndex = 37;
             this.toolTip.SetToolTip(this.btnPointsCheckAll, "Check all");
             this.btnPointsCheckAll.UseVisualStyleBackColor = true;
+            this.btnPointsCheckAll.Click += new System.EventHandler(this.btnPointsSetChecks_Click);
             // 
             // btnPointsUncheckAll
             // 
@@ -271,6 +290,7 @@
             this.btnPointsUncheckAll.TabIndex = 38;
             this.toolTip.SetToolTip(this.btnPointsUncheckAll, "Uncheck all");
             this.btnPointsUncheckAll.UseVisualStyleBackColor = true;
+            this.btnPointsUncheckAll.Click += new System.EventHandler(this.btnPointsSetChecks_Click);
             // 
             // btnRouteClear
             // 
@@ -375,11 +395,6 @@
             0,
             0,
             0});
-            this.nudPositionStep.Minimum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            -2147483648});
             this.nudPositionStep.Name = "nudPositionStep";
             this.nudPositionStep.Size = new System.Drawing.Size(70, 20);
             this.nudPositionStep.TabIndex = 10;
@@ -679,8 +694,8 @@
             this.ilLinkDirection.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilLinkDirection.ImageStream")));
             this.ilLinkDirection.TransparentColor = System.Drawing.Color.Transparent;
             this.ilLinkDirection.Images.SetKeyName(0, "bulletEmpty.png");
-            this.ilLinkDirection.Images.SetKeyName(1, "directionLeft.png");
-            this.ilLinkDirection.Images.SetKeyName(2, "directionRight.png");
+            this.ilLinkDirection.Images.SetKeyName(1, "directionRight.png");
+            this.ilLinkDirection.Images.SetKeyName(2, "directionLeft.png");
             this.ilLinkDirection.Images.SetKeyName(3, "directionBoth.png");
             // 
             // chbLinkOut
@@ -1210,5 +1225,6 @@
         private System.Windows.Forms.TreeView tvMarkers;
         private System.Windows.Forms.TreeView tvGroups;
         private System.Windows.Forms.GroupBox gbGroups;
+        private System.Windows.Forms.CheckBox cbListVisible;
     }
 }

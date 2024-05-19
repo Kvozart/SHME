@@ -300,7 +300,7 @@
             this.lblPointerPosition.Location = new System.Drawing.Point(48, 68);
             this.lblPointerPosition.Margin = new System.Windows.Forms.Padding(1);
             this.lblPointerPosition.Name = "lblPointerPosition";
-            this.lblPointerPosition.Size = new System.Drawing.Size(80, 28);
+            this.lblPointerPosition.Size = new System.Drawing.Size(80, 26);
             this.lblPointerPosition.TabIndex = 23;
             this.lblPointerPosition.Text = "- x -";
             this.lblPointerPosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -331,7 +331,7 @@
             // 
             this.lblHeightAvg.Location = new System.Drawing.Point(168, 12);
             this.lblHeightAvg.Name = "lblHeightAvg";
-            this.lblHeightAvg.Size = new System.Drawing.Size(40, 28);
+            this.lblHeightAvg.Size = new System.Drawing.Size(40, 26);
             this.lblHeightAvg.TabIndex = 12;
             this.lblHeightAvg.Text = "32768 x8000";
             this.lblHeightAvg.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -340,7 +340,7 @@
             // 
             this.lblHeightMid.Location = new System.Drawing.Point(168, 40);
             this.lblHeightMid.Name = "lblHeightMid";
-            this.lblHeightMid.Size = new System.Drawing.Size(40, 28);
+            this.lblHeightMid.Size = new System.Drawing.Size(40, 26);
             this.lblHeightMid.TabIndex = 13;
             this.lblHeightMid.Text = "32768 x8000";
             this.lblHeightMid.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -388,7 +388,7 @@
             // 
             this.lblHeightMax.Location = new System.Drawing.Point(44, 12);
             this.lblHeightMax.Name = "lblHeightMax";
-            this.lblHeightMax.Size = new System.Drawing.Size(40, 28);
+            this.lblHeightMax.Size = new System.Drawing.Size(40, 26);
             this.lblHeightMax.TabIndex = 10;
             this.lblHeightMax.Text = "65535 xFFFF";
             this.lblHeightMax.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -397,7 +397,7 @@
             // 
             this.lblHeightMin.Location = new System.Drawing.Point(44, 40);
             this.lblHeightMin.Name = "lblHeightMin";
-            this.lblHeightMin.Size = new System.Drawing.Size(40, 28);
+            this.lblHeightMin.Size = new System.Drawing.Size(40, 26);
             this.lblHeightMin.TabIndex = 11;
             this.lblHeightMin.Text = "0 x0000";
             this.lblHeightMin.TextAlign = System.Drawing.ContentAlignment.MiddleRight;

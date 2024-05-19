@@ -316,11 +316,6 @@
             0,
             0,
             0});
-            this.nudRotationStep.Minimum = new decimal(new int[] {
-            180,
-            0,
-            0,
-            -2147483648});
             this.nudRotationStep.Name = "nudRotationStep";
             this.nudRotationStep.Size = new System.Drawing.Size(64, 20);
             this.nudRotationStep.TabIndex = 10;
@@ -372,11 +367,6 @@
             0,
             0,
             0});
-            this.nudPositionStep.Minimum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            -2147483648});
             this.nudPositionStep.Name = "nudPositionStep";
             this.nudPositionStep.Size = new System.Drawing.Size(64, 20);
             this.nudPositionStep.TabIndex = 10;
@@ -626,7 +616,7 @@
             this.btnItemsCheckAll.TabIndex = 17;
             this.toolTip.SetToolTip(this.btnItemsCheckAll, "Check all");
             this.btnItemsCheckAll.UseVisualStyleBackColor = true;
-            this.btnItemsCheckAll.Click += new System.EventHandler(this.btnItemsSetAllChecks_Click);
+            this.btnItemsCheckAll.Click += new System.EventHandler(this.btnItemsSetChecks_Click);
             // 
             // btnItemsUncheckAll
             // 
@@ -640,7 +630,7 @@
             this.btnItemsUncheckAll.TabIndex = 17;
             this.toolTip.SetToolTip(this.btnItemsUncheckAll, "Uncheck all");
             this.btnItemsUncheckAll.UseVisualStyleBackColor = true;
-            this.btnItemsUncheckAll.Click += new System.EventHandler(this.btnItemsSetAllChecks_Click);
+            this.btnItemsUncheckAll.Click += new System.EventHandler(this.btnItemsSetChecks_Click);
             // 
             // btnItemsUnroll
             // 

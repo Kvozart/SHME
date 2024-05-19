@@ -38,6 +38,7 @@
             this.btnWaypointsDeleteSelected = new System.Windows.Forms.Button();
             this.clbWaypoints = new System.Windows.Forms.CheckedListBox();
             this.pnlItems = new System.Windows.Forms.Panel();
+            this.cbListVisible = new System.Windows.Forms.CheckBox();
             this.btnPointsCheckInvert = new System.Windows.Forms.Button();
             this.btnPointsCheckAll = new System.Windows.Forms.Button();
             this.btnRouteReload = new System.Windows.Forms.Button();
@@ -217,6 +218,7 @@
             // pnlItems
             // 
             this.pnlItems.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlItems.Controls.Add(this.cbListVisible);
             this.pnlItems.Controls.Add(this.btnPointsCheckInvert);
             this.pnlItems.Controls.Add(this.btnRouteSave);
             this.pnlItems.Controls.Add(this.btnPointsCheckAll);
@@ -236,13 +238,28 @@
             this.pnlItems.Size = new System.Drawing.Size(586, 126);
             this.pnlItems.TabIndex = 22;
             // 
+            // cbListVisible
+            // 
+            this.cbListVisible.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbListVisible.BackgroundImage = global::SHME.Properties.Resources.eye;
+            this.cbListVisible.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.cbListVisible.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbListVisible.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.cbListVisible.Location = new System.Drawing.Point(6, 55);
+            this.cbListVisible.Name = "cbListVisible";
+            this.cbListVisible.Size = new System.Drawing.Size(20, 20);
+            this.cbListVisible.TabIndex = 41;
+            this.cbListVisible.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbListVisible.UseVisualStyleBackColor = true;
+            this.cbListVisible.CheckedChanged += new System.EventHandler(this.cbListVisible_CheckedChanged);
+            // 
             // btnPointsCheckInvert
             // 
             this.btnPointsCheckInvert.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnPointsCheckInvert.FlatAppearance.BorderSize = 0;
             this.btnPointsCheckInvert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsCheckInvert.Image = global::SHME.Properties.Resources.checkerHalfFilled;
-            this.btnPointsCheckInvert.Location = new System.Drawing.Point(6, 87);
+            this.btnPointsCheckInvert.Location = new System.Drawing.Point(6, 91);
             this.btnPointsCheckInvert.Name = "btnPointsCheckInvert";
             this.btnPointsCheckInvert.Size = new System.Drawing.Size(16, 16);
             this.btnPointsCheckInvert.TabIndex = 36;
@@ -256,7 +273,7 @@
             this.btnPointsCheckAll.FlatAppearance.BorderSize = 0;
             this.btnPointsCheckAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsCheckAll.Image = global::SHME.Properties.Resources.checkerFilled;
-            this.btnPointsCheckAll.Location = new System.Drawing.Point(6, 70);
+            this.btnPointsCheckAll.Location = new System.Drawing.Point(6, 76);
             this.btnPointsCheckAll.Name = "btnPointsCheckAll";
             this.btnPointsCheckAll.Size = new System.Drawing.Size(16, 16);
             this.btnPointsCheckAll.TabIndex = 34;
@@ -283,7 +300,7 @@
             this.btnPointsUncheckAll.FlatAppearance.BorderSize = 0;
             this.btnPointsUncheckAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsUncheckAll.Image = global::SHME.Properties.Resources.checkerEmpty;
-            this.btnPointsUncheckAll.Location = new System.Drawing.Point(6, 104);
+            this.btnPointsUncheckAll.Location = new System.Drawing.Point(6, 106);
             this.btnPointsUncheckAll.Name = "btnPointsUncheckAll";
             this.btnPointsUncheckAll.Size = new System.Drawing.Size(16, 16);
             this.btnPointsUncheckAll.TabIndex = 35;
@@ -323,7 +340,7 @@
             // 
             this.btnRotationAlign.FlatAppearance.BorderSize = 0;
             this.btnRotationAlign.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRotationAlign.Image = global::SHME.Properties.Resources.reload;
+            this.btnRotationAlign.Image = global::SHME.Properties.Resources.alignRotation;
             this.btnRotationAlign.Location = new System.Drawing.Point(76, 40);
             this.btnRotationAlign.Name = "btnRotationAlign";
             this.btnRotationAlign.Size = new System.Drawing.Size(21, 21);
@@ -345,11 +362,6 @@
             0,
             0,
             0});
-            this.nudRotationStep.Minimum = new decimal(new int[] {
-            180,
-            0,
-            0,
-            -2147483648});
             this.nudRotationStep.Name = "nudRotationStep";
             this.nudRotationStep.Size = new System.Drawing.Size(64, 20);
             this.nudRotationStep.TabIndex = 10;
@@ -426,11 +438,6 @@
             0,
             0,
             0});
-            this.nudPositionStep.Minimum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            -2147483648});
             this.nudPositionStep.Name = "nudPositionStep";
             this.nudPositionStep.Size = new System.Drawing.Size(64, 20);
             this.nudPositionStep.TabIndex = 10;
@@ -1265,5 +1272,6 @@
         private System.Windows.Forms.Button btnPointsCheckAll;
         private System.Windows.Forms.Button btnPointsUncheckAll;
         private System.Windows.Forms.ComboBox cbbAction;
+        private System.Windows.Forms.CheckBox cbListVisible;
     }
 }

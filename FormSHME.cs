@@ -794,8 +794,10 @@ namespace SHME
         private void FormSHME_ShowValues()//Ok
         {
             if (!lblPointerLevel.Enabled) return;
+            int delta = 1 << zoom >> 2;
             UInt16 mapXYLevel = HMap.Levels[mapX, mapY];
-            lblPointerPosition.Text = mapX + PointerSpliter + mapY + "\r" + ((mapX << 1) - HMap.Width) + " m " + ((mapY << 1) - HMap.Height);
+            lblPointerPosition.Text = mapX + PointerSpliter + mapY + "\r" +
+                (((msX + hScrollBar.Value - delta) << 1 >> zoom) - HMap.MaxX) + " m " + (((msY + vScrollBar.Value - delta) << 1 >> zoom) - HMap.MaxY);
             lblPointerLevel.Text = mapXYLevel.ToString() + "\rx" + mapXYLevel.ToString(NumberFormat);
         }
 
@@ -1222,23 +1224,68 @@ namespace SHME
 
         private void cbbGrid_CheckedChanged(object sender, EventArgs e) => Canvas_Update();
 
-        public IEnumerable<FSObject> CheckObjectVisibility(IEnumerable<FSObject> objects, int iconW, int iconH)
+        public void ProjectObjects(IEnumerable<FSObject> objects)
         {
-            List<FSObject> objectsShown = new List<FSObject>();
-            double magnitude = 2 / (double)(1 << zoom);
-            double areaL = hScrollBar.Value * magnitude - HMap.MaxX,
-                   areaT = vScrollBar.Value * magnitude - HMap.MaxY;
-            double maLC = areaL -  iconW                      * magnitude,
-                   maTC = areaT -  iconH                      * magnitude,
-                   maRC = areaL + (iconW + hScrollBar.Width ) * magnitude,
-                   maBC = areaT + (iconH + vScrollBar.Height) * magnitude;
-            // Mark
+            double step = (0 < zoom) ? (1 << zoom >> 1) : 0.5;
+            int xShift = hScrollBar.Left - hScrollBar.Value, // x shift of scope on map
+                yShift = vScrollBar.Top  - vScrollBar.Value; // y shift of scope on map
             foreach (FSObject obj in objects)
-                if (obj.Position.Present)
-                    if (obj.Shown = (maLC <= obj.Position.X && obj.Position.X < maRC &&
-                                      maTC <= obj.Position.Z && obj.Position.Z < maBC))
-                        objectsShown.Add(obj);
+            {
+                XYZRDouble xyzr = obj.Position;
+                if (xyzr.Present)
+                {
+                    xyzr.canvasX = (int)((HMap.Width  + xyzr.X) * step) + xShift;
+                    xyzr.canvasY = (int)((HMap.Height + xyzr.Z) * step) + yShift;
+                }
+            }
+        }
+
+        public IEnumerable<FSObject> CheckObjectsVisibility(IEnumerable<FSObject> objects, FSPins pins)
+        {
+            int portL = hScrollBar.Left   - pins.CenterX,
+                portT = vScrollBar.Top    - pins.CenterY;
+            int portR = hScrollBar.Width  + pins.Width  + portL,
+                portB = vScrollBar.Height + pins.Height + portT;
+            // Mark
+            List<FSObject> objectsShown = new List<FSObject>();
+            foreach (FSObject obj in objects)
+            {
+                XYZRDouble xyzr = obj.Position;
+                if (xyzr.Present)
+                    if (obj.Show)
+                        if (obj.Shown = portL <= xyzr.canvasX && xyzr.canvasX < portR &&
+                                        portT <= xyzr.canvasY && xyzr.canvasY < portB)
+                            objectsShown.Add(obj);
+            }
             return objectsShown;
+        }
+
+        private void DrawVisibleObjects(int[] buffer, int bufferW, int bufferH, int portL, int portT, int portR, int portB, FSPins pins, IEnumerable<FSObject> objects)
+        {
+            int pL = portL - pins.CenterX,
+                pT = portT - pins.CenterY,
+                pR = portR - pins.CenterX + pins.Width ,
+                pB = portB - pins.CenterY + pins.Height;
+            foreach (FSObject obj in objects)
+            {
+                XYZRDouble xyzr = obj.Position;
+                if (xyzr.Present)
+                    if (pL <= xyzr.canvasX && xyzr.canvasX < pR &&
+                        pT <= xyzr.canvasY && xyzr.canvasY < pB)
+                    {
+                        DrawArrayToArray(buffer, bufferW, bufferH,
+                            pins.Icons[obj.PinState],
+                            pins.Width, pins.Height,
+                            xyzr.canvasX - portL - pins.CenterX,
+                            xyzr.canvasY - portT - pins.CenterY);
+                        if (obj.Selected)
+                            DrawArrayToArray(buffer, bufferW, bufferH,
+                                pins.Selection,
+                                pins.Width, pins.Height,
+                                xyzr.canvasX - portL - pins.CenterX,
+                                xyzr.canvasY - portT - pins.CenterY);
+                    }
+            }
         }
 
         private void FormSHME_Paint(object sender, PaintEventArgs e)
@@ -1353,86 +1400,10 @@ namespace SHME
                 }
             }
 
-            // Calculate window port to map area
-            double mapAreaL = (mtsL << 1 >> zoom) - HMap.MaxX, // HMap points 2 meters apart => full size of icon
-                   mapAreaR = (mtsR << 1 >> zoom) - HMap.MaxX,
-                   mapAreaT = (mtsT << 1 >> zoom) - HMap.MaxY,
-                   mapAreaB = (mtsB << 1 >> zoom) - HMap.MaxY;
-            // Optimisations
-            double dx, dy, shift = (0 < zoom) ? delta : 0.5;
-            sx = (HMap.MaxX << zoom >> 1) + xShift - portL;
-            sy = (HMap.MaxY << zoom >> 1) + yShift - portT;
-
-            // Draw Items
-            if (chbItems.Checked)
-            {
-                double maLC = mapAreaL - FormItems.iconW,
-                       maRC = mapAreaR + FormItems.iconW,
-                       maTC = mapAreaT - FormItems.iconH,
-                       maBC = mapAreaB + FormItems.iconH;
-                x = sx - FormItems.iconCX;
-                y = sy - FormItems.iconCY;
-                // Loop through
-                foreach (FSItem item in FIs.FSItemsShown)
-                    if (item.Position.Present)
-                    {
-                        dx = item.Position.X;
-                        dy = item.Position.Z;
-                        if (maLC <= dx && dx < maRC &&
-                            maTC <= dy && dy < maBC)
-                        {
-                            DrawArrayToArray(buffer, mtsW, mtsH,
-                                FormItems.icon, FormItems.iconW, FormItems.iconH,
-                                (int)(dx * shift) + x,
-                                (int)(dy * shift) + y);
-                        }
-                    }
-            }
-            // Draw CPlay
-            if (chbCPlay.Checked)
-                if (FCP.SelectedRoute != null)
-                {
-                    double maLC = mapAreaL - FormCPlay.pinW,
-                           maRC = mapAreaR + FormCPlay.pinW,
-                           maTC = mapAreaT - FormCPlay.pinH,
-                           maBC = mapAreaB + FormCPlay.pinH;
-                    x = sx - FormCPlay.pinCX;
-                    y = sy - FormCPlay.pinCY;
-                    foreach (CPWaypoint p in FCP.WaypointsShow)
-                        if (maLC <= p.x && p.x < maRC &&
-                            maTC <= p.z && p.z < maBC)
-                        {
-                            DrawArrayToArray(buffer, mtsW, mtsH,
-                                FormCPlay.pinStates[p.Action],
-                                FormCPlay.pinW, FormCPlay.pinH,
-                                (int)(p.x * shift) + x,
-                                (int)(p.z * shift) + y);
-                            p.Shown = true;
-                        }
-                }
-            // Draw ADrive
-            if (chbADrive.Checked)
-                if (FAD.SelectedRoute != null)
-                {
-                    double maLC = mapAreaL - FormADrive.pinW,
-                           maRC = mapAreaR + FormADrive.pinW,
-                           maTC = mapAreaT - FormADrive.pinH,
-                           maBC = mapAreaB + FormADrive.pinH;
-                    x = sx - FormADrive.pinCX;
-                    y = sy - FormADrive.pinCY;
-                    foreach (FormADrive.ADWaypoint p in FAD.SelectedRoute.Waypoints)
-                        if (maLC <= p.x && p.x < maRC &&
-                            maTC <= p.z && p.z < maBC)
-                        {
-                            DrawArrayToArray(buffer, mtsW, mtsH,
-                                (p.flag) ? FormADrive.pinFlaged
-                                         : FormADrive.pinNormal,
-                                FormADrive.pinW, FormADrive.pinH,
-                                (int)(p.x * shift) + x,
-                                (int)(p.z * shift) + y);
-                            p.Shown = true;
-                        }
-                }
+            // Draw Items, CPlay, ADrive
+            if (chbItems.Checked)  DrawVisibleObjects(buffer, mtsW, mtsH, portL, portT, portR, portB, FormItems .Pins, FIs.FSItemsShown);
+            if (chbCPlay.Checked)  DrawVisibleObjects(buffer, mtsW, mtsH, portL, portT, portR, portB, FormCPlay .Pins, FCP.WaypointsShown);
+            if (chbADrive.Checked) DrawVisibleObjects(buffer, mtsW, mtsH, portL, portT, portR, portB, FormADrive.Pins, FAD.WaypointsShown);
 
             // Transfer
             Bitmap img = new Bitmap(mtsW, mtsH, mtsW << 2, PixelFormat.Format32bppRgb, Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0));
@@ -1453,45 +1424,25 @@ namespace SHME
                 if (FAD.SelectedRoute != null)
                 {
                     List<ADWaypoint> WPs = FAD.SelectedRoute.Waypoints;
-                    // Update x,y
-                    foreach (FormADrive.ADWaypoint p in WPs)
-                    {
-                        p.canvasX = ((int)((HMap.MaxX + p.x) * step) >> 1) + xShift;
-                        p.canvasY = ((int)((HMap.MaxY + p.z) * step) >> 1) + yShift;
-                    }
-                    // Draw lines
-                    FormADrive.ADWaypoint p2;
                     for (iy = WPs.Count - 1; 0 <= iy; iy--)
-                    {
-                        var bd = WPs[iy].Links;
-                        foreach (ADLink l in bd)
-                        //if (WPs[iy].Show || WPs[id - 1].Show) ;
-                        {
-                            p2 = FAD.SelectedRoute.Waypoints[l.waypointID];
-                            e.Graphics.DrawLine(
-                                (l.direction == 3) ? ADLink.BD : ADLink.OD,
-                                WPs[iy].canvasX, WPs[iy].canvasY,
-                                     p2.canvasX,      p2.canvasY);
-                        }
-                    }
+                        foreach (ADLink l in WPs[iy].Links)
+                            if (iy < l.waypointID) // Draw only once
+                                if (WPs[iy].Show || WPs[l.waypointID].Show)
+                                    e.Graphics.DrawLine(
+                                        FormADrive.Pins.Pens[l.direction],
+                                        WPs[iy]          .Position.canvasX, WPs[iy]          .Position.canvasY,
+                                        WPs[l.waypointID].Position.canvasX, WPs[l.waypointID].Position.canvasY);
                 }
             // Draw CPlay lines
             if (chbCPlay.Checked)
                 if (FCP.SelectedRoute != null)
                 {
-                    // Update x,y
-                    foreach (CPWaypoint p in FCP.SelectedRoute.Waypoints)
-                    {
-                        p.canvasX = ((int)((HMap.MaxX + p.x) * step) >> 1) + xShift;
-                        p.canvasY = ((int)((HMap.MaxY + p.z) * step) >> 1) + yShift;
-                    }
-                    // Draw lines
                     List<CPWaypoint> WPs = FCP.SelectedRoute.Waypoints;
                     for (iy = WPs.Count - 1; 0 < iy; iy--)
                         if (WPs[iy].Show || WPs[iy - 1].Show)
-                            e.Graphics.DrawLine(FormCPlay.pinConection,
-                                WPs[iy - 1].canvasX, WPs[iy - 1].canvasY,
-                                WPs[iy    ].canvasX, WPs[iy    ].canvasY);
+                            e.Graphics.DrawLine(FormCPlay.Pins.Pens[0],
+                                WPs[iy - 1].Position.canvasX, WPs[iy - 1].Position.canvasY,
+                                WPs[iy    ].Position.canvasX, WPs[iy    ].Position.canvasY);
                 }
         }
 

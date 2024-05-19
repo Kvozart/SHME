@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 
@@ -73,37 +74,37 @@ namespace SHME
             callBack?.Invoke();
         }
 
-        public static void TreeView_BeginEdit(object sender, KeyPressEventArgs e)
+        public static void TreeView_KeyPressBeginEdit(object tv, KeyPressEventArgs e)
         {
             if (e.KeyChar != '\r') return;
-            (sender as TreeView).SelectedNode.BeginEdit();
+            (tv as TreeView).SelectedNode.BeginEdit();
             e.Handled = true;
         }
 
-        public static void TreeView_SetStates(object sender, int state, CallBackDelegate callBack)
+        public static void TreeView_SetStates(TreeView tv, int state, CallBackDelegate callBack)
         {
-            foreach (TreeNode Node in (sender as TreeView).Nodes)
+            foreach (TreeNode Node in tv.Nodes)
                 Node.StateImageIndex = state;
             callBack?.Invoke();
         }
 
-        public static void CheckedListBox_MouseClick(object sender, MouseEventArgs e)
+        public static void CheckedListBox_MouseClick(CheckedListBox clb, MouseEventArgs e)
         {
-            int i = (sender as CheckedListBox).SelectedIndex;
+            int i = clb.SelectedIndex;
             if (20 < e.X && 0 <= i)
-                (sender as CheckedListBox).SetItemChecked(i, !(sender as CheckedListBox).GetItemChecked(i));
+                clb.SetItemChecked(i, !clb.GetItemChecked(i));
         }
 
-        public static void CheckedListBox_SetChecks(object sender, bool newState)
+        public static void CheckedListBox_SetChecks(CheckedListBox clb, bool newState)
         {
-            for (int i = (sender as CheckedListBox).Items.Count - 1; 0 <= i; i--)
-                (sender as CheckedListBox).SetItemChecked(i, newState);
+            for (int i = clb.Items.Count - 1; 0 <= i; i--)
+                clb.SetItemChecked(i, newState);
         }
 
-        public static void CheckedListBox_InvertChecks(object sender)
+        public static void CheckedListBox_InvertChecks(CheckedListBox clb)
         {
-            for (int i = (sender as CheckedListBox).Items.Count - 1; 0 <= i; i--)
-                (sender as CheckedListBox).SetItemChecked(i, !(sender as CheckedListBox).GetItemChecked(i));
+            for (int i = clb.Items.Count - 1; 0 <= i; i--)
+                clb.SetItemChecked(i, !clb.GetItemChecked(i));
         }
 
         public static void TextBox_KeyPressLeave(object sender, KeyPressEventArgs e, CallBackDelegate callBack)//Ok
@@ -114,14 +115,35 @@ namespace SHME
         }
     }
 
-    public class XYZDouble
+    public class FSPins
+    {
+        public readonly int Width,  CenterX,
+                            Height, CenterY;
+        public readonly int[][] Icons;
+        public readonly int[] Selection;
+        public readonly Pen[] Pens;
+
+        public FSPins(int width, int height, int centerX, int centerY, int[][] icons, int[] selection, Pen[] pens)
+        {
+            Width  = width;
+            Height = height;
+            CenterX = centerX;
+            CenterY = centerY;
+            Icons = icons;
+            Selection = selection;
+            Pens = pens;
+        }
+    }
+
+    public class XYZRDouble
     {
         public double X = 0, Y = 0, Z = 0, R = 0;
+        public int canvasX, canvasY;
         public bool Present;
 
         public void ReadXMLLine(String line, NumberFormatInfo nfi)
         {
-            X = Y = Z = 0;
+            X = Y = Z = R = 0;
             // Extract value
             string[] v = line.Replace("  ", " ").Split(' ');
             if (0 < v.Length) Double.TryParse(v[0], NumberStyles.Float, nfi, out X);
@@ -158,12 +180,13 @@ namespace SHME
     abstract public class FSObject
     {
         public static readonly NumberFormatInfo FloatPoint = new CultureInfo("en-US", false).NumberFormat;
-        public static readonly String FloatFormat = "f4";
+        public static readonly String FloatFormat = "f2";
 
-        public XYZDouble Position = new XYZDouble();
+        public int    PinState = 0;
+        public XYZRDouble Position = new XYZRDouble();
         // Own
         public String XMLLine = "", ListLine = "";
-        public bool Edited = false, Show = false, Shown = false;
+        public bool Edited = false, Show = false, Shown = false, Selected = false;
 
         public FSObject(String line) => ReadXMLLine(line, true);
 
@@ -180,45 +203,4 @@ namespace SHME
         abstract public String BuildXMLLine ();
         public String GetXMLLine () => (Edited) ? BuildXMLLine () : XMLLine;
     }
-
-    public class FSItem : FSObject
-    {
-        public String A = "", B = "", C = "";
-        public XYZDouble Rotation = new XYZDouble();
-        // Own
-        int pStart, rStart;
-
-        public FSItem(String line) : base(line) {}
-
-        override public void DecodeXMLLine(String line)
-        {
-            String tmp;
-            if (Position.Present = (0 < (pStart = ReadValue.TagsAttribute(line, "position", out tmp, out int pEnd)))) Position.ReadXMLLine(tmp, FloatPoint);
-            if (Rotation.Present = (0 < (rStart = ReadValue.TagsAttribute(line, "rotation", out tmp, out int rEnd)))) Rotation.ReadXMLLine(tmp, FloatPoint);
-            // A + position + B + rotation + C | "" + 0 + B + rotation + C
-            if (pStart < rStart)
-            {
-                A = line.Substring(0, pStart);
-                B = line.Substring(pEnd, rStart - pEnd);
-                C = line.Substring(rEnd);
-            }
-            // A + rotation + B + position + C | "" + 0 + B + position + C | "" + 0 + "" + 0 + C
-            else
-            {
-                A = line.Substring(0, rStart);
-                B = line.Substring(rEnd, pStart - rEnd);
-                C = line.Substring(pEnd);
-            }
-        }
-
-        override public String BuildListLine() => BuildXMLLine();
-
-        override public String BuildXMLLine() =>
-            A +
-            (Position.Present ? " position=\"" + Position.GetListLine(FloatFormat, FloatPoint) + "\"" : "") +
-            B +
-            (Rotation.Present ? " rotation=\"" + Rotation.GetListLine(FloatFormat, FloatPoint) + "\"" : "") +
-            C;
-    }
-
 }
