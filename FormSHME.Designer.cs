@@ -2275,7 +2275,7 @@
             this.hScrollBar.Name = "hScrollBar";
             this.hScrollBar.Size = new System.Drawing.Size(543, 21);
             this.hScrollBar.TabIndex = 10;
-            this.hScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
+            this.hScrollBar.ValueChanged += new System.EventHandler(this.ScrollBar_ValueChanged);
             // 
             // vScrollBar
             // 
@@ -2287,7 +2287,7 @@
             this.vScrollBar.Name = "vScrollBar";
             this.vScrollBar.Size = new System.Drawing.Size(21, 641);
             this.vScrollBar.TabIndex = 9;
-            this.vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
+            this.vScrollBar.ValueChanged += new System.EventHandler(this.ScrollBar_ValueChanged);
             // 
             // cbbZoom
             // 

@@ -57,7 +57,6 @@
             this.btnPointInsert = new System.Windows.Forms.Button();
             this.btnWaypointSave = new System.Windows.Forms.Button();
             this.chb14 = new System.Windows.Forms.CheckBox();
-            this.btnPointDelete = new System.Windows.Forms.Button();
             this.tb13 = new System.Windows.Forms.TextBox();
             this.tb11 = new System.Windows.Forms.TextBox();
             this.nud12 = new System.Windows.Forms.NumericUpDown();
@@ -94,6 +93,22 @@
             this.btnManagerFileSave = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
+            this.gbEdit = new System.Windows.Forms.GroupBox();
+            this.btnPositionXsub = new System.Windows.Forms.Button();
+            this.btnPositionXadd = new System.Windows.Forms.Button();
+            this.btnRotationYsub = new System.Windows.Forms.Button();
+            this.btnPositionYadd = new System.Windows.Forms.Button();
+            this.btnPositionZadd = new System.Windows.Forms.Button();
+            this.btnPositionYsub = new System.Windows.Forms.Button();
+            this.btnRotationYadd = new System.Windows.Forms.Button();
+            this.btnPositionZsub = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.pnlMain.SuspendLayout();
             this.pnlItems.SuspendLayout();
             this.gbStepOffset.SuspendLayout();
@@ -118,6 +133,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudLimitXMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudLimitXMax)).BeginInit();
             this.pnlFilters.SuspendLayout();
+            this.gbEdit.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnManagerFileReload
@@ -154,7 +171,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbManagerFile.Location = new System.Drawing.Point(56, 4);
             this.tbManagerFile.Name = "tbManagerFile";
-            this.tbManagerFile.Size = new System.Drawing.Size(790, 20);
+            this.tbManagerFile.Size = new System.Drawing.Size(680, 20);
             this.tbManagerFile.TabIndex = 27;
             this.toolTip.SetToolTip(this.tbManagerFile, "Path to manager file");
             // 
@@ -164,7 +181,7 @@
             this.btnRouteSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnRouteSave.FlatAppearance.BorderSize = 0;
             this.btnRouteSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnRouteSave.Location = new System.Drawing.Point(6, 29);
+            this.btnRouteSave.Location = new System.Drawing.Point(6, 27);
             this.btnRouteSave.Name = "btnRouteSave";
             this.btnRouteSave.Size = new System.Drawing.Size(20, 20);
             this.btnRouteSave.TabIndex = 28;
@@ -179,11 +196,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlMain.Controls.Add(this.btnWaypointsDeleteSelected);
             this.pnlMain.Controls.Add(this.clbWaypoints);
+            this.pnlMain.Controls.Add(this.panel1);
             this.pnlMain.Controls.Add(this.pnlItems);
             this.pnlMain.Controls.Add(this.pnlFilters);
             this.pnlMain.Location = new System.Drawing.Point(4, 28);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(866, 428);
+            this.pnlMain.Size = new System.Drawing.Size(756, 430);
             this.pnlMain.TabIndex = 30;
             // 
             // btnWaypointsDeleteSelected
@@ -193,7 +211,7 @@
             this.btnWaypointsDeleteSelected.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnWaypointsDeleteSelected.FlatAppearance.BorderSize = 0;
             this.btnWaypointsDeleteSelected.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnWaypointsDeleteSelected.Location = new System.Drawing.Point(827, 127);
+            this.btnWaypointsDeleteSelected.Location = new System.Drawing.Point(716, 73);
             this.btnWaypointsDeleteSelected.Name = "btnWaypointsDeleteSelected";
             this.btnWaypointsDeleteSelected.Size = new System.Drawing.Size(20, 20);
             this.btnWaypointsDeleteSelected.TabIndex = 46;
@@ -207,10 +225,10 @@
             this.clbWaypoints.Dock = System.Windows.Forms.DockStyle.Fill;
             this.clbWaypoints.HorizontalScrollbar = true;
             this.clbWaypoints.IntegralHeight = false;
-            this.clbWaypoints.Location = new System.Drawing.Point(280, 126);
+            this.clbWaypoints.Location = new System.Drawing.Point(466, 71);
             this.clbWaypoints.Name = "clbWaypoints";
             this.clbWaypoints.ScrollAlwaysVisible = true;
-            this.clbWaypoints.Size = new System.Drawing.Size(586, 302);
+            this.clbWaypoints.Size = new System.Drawing.Size(290, 359);
             this.clbWaypoints.TabIndex = 21;
             this.clbWaypoints.MouseClick += new System.Windows.Forms.MouseEventHandler(this.clbWaypoints_MouseClick);
             this.clbWaypoints.SelectedIndexChanged += new System.EventHandler(this.clbWaypoints_SelectedIndexChanged);
@@ -219,37 +237,39 @@
             // 
             this.pnlItems.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.pnlItems.Controls.Add(this.cbListVisible);
-            this.pnlItems.Controls.Add(this.btnPointsCheckInvert);
             this.pnlItems.Controls.Add(this.btnRouteSave);
-            this.pnlItems.Controls.Add(this.btnPointsCheckAll);
             this.pnlItems.Controls.Add(this.btnRouteReload);
-            this.pnlItems.Controls.Add(this.btnPointsUncheckAll);
-            this.pnlItems.Controls.Add(this.gbStepOffset);
+            this.pnlItems.Controls.Add(this.btnPointsCheckInvert);
             this.pnlItems.Controls.Add(this.btnFind);
+            this.pnlItems.Controls.Add(this.btnPointsUncheckAll);
             this.pnlItems.Controls.Add(this.btnReplace);
-            this.pnlItems.Controls.Add(this.gbWaypoint);
+            this.pnlItems.Controls.Add(this.btnPointsCheckAll);
+            this.pnlItems.Controls.Add(this.gbEdit);
             this.pnlItems.Controls.Add(this.tbReplace);
             this.pnlItems.Controls.Add(this.tbFind);
-            this.pnlItems.Controls.Add(this.gbLimit);
             this.pnlItems.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlItems.Location = new System.Drawing.Point(280, 0);
             this.pnlItems.Name = "pnlItems";
             this.pnlItems.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.pnlItems.Size = new System.Drawing.Size(586, 126);
+            this.pnlItems.Size = new System.Drawing.Size(476, 71);
             this.pnlItems.TabIndex = 22;
             // 
             // cbListVisible
             // 
+            this.cbListVisible.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cbListVisible.Appearance = System.Windows.Forms.Appearance.Button;
             this.cbListVisible.BackgroundImage = global::SHME.Properties.Resources.eye;
             this.cbListVisible.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.cbListVisible.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.cbListVisible.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.cbListVisible.Location = new System.Drawing.Point(6, 55);
+            this.cbListVisible.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.cbListVisible.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbListVisible.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cbListVisible.Location = new System.Drawing.Point(6, 51);
             this.cbListVisible.Name = "cbListVisible";
             this.cbListVisible.Size = new System.Drawing.Size(20, 20);
             this.cbListVisible.TabIndex = 41;
             this.cbListVisible.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.cbListVisible, "Only visible");
             this.cbListVisible.UseVisualStyleBackColor = true;
             this.cbListVisible.CheckedChanged += new System.EventHandler(this.cbListVisible_CheckedChanged);
             // 
@@ -259,7 +279,7 @@
             this.btnPointsCheckInvert.FlatAppearance.BorderSize = 0;
             this.btnPointsCheckInvert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsCheckInvert.Image = global::SHME.Properties.Resources.checkerHalfFilled;
-            this.btnPointsCheckInvert.Location = new System.Drawing.Point(6, 91);
+            this.btnPointsCheckInvert.Location = new System.Drawing.Point(163, 31);
             this.btnPointsCheckInvert.Name = "btnPointsCheckInvert";
             this.btnPointsCheckInvert.Size = new System.Drawing.Size(16, 16);
             this.btnPointsCheckInvert.TabIndex = 36;
@@ -273,7 +293,7 @@
             this.btnPointsCheckAll.FlatAppearance.BorderSize = 0;
             this.btnPointsCheckAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsCheckAll.Image = global::SHME.Properties.Resources.checkerFilled;
-            this.btnPointsCheckAll.Location = new System.Drawing.Point(6, 76);
+            this.btnPointsCheckAll.Location = new System.Drawing.Point(163, 11);
             this.btnPointsCheckAll.Name = "btnPointsCheckAll";
             this.btnPointsCheckAll.Size = new System.Drawing.Size(16, 16);
             this.btnPointsCheckAll.TabIndex = 34;
@@ -300,7 +320,7 @@
             this.btnPointsUncheckAll.FlatAppearance.BorderSize = 0;
             this.btnPointsUncheckAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPointsUncheckAll.Image = global::SHME.Properties.Resources.checkerEmpty;
-            this.btnPointsUncheckAll.Location = new System.Drawing.Point(6, 106);
+            this.btnPointsUncheckAll.Location = new System.Drawing.Point(163, 51);
             this.btnPointsUncheckAll.Name = "btnPointsUncheckAll";
             this.btnPointsUncheckAll.Size = new System.Drawing.Size(16, 16);
             this.btnPointsUncheckAll.TabIndex = 35;
@@ -316,9 +336,9 @@
             this.gbStepOffset.Controls.Add(this.nudPositionOffset);
             this.gbStepOffset.Controls.Add(this.nudRotationOffset);
             this.gbStepOffset.Controls.Add(this.nudPositionStep);
-            this.gbStepOffset.Location = new System.Drawing.Point(410, 3);
+            this.gbStepOffset.Location = new System.Drawing.Point(6, 6);
             this.gbStepOffset.Name = "gbStepOffset";
-            this.gbStepOffset.Size = new System.Drawing.Size(173, 70);
+            this.gbStepOffset.Size = new System.Drawing.Size(174, 70);
             this.gbStepOffset.TabIndex = 32;
             this.gbStepOffset.TabStop = false;
             this.gbStepOffset.Text = "Align";
@@ -457,7 +477,7 @@
             this.btnFind.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFind.FlatAppearance.BorderSize = 0;
             this.btnFind.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFind.Location = new System.Drawing.Point(562, 76);
+            this.btnFind.Location = new System.Drawing.Point(453, 12);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(20, 20);
             this.btnFind.TabIndex = 3;
@@ -471,7 +491,7 @@
             this.btnReplace.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnReplace.FlatAppearance.BorderSize = 0;
             this.btnReplace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReplace.Location = new System.Drawing.Point(562, 102);
+            this.btnReplace.Location = new System.Drawing.Point(453, 38);
             this.btnReplace.Name = "btnReplace";
             this.btnReplace.Size = new System.Drawing.Size(20, 20);
             this.btnReplace.TabIndex = 3;
@@ -484,7 +504,6 @@
             this.gbWaypoint.Controls.Add(this.btnPointInsert);
             this.gbWaypoint.Controls.Add(this.btnWaypointSave);
             this.gbWaypoint.Controls.Add(this.chb14);
-            this.gbWaypoint.Controls.Add(this.btnPointDelete);
             this.gbWaypoint.Controls.Add(this.tb13);
             this.gbWaypoint.Controls.Add(this.tb11);
             this.gbWaypoint.Controls.Add(this.nud12);
@@ -497,9 +516,11 @@
             this.gbWaypoint.Controls.Add(this.nudX);
             this.gbWaypoint.Controls.Add(this.nudZ);
             this.gbWaypoint.Controls.Add(this.nudY);
-            this.gbWaypoint.Location = new System.Drawing.Point(212, 3);
+            this.gbWaypoint.Controls.Add(this.label2);
+            this.gbWaypoint.Controls.Add(this.label3);
+            this.gbWaypoint.Location = new System.Drawing.Point(6, 209);
             this.gbWaypoint.Name = "gbWaypoint";
-            this.gbWaypoint.Size = new System.Drawing.Size(192, 119);
+            this.gbWaypoint.Size = new System.Drawing.Size(174, 149);
             this.gbWaypoint.TabIndex = 31;
             this.gbWaypoint.TabStop = false;
             this.gbWaypoint.Text = "Waypoint";
@@ -512,7 +533,7 @@
             "",
             "E",
             "S"});
-            this.cbbAction.Location = new System.Drawing.Point(77, 43);
+            this.cbbAction.Location = new System.Drawing.Point(6, 95);
             this.cbbAction.Name = "cbbAction";
             this.cbbAction.Size = new System.Drawing.Size(36, 21);
             this.cbbAction.TabIndex = 46;
@@ -525,7 +546,7 @@
             this.btnPointInsert.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnPointInsert.FlatAppearance.BorderSize = 0;
             this.btnPointInsert.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnPointInsert.Location = new System.Drawing.Point(162, 41);
+            this.btnPointInsert.Location = new System.Drawing.Point(144, 119);
             this.btnPointInsert.Name = "btnPointInsert";
             this.btnPointInsert.Size = new System.Drawing.Size(24, 24);
             this.btnPointInsert.TabIndex = 45;
@@ -539,7 +560,7 @@
             this.btnWaypointSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnWaypointSave.FlatAppearance.BorderSize = 0;
             this.btnWaypointSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnWaypointSave.Location = new System.Drawing.Point(162, 91);
+            this.btnWaypointSave.Location = new System.Drawing.Point(144, 89);
             this.btnWaypointSave.Name = "btnWaypointSave";
             this.btnWaypointSave.Size = new System.Drawing.Size(24, 24);
             this.btnWaypointSave.TabIndex = 33;
@@ -549,30 +570,16 @@
             // 
             // chb14
             // 
-            this.chb14.Location = new System.Drawing.Point(119, 95);
+            this.chb14.Location = new System.Drawing.Point(48, 122);
             this.chb14.Name = "chb14";
             this.chb14.Size = new System.Drawing.Size(36, 20);
             this.chb14.TabIndex = 44;
             this.chb14.UseVisualStyleBackColor = true;
             this.chb14.CheckedChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
-            // btnPointDelete
-            // 
-            this.btnPointDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPointDelete.BackgroundImage = global::SHME.Properties.Resources.delete;
-            this.btnPointDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnPointDelete.FlatAppearance.BorderSize = 0;
-            this.btnPointDelete.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnPointDelete.Location = new System.Drawing.Point(162, 15);
-            this.btnPointDelete.Name = "btnPointDelete";
-            this.btnPointDelete.Size = new System.Drawing.Size(24, 24);
-            this.btnPointDelete.TabIndex = 31;
-            this.btnPointDelete.UseVisualStyleBackColor = true;
-            this.btnPointDelete.Click += new System.EventHandler(this.btnWaypointDelete_Click);
-            // 
             // tb13
             // 
-            this.tb13.Location = new System.Drawing.Point(119, 69);
+            this.tb13.Location = new System.Drawing.Point(6, 122);
             this.tb13.Name = "tb13";
             this.tb13.Size = new System.Drawing.Size(36, 20);
             this.tb13.TabIndex = 43;
@@ -580,7 +587,7 @@
             // 
             // tb11
             // 
-            this.tb11.Location = new System.Drawing.Point(119, 17);
+            this.tb11.Location = new System.Drawing.Point(90, 69);
             this.tb11.Name = "tb11";
             this.tb11.Size = new System.Drawing.Size(36, 20);
             this.tb11.TabIndex = 4;
@@ -588,7 +595,7 @@
             // 
             // nud12
             // 
-            this.nud12.Location = new System.Drawing.Point(119, 43);
+            this.nud12.Location = new System.Drawing.Point(90, 95);
             this.nud12.Maximum = new decimal(new int[] {
             2,
             0,
@@ -608,7 +615,7 @@
             // 
             // nud05
             // 
-            this.nud05.Location = new System.Drawing.Point(77, 17);
+            this.nud05.Location = new System.Drawing.Point(6, 69);
             this.nud05.Maximum = new decimal(new int[] {
             0,
             0,
@@ -622,7 +629,7 @@
             // 
             // chb10
             // 
-            this.chb10.Location = new System.Drawing.Point(98, 95);
+            this.chb10.Location = new System.Drawing.Point(69, 94);
             this.chb10.Name = "chb10";
             this.chb10.Size = new System.Drawing.Size(15, 20);
             this.chb10.TabIndex = 40;
@@ -631,7 +638,7 @@
             // 
             // chb09
             // 
-            this.chb09.Location = new System.Drawing.Point(98, 69);
+            this.chb09.Location = new System.Drawing.Point(69, 68);
             this.chb09.Name = "chb09";
             this.chb09.Size = new System.Drawing.Size(15, 20);
             this.chb09.TabIndex = 39;
@@ -640,7 +647,7 @@
             // 
             // chb08
             // 
-            this.chb08.Location = new System.Drawing.Point(77, 95);
+            this.chb08.Location = new System.Drawing.Point(48, 94);
             this.chb08.Name = "chb08";
             this.chb08.Size = new System.Drawing.Size(15, 20);
             this.chb08.TabIndex = 38;
@@ -649,7 +656,7 @@
             // 
             // chb07
             // 
-            this.chb07.Location = new System.Drawing.Point(77, 69);
+            this.chb07.Location = new System.Drawing.Point(48, 68);
             this.chb07.Name = "chb07";
             this.chb07.Size = new System.Drawing.Size(15, 20);
             this.chb07.TabIndex = 37;
@@ -659,7 +666,7 @@
             // nudR
             // 
             this.nudR.DecimalPlaces = 2;
-            this.nudR.Location = new System.Drawing.Point(6, 95);
+            this.nudR.Location = new System.Drawing.Point(102, 43);
             this.nudR.Maximum = new decimal(new int[] {
             360,
             0,
@@ -709,7 +716,7 @@
             // nudZ
             // 
             this.nudZ.DecimalPlaces = 2;
-            this.nudZ.Location = new System.Drawing.Point(6, 69);
+            this.nudZ.Location = new System.Drawing.Point(102, 17);
             this.nudZ.Maximum = new decimal(new int[] {
             1024,
             0,
@@ -760,18 +767,18 @@
             // 
             this.tbReplace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbReplace.Location = new System.Drawing.Point(413, 102);
+            this.tbReplace.Location = new System.Drawing.Point(186, 37);
             this.tbReplace.Name = "tbReplace";
-            this.tbReplace.Size = new System.Drawing.Size(143, 20);
+            this.tbReplace.Size = new System.Drawing.Size(261, 20);
             this.tbReplace.TabIndex = 1;
             // 
             // tbFind
             // 
             this.tbFind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFind.Location = new System.Drawing.Point(413, 76);
+            this.tbFind.Location = new System.Drawing.Point(186, 12);
             this.tbFind.Name = "tbFind";
-            this.tbFind.Size = new System.Drawing.Size(143, 20);
+            this.tbFind.Size = new System.Drawing.Size(261, 20);
             this.tbFind.TabIndex = 0;
             // 
             // gbLimit
@@ -789,7 +796,7 @@
             this.gbLimit.Controls.Add(this.nudLimitXMin);
             this.gbLimit.Controls.Add(this.nudLimitXMax);
             this.gbLimit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.gbLimit.Location = new System.Drawing.Point(32, 3);
+            this.gbLimit.Location = new System.Drawing.Point(6, 82);
             this.gbLimit.Name = "gbLimit";
             this.gbLimit.Size = new System.Drawing.Size(174, 121);
             this.gbLimit.TabIndex = 23;
@@ -1066,7 +1073,7 @@
             this.pnlFilters.Location = new System.Drawing.Point(0, 0);
             this.pnlFilters.Name = "pnlFilters";
             this.pnlFilters.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.pnlFilters.Size = new System.Drawing.Size(280, 428);
+            this.pnlFilters.Size = new System.Drawing.Size(280, 430);
             this.pnlFilters.TabIndex = 15;
             // 
             // chbRouteEnabled
@@ -1124,7 +1131,7 @@
             this.tvRoutes.ShowLines = false;
             this.tvRoutes.ShowPlusMinus = false;
             this.tvRoutes.ShowRootLines = false;
-            this.tvRoutes.Size = new System.Drawing.Size(277, 399);
+            this.tvRoutes.Size = new System.Drawing.Size(277, 401);
             this.tvRoutes.StateImageList = this.il3State;
             this.tvRoutes.TabIndex = 16;
             this.tvRoutes.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvRoutes_AfterLabelEdit);
@@ -1146,7 +1153,7 @@
             this.btnManagerFileSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnManagerFileSave.FlatAppearance.BorderSize = 0;
             this.btnManagerFileSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnManagerFileSave.Location = new System.Drawing.Point(850, 4);
+            this.btnManagerFileSave.Location = new System.Drawing.Point(740, 4);
             this.btnManagerFileSave.Name = "btnManagerFileSave";
             this.btnManagerFileSave.Size = new System.Drawing.Size(20, 20);
             this.btnManagerFileSave.TabIndex = 29;
@@ -1159,18 +1166,217 @@
             this.dlgOpen.DefaultExt = "xml";
             this.dlgOpen.Filter = "XML|courseManager.xml";
             // 
+            // gbEdit
+            // 
+            this.gbEdit.Controls.Add(this.label1);
+            this.gbEdit.Controls.Add(this.btnPositionXsub);
+            this.gbEdit.Controls.Add(this.btnPositionXadd);
+            this.gbEdit.Controls.Add(this.btnRotationYsub);
+            this.gbEdit.Controls.Add(this.btnPositionYadd);
+            this.gbEdit.Controls.Add(this.btnPositionZadd);
+            this.gbEdit.Controls.Add(this.btnPositionYsub);
+            this.gbEdit.Controls.Add(this.btnRotationYadd);
+            this.gbEdit.Controls.Add(this.btnPositionZsub);
+            this.gbEdit.Controls.Add(this.label9);
+            this.gbEdit.Controls.Add(this.label10);
+            this.gbEdit.Controls.Add(this.label11);
+            this.gbEdit.Location = new System.Drawing.Point(32, 3);
+            this.gbEdit.Name = "gbEdit";
+            this.gbEdit.Size = new System.Drawing.Size(125, 64);
+            this.gbEdit.TabIndex = 42;
+            this.gbEdit.TabStop = false;
+            this.gbEdit.Text = "Shift";
+            // 
+            // btnPositionXsub
+            // 
+            this.btnPositionXsub.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnPositionXsub.BackgroundImage")));
+            this.btnPositionXsub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPositionXsub.FlatAppearance.BorderSize = 0;
+            this.btnPositionXsub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPositionXsub.Location = new System.Drawing.Point(6, 17);
+            this.btnPositionXsub.Name = "btnPositionXsub";
+            this.btnPositionXsub.Size = new System.Drawing.Size(21, 21);
+            this.btnPositionXsub.TabIndex = 2;
+            this.btnPositionXsub.UseVisualStyleBackColor = true;
+            this.btnPositionXsub.Click += new System.EventHandler(this.btnPositionXsub_Click);
+            // 
+            // btnPositionXadd
+            // 
+            this.btnPositionXadd.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnPositionXadd.BackgroundImage")));
+            this.btnPositionXadd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPositionXadd.FlatAppearance.BorderSize = 0;
+            this.btnPositionXadd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPositionXadd.Location = new System.Drawing.Point(38, 17);
+            this.btnPositionXadd.Name = "btnPositionXadd";
+            this.btnPositionXadd.Size = new System.Drawing.Size(21, 21);
+            this.btnPositionXadd.TabIndex = 2;
+            this.btnPositionXadd.UseVisualStyleBackColor = true;
+            this.btnPositionXadd.Click += new System.EventHandler(this.btnPositionXadd_Click);
+            // 
+            // btnRotationYsub
+            // 
+            this.btnRotationYsub.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnRotationYsub.BackgroundImage")));
+            this.btnRotationYsub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnRotationYsub.FlatAppearance.BorderSize = 0;
+            this.btnRotationYsub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRotationYsub.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnRotationYsub.Location = new System.Drawing.Point(97, 39);
+            this.btnRotationYsub.Name = "btnRotationYsub";
+            this.btnRotationYsub.Size = new System.Drawing.Size(21, 21);
+            this.btnRotationYsub.TabIndex = 29;
+            this.btnRotationYsub.UseVisualStyleBackColor = true;
+            this.btnRotationYsub.Click += new System.EventHandler(this.btnRotationYadd_Click);
+            // 
+            // btnPositionYadd
+            // 
+            this.btnPositionYadd.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnPositionYadd.BackgroundImage")));
+            this.btnPositionYadd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPositionYadd.FlatAppearance.BorderSize = 0;
+            this.btnPositionYadd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPositionYadd.Location = new System.Drawing.Point(38, 39);
+            this.btnPositionYadd.Name = "btnPositionYadd";
+            this.btnPositionYadd.Size = new System.Drawing.Size(21, 21);
+            this.btnPositionYadd.TabIndex = 2;
+            this.btnPositionYadd.UseVisualStyleBackColor = true;
+            this.btnPositionYadd.Click += new System.EventHandler(this.btnPositionYadd_Click);
+            // 
+            // btnPositionZadd
+            // 
+            this.btnPositionZadd.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnPositionZadd.BackgroundImage")));
+            this.btnPositionZadd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPositionZadd.FlatAppearance.BorderSize = 0;
+            this.btnPositionZadd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPositionZadd.Location = new System.Drawing.Point(97, 17);
+            this.btnPositionZadd.Name = "btnPositionZadd";
+            this.btnPositionZadd.Size = new System.Drawing.Size(21, 21);
+            this.btnPositionZadd.TabIndex = 2;
+            this.btnPositionZadd.UseVisualStyleBackColor = true;
+            this.btnPositionZadd.Click += new System.EventHandler(this.btnPositionZadd_Click);
+            // 
+            // btnPositionYsub
+            // 
+            this.btnPositionYsub.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnPositionYsub.BackgroundImage")));
+            this.btnPositionYsub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPositionYsub.FlatAppearance.BorderSize = 0;
+            this.btnPositionYsub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPositionYsub.Location = new System.Drawing.Point(6, 39);
+            this.btnPositionYsub.Name = "btnPositionYsub";
+            this.btnPositionYsub.Size = new System.Drawing.Size(21, 21);
+            this.btnPositionYsub.TabIndex = 2;
+            this.btnPositionYsub.UseVisualStyleBackColor = true;
+            this.btnPositionYsub.Click += new System.EventHandler(this.btnPositionYsub_Click);
+            // 
+            // btnRotationYadd
+            // 
+            this.btnRotationYadd.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnRotationYadd.BackgroundImage")));
+            this.btnRotationYadd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnRotationYadd.FlatAppearance.BorderSize = 0;
+            this.btnRotationYadd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRotationYadd.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnRotationYadd.Location = new System.Drawing.Point(65, 39);
+            this.btnRotationYadd.Name = "btnRotationYadd";
+            this.btnRotationYadd.Size = new System.Drawing.Size(21, 21);
+            this.btnRotationYadd.TabIndex = 30;
+            this.btnRotationYadd.UseVisualStyleBackColor = true;
+            this.btnRotationYadd.Click += new System.EventHandler(this.btnRotationYsub_Click);
+            // 
+            // btnPositionZsub
+            // 
+            this.btnPositionZsub.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnPositionZsub.BackgroundImage")));
+            this.btnPositionZsub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPositionZsub.FlatAppearance.BorderSize = 0;
+            this.btnPositionZsub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPositionZsub.Location = new System.Drawing.Point(65, 17);
+            this.btnPositionZsub.Name = "btnPositionZsub";
+            this.btnPositionZsub.Size = new System.Drawing.Size(21, 21);
+            this.btnPositionZsub.TabIndex = 2;
+            this.btnPositionZsub.UseVisualStyleBackColor = true;
+            this.btnPositionZsub.Click += new System.EventHandler(this.btnPositionZsub_Click);
+            // 
+            // label9
+            // 
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label9.Location = new System.Drawing.Point(26, 17);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(14, 21);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "X";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label10
+            // 
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label10.Location = new System.Drawing.Point(26, 39);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(14, 21);
+            this.label10.TabIndex = 13;
+            this.label10.Text = "Y";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label11.Location = new System.Drawing.Point(85, 17);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(14, 21);
+            this.label11.TabIndex = 13;
+            this.label11.Text = "Z";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(85, 39);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(14, 21);
+            this.label1.TabIndex = 31;
+            this.label1.Text = "R";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.gbWaypoint);
+            this.panel1.Controls.Add(this.gbLimit);
+            this.panel1.Controls.Add(this.gbStepOffset);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.Location = new System.Drawing.Point(280, 71);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(186, 359);
+            this.panel1.TabIndex = 47;
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(66, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(39, 19);
+            this.label2.TabIndex = 47;
+            this.label2.Text = "X Z";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(66, 43);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(39, 19);
+            this.label3.TabIndex = 48;
+            this.label3.Text = "Y R";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // FormCPlay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(874, 461);
+            this.ClientSize = new System.Drawing.Size(764, 463);
             this.Controls.Add(this.btnManagerFileSave);
             this.Controls.Add(this.btnManagerFileReload);
             this.Controls.Add(this.btnManagerFileLoad);
             this.Controls.Add(this.tbManagerFile);
             this.Controls.Add(this.pnlMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(890, 300);
+            this.MaximumSize = new System.Drawing.Size(850, 1000);
+            this.MinimumSize = new System.Drawing.Size(780, 502);
             this.Name = "FormCPlay";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -1203,6 +1409,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudLimitXMax)).EndInit();
             this.pnlFilters.ResumeLayout(false);
             this.pnlFilters.PerformLayout();
+            this.gbEdit.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1260,7 +1468,6 @@
         private System.Windows.Forms.TextBox tb11;
         private System.Windows.Forms.NumericUpDown nud12;
         private System.Windows.Forms.GroupBox gbStepOffset;
-        private System.Windows.Forms.Button btnPointDelete;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.OpenFileDialog dlgOpen;
         private System.Windows.Forms.CheckBox chbRouteEnabled;
@@ -1274,5 +1481,21 @@
         private System.Windows.Forms.Button btnPointsUncheckAll;
         private System.Windows.Forms.ComboBox cbbAction;
         private System.Windows.Forms.CheckBox cbListVisible;
+        private System.Windows.Forms.GroupBox gbEdit;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnPositionXsub;
+        private System.Windows.Forms.Button btnPositionXadd;
+        private System.Windows.Forms.Button btnRotationYsub;
+        private System.Windows.Forms.Button btnPositionYadd;
+        private System.Windows.Forms.Button btnPositionZadd;
+        private System.Windows.Forms.Button btnPositionYsub;
+        private System.Windows.Forms.Button btnRotationYadd;
+        private System.Windows.Forms.Button btnPositionZsub;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }

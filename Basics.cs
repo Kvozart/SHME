@@ -7,33 +7,34 @@ namespace SHME
 {
     public static class ReadValue
     {
-        public static void NUDInteger(NumericUpDown nud, String s, NumberFormatInfo nfi)
+        public static readonly NumberFormatInfo FloatPoint = new CultureInfo("en-US", false).NumberFormat;
+
+        public static void NUDInteger(NumericUpDown nud, String s)
         {
-            int d;
-            Int32.TryParse(s, NumberStyles.Integer, nfi, out d);
+            Int32.TryParse(s, out int d);
             Decimal v = (Decimal)d;
             nud.Value = (nud.Maximum < v) ? nud.Maximum
                       : (nud.Minimum > v) ? nud.Minimum
                                           : v;
         }
 
-        public static void NUDDouble(NumericUpDown nud, String s, NumberFormatInfo nfi)
+        public static void NUDDouble(NumericUpDown nud, String s)
         {
             double d;
-            Double.TryParse(s, NumberStyles.Float, nfi, out d);
+            Double.TryParse(s, NumberStyles.Float, ReadValue.FloatPoint, out d);
             Decimal v = (Decimal)d;
             nud.Value = (nud.Maximum < v) ? nud.Maximum
                       : (nud.Minimum > v) ? nud.Minimum
                                           : v;
         }
 
-        public static void NUDDouble360(NumericUpDown nud, String s, NumberFormatInfo nfi)
+        public static void NUDDouble360(NumericUpDown nud, String s)
         {
             double v,
                 min = (double)nud.Minimum,
                 max = (double)nud.Maximum;
             double range = max - min;
-            Double.TryParse(s, NumberStyles.Float, nfi, out v);
+            Double.TryParse(s, NumberStyles.Float, ReadValue.FloatPoint, out v);
             nud.Value = (Decimal)((0 < v && max < v) ? v - Math.Floor  (v / range) * range // loop back
                                 : (0 > v && min > v) ? v + Math.Ceiling(v / range) * range // loop back
                                                      : v);
@@ -121,9 +122,10 @@ namespace SHME
                             Height, CenterY;
         public readonly int[][] Icons;
         public readonly int[] Selection;
+        public readonly int[] Checking;
         public readonly Pen[] Pens;
 
-        public FSPins(int width, int height, int centerX, int centerY, int[][] icons, int[] selection, Pen[] pens)
+        public FSPins(int width, int height, int centerX, int centerY, int[][] icons, int[] selection, int[] checking, Pen[] pens)
         {
             Width  = width;
             Height = height;
@@ -131,6 +133,7 @@ namespace SHME
             CenterY = centerY;
             Icons = icons;
             Selection = selection;
+            Checking = checking;
             Pens = pens;
         }
     }
@@ -141,14 +144,14 @@ namespace SHME
         public int canvasX, canvasY;
         public bool Present;
 
-        public void ReadXMLLine(String line, NumberFormatInfo nfi)
+        public void ReadXMLLine(String line)
         {
             X = Y = Z = R = 0;
             // Extract value
             string[] v = line.Replace("  ", " ").Split(' ');
-            if (0 < v.Length) Double.TryParse(v[0], NumberStyles.Float, nfi, out X);
-            if (1 < v.Length) Double.TryParse(v[1], NumberStyles.Float, nfi, out Y);
-            if (2 < v.Length) Double.TryParse(v[2], NumberStyles.Float, nfi, out Z);
+            if (0 < v.Length) Double.TryParse(v[0], NumberStyles.Float, ReadValue.FloatPoint, out X);
+            if (1 < v.Length) Double.TryParse(v[1], NumberStyles.Float, ReadValue.FloatPoint, out Y);
+            if (2 < v.Length) Double.TryParse(v[2], NumberStyles.Float, ReadValue.FloatPoint, out Z);
         }
 
         public bool Align(double step, double offset, Boolean doX, Boolean doY, Boolean doZ, Boolean doR = false)
@@ -170,37 +173,39 @@ namespace SHME
             R += stepR;
         }
 
-        public String GetListLine(String floatFormat, NumberFormatInfo nfi, bool includeR = false) =>
-                  X.ToString(floatFormat, nfi) + 
-            " " + Y.ToString(floatFormat, nfi) + 
-            " " + Z.ToString(floatFormat, nfi) + (includeR ?
-            " " + R.ToString(floatFormat, nfi) : "");
+        public String GetListLine(String floatFormat, bool includeR = false) =>
+                  X.ToString(floatFormat, ReadValue.FloatPoint) + 
+            " " + Y.ToString(floatFormat, ReadValue.FloatPoint) + 
+            " " + Z.ToString(floatFormat, ReadValue.FloatPoint) + (includeR ?
+            " " + R.ToString(floatFormat, ReadValue.FloatPoint) : "");
     }
 
     abstract public class FSObject
     {
-        public static readonly NumberFormatInfo FloatPoint = new CultureInfo("en-US", false).NumberFormat;
-        public static readonly String FloatFormat = "f2";
-
         public int    PinState = 0;
         public XYZRDouble Position = new XYZRDouble();
         // Own
         public String XMLLine = "", ListLine = "";
-        public bool Edited = false, Show = false, Shown = false, Selected = false;
+        public bool Show  = false, Checked  = false,
+                    Shown = false, Selected = false,
+                    Edited = false;
 
-        public FSObject(String line) => ReadXMLLine(line, true);
+        abstract public String BuildListLine();
+        public String GetListLine() => Edited ? ListLine = BuildListLine() : ListLine;
+    }
+
+    abstract public class FSObjectString : FSObject
+    {
+        public FSObjectString(String line) => ReadXMLLine(line, true);
 
         abstract public void DecodeXMLLine(String line);
         public void ReadXMLLine(String line = null, bool set = false)
         {
-            DecodeXMLLine((line == null) ? line = XMLLine : line);
+            DecodeXMLLine(line ?? (line = XMLLine));
             if (set) XMLLine = line;
         }
-    
-        abstract public String BuildListLine();
-        public String GetListLine() => ListLine = BuildListLine();
 
-        abstract public String BuildXMLLine ();
-        public String GetXMLLine () => (Edited) ? BuildXMLLine () : XMLLine;
+        public String BuildXMLLine() => BuildListLine();
+        public String GetXMLLine () => Edited ? XMLLine = BuildXMLLine() : XMLLine;
     }
 }

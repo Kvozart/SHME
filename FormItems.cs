@@ -10,52 +10,62 @@ namespace SHME
 {
     public partial class FormItems : Form
     {
-        public static readonly int[] pinSelection = {
-            0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF,
-            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-            0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-            0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF};
-
-        public static readonly int[] pinDefault = {
-            0x00000000, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x00000000,
-            0x7F007F00, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x7F007F00,
-            0x7F007F00, 0x00000000, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x00000000, 0x7F007F00,
-            0x7F007F00, 0x00000000, 0x00000000, 0x7FFF0000, 0x00000000, 0x7FFF0000, 0x00000000, 0x00000000, 0x7F007F00,
-            0x7F007F00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F007F00,
-            0x7F007F00, 0x00000000, 0x00000000, 0x7FFF0000, 0x00000000, 0x7FFF0000, 0x00000000, 0x00000000, 0x7F007F00,
-            0x7F007F00, 0x00000000, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x00000000, 0x7F007F00,
-            0x7F007F00, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x7F007F00,
-            0x00000000, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x00000000};
+        private const String IniFileName = "Items.ini";
+        private const String FloatFormat = "f4";
 
         public static FSPins Pins = new FSPins(9, 9, 4, 4,
             new int[][]{
-                pinDefault},
-            pinSelection,
-            new Pen[]{
-                new Pen(Color.White)}
+                // 0 - Default
+                new int[] {
+                    0x00000000, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x00000000,
+                    0x7F007F00, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x7F007F00,
+                    0x7F007F00, 0x00000000, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x00000000, 0x7F007F00,
+                    0x7F007F00, 0x00000000, 0x00000000, 0x7FFF0000, 0x00000000, 0x7FFF0000, 0x00000000, 0x00000000, 0x7F007F00,
+                    0x7F007F00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F007F00,
+                    0x7F007F00, 0x00000000, 0x00000000, 0x7FFF0000, 0x00000000, 0x7FFF0000, 0x00000000, 0x00000000, 0x7F007F00,
+                    0x7F007F00, 0x00000000, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x00000000, 0x7F007F00,
+                    0x7F007F00, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x7F007F00,
+                    0x00000000, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x00000000}
+            },
+            // Selection
+            new int[] {
+                0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF,
+                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
+                0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF},
+            // Checking
+            new int[] {
+                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F},
+            null
             );
 
-        public class FSItem : FSObject
+        public class FSItem : FSObjectString
         {
-            new public static readonly String FloatFormat = "f4";
 
             public String A = "", B = "", C = "";
             public XYZRDouble Rotation = new XYZRDouble();
-            // Own
-            int pStart, rStart;
 
             public FSItem(String line) : base(line) { }
 
             override public void DecodeXMLLine(String line)
             {
                 String tmp;
-                if (Position.Present = (0 < (pStart = ReadValue.TagsAttribute(line, "position", out tmp, out int pEnd)))) Position.ReadXMLLine(tmp, FloatPoint);
-                if (Rotation.Present = (0 < (rStart = ReadValue.TagsAttribute(line, "rotation", out tmp, out int rEnd)))) Rotation.ReadXMLLine(tmp, FloatPoint);
+                int pStart, rStart;
+                if (Position.Present = (0 < (pStart = ReadValue.TagsAttribute(line, "position", out tmp, out int pEnd)))) Position.ReadXMLLine(tmp);
+                if (Rotation.Present = (0 < (rStart = ReadValue.TagsAttribute(line, "rotation", out tmp, out int rEnd)))) Rotation.ReadXMLLine(tmp);
                 // A + position + B + rotation + C | "" + 0 + B + rotation + C
                 if (pStart < rStart)
                 {
@@ -72,19 +82,15 @@ namespace SHME
                 }
             }
 
-            override public String BuildListLine() => BuildXMLLine();
-
-            override public String BuildXMLLine() =>
+            override public String BuildListLine() =>
                 A +
-                (Position.Present ? " position=\"" + Position.GetListLine(FloatFormat, FloatPoint) + "\"" : "") +
+                (Position.Present ? " position=\"" + Position.GetListLine(FloatFormat) + "\"" : "") +
                 B +
-                (Rotation.Present ? " rotation=\"" + Rotation.GetListLine(FloatFormat, FloatPoint) + "\"" : "") +
+                (Rotation.Present ? " rotation=\"" + Rotation.GetListLine(FloatFormat) + "\"" : "") +
                 C;
         }
 
-        private const String IniFileName = "Items.ini";
-        private static readonly NumberFormatInfo NFI = new CultureInfo("en-US", false).NumberFormat;
-
+        private bool postpond = false;
         private bool lockFilter = true;
         private String FileName = "";
         private List<FSItem> FSItems      = new List<FSItem> { };
@@ -123,26 +129,26 @@ namespace SHME
                                     tvFilters.Nodes.Add(value).StateImageIndex = (rec[2] == "+") ? 1 : (rec[2] == "-") ? 2 : 0;
                                     break;
                                 // PositionNFI
-                                case "PositionStep"  : ReadValue.NUDDouble(nudPositionStep,   value, NFI); break;
-                                case "PositionOffset": ReadValue.NUDDouble(nudPositionOffset, value, NFI); break;
-                                case "PositionXMin"  : ReadValue.NUDDouble(nudPositionXMin,   value, NFI); break;
-                                case "PositionXMax"  : ReadValue.NUDDouble(nudPositionXMax,   value, NFI); break;
-                                case "PositionYMin"  : ReadValue.NUDDouble(nudPositionYMin,   value, NFI); break;
-                                case "PositionYMax"  : ReadValue.NUDDouble(nudPositionYMax,   value, NFI); break;
-                                case "PositionZMin"  : ReadValue.NUDDouble(nudPositionZMin,   value, NFI); break;
-                                case "PositionZMax"  : ReadValue.NUDDouble(nudPositionZMax,   value, NFI); break;
+                                case "PositionStep"  : ReadValue.NUDDouble(nudPositionStep,   value); break;
+                                case "PositionOffset": ReadValue.NUDDouble(nudPositionOffset, value); break;
+                                case "PositionXMin"  : ReadValue.NUDDouble(nudPositionXMin,   value); break;
+                                case "PositionXMax"  : ReadValue.NUDDouble(nudPositionXMax,   value); break;
+                                case "PositionYMin"  : ReadValue.NUDDouble(nudPositionYMin,   value); break;
+                                case "PositionYMax"  : ReadValue.NUDDouble(nudPositionYMax,   value); break;
+                                case "PositionZMin"  : ReadValue.NUDDouble(nudPositionZMin,   value); break;
+                                case "PositionZMax"  : ReadValue.NUDDouble(nudPositionZMax,   value); break;
                                 case "PositionLimitX": cbLimitPositionX.Checked = (value.ToLower() == "true"); break;
                                 case "PositionLimitY": cbLimitPositionY.Checked = (value.ToLower() == "true"); break;
                                 case "PositionLimitZ": cbLimitPositionZ.Checked = (value.ToLower() == "true"); break;
                                 // Rotation
-                                case "RotationStep"  : ReadValue.NUDDouble360(nudRotationStep,   value, NFI); break;
-                                case "RotationOffset": ReadValue.NUDDouble360(nudRotationOffset, value, NFI); break;
-                                case "RotationXMin"  : ReadValue.NUDDouble360(nudRotationXMin,   value, NFI); break;
-                                case "RotationXMax"  : ReadValue.NUDDouble360(nudRotationXMax,   value, NFI); break;
-                                case "RotationYMin"  : ReadValue.NUDDouble360(nudRotationYMin,   value, NFI); break;
-                                case "RotationYMax"  : ReadValue.NUDDouble360(nudRotationYMax,   value, NFI); break;
-                                case "RotationZMin"  : ReadValue.NUDDouble360(nudRotationZMin,   value, NFI); break;
-                                case "RotationZMax"  : ReadValue.NUDDouble360(nudRotationZMax,   value, NFI); break;
+                                case "RotationStep"  : ReadValue.NUDDouble360(nudRotationStep,   value); break;
+                                case "RotationOffset": ReadValue.NUDDouble360(nudRotationOffset, value); break;
+                                case "RotationXMin"  : ReadValue.NUDDouble360(nudRotationXMin,   value); break;
+                                case "RotationXMax"  : ReadValue.NUDDouble360(nudRotationXMax,   value); break;
+                                case "RotationYMin"  : ReadValue.NUDDouble360(nudRotationYMin,   value); break;
+                                case "RotationYMax"  : ReadValue.NUDDouble360(nudRotationYMax,   value); break;
+                                case "RotationZMin"  : ReadValue.NUDDouble360(nudRotationZMin,   value); break;
+                                case "RotationZMax"  : ReadValue.NUDDouble360(nudRotationZMax,   value); break;
                                 case "RotationLimitX": cbLimitRotationX.Checked = (value.ToLower() == "true"); break;
                                 case "RotationLimitY": cbLimitRotationY.Checked = (value.ToLower() == "true"); break;
                                 case "RotationLimitZ": cbLimitRotationZ.Checked = (value.ToLower() == "true"); break;
@@ -180,29 +186,29 @@ namespace SHME
                     foreach (TreeNode tn in tvFilters.Nodes)
                         file.WriteLine("Filter\t" + tn.Text + "\t" + "*+-"[tn.StateImageIndex]);
                     // Position
-                    file.WriteLine("PositionStep\t"   + nudPositionStep.Value.ToString(NFI));
-                    file.WriteLine("PositionOffset\t" + nudPositionOffset.Value.ToString(NFI));
+                    file.WriteLine("PositionStep\t"   + nudPositionStep.Value.ToString(ReadValue.FloatPoint));
+                    file.WriteLine("PositionOffset\t" + nudPositionOffset.Value.ToString(ReadValue.FloatPoint));
                     file.WriteLine("PositionLimitX\t" + cbLimitPositionX.Checked.ToString());
                     file.WriteLine("PositionLimitY\t" + cbLimitPositionY.Checked.ToString());
                     file.WriteLine("PositionLimitZ\t" + cbLimitPositionZ.Checked.ToString());
-                    file.WriteLine("PositionXMin\t"   + nudPositionXMin.Value.ToString(NFI));
-                    file.WriteLine("PositionXMax\t"   + nudPositionXMax.Value.ToString(NFI));
-                    file.WriteLine("PositionYMin\t"   + nudPositionYMin.Value.ToString(NFI));
-                    file.WriteLine("PositionYMax\t"   + nudPositionYMax.Value.ToString(NFI));
-                    file.WriteLine("PositionZMin\t"   + nudPositionZMin.Value.ToString(NFI));
-                    file.WriteLine("PositionZMax\t"   + nudPositionZMax.Value.ToString(NFI));
+                    file.WriteLine("PositionXMin\t"   + nudPositionXMin.Value.ToString(ReadValue.FloatPoint));
+                    file.WriteLine("PositionXMax\t"   + nudPositionXMax.Value.ToString(ReadValue.FloatPoint));
+                    file.WriteLine("PositionYMin\t"   + nudPositionYMin.Value.ToString(ReadValue.FloatPoint));
+                    file.WriteLine("PositionYMax\t"   + nudPositionYMax.Value.ToString(ReadValue.FloatPoint));
+                    file.WriteLine("PositionZMin\t"   + nudPositionZMin.Value.ToString(ReadValue.FloatPoint));
+                    file.WriteLine("PositionZMax\t"   + nudPositionZMax.Value.ToString(ReadValue.FloatPoint));
                     // Rotation
-                    file.WriteLine("RotationStep\t"   + nudRotationStep.Value.ToString(NFI));
-                    file.WriteLine("RotationOffset\t" + nudRotationOffset.Value.ToString(NFI));
+                    file.WriteLine("RotationStep\t"   + nudRotationStep.Value.ToString(ReadValue.FloatPoint));
+                    file.WriteLine("RotationOffset\t" + nudRotationOffset.Value.ToString(ReadValue.FloatPoint));
                     file.WriteLine("RotationLimitX\t" + cbLimitRotationX.Checked.ToString());
                     file.WriteLine("RotationLimitY\t" + cbLimitRotationY.Checked.ToString());
                     file.WriteLine("RotationLimitZ\t" + cbLimitRotationZ.Checked.ToString());
-                    file.WriteLine("RotationXMin\t"   + nudRotationXMin.Value.ToString(NFI));
-                    file.WriteLine("RotationXMax\t"   + nudRotationXMax.Value.ToString(NFI));
-                    file.WriteLine("RotationYMin\t"   + nudRotationYMin.Value.ToString(NFI));
-                    file.WriteLine("RotationYMax\t"   + nudRotationYMax.Value.ToString(NFI));
-                    file.WriteLine("RotationZMin\t"   + nudRotationZMin.Value.ToString(NFI)); 
-                    file.WriteLine("RotationZMax\t"   + nudRotationZMax.Value.ToString(NFI));
+                    file.WriteLine("RotationXMin\t"   + nudRotationXMin.Value.ToString(ReadValue.FloatPoint));
+                    file.WriteLine("RotationXMax\t"   + nudRotationXMax.Value.ToString(ReadValue.FloatPoint));
+                    file.WriteLine("RotationYMin\t"   + nudRotationYMin.Value.ToString(ReadValue.FloatPoint));
+                    file.WriteLine("RotationYMax\t"   + nudRotationYMax.Value.ToString(ReadValue.FloatPoint));
+                    file.WriteLine("RotationZMin\t"   + nudRotationZMin.Value.ToString(ReadValue.FloatPoint)); 
+                    file.WriteLine("RotationZMax\t"   + nudRotationZMax.Value.ToString(ReadValue.FloatPoint));
                     // Find & Replace
                     file.WriteLine("Find\t"    + tbFind   .Text.Replace("\t", "&#9;"));
                     file.WriteLine("Replace\t" + tbReplace.Text.Replace("\t", "&#9;"));
@@ -235,11 +241,7 @@ namespace SHME
                 FSItems.Clear();
                 using (StreamReader file = File.OpenText(fileName))
                     while (!file.EndOfStream)
-                    {
-                        item = new FSItem(file.ReadLine());
-                        item.ListLine = item.BuildListLine();
-                        FSItems.Add(item);
-                    }
+                        FSItems.Add(item = new FSItem(file.ReadLine()));
                 FileName
                     = tbFile.Text
                     = fileName;
@@ -258,8 +260,7 @@ namespace SHME
                 using (StreamWriter file = File.CreateText(FileName))
                     foreach (FSItem item in FSItems)
                     {
-                        if (item.Edited) item.XMLLine = item.BuildXMLLine();
-                        file.WriteLine(item.XMLLine);
+                        file.WriteLine(item.GetXMLLine());
                         item.Edited = false;
                     }
             }
@@ -373,35 +374,45 @@ namespace SHME
                  limitPZ =     cbLimitPositionZ.Checked, limitRZ =     cbLimitRotationZ.Checked;
             bool limitP = (limitPX || limitPY || limitPZ),
                  limitR = (limitRX || limitRY || limitRZ);
-            bool skip;
             // Select
-            foreach (FSItem item in FSItems)
+            TreeNode filter;
+            int i, nodesCount = tvFilters.Nodes.Count - 1;
+            List<String> filtersInc = new List<String>();
+            List<String> filtersExc = new List<String>();
+            for (i = nodesCount; 0 <= i; i--)
             {
-                item.Show
-                    = skip
-                    = false;
-                foreach (TreeNode filter in tvFilters.Nodes)
-                    if (0 < filter.StateImageIndex)
-                        if (item.ListLine.Contains(filter.Text) == (2 == filter.StateImageIndex))
-                        {
-                            skip = true;
-                            break;
-                        }
-                if (skip)
-                    continue;
+                filter = tvFilters.Nodes[i];
+                if (1 == filter.StateImageIndex) filtersInc.Add(filter.Text);
+                if (2 == filter.StateImageIndex) filtersExc.Add(filter.Text);
+            }
+            int incN = filtersInc.Count - 1,
+                excN = filtersExc.Count - 1;
+            String line;
+            FSItem item;
+            XYZRDouble p, r;
+            int idx, n = FSItems.Count;
+            for (idx = 0; idx < n; idx++)
+            {
+                item = FSItems[idx];
+                item.Show = false;
+                line = item.XMLLine;
+                for (i = excN; 0 <= i; i--)    if ( line.Contains(filtersExc[i])) break;    if (0 <= i) continue;
+                for (i = incN; 0 <= i; i--)    if (!line.Contains(filtersInc[i])) break;    if (0 <= i) continue;
                 if (limitP)
                 {
-                    if (!item.Position.Present) continue;
-                    if (limitPX) if (item.Position.X < minPX || maxPX < item.Position.X) continue;
-                    if (limitPY) if (item.Position.Y < minPY || maxPY < item.Position.Y) continue;
-                    if (limitPZ) if (item.Position.Z < minPZ || maxPZ < item.Position.Z) continue;
+                    p = item.Position;
+                    if (!p.Present) continue;
+                    if (limitPX) if (p.X < minPX || maxPX < p.X) continue;
+                    if (limitPY) if (p.Y < minPY || maxPY < p.Y) continue;
+                    if (limitPZ) if (p.Z < minPZ || maxPZ < p.Z) continue;
                 }
                 if (limitR)
                 {
-                    if (!item.Rotation.Present) continue;
-                    if (limitRX) if (item.Rotation.X < minRX || maxRX < item.Rotation.X) continue;
-                    if (limitRY) if (item.Rotation.Y < minRY || maxRY < item.Rotation.Y) continue;
-                    if (limitRZ) if (item.Rotation.Z < minRZ || maxRZ < item.Rotation.Z) continue;
+                    r = item.Rotation;
+                    if (!r.Present) continue;
+                    if (limitRX) if (r.X < minRX || maxRX < r.X) continue;
+                    if (limitRY) if (r.Y < minRY || maxRY < r.Y) continue;
+                    if (limitRZ) if (r.Z < minRZ || maxRZ < r.Z) continue;
                 }
                 // Allowed
                 FSItemsShow.Add(item);
@@ -411,24 +422,54 @@ namespace SHME
             FormSHME.Main.IAC_Redraw();
         }
 
-        private void chbListVisible_CheckedChanged(object sender, EventArgs e) => Relist(true);
+        private void chbListVisible_CheckedChanged(object sender, EventArgs e)
+        {
+            if (lockFilter) return;
+            Relist(true);
+            FormSHME.Main.IAC_Redraw();
+        }
+
+        private void tListTimeout_Tick(object sender, EventArgs e)
+        {
+            if (postpond)
+            {
+                ListItems();
+                postpond = false;
+            }
+            tListTimeout.Enabled = false;
+        }
 
         public void Relist(bool force = false)
         {
-            if (lockFilter) return;
             FormSHME.Main.ProjectObjects(FSItems);
             if (cbListVisible.Checked || force) // Skip if wasn't checked in first place
             {
                 FSItemsShown = (cbListVisible.Checked)
                     ? FormSHME.Main.CheckObjectsVisibility(FSItemsShow, Pins).Cast<FSItem>().ToList()
                     : FSItemsShow;
-                // List
-                clbItems.BeginUpdate();
-                clbItems.Items.Clear();
-                foreach (FSItem item in FSItemsShown)
-                    clbItems.Items.Add(item.ListLine);
-                clbItems.EndUpdate();
+                if (tListTimeout.Enabled)
+                    postpond = true;
+                else
+                {
+                    ListItems();
+                    tListTimeout.Enabled = true; // Set timeout
+                }
             }
+        }
+
+        public void ListItems()
+        {
+            this.SuspendLayout();
+            clbItems.BeginUpdate();
+            int li = clbItems.Items.Count;
+            int si = FSItemsShown.Count;
+            for (; li < si; li++) clbItems.Items.Add("+");
+            for (int i = 0; i < si; i++)
+                if (clbItems.Items[i].ToString() != FSItemsShown[i].XMLLine)
+                    clbItems.Items[i] = FSItemsShown[i].XMLLine;
+            for (; si < li; li--) clbItems.Items.RemoveAt(si);
+            clbItems.EndUpdate();
+            this.ResumeLayout();
         }
 
         private void LimitFilter_ValueChanged(object sender, EventArgs e)
@@ -442,27 +483,24 @@ namespace SHME
 
         private void btnAlign_Click(object sender, EventArgs e)
         {
-            bool changed, doLocatoin = (sender == btnPositionAlign);
+            if (clbItems.CheckedIndices.Count < 1) return;
+            bool doLocatoin = (sender == btnPositionAlign);
             Double step   = (Double)(doLocatoin ? nudPositionStep  : nudRotationStep   ).Value;
             Double offset = (Double)(doLocatoin ? nudPositionOffset: nudRotationOffset ).Value;
-            if (clbItems.CheckedIndices.Count < 1)
-                return;
             clbItems.BeginUpdate();
-            foreach (int i in clbItems.CheckedIndices)
+            FSItem item;
+            for (int i = clbItems.CheckedIndices.Count - 1; 0 <= i; i--)
             {
-                if (doLocatoin) changed = FSItemsShown[i].Position.Align(step, offset, true,  false, true );
-                else            changed = FSItemsShown[i].Rotation.Align(step, offset, false, true,  false);
-                if (changed)
+                item = FSItemsShown[clbItems.CheckedIndices[i]];
+                if ((doLocatoin) ? item.Position.Align(step, offset, true,  false, true )
+                                 : item.Rotation.Align(step, offset, false, true,  false))
                 {
-                    FSItemsShown[i].Edited = true;
-                    clbItems.Items[i]
-                        = FSItemsShown[i].ListLine
-                        = FSItemsShown[i].BuildListLine();
+                    item.Edited = true;
+                    item.GetXMLLine();
                 }
             }
             clbItems.EndUpdate();
-            btnItemsUnroll.Visible = true;
-            FormSHME.Main.IAC_Redraw();
+            FilterItems();
         }
 
         private void nudPositionStep_ValueChanged(object sender, EventArgs e) =>
@@ -488,16 +526,13 @@ namespace SHME
 
         private void tbLine_Leave(object sender, EventArgs e)
         {
-            if (clbItems.SelectedItem?.ToString() == tbLine.Text)
-                return;
-            int i = clbItems.SelectedIndex;
-            FSItem item = FSItemsShown[i];
+            if (clbItems.SelectedItem?.ToString() == tbLine.Text) return;
+            int li = clbItems.SelectedIndex;
+            FSItem item = FSItemsShown[li];
             item.Edited = true;
             item.DecodeXMLLine(tbLine.Text);
-            clbItems.Items[i]
-                = item.ListLine
-                = item.BuildListLine();
-            btnItemsUnroll.Visible = true;
+            clbItems.Items[li] = item.GetXMLLine();
+            FormSHME.Main.ProjectObjects(new List<FSObject>() {item});
             FormSHME.Main.IAC_Redraw();
         }
 
@@ -506,20 +541,20 @@ namespace SHME
         private void XYZIncrement(double x, double y, double z, bool doRotation)//Ok
         {
             if (clbItems.CheckedIndices.Count < 1) return;
-            FSItem item;
             clbItems.BeginUpdate();
-            foreach (int i in clbItems.CheckedIndices)
+            FSItem item;
+            int li;
+            for (int i = clbItems.CheckedIndices.Count - 1; 0 <= i; i--)
             {
-                item = FSItemsShown[i];
+                li = clbItems.CheckedIndices[i];
+                item = FSItemsShown[li];
                 if (doRotation) item.Rotation.Increment(x, y, z);
                 else            item.Position.Increment(x, y, z);
                 item.Edited = true;
-                clbItems.Items[i]
-                    = item.ListLine
-                    = item.BuildListLine();
+                clbItems.Items[li] = item.GetXMLLine();
             }
             clbItems.EndUpdate();
-            btnItemsUnroll.Visible = true;
+            FormSHME.Main.ProjectObjects(FSItemsShown);
             FormSHME.Main.IAC_Redraw();
         }
 
@@ -552,33 +587,16 @@ namespace SHME
             if (clbItems.CheckedIndices.Count < 1) return;
             String f = tbFind.Text;    if (f == "") return;
             String r = tbReplace.Text; if (f ==  r) return;
-            FSItem item;
             clbItems.BeginUpdate();
-            foreach (int i in clbItems.CheckedIndices)
+            FSItem item;
+            for (int i = clbItems.CheckedIndices.Count - 1; 0 <= i; i--)
             {
                 item = FSItemsShown[i];
                 item.Edited = true;
-                item.DecodeXMLLine(item.ListLine.Replace(f, r));
-                clbItems.Items[i]
-                    = item.ListLine
-                    = item.BuildListLine();
+                item.DecodeXMLLine(item.XMLLine.Replace(f, r));
+                item.GetXMLLine();
             }
             clbItems.EndUpdate();
-            btnItemsUnroll.Visible = true;
-            FormSHME.Main.IAC_Redraw();
-        }
-
-        private void btnItemsUnroll_Click(object sender, EventArgs e)//Ok
-        {
-            for (int i = FSItems.Count - 1; 0 <= i; i--)
-                if (FSItems[i].Edited)
-                {
-                    FSItems[i].ReadXMLLine();
-                    FSItems[i].ListLine = FSItems[i].BuildListLine();
-                    FSItems[i].Edited = false;
-                }
-            clbItems.EndUpdate();
-            btnItemsUnroll.Visible = false;
             FilterItems();
         }
         #endregion

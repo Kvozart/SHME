@@ -1088,7 +1088,9 @@ namespace SHME
         #endregion
 
         #region Form
-        private int CheckInteger(String value, int min, int max, int def) => (Int32.TryParse(value, out int v)) ? (min <= v && v <= max) ? v : def : def;
+        private int ParseInteger(String value, int min, int max, int def) => (Int32.TryParse(value, out int v)) ? (min <= v && v <= max) ? v : def : def;
+
+        private Color ParseColor(String value, int def) => Color.FromArgb(Int32.TryParse(value, out int v) ? v : def);
 
         private int ReadToolFromString(String s)
         {
@@ -1096,7 +1098,7 @@ namespace SHME
             s = "btnTool" + s;
             for (i = 0; i < ToolControls.Length; i++)
                 if (s.StartsWith(ToolControls[i].Name))
-                    return (i << 2) + CheckInteger(s.Substring(ToolControls[i].Name.Length, 1), 1, 3, 1) - 1;
+                    return (i << 2) + ParseInteger(s.Substring(ToolControls[i].Name.Length, 1), 1, 3, 1) - 1;
             return 0;
         }
 
@@ -1106,7 +1108,6 @@ namespace SHME
             {
                 using (StreamReader file = File.OpenText("SHME.ini"))
                 {
-                    int v, i;
                     while (!file.EndOfStream)
                     {
                         String line = file.ReadLine();
@@ -1121,30 +1122,30 @@ namespace SHME
                         {
                             //* Pages
                             case "Theme":
-                                i = tcThemes.TabPages.Count - 1;
+                                int i = tcThemes.TabPages.Count - 1;
                                 for (; 0 < i; i--)
                                     if (tcThemes.TabPages[i].Name.Contains(value))
                                         break;
                                 tcThemes.SelectedIndex = i;
                                 break;
-                            case "MonochromeRepeat": nudMonochromeRepeat.Value   = CheckInteger(value, 1, 32, 1); break;
-                            case "HiLoByteRepeat":   nudByteRepeat      .Value   = CheckInteger(value, 1, 32, 1); break;
-                            case "SpectrumRepeat":   nudSpectrumRepeat  .Value   = CheckInteger(value, 1, 32, 1); break;
+                            case "MonochromeRepeat": ReadValue.NUDInteger(nudMonochromeRepeat, value); break;
+                            case "HiLoByteRepeat":   ReadValue.NUDInteger(nudByteRepeat,       value); break;
+                            case "SpectrumRepeat":   ReadValue.NUDInteger(nudSpectrumRepeat,   value); break;
 
-                            case "MonochromePreset": cbbMonochromePresets.SelectedIndex = CheckInteger(value, -1, cbbMonochromePresets.Items.Count, -1); break;
-                            case "HiLoBytePreset":   cbbBytePresets      .SelectedIndex = CheckInteger(value, -1, cbbBytePresets      .Items.Count, -1); break;
-                            case "SpectrumPreset":   cbbSpectrumPresets  .SelectedIndex = CheckInteger(value, -1, cbbSpectrumPresets  .Items.Count, -1); break;
+                            case "MonochromePreset": cbbMonochromePresets.SelectedIndex = ParseInteger(value, -1, cbbMonochromePresets.Items.Count, -1); break;
+                            case "HiLoBytePreset":   cbbBytePresets      .SelectedIndex = ParseInteger(value, -1, cbbBytePresets      .Items.Count, -1); break;
+                            case "SpectrumPreset":   cbbSpectrumPresets  .SelectedIndex = ParseInteger(value, -1, cbbSpectrumPresets  .Items.Count, -1); break;
 
-                            case "MonochromeColor": btnMonochromeColor.BackColor = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.White; break;
-                            case "SpectrumColor0":  btnSpectrumColor0.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[0]); break;
-                            case "SpectrumColor1":  btnSpectrumColor1.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[1]); break;
-                            case "SpectrumColor2":  btnSpectrumColor2.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[2]); break;
-                            case "SpectrumColor3":  btnSpectrumColor3.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[3]); break;
-                            case "SpectrumColor4":  btnSpectrumColor4.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[4]); break;
-                            case "SpectrumColor5":  btnSpectrumColor5.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[5]); break;
-                            case "SpectrumColor6":  btnSpectrumColor6.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[6]); break;
-                            case "SpectrumColor7":  btnSpectrumColor7.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[7]); break;
-                            case "SpectrumColor8":  btnSpectrumColor8.BackColor  = (Int32.TryParse(value, out v)) ? Color.FromArgb(v) : Color.FromArgb(spectrumColors[8]); break;
+                            case "MonochromeColor": btnMonochromeColor.BackColor = ParseColor(value, 0xFFFFFF); break;
+                            case "SpectrumColor0":  btnSpectrumColor0.BackColor  = ParseColor(value, spectrumColors[0]); break;
+                            case "SpectrumColor1":  btnSpectrumColor1.BackColor  = ParseColor(value, spectrumColors[1]); break;
+                            case "SpectrumColor2":  btnSpectrumColor2.BackColor  = ParseColor(value, spectrumColors[2]); break;
+                            case "SpectrumColor3":  btnSpectrumColor3.BackColor  = ParseColor(value, spectrumColors[3]); break;
+                            case "SpectrumColor4":  btnSpectrumColor4.BackColor  = ParseColor(value, spectrumColors[4]); break;
+                            case "SpectrumColor5":  btnSpectrumColor5.BackColor  = ParseColor(value, spectrumColors[5]); break;
+                            case "SpectrumColor6":  btnSpectrumColor6.BackColor  = ParseColor(value, spectrumColors[6]); break;
+                            case "SpectrumColor7":  btnSpectrumColor7.BackColor  = ParseColor(value, spectrumColors[7]); break;
+                            case "SpectrumColor8":  btnSpectrumColor8.BackColor  = ParseColor(value, spectrumColors[8]); break;
                             // Hi/Lo Byte
                             case "HiLoByteHiHex": tbByteHi.Text = value; break;
                             case "HiLoByteLoHex": tbByteLo.Text = value; break;
@@ -1171,21 +1172,21 @@ namespace SHME
                                     AddToolset(toolL, toolM, toolR, toolX1, toolX2);
                                 break;
                             // Slots
-                            case "Slot1Value":        nudBrush1ValueDecimal.Value      = CheckInteger(value, 0, 65535, 0); break;
-                            case "Slot2Value":        nudBrush2ValueDecimal.Value      = CheckInteger(value, 0, 65535, 0); break;
-                            case "Slot3Value":        nudBrush3ValueDecimal.Value      = CheckInteger(value, 0, 65535, 0); break;
-                            case "Slot1Force":        nudBrush1ForceDecimal.Value      = CheckInteger(value, 0, 65535, 0); break;
-                            case "Slot2Force":        nudBrush2ForceDecimal.Value      = CheckInteger(value, 0, 65535, 0); break;
-                            case "Slot3Force":        nudBrush3ForceDecimal.Value      = CheckInteger(value, 0, 65535, 0); break;
-                            case "Slot1Width":        nudBrush1Width .Value            = CheckInteger(value, 1, (int)nudBrush1Width .Maximum, 1); break;
-                            case "Slot1Height":       nudBrush1Height.Value            = CheckInteger(value, 1, (int)nudBrush1Height.Maximum, 1); break;
-                            case "Slot2Width":        nudBrush2Width .Value            = CheckInteger(value, 1, (int)nudBrush2Width .Maximum, 1); break;
-                            case "Slot2Height":       nudBrush2Height.Value            = CheckInteger(value, 1, (int)nudBrush2Height.Maximum, 1); break;
-                            case "Slot3Width":        nudBrush3Width .Value            = CheckInteger(value, 1, (int)nudBrush3Width .Maximum, 1); break;
-                            case "Slot3Height":       nudBrush3Height.Value            = CheckInteger(value, 1, (int)nudBrush3Height.Maximum, 1); break;
-                            case "Slot1Distribution": btnBrush1Distribution.ImageIndex = CheckInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
-                            case "Slot2Distribution": btnBrush2Distribution.ImageIndex = CheckInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
-                            case "Slot3Distribution": btnBrush3Distribution.ImageIndex = CheckInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
+                            case "Slot1Value":        ReadValue.NUDInteger(nudBrush1ValueDecimal, value); break;
+                            case "Slot2Value":        ReadValue.NUDInteger(nudBrush2ValueDecimal, value); break;
+                            case "Slot3Value":        ReadValue.NUDInteger(nudBrush3ValueDecimal, value); break;
+                            case "Slot1Force":        ReadValue.NUDInteger(nudBrush1ForceDecimal, value); break;
+                            case "Slot2Force":        ReadValue.NUDInteger(nudBrush2ForceDecimal, value); break;
+                            case "Slot3Force":        ReadValue.NUDInteger(nudBrush3ForceDecimal, value); break;
+                            case "Slot1Width":        ReadValue.NUDInteger(nudBrush1Width,        value); break;
+                            case "Slot1Height":       ReadValue.NUDInteger(nudBrush1Height,       value); break;
+                            case "Slot2Width":        ReadValue.NUDInteger(nudBrush2Width,        value); break;
+                            case "Slot2Height":       ReadValue.NUDInteger(nudBrush2Height,       value); break;
+                            case "Slot3Width":        ReadValue.NUDInteger(nudBrush3Width,        value); break;
+                            case "Slot3Height":       ReadValue.NUDInteger(nudBrush3Height,       value); break;
+                            case "Slot1Distribution": btnBrush1Distribution.ImageIndex = ParseInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
+                            case "Slot2Distribution": btnBrush2Distribution.ImageIndex = ParseInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
+                            case "Slot3Distribution": btnBrush3Distribution.ImageIndex = ParseInteger(value, 0, ilToolForce.Images.Count - 1, 0); break;
                             case "Slot1Shape":        chbBrush1RectangleShape.Checked  = (value == "True"); break;
                             case "Slot2Shape":        chbBrush2RectangleShape.Checked  = (value == "True"); break;
                             case "Slot3Shape":        chbBrush3RectangleShape.Checked  = (value == "True"); break;
@@ -1196,8 +1197,8 @@ namespace SHME
                             //* Files
                             case "FileHMap": HMap.URL = value; break;
                             case "FileTMap": TMap.URL = value; break;
-                            case "Level8bit":  cbbLevelFormat8bit. SelectedIndex = CheckInteger(value, 0, cbbLevelFormat8bit.Items.Count  - 1, 0); break;
-                            case "Level16bit": cbbLevelFormat16bit.SelectedIndex = CheckInteger(value, 0, cbbLevelFormat16bit.Items.Count - 1, 0); break;
+                            case "Level8bit":  cbbLevelFormat8bit. SelectedIndex = ParseInteger(value, 0, cbbLevelFormat8bit .Items.Count - 1, 0); break;
+                            case "Level16bit": cbbLevelFormat16bit.SelectedIndex = ParseInteger(value, 0, cbbLevelFormat16bit.Items.Count - 1, 0); break;
                             case "LevelBLIByte":  chbLevelByteBigLittleIndian.Checked  = (value == "True"); break;
                             case "LevelBLIPixel": chbLevelPixelBigLittleIndian.Checked = (value == "True"); break;
 
@@ -1223,6 +1224,15 @@ namespace SHME
         }
 
         private void cbbGrid_CheckedChanged(object sender, EventArgs e) => Canvas_Update();
+
+        public void ProjectObject(FSObject obj)
+        {
+            XYZRDouble xyzr = obj.Position;
+            if (!xyzr.Present) return;
+            double step = (0 < zoom) ? (1 << zoom >> 1) : 0.5;
+            xyzr.canvasX = (int)((HMap.Width  + xyzr.X) * step) + hScrollBar.Left - hScrollBar.Value;
+            xyzr.canvasY = (int)((HMap.Height + xyzr.Z) * step) + vScrollBar.Top  - vScrollBar.Value;
+        }
 
         public void ProjectObjects(IEnumerable<FSObject> objects)
         {
@@ -1250,11 +1260,12 @@ namespace SHME
             List<FSObject> objectsShown = new List<FSObject>();
             foreach (FSObject obj in objects)
             {
-                XYZRDouble xyzr = obj.Position;
-                if (xyzr.Present)
+                int x = obj.Position.canvasX;
+                int y = obj.Position.canvasY;
+                if (obj.Position.Present)
                     if (obj.Show)
-                        if (obj.Shown = portL <= xyzr.canvasX && xyzr.canvasX < portR &&
-                                        portT <= xyzr.canvasY && xyzr.canvasY < portB)
+                        if (obj.Shown = portL <= x && x < portR &&
+                                        portT <= y && y < portB)
                             objectsShown.Add(obj);
             }
             return objectsShown;
@@ -1264,26 +1275,33 @@ namespace SHME
         {
             int pL = portL - pins.CenterX,
                 pT = portT - pins.CenterY,
-                pR = portR - pins.CenterX + pins.Width ,
+                pR = portR - pins.CenterX + pins.Width,
                 pB = portB - pins.CenterY + pins.Height;
             foreach (FSObject obj in objects)
             {
-                XYZRDouble xyzr = obj.Position;
-                if (xyzr.Present)
-                    if (pL <= xyzr.canvasX && xyzr.canvasX < pR &&
-                        pT <= xyzr.canvasY && xyzr.canvasY < pB)
+                int x = obj.Position.canvasX;
+                int y = obj.Position.canvasY;
+                if (obj.Position.Present)
+                    if (pL <= x && x < pR &&
+                        pT <= y && y < pB)
                     {
                         DrawArrayToArray(buffer, bufferW, bufferH,
                             pins.Icons[obj.PinState],
                             pins.Width, pins.Height,
-                            xyzr.canvasX - portL - pins.CenterX,
-                            xyzr.canvasY - portT - pins.CenterY);
+                            x - portL - pins.CenterX,
+                            y - portT - pins.CenterY);
                         if (obj.Selected)
                             DrawArrayToArray(buffer, bufferW, bufferH,
                                 pins.Selection,
                                 pins.Width, pins.Height,
-                                xyzr.canvasX - portL - pins.CenterX,
-                                xyzr.canvasY - portT - pins.CenterY);
+                                x - portL - pins.CenterX,
+                                y - portT - pins.CenterY);
+                        else if (obj.Checked)
+                            DrawArrayToArray(buffer, bufferW, bufferH,
+                                pins.Checking,
+                                pins.Width, pins.Height,
+                                x - portL - pins.CenterX,
+                                y - portT - pins.CenterY);
                     }
             }
         }
@@ -1423,26 +1441,43 @@ namespace SHME
             if (chbADrive.Checked)
                 if (FAD.SelectedRoute != null)
                 {
+                    ADLink l;
+                    ADWaypoint wpA, wpB;
                     List<ADWaypoint> WPs = FAD.SelectedRoute.Waypoints;
                     for (iy = WPs.Count - 1; 0 <= iy; iy--)
-                        foreach (ADLink l in WPs[iy].Links)
+                    {
+                        wpA = WPs[iy];
+                        for (ix = wpA.Links.Count - 1; 0 <= ix; ix--)
+                        {
+                            l = wpA.Links[ix];
                             if (iy < l.waypointID) // Draw only once
-                                if (WPs[iy].Show || WPs[l.waypointID].Show)
+                            {
+                                wpB = WPs[l.waypointID];
+                                if (wpA.Show || wpB.Show)
                                     e.Graphics.DrawLine(
                                         FormADrive.Pins.Pens[l.direction],
-                                        WPs[iy]          .Position.canvasX, WPs[iy]          .Position.canvasY,
-                                        WPs[l.waypointID].Position.canvasX, WPs[l.waypointID].Position.canvasY);
+                                        wpA.Position.canvasX, wpA.Position.canvasY,
+                                        wpB.Position.canvasX, wpB.Position.canvasY);
+                            }
+                        }
+                    }
                 }
             // Draw CPlay lines
             if (chbCPlay.Checked)
                 if (FCP.SelectedRoute != null)
                 {
                     List<CPWaypoint> WPs = FCP.SelectedRoute.Waypoints;
-                    for (iy = WPs.Count - 1; 0 < iy; iy--)
-                        if (WPs[iy].Show || WPs[iy - 1].Show)
+                    offset = WPs.Count - 1;
+                    CPWaypoint wpB, wpA = (0 < offset) ? WPs[offset] : null;
+                    for (iy = offset - 1; 0 <= iy; iy--)
+                    {
+                        wpB = wpA;
+                        wpA = WPs[iy];
+                        if (wpA.Show || wpB.Show)
                             e.Graphics.DrawLine(FormCPlay.Pins.Pens[0],
-                                WPs[iy - 1].Position.canvasX, WPs[iy - 1].Position.canvasY,
-                                WPs[iy    ].Position.canvasX, WPs[iy    ].Position.canvasY);
+                                wpA.Position.canvasX, wpA.Position.canvasY,
+                                wpB.Position.canvasX, wpB.Position.canvasY);
+                    }
                 }
         }
 
@@ -1483,18 +1518,19 @@ namespace SHME
             if (value < 0)
                 value = 0;
             if (value == scrollBar.Value) return false;
-            if (apply) scrollBar.Value = value;
+            if (apply)
+            {
+                scrollBar.ValueChanged -= ScrollBar_ValueChanged;
+                scrollBar.Value = value;
+                scrollBar.ValueChanged += ScrollBar_ValueChanged;
+            }
             return true;
         }
 
-        private void ScrollBar_Scroll(object sender, ScrollEventArgs e)//
+        private void ScrollBar_ValueChanged(object sender, EventArgs e)
         {
-            if (e != null)
-            {
-                if (e.OldValue == e.NewValue) return;
-                IAC_Relist();
-            }
             Canvas_Update();
+            IAC_Relist();
         }
 
         private void pnlCorner_DoubleClick(object sender, EventArgs e) => new AboutBox().ShowDialog();
@@ -1879,9 +1915,9 @@ namespace SHME
         #region Additional
         public void IAC_Relist()
         {
-            FIs?.Relist();
-            FCP?.Relist();
-            FAD?.Relist();
+            if (chbItems .Checked) FIs?.Relist();
+            if (chbCPlay .Checked) FCP?.Relist();
+            if (chbADrive.Checked) FAD?.Relist();
         }
 
         public void IAC_Redraw()
@@ -1901,6 +1937,8 @@ namespace SHME
             if (e.Button == MouseButtons.Right)
                 if (form.Visible) form.Hide();
                 else              form.Show();
+            if (chbItems.Checked || chbADrive.Checked || chbCPlay.Checked)
+                IAC_Relist();
         }
         #endregion
     }

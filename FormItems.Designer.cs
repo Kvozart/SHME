@@ -60,7 +60,6 @@
             this.tbFind = new System.Windows.Forms.TextBox();
             this.btnItemsCheckAll = new System.Windows.Forms.Button();
             this.btnItemsUncheckAll = new System.Windows.Forms.Button();
-            this.btnItemsUnroll = new System.Windows.Forms.Button();
             this.btnFileReload = new System.Windows.Forms.Button();
             this.btnItemsCheckInvert = new System.Windows.Forms.Button();
             this.btnFilterAdd = new System.Windows.Forms.Button();
@@ -106,6 +105,7 @@
             this.nudPositionXMax = new System.Windows.Forms.NumericUpDown();
             this.tbLine = new System.Windows.Forms.TextBox();
             this.splitter1 = new System.Windows.Forms.Splitter();
+            this.tListTimeout = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationZMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationYMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRotationXMin)).BeginInit();
@@ -632,22 +632,6 @@
             this.btnItemsUncheckAll.UseVisualStyleBackColor = true;
             this.btnItemsUncheckAll.Click += new System.EventHandler(this.btnItemsSetChecks_Click);
             // 
-            // btnItemsUnroll
-            // 
-            this.btnItemsUnroll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnItemsUnroll.AutoEllipsis = true;
-            this.btnItemsUnroll.BackgroundImage = global::SHME.Properties.Resources.historyBack;
-            this.btnItemsUnroll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnItemsUnroll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnItemsUnroll.Location = new System.Drawing.Point(825, 434);
-            this.btnItemsUnroll.Name = "btnItemsUnroll";
-            this.btnItemsUnroll.Size = new System.Drawing.Size(19, 19);
-            this.btnItemsUnroll.TabIndex = 24;
-            this.toolTip.SetToolTip(this.btnItemsUnroll, "Undo");
-            this.btnItemsUnroll.UseVisualStyleBackColor = true;
-            this.btnItemsUnroll.Visible = false;
-            this.btnItemsUnroll.Click += new System.EventHandler(this.btnItemsUnroll_Click);
-            // 
             // btnFileReload
             // 
             this.btnFileReload.BackgroundImage = global::SHME.Properties.Resources.reload;
@@ -781,7 +765,6 @@
             this.pnlItems.Controls.Add(this.btnFind);
             this.pnlItems.Controls.Add(this.cbListVisible);
             this.pnlItems.Controls.Add(this.btnReplace);
-            this.pnlItems.Controls.Add(this.btnItemsUnroll);
             this.pnlItems.Controls.Add(this.tbReplace);
             this.pnlItems.Controls.Add(this.clbItems);
             this.pnlItems.Controls.Add(this.tbFind);
@@ -1347,6 +1330,10 @@
             this.splitter1.TabIndex = 23;
             this.splitter1.TabStop = false;
             // 
+            // tListTimeout
+            // 
+            this.tListTimeout.Tick += new System.EventHandler(this.tListTimeout_Tick);
+            // 
             // FormItems
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1355,6 +1342,7 @@
             this.Controls.Add(this.pnlItems);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.pnlFilters);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1100, 320);
             this.Name = "FormItems";
@@ -1453,7 +1441,6 @@
         private System.Windows.Forms.GroupBox gbEdit;
         private System.Windows.Forms.Button btnItemsCheckAll;
         private System.Windows.Forms.Button btnItemsUncheckAll;
-        private System.Windows.Forms.Button btnItemsUnroll;
         private System.Windows.Forms.Button btnReplace;
         private System.Windows.Forms.TextBox tbReplace;
         private System.Windows.Forms.TextBox tbFind;
@@ -1470,5 +1457,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox cbListVisible;
+        private System.Windows.Forms.Timer tListTimeout;
     }
 }
