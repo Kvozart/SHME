@@ -13,37 +13,45 @@ namespace SHME
         private const String IniFileName = "ADrive.ini";
         private const String FloatFormat = "f2";
 
-        public static FSPins Pins = new FSPins(5, 5, 2, 2,
+        public static FSPins Pins = new FSPins(7, 7, 3, 3,
             new int[][]{
                 // Normal
                 new int[] {
-                    0x00000000, 0x7F00A000, 0x7F00A000, 0x7F00A000, 0x00000000,
-                    0x7F00A000, 0x7F00A000, 0x00000000, 0x7F00A000, 0x7F00A000,
-                    0x7F00A000, 0x00000000, 0x00000000, 0x00000000, 0x7F00A000,
-                    0x7F00A000, 0x7F00A000, 0x00000000, 0x7F00A000, 0x7F00A000,
-                    0x00000000, 0x7F00A000, 0x7F00A000, 0x7F00A000, 0x00000000},
+                    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+                    0x00000000, 0x00000000, 0x7F00A000, 0x7F00A000, 0x7F00A000, 0x00000000, 0x00000000,
+                    0x00000000, 0x7F00A000, 0x7F004000, 0x7F004000, 0x7F004000, 0x7F00A000, 0x00000000,
+                    0x00000000, 0x7F00A000, 0x7F004000, 0x7F004000, 0x7F004000, 0x7F00A000, 0x00000000,
+                    0x00000000, 0x7F00A000, 0x7F004000, 0x7F004000, 0x7F004000, 0x7F00A000, 0x00000000,
+                    0x00000000, 0x00000000, 0x7F00A000, 0x7F00A000, 0x7F00A000, 0x00000000, 0x00000000,
+                    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000},
                 // Flaged
                 new int[] {
-                    0x00000000, 0x7FEEEE00, 0x7FEEEE00, 0x7FEEEE00, 0x00000000,
-                    0x7FEEEE00, 0x7FEEEE00, 0x00000000, 0x7FEEEE00, 0x7FEEEE00,
-                    0x7FEEEE00, 0x00000000, 0x00000000, 0x00000000, 0x7FEEEE00,
-                    0x7FEEEE00, 0x7FEEEE00, 0x00000000, 0x7FEEEE00, 0x7FEEEE00,
-                    0x00000000, 0x7FEEEE00, 0x7FEEEE00, 0x7FEEEE00, 0x00000000}
+                    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+                    0x00000000, 0x00000000, 0x7FEEEE00, 0x7FEEEE00, 0x7FEEEE00, 0x00000000, 0x00000000,
+                    0x00000000, 0x7FEEEE00, 0x7F6E6E00, 0x7F6E6E00, 0x7F6E6E00, 0x7FEEEE00, 0x00000000,
+                    0x00000000, 0x7FEEEE00, 0x7F6E6E00, 0x7F6E6E00, 0x7F6E6E00, 0x7FEEEE00, 0x00000000,
+                    0x00000000, 0x7FEEEE00, 0x7F6E6E00, 0x7F6E6E00, 0x7F6E6E00, 0x7FEEEE00, 0x00000000,
+                    0x00000000, 0x00000000, 0x7FEEEE00, 0x7FEEEE00, 0x7FEEEE00, 0x00000000, 0x00000000,
+                    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000}
             },
             // Selection
             new int[] {
-                0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF},
+                0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF},
             // Checking
             new int[] {
-                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F},
+                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F},
             new Pen[]{
                 new Pen(Color.DarkGray),
                 new Pen(Color.Green),
@@ -576,9 +584,9 @@ namespace SHME
             }
             else
             {
-                clbWaypoints.SelectedIndex = -1;
                 tvMarkers.SelectedNode =
                 tvGroups.SelectedNode = null;
+                clbWaypoints.SelectedIndex = -1;
                 clbWaypoints_SelectedIndexChanged(null, null);
                 tvMarkers_AfterSelect(null, null);
                 tvGroups_AfterSelect(null, null);
@@ -642,20 +650,26 @@ namespace SHME
             if (SelectedRoute != null) FormSHME.Main.ProjectObjects(SelectedRoute.Waypoints);
             if (cbListVisible.Checked || force) // Skip if wasn't checked in first place
             {
-                clbWaypoints.SelectedIndex = -1; // Temp
-                clbWaypoints_SelectedIndexChanged(null, null);
-                //
                 WaypointsShown = (cbListVisible.Checked)
                     ? FormSHME.Main.CheckObjectsVisibility(WaypointsShow, Pins).Cast<ADWaypoint>().ToList()
                     : WaypointsShow;
                 // List
+                clbWaypoints.SelectedIndex = -1; // Temp
                 clbWaypoints.BeginUpdate();
                 clbWaypoints.Items.Clear();
                 if (SelectedRoute != null)
                 {
-                    int n = WaypointsShown.Count;
-                    for (int i = 0; i < n; i++)
-                        clbWaypoints.Items.Add(WaypointsShown[i].ListLine);
+                    // Uncheck unvisible
+                    foreach (ADWaypoint waypoint in SelectedRoute.Waypoints)
+                        waypoint.Checked &= waypoint.Shown;
+                    // Fit
+                    int si = WaypointsShown.Count;
+                    for (int i = 0; i < si; i++)
+                    {
+                        clbWaypoints.Items.Add(WaypointsShown[i].ListLine, WaypointsShown[i].Checked);
+                        if (WaypointsShown[i].Selected)
+                            clbWaypoints.SelectedIndex = i;
+                    }
                 }
                 clbWaypoints.EndUpdate();
             }
@@ -667,7 +681,67 @@ namespace SHME
                 FilterWaypoints();
         }
 
-        private void clbWaypoints_MouseClick(object sender, MouseEventArgs e) => UIBasics.CheckedListBox_MouseClick(clbWaypoints, e);
+        private void clbWaypoints_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (SelectedWaypoint != null) SelectedWaypoint.Selected = false;
+            tvLinks.Nodes.Clear();
+            btnPointSave.Visible = false;
+            tvLinks.SelectedNode = null;
+            tvLinks_AfterSelect(null, null);
+            lockComparing = true;
+            if (clbWaypoints.SelectedIndex < 0)
+            {
+                gbWaypoint.Enabled = false;
+                SelectedWaypoint = null;
+                nudX.Value = 0;
+                nudY.Value = 0;
+                nudZ.Value = 0;
+                chbFlag.Checked = false;
+                return;
+            }
+            SelectedWaypoint = WaypointsShown[clbWaypoints.SelectedIndex];
+            nudX.Value = (decimal)SelectedWaypoint.Position.X;
+            nudY.Value = (decimal)SelectedWaypoint.Position.Y;
+            nudZ.Value = (decimal)SelectedWaypoint.Position.Z;
+            chbFlag.Checked = SelectedWaypoint.flag;
+            SelectedWaypoint.Selected = true;
+            TreeNode tn;
+            foreach (ADLink l in SelectedWaypoint.Links)
+            {
+                tvLinks.Nodes.Add(tn = new TreeNode(SelectedRoute.Waypoints[l.waypointID].ListLine));
+                tn.StateImageIndex = l.direction;
+            }
+            gbWaypoint.Enabled = true;
+            lockComparing = false;
+            FormSHME.Main.IAC_Redraw();
+        }
+
+        private void clbWaypoints_MouseClick(object sender, MouseEventArgs e)
+        {
+            int i = clbWaypoints.SelectedIndex;
+            if (0 <= i)
+            {
+                bool newChecked = clbWaypoints.GetItemChecked(i);
+                if (20 < e.X) clbWaypoints.SetItemChecked(i, !(WaypointsShown[i].Checked =  newChecked));
+                else                                           WaypointsShown[i].Checked = !newChecked;
+                FormSHME.Main.IAC_Redraw();
+            }
+        }
+
+        private void btnPointsSetChecks_Click(object sender, EventArgs e)
+        {
+            bool newChecked = (sender == btnPointsCheckAll);
+            for (int i = clbWaypoints.Items.Count - 1; 0 <= i; i--)
+                clbWaypoints.SetItemChecked(i, WaypointsShown[i].Checked = newChecked);
+            FormSHME.Main.IAC_Redraw();
+        }
+
+        private void btnPointsInvertChecks_Click(object sender, EventArgs e)
+        {
+            for (int i = clbWaypoints.Items.Count - 1; 0 <= i; i--)
+                clbWaypoints.SetItemChecked(i, WaypointsShown[i].Checked = !clbWaypoints.GetItemChecked(i));
+            FormSHME.Main.IAC_Redraw();
+        }
 
         private void btnPositionAlign_Click(object sender, EventArgs e)
         {
@@ -751,38 +825,6 @@ namespace SHME
         #endregion
 
         #region Point
-        private void clbWaypoints_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            tvLinks.Nodes.Clear();
-            btnPointSave.Visible = false;
-            tvLinks.SelectedNode = null;
-            tvLinks_AfterSelect(null, null);
-            lockComparing = true;
-            if (clbWaypoints.SelectedIndex < 0)
-            {
-                gbWaypoint.Enabled = false;
-                SelectedWaypoint = null;
-                nudX.Value = 0;
-                nudY.Value = 0;
-                nudZ.Value = 0;
-                chbFlag.Checked = false;
-                return;
-            }
-            SelectedWaypoint = WaypointsShown[clbWaypoints.SelectedIndex];
-            nudX.Value = (decimal)SelectedWaypoint.Position.X;
-            nudY.Value = (decimal)SelectedWaypoint.Position.Y;
-            nudZ.Value = (decimal)SelectedWaypoint.Position.Z;
-            chbFlag.Checked = SelectedWaypoint.flag;
-            TreeNode tn;
-            foreach (ADLink l in SelectedWaypoint.Links)
-            {
-                tvLinks.Nodes.Add(tn = new TreeNode(SelectedRoute.Waypoints[l.waypointID].ListLine));
-                tn.StateImageIndex = l.direction;
-            }
-            gbWaypoint.Enabled = true;
-            lockComparing = false;
-        }
-
         private void WaypointInfo_Changed(object sender, EventArgs e)
         {
             if (lockComparing) return;
@@ -1082,9 +1124,6 @@ namespace SHME
                 }
             }
         }
-
-        private void btnPointsSetChecks_Click   (object sender, EventArgs e) => UIBasics.CheckedListBox_SetChecks   (clbWaypoints, (sender == btnPointsCheckAll));
-        private void btnPointsInvertChecks_Click(object sender, EventArgs e) => UIBasics.CheckedListBox_InvertChecks(clbWaypoints);
 
         private void btnGroupDelete_Click(object sender, EventArgs e)
         {

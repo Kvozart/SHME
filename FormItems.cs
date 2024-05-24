@@ -13,42 +13,48 @@ namespace SHME
         private const String IniFileName = "Items.ini";
         private const String FloatFormat = "f4";
 
-        public static FSPins Pins = new FSPins(9, 9, 4, 4,
+        public static FSPins Pins = new FSPins(11, 11, 5, 5,
             new int[][]{
                 // 0 - Default
                 new int[] {
-                    0x00000000, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x00000000,
-                    0x7F007F00, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x7F007F00,
-                    0x7F007F00, 0x00000000, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x00000000, 0x7F007F00,
-                    0x7F007F00, 0x00000000, 0x00000000, 0x7FFF0000, 0x00000000, 0x7FFF0000, 0x00000000, 0x00000000, 0x7F007F00,
-                    0x7F007F00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F007F00,
-                    0x7F007F00, 0x00000000, 0x00000000, 0x7FFF0000, 0x00000000, 0x7FFF0000, 0x00000000, 0x00000000, 0x7F007F00,
-                    0x7F007F00, 0x00000000, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x00000000, 0x7F007F00,
-                    0x7F007F00, 0x7FFFFF00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFF00, 0x7F007F00,
-                    0x00000000, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x7F007F00, 0x00000000}
+                    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F000000, 0x7F000000, 0x7F000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+                    0x00000000, 0x00000000, 0x7F000000, 0x7F000000, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7F000000, 0x7F000000, 0x00000000, 0x00000000,
+                    0x7F000000, 0x7F000000, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7F000000, 0x7F000000,
+                    0x7F000000, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7F000000,
+                    0x7F000000, 0x7F000000, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7F000000, 0x7F000000,
+                    0x7F000000, 0x7FFFFF00, 0x7F000000, 0x7F000000, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7F000000, 0x7F000000, 0x7FFFFF00, 0x7F000000,
+                    0x7F000000, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7F000000, 0x7F000000, 0x7F000000, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7F000000,
+                    0x7F000000, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7F000000, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7F000000,
+                    0x7F000000, 0x7F000000, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7F000000, 0x7FFFFF00, 0x7FFFFF00, 0x7FFFFF00, 0x7F000000, 0x7F000000,
+                    0x00000000, 0x00000000, 0x7F000000, 0x7F000000, 0x7FFFFF00, 0x7F000000, 0x7FFFFF00, 0x7F000000, 0x7F000000, 0x00000000, 0x00000000,
+                    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F000000, 0x7F000000, 0x7F000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000}
             },
             // Selection
             new int[] {
-                0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF},
+                0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF},
             // Checking
             new int[] {
-                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F},
+                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F},
             null
             );
 
@@ -90,12 +96,13 @@ namespace SHME
                 C;
         }
 
-        private bool postpond = false;
+        private bool postpondListing = false;
         private bool lockFilter = true;
         private String FileName = "";
-        private List<FSItem> FSItems      = new List<FSItem> { };
-        public  List<FSItem> FSItemsShow  = new List<FSItem> { };
-        public  List<FSItem> FSItemsShown = new List<FSItem> { };
+        private List<FSItem> FSItems = new List<FSItem> { };
+        public List<FSItem> FSItemsShow = new List<FSItem> { };
+        public List<FSItem> FSItemsShown = new List<FSItem> { };
+        private FSItem SelectedFSItem = null;
 
         #region Form
         public FormItems()//Ok
@@ -186,7 +193,7 @@ namespace SHME
                     foreach (TreeNode tn in tvFilters.Nodes)
                         file.WriteLine("Filter\t" + tn.Text + "\t" + "*+-"[tn.StateImageIndex]);
                     // Position
-                    file.WriteLine("PositionStep\t"   + nudPositionStep.Value.ToString(ReadValue.FloatPoint));
+                    file.WriteLine("PositionStep\t"   + nudPositionStep  .Value.ToString(ReadValue.FloatPoint));
                     file.WriteLine("PositionOffset\t" + nudPositionOffset.Value.ToString(ReadValue.FloatPoint));
                     file.WriteLine("PositionLimitX\t" + cbLimitPositionX.Checked.ToString());
                     file.WriteLine("PositionLimitY\t" + cbLimitPositionY.Checked.ToString());
@@ -198,7 +205,7 @@ namespace SHME
                     file.WriteLine("PositionZMin\t"   + nudPositionZMin.Value.ToString(ReadValue.FloatPoint));
                     file.WriteLine("PositionZMax\t"   + nudPositionZMax.Value.ToString(ReadValue.FloatPoint));
                     // Rotation
-                    file.WriteLine("RotationStep\t"   + nudRotationStep.Value.ToString(ReadValue.FloatPoint));
+                    file.WriteLine("RotationStep\t"   + nudRotationStep  .Value.ToString(ReadValue.FloatPoint));
                     file.WriteLine("RotationOffset\t" + nudRotationOffset.Value.ToString(ReadValue.FloatPoint));
                     file.WriteLine("RotationLimitX\t" + cbLimitRotationX.Checked.ToString());
                     file.WriteLine("RotationLimitY\t" + cbLimitRotationY.Checked.ToString());
@@ -207,7 +214,7 @@ namespace SHME
                     file.WriteLine("RotationXMax\t"   + nudRotationXMax.Value.ToString(ReadValue.FloatPoint));
                     file.WriteLine("RotationYMin\t"   + nudRotationYMin.Value.ToString(ReadValue.FloatPoint));
                     file.WriteLine("RotationYMax\t"   + nudRotationYMax.Value.ToString(ReadValue.FloatPoint));
-                    file.WriteLine("RotationZMin\t"   + nudRotationZMin.Value.ToString(ReadValue.FloatPoint)); 
+                    file.WriteLine("RotationZMin\t"   + nudRotationZMin.Value.ToString(ReadValue.FloatPoint));
                     file.WriteLine("RotationZMax\t"   + nudRotationZMax.Value.ToString(ReadValue.FloatPoint));
                     // Find & Replace
                     file.WriteLine("Find\t"    + tbFind   .Text.Replace("\t", "&#9;"));
@@ -431,10 +438,10 @@ namespace SHME
 
         private void tListTimeout_Tick(object sender, EventArgs e)
         {
-            if (postpond)
+            if (postpondListing)
             {
                 ListItems();
-                postpond = false;
+                postpondListing = false;
             }
             tListTimeout.Enabled = false;
         }
@@ -444,11 +451,16 @@ namespace SHME
             FormSHME.Main.ProjectObjects(FSItems);
             if (cbListVisible.Checked || force) // Skip if wasn't checked in first place
             {
+                // Mark visibility
                 FSItemsShown = (cbListVisible.Checked)
                     ? FormSHME.Main.CheckObjectsVisibility(FSItemsShow, Pins).Cast<FSItem>().ToList()
                     : FSItemsShow;
+                // Uncheck unvisible
+                for (int i = FSItems.Count - 1; 0 <= i; i--)
+                    FSItems[i].Checked &= FSItems[i].Shown;
+                // List or postpond
                 if (tListTimeout.Enabled)
-                    postpond = true;
+                    postpondListing = true;
                 else
                 {
                     ListItems();
@@ -459,17 +471,16 @@ namespace SHME
 
         public void ListItems()
         {
-            this.SuspendLayout();
             clbItems.BeginUpdate();
-            int li = clbItems.Items.Count;
+            clbItems.Items.Clear();
             int si = FSItemsShown.Count;
-            for (; li < si; li++) clbItems.Items.Add("+");
             for (int i = 0; i < si; i++)
-                if (clbItems.Items[i].ToString() != FSItemsShown[i].XMLLine)
-                    clbItems.Items[i] = FSItemsShown[i].XMLLine;
-            for (; si < li; li--) clbItems.Items.RemoveAt(si);
+            {
+                clbItems.Items.Add(FSItemsShown[i].XMLLine, FSItemsShown[i].Checked);
+                if (FSItemsShown[i].Selected)
+                    clbItems.SelectedIndex = i;
+            }
             clbItems.EndUpdate();
-            this.ResumeLayout();
         }
 
         private void LimitFilter_ValueChanged(object sender, EventArgs e)
@@ -485,8 +496,8 @@ namespace SHME
         {
             if (clbItems.CheckedIndices.Count < 1) return;
             bool doLocatoin = (sender == btnPositionAlign);
-            Double step   = (Double)(doLocatoin ? nudPositionStep  : nudRotationStep   ).Value;
-            Double offset = (Double)(doLocatoin ? nudPositionOffset: nudRotationOffset ).Value;
+            Double step   = (Double)(doLocatoin ? nudPositionStep  : nudRotationStep  ).Value;
+            Double offset = (Double)(doLocatoin ? nudPositionOffset: nudRotationOffset).Value;
             clbItems.BeginUpdate();
             FSItem item;
             for (int i = clbItems.CheckedIndices.Count - 1; 0 <= i; i--)
@@ -515,14 +526,44 @@ namespace SHME
 
         private void clbItems_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (SelectedFSItem != null) SelectedFSItem.Selected = false;
             if (clbItems.SelectedItem != null)
-                tbLine.Text = clbItems.SelectedItem.ToString();
+            {
+                SelectedFSItem = FSItemsShown[clbItems.SelectedIndex];
+                SelectedFSItem.Selected = true;
+                tbLine.Text = SelectedFSItem.XMLLine;
+            }
+            else
+                tbLine.Text = "";
+            FormSHME.Main.IAC_Redraw();
         }
 
-        private void clbItems_MouseClick(object sender, MouseEventArgs e) => UIBasics.CheckedListBox_MouseClick(clbItems, e);
+        private void clbItems_MouseClick(object sender, MouseEventArgs e)
+        {
+            int i = clbItems.SelectedIndex;
+            if (0 <= i)
+            {
+                bool newChecked = clbItems.GetItemChecked(i);
+                if (20 < e.X) clbItems.SetItemChecked(i, !(FSItemsShown[i].Checked =  newChecked));
+                else                                       FSItemsShown[i].Checked = !newChecked;
+                FormSHME.Main.IAC_Redraw();
+            }
+        }
 
-        private void btnItemsSetChecks_Click   (object sender, EventArgs e) => UIBasics.CheckedListBox_SetChecks   (clbItems, (sender == btnItemsCheckAll));
-        private void btnItemsInvertChecks_Click(object sender, EventArgs e) => UIBasics.CheckedListBox_InvertChecks(clbItems);
+        private void btnItemsSetChecks_Click   (object sender, EventArgs e)
+        {
+            bool newChecked = (sender == btnItemsCheckAll);
+            for (int i = clbItems.Items.Count - 1; 0 <= i; i--)
+                clbItems.SetItemChecked(i, FSItemsShown[i].Checked = newChecked);
+            FormSHME.Main.IAC_Redraw();
+        }
+
+        private void btnItemsInvertChecks_Click(object sender, EventArgs e)
+        {
+            for (int i = clbItems.Items.Count - 1; 0 <= i; i--)
+                clbItems.SetItemChecked(i, FSItemsShown[i].Checked = !clbItems.GetItemChecked(i));
+            FormSHME.Main.IAC_Redraw();
+        }
 
         private void tbLine_Leave(object sender, EventArgs e)
         {
@@ -578,7 +619,7 @@ namespace SHME
             if (f == "") return;
             clbItems.BeginUpdate();
             for (int i = FSItemsShown.Count - 1; 0 <= i; i--)
-                clbItems.SetItemChecked(i, FSItemsShown[i].ListLine.Contains(f));
+                clbItems.SetItemChecked(i, FSItemsShown[i].XMLLine.Contains(f));
             clbItems.EndUpdate();
         }
 

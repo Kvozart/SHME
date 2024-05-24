@@ -5,8 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using static SHME.FormADrive;
-using static SHME.FormItems;
 
 namespace SHME
 {
@@ -15,44 +13,54 @@ namespace SHME
         private const String IniFileName = "CPlay.ini";
         private const String FloatFormat = "f2";
 
-        public static FSPins Pins = new FSPins(5, 5, 2, 2,
+        public static FSPins Pins = new FSPins(7, 7, 3, 3,
             new int[][]{
                 // 0 - Work
                 new int[] {
-                    0x00000000, 0x7FC0C000, 0x7FC0C000, 0x7FC0C000, 0x00000000,
-                    0x7FC0C000, 0x00000000, 0x00000000, 0x00000000, 0x7FC0C000,
-                    0x7FC0C000, 0x00000000, 0x00000000, 0x00000000, 0x7FC0C000,
-                    0x7FC0C000, 0x00000000, 0x00000000, 0x00000000, 0x7FC0C000,
-                    0x00000000, 0x7FC0C000, 0x7FC0C000, 0x7FC0C000, 0x00000000},
+                    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+                    0x00000000, 0x00000000, 0x7FC0C000, 0x7FC0C000, 0x7FC0C000, 0x00000000, 0x00000000,
+                    0x00000000, 0x7FC0C000, 0x7F404000, 0x7F404000, 0x7F404000, 0x7FC0C000, 0x00000000,
+                    0x00000000, 0x7FC0C000, 0x7F404000, 0x7F404000, 0x7F404000, 0x7FC0C000, 0x00000000,
+                    0x00000000, 0x7FC0C000, 0x7F404000, 0x7F404000, 0x7F404000, 0x7FC0C000, 0x00000000,
+                    0x00000000, 0x00000000, 0x7FC0C000, 0x7FC0C000, 0x7FC0C000, 0x00000000, 0x00000000,
+                    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000},
                 // 1 - Engage
                 new int[] {
-                    0x00000000, 0x7F00cF00, 0x7F00cF00, 0x7F00cF00, 0x00000000,
-                    0x7F00cF00, 0x00000000, 0x00000000, 0x00000000, 0x7F00cF00,
-                    0x7F00cF00, 0x00000000, 0x00000000, 0x00000000, 0x7F00cF00,
-                    0x7F00cF00, 0x00000000, 0x00000000, 0x00000000, 0x7F00cF00,
-                    0x00000000, 0x7F00cF00, 0x7F00cF00, 0x7F00cF00, 0x00000000},
+                    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+                    0x00000000, 0x00000000, 0x7F00cF00, 0x7F00cF00, 0x7F00cF00, 0x00000000, 0x00000000,
+                    0x00000000, 0x7F00cF00, 0x7F004F00, 0x7F004F00, 0x7F004F00, 0x7F00cF00, 0x00000000,
+                    0x00000000, 0x7F00cF00, 0x7F004F00, 0x7F004F00, 0x7F004F00, 0x7F00cF00, 0x00000000,
+                    0x00000000, 0x7F00cF00, 0x7F004F00, 0x7F004F00, 0x7F004F00, 0x7F00cF00, 0x00000000,
+                    0x00000000, 0x00000000, 0x7F00cF00, 0x7F00cF00, 0x7F00cF00, 0x00000000, 0x00000000,
+                    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000},
                 // 2 - Stop
                 new int[] {
-                    0x00000000, 0x7FFF0000, 0x7FFF0000, 0x7FFF0000, 0x00000000,
-                    0x7FFF0000, 0x00000000, 0x00000000, 0x00000000, 0x7FFF0000,
-                    0x7FFF0000, 0x00000000, 0x00000000, 0x00000000, 0x7FFF0000,
-                    0x7FFF0000, 0x00000000, 0x00000000, 0x00000000, 0x7FFF0000,
-                    0x00000000, 0x7FFF0000, 0x7FFF0000, 0x7FFF0000, 0x00000000}
+                    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+                    0x00000000, 0x00000000, 0x7FFF0000, 0x7FFF0000, 0x7FFF0000, 0x00000000, 0x00000000,
+                    0x00000000, 0x7FFF0000, 0x7F7F0000, 0x7F7F0000, 0x7F7F0000, 0x7FFF0000, 0x00000000,
+                    0x00000000, 0x7FFF0000, 0x7F7F0000, 0x7F7F0000, 0x7F7F0000, 0x7FFF0000, 0x00000000,
+                    0x00000000, 0x7FFF0000, 0x7F7F0000, 0x7F7F0000, 0x7F7F0000, 0x7FFF0000, 0x00000000,
+                    0x00000000, 0x00000000, 0x7FFF0000, 0x7FFF0000, 0x7FFF0000, 0x00000000, 0x00000000,
+                    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000}
             },
             // Selection
             new int[] {
-                0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x00000000, 0x00000000, 0x00000000, 0x7FBFBFBF,
-                0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF, 0x7FBFBFBF},
+                0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7FFFFFFF,
+                0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF},
             // Checking
             new int[] {
-                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
-                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F},
+                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
+                0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F},
             new Pen[]{
                 new Pen(Color.LightGray)}
             );
@@ -559,10 +567,23 @@ namespace SHME
                     ? FormSHME.Main.CheckObjectsVisibility(WaypointsShow, Pins).Cast<CPWaypoint>().ToList()
                     : WaypointsShow;
                 // List
+                clbWaypoints.SelectedIndex = -1; // Temp
                 clbWaypoints.BeginUpdate();
                 clbWaypoints.Items.Clear();
-                foreach (CPWaypoint waypoint in WaypointsShown)
-                    clbWaypoints.Items.Add(waypoint.ListLine);
+                if (SelectedRoute != null)
+                {
+                    // Uncheck unvisible
+                    foreach (CPWaypoint waypoint in SelectedRoute.Waypoints)
+                        waypoint.Checked &= waypoint.Shown;
+                    // Fit
+                    int si = WaypointsShown.Count;
+                    for (int i = 0; i < si; i++)
+                    {
+                        clbWaypoints.Items.Add(WaypointsShown[i].ListLine, WaypointsShown[i].Checked);
+                        if (WaypointsShown[i].Selected)
+                            clbWaypoints.SelectedIndex = i;
+                    }
+                }
                 clbWaypoints.EndUpdate();
             }
         }
@@ -583,7 +604,32 @@ namespace SHME
 
         private void cbLimit_CheckedChanged(object sender, EventArgs e) => FilterWaypoints();
 
-        private void clbWaypoints_MouseClick(object sender, MouseEventArgs e) => UIBasics.CheckedListBox_MouseClick(clbWaypoints, e);
+        private void clbWaypoints_MouseClick(object sender, MouseEventArgs e)
+        {
+            int i = clbWaypoints.SelectedIndex;
+            if (0 <= i)
+            {
+                bool newChecked = clbWaypoints.GetItemChecked(i);
+                if (20 < e.X) clbWaypoints.SetItemChecked(i, !(WaypointsShown[i].Checked =  newChecked));
+                else                                           WaypointsShown[i].Checked = !newChecked;
+                FormSHME.Main.IAC_Redraw();
+            }
+        }
+
+        private void btnWaypointsCheckAll_Click   (object sender, EventArgs e)
+        {
+            bool newChecked = (sender == btnPointsCheckAll);
+            for (int i = clbWaypoints.Items.Count - 1; 0 <= i; i--)
+                clbWaypoints.SetItemChecked(i, WaypointsShown[i].Checked = newChecked);
+            FormSHME.Main.IAC_Redraw();
+        }
+
+        private void btnWaypointsCheckInvert_Click(object sender, EventArgs e)
+        {
+            for (int i = clbWaypoints.Items.Count - 1; 0 <= i; i--)
+                clbWaypoints.SetItemChecked(i, WaypointsShown[i].Checked = !clbWaypoints.GetItemChecked(i));
+            FormSHME.Main.IAC_Redraw();
+        }
 
         private void btnAlign_Click(object sender, EventArgs e)
         {
@@ -709,11 +755,9 @@ namespace SHME
         #endregion
 
         #region Waypoint
-        private void btnWaypointsCheckAll_Click   (object sender, EventArgs e) => UIBasics.CheckedListBox_SetChecks   (clbWaypoints, (sender == btnPointsCheckAll));
-        private void btnWaypointsCheckInvert_Click(object sender, EventArgs e) => UIBasics.CheckedListBox_InvertChecks(clbWaypoints);
-
         private void clbWaypoints_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (SelectedWaypoint != null) SelectedWaypoint.Selected = false;
             int i = clbWaypoints.SelectedIndex;
             btnWaypointSave.Visible = false;
             lockComparing = true;
@@ -752,7 +796,9 @@ namespace SHME
             nud12   .Value = (Decimal)SelectedWaypoint.f12;
             tb13     .Text =          SelectedWaypoint.f13;
             chb14 .Checked =          SelectedWaypoint.f14;
+            SelectedWaypoint.Selected = true;
             lockComparing = false;
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void Waypoint_ValueChanged(object sender, EventArgs e)
