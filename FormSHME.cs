@@ -1890,8 +1890,8 @@ namespace SHME
             if (src != null && !historyRecord.ResizeAction)
             {
                 chbMultiTouch.Checked = (0 < historyBackward.Count) ? historyBackward[0].MultiTouch : false;
-                BuildSpectrumMap(historyRecord.Left, historyRecord.Top, historyRecord.Right, historyRecord.Bottom);
                 HMap.BuildStatistics(historyRecord.Top, historyRecord.Bottom);
+                BuildSpectrumMap(0, 0, HMap.MaxX, HMap.MaxY);
                 FormSHME_ShowValues();
                 ShowStatistics();
                 Canvas_Update();

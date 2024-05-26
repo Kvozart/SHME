@@ -52,7 +52,9 @@ namespace SHME
     {
         public float [,] Changed;
         public UInt16[,] Levels { get; private set; } // Height map
+        int[] MinLevelAtRow; // Row height minimum
         int[] AvgLevelAtRow; // Row height average
+        int[] MaxLevelAtRow; // Row height maximum
         public int MinLevel { get; private set; }
         public int AvgLevel { get; private set; }
         public int MaxLevel { get; private set; }
@@ -71,7 +73,9 @@ namespace SHME
             MinLevel = 65535;
             MaxLevel = 0;
             AvgLevel = 0;
+            MinLevelAtRow = new int[newHeight];
             AvgLevelAtRow = new int[newHeight];
+            MaxLevelAtRow = new int[newHeight];
             if (newLevels == null)
             {
                 newLevels  = new UInt16[newWidth, newHeight];
@@ -372,25 +376,37 @@ namespace SHME
 
         public void BuildStatistics(int top, int bottom)
         {
-            int x, y, avg, value;
+            int x, y, avg, min, max, value;
             if (bottom < 0) bottom = Height + bottom;
             for (y = top; y <= bottom; y++)
             {
                 // Min
-                avg = 0;
-                for (x = MaxX; 0 <= x; x--)
+                avg = 
+                min =
+                max =Levels[0, y];
+                for (x = MaxX; 0 < x; x--)
                 {
                     avg += value = Levels[x, y];
-                    if (MinLevel > value) MinLevel = value;
-                    if (MaxLevel < value) MaxLevel = value;
+                    if (min > value) min = value;
+                    if (max < value) max = value;
                 }
                 AvgLevelAtRow[y] = avg / Width;
+                MinLevelAtRow[y] = min;
+                MaxLevelAtRow[y] = max;
             }
             // Global
-            AvgLevel = 0;
-            for (y = MaxY; 0 <= y; y--)
+            AvgLevel = AvgLevelAtRow[0];
+            min = MinLevelAtRow[0];
+            max = MaxLevelAtRow[0];
+            for (y = MaxY; 0 < y; y--)
+            {
                 AvgLevel += AvgLevelAtRow[y];
+                if (min > MinLevelAtRow[y]) min = MinLevelAtRow[y];
+                if (max < MaxLevelAtRow[y]) max = MaxLevelAtRow[y];
+            }
             AvgLevel /= Height;
+            MinLevel = min;
+            MaxLevel = max;
         }
     }
 
