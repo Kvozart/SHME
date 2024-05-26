@@ -46,7 +46,7 @@
             this.tb13 = new System.Windows.Forms.TextBox();
             this.tb11 = new System.Windows.Forms.TextBox();
             this.nud12 = new System.Windows.Forms.NumericUpDown();
-            this.nud05 = new System.Windows.Forms.NumericUpDown();
+            this.nudTopSpeed = new System.Windows.Forms.NumericUpDown();
             this.chb10 = new System.Windows.Forms.CheckBox();
             this.chb09 = new System.Windows.Forms.CheckBox();
             this.chb08 = new System.Windows.Forms.CheckBox();
@@ -78,6 +78,7 @@
             this.nudRotationOffset = new System.Windows.Forms.NumericUpDown();
             this.nudPositionStep = new System.Windows.Forms.NumericUpDown();
             this.pnlItems = new System.Windows.Forms.Panel();
+            this.btnRouteReverse = new System.Windows.Forms.Button();
             this.cbListVisible = new System.Windows.Forms.CheckBox();
             this.btnRouteReload = new System.Windows.Forms.Button();
             this.btnPointsCheckInvert = new System.Windows.Forms.Button();
@@ -114,7 +115,7 @@
             this.panel1.SuspendLayout();
             this.gbWaypoint.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud12)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud05)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTopSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudR)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudZ)).BeginInit();
@@ -254,7 +255,7 @@
             this.gbWaypoint.Controls.Add(this.tb13);
             this.gbWaypoint.Controls.Add(this.tb11);
             this.gbWaypoint.Controls.Add(this.nud12);
-            this.gbWaypoint.Controls.Add(this.nud05);
+            this.gbWaypoint.Controls.Add(this.nudTopSpeed);
             this.gbWaypoint.Controls.Add(this.chb10);
             this.gbWaypoint.Controls.Add(this.chb09);
             this.gbWaypoint.Controls.Add(this.chb08);
@@ -362,19 +363,19 @@
             this.toolTip.SetToolTip(this.nud12, "Empty string as -1");
             this.nud12.ValueChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
-            // nud05
+            // nudTopSpeed
             // 
-            this.nud05.Location = new System.Drawing.Point(6, 69);
-            this.nud05.Maximum = new decimal(new int[] {
-            0,
+            this.nudTopSpeed.Location = new System.Drawing.Point(6, 69);
+            this.nudTopSpeed.Maximum = new decimal(new int[] {
+            1000,
             0,
             0,
             0});
-            this.nud05.Name = "nud05";
-            this.nud05.Size = new System.Drawing.Size(36, 20);
-            this.nud05.TabIndex = 42;
-            this.nud05.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nud05.ValueChanged += new System.EventHandler(this.Waypoint_ValueChanged);
+            this.nudTopSpeed.Name = "nudTopSpeed";
+            this.nudTopSpeed.Size = new System.Drawing.Size(36, 20);
+            this.nudTopSpeed.TabIndex = 42;
+            this.nudTopSpeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudTopSpeed.ValueChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // chb10
             // 
@@ -961,6 +962,7 @@
             // pnlItems
             // 
             this.pnlItems.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlItems.Controls.Add(this.btnRouteReverse);
             this.pnlItems.Controls.Add(this.cbListVisible);
             this.pnlItems.Controls.Add(this.btnRouteSave);
             this.pnlItems.Controls.Add(this.btnRouteReload);
@@ -978,6 +980,20 @@
             this.pnlItems.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.pnlItems.Size = new System.Drawing.Size(476, 71);
             this.pnlItems.TabIndex = 22;
+            // 
+            // btnRouteReverse
+            // 
+            this.btnRouteReverse.BackgroundImage = global::SHME.Properties.Resources.reuse;
+            this.btnRouteReverse.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnRouteReverse.FlatAppearance.BorderSize = 0;
+            this.btnRouteReverse.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnRouteReverse.Location = new System.Drawing.Point(32, 45);
+            this.btnRouteReverse.Name = "btnRouteReverse";
+            this.btnRouteReverse.Size = new System.Drawing.Size(20, 20);
+            this.btnRouteReverse.TabIndex = 43;
+            this.toolTip.SetToolTip(this.btnRouteReverse, "Invert direction of route");
+            this.btnRouteReverse.UseVisualStyleBackColor = true;
+            this.btnRouteReverse.Click += new System.EventHandler(this.btnRouteReverse_Click);
             // 
             // cbListVisible
             // 
@@ -1397,7 +1413,7 @@
             this.gbWaypoint.ResumeLayout(false);
             this.gbWaypoint.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud12)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud05)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTopSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudR)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudZ)).EndInit();
@@ -1472,7 +1488,7 @@
         private System.Windows.Forms.CheckBox chb09;
         private System.Windows.Forms.CheckBox chb08;
         private System.Windows.Forms.CheckBox chb07;
-        private System.Windows.Forms.NumericUpDown nud05;
+        private System.Windows.Forms.NumericUpDown nudTopSpeed;
         private System.Windows.Forms.CheckBox chb14;
         private System.Windows.Forms.TextBox tb13;
         private System.Windows.Forms.TextBox tb11;
@@ -1508,5 +1524,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer tListTimeout;
+        private System.Windows.Forms.Button btnRouteReverse;
     }
 }

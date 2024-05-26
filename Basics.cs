@@ -205,7 +205,7 @@ namespace SHME
             if (set) XMLLine = line;
         }
 
-        public String BuildXMLLine() => BuildListLine();
+        abstract public String BuildXMLLine();
         public String GetXMLLine () => Edited ? XMLLine = BuildXMLLine() : XMLLine;
     }
 }

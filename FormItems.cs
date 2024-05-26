@@ -94,6 +94,8 @@ namespace SHME
                 B +
                 (Rotation.Present ? " rotation=\"" + Rotation.GetListLine(FloatFormat) + "\"" : "") +
                 C;
+
+            override public String BuildXMLLine () => BuildListLine();
         }
 
         private bool postpondListing = false;

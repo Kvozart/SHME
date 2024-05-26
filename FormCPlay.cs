@@ -67,8 +67,8 @@ namespace SHME
 
         public class CPWaypoint : FSObjectString
         {
-            public int f05 = 0;
-            public int Action = 0; // {" " "E"ngage "S"top}
+            public int TopSpeed = 0;
+            public int Action = 0; // {0 - " ", 1 - "E"ngage, 2 - "S"top}
             public bool f07 = false, f08 = false, f09 = false, f10 = false;
             public String f11 = "";
             public int f12 = 0;
@@ -85,7 +85,7 @@ namespace SHME
                 Position.Present = true;
                 Position.ReadXMLLine(v[0]);
                 Double.TryParse(v[1], NumberStyles.Float, ReadValue.FloatPoint, out Position.R);
-                int.TryParse(v[2], out f05);
+                int.TryParse(v[2], out TopSpeed);
                 PinState
                     = Action
                     = (v[3] == "E") ? 1
@@ -105,7 +105,7 @@ namespace SHME
                 Position.Y.ToString(FloatFormat, ReadValue.FloatPoint) + " " +
                 Position.Z.ToString(FloatFormat, ReadValue.FloatPoint) + ";" +
                 Position.R.ToString(FloatFormat, ReadValue.FloatPoint) + ";" +
-                f05.ToString() + ";" +
+                TopSpeed.ToString() + ";" +
                 (Action == 0 ? "" : "-ES"[Action].ToString()) + ";" +
                 (f07 ? "Y" : "N") + ";" +
                 (f08 ? "Y" : "N") + ";" +
@@ -116,7 +116,7 @@ namespace SHME
                 f13 + ";" +
                 (f14 ? "Y" : "N");
 
-            new public String BuildXMLLine() => BuildListLine() + "|";
+            override public String BuildXMLLine() => BuildListLine() + "|";
         }
 
         public class CPRoute
@@ -647,7 +647,7 @@ namespace SHME
                 nudY.Value = 0;
                 nudZ.Value = 0;
                 nudR.Value = 0;
-                nud05.Value = 0;
+                nudTopSpeed.Value = 0;
                 cbbAction.SelectedIndex = 0;
                 chb07.Checked = false;
                 chb08.Checked = false;
@@ -667,7 +667,7 @@ namespace SHME
                 nudY.Value = (Decimal)SelectedWaypoint.Position.Y;
                 nudZ.Value = (Decimal)SelectedWaypoint.Position.Z;
                 nudR.Value = (Decimal)SelectedWaypoint.Position.R;
-                nud05.Value = (Decimal)SelectedWaypoint.f05;
+                nudTopSpeed.Value = (Decimal)SelectedWaypoint.TopSpeed;
                 cbbAction.SelectedIndex = SelectedWaypoint.Action;
                 chb07.Checked = SelectedWaypoint.f07;
                 chb08.Checked = SelectedWaypoint.f08;
@@ -761,7 +761,7 @@ namespace SHME
                 if (doRotation) waypoint.Position.Increment(0, 0, 0, y);
                 else            waypoint.Position.Increment(x, y, z);
                 waypoint.Edited = true;
-                clbWaypoints.Items[li] = waypoint.GetXMLLine();
+                clbWaypoints.Items[li] = waypoint.GetListLine();
             }
             clbWaypoints.EndUpdate();
             FormSHME.Main.ProjectObjects(WaypointsShown);
@@ -827,6 +827,14 @@ namespace SHME
             FormSHME.Main.IAC_Redraw();
         }
 
+        private void btnRouteReverse_Click(object sender, EventArgs e)
+        {
+            if (SelectedRoute == null) return;
+            SelectedRoute.Waypoints.Reverse();
+            for (int i = SelectedRoute.Waypoints.Count - 1; 0 <= i; i--) SelectedRoute.Waypoints[i].Action = 0 < SelectedRoute.Waypoints[i].Action ? 2 - SelectedRoute.Waypoints[i].Action : 0;
+            FilterWaypoints();
+        }
+
         private void btnRouteSave_Click(object sender, EventArgs e)
         {
             try
@@ -859,7 +867,7 @@ namespace SHME
                 SelectedWaypoint.Position.Y !=  (Double)nudY    .Value ||
                 SelectedWaypoint.Position.Z !=  (Double)nudZ    .Value ||
                 SelectedWaypoint.Position.R !=  (Double)nudR    .Value ||
-                SelectedWaypoint.f05        !=     (int)nud05   .Value ||
+                SelectedWaypoint.TopSpeed   != (int)nudTopSpeed .Value ||
                 SelectedWaypoint.Action     != cbbAction.SelectedIndex ||
                 SelectedWaypoint.f07        !=          chb07 .Checked ||
                 SelectedWaypoint.f08        !=          chb08 .Checked ||
@@ -880,7 +888,7 @@ namespace SHME
             waypoint.Position.Z = (Double)nudZ.Value;
             waypoint.Position.R = (Double)nudR.Value;
 
-            waypoint.f05 = (int)nud05.Value;
+            waypoint.TopSpeed = (int)nudTopSpeed.Value;
             waypoint.PinState
                 = waypoint.Action
                 = (cbbAction.SelectedIndex < 0) ? 0 : cbbAction.SelectedIndex;
