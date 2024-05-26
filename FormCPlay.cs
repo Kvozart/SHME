@@ -871,60 +871,72 @@ namespace SHME
                 SelectedWaypoint.f14        !=          chb14 .Checked;
         }
 
-        private void btnWaypointSave_Click(object sender, EventArgs e) => WaypointSave(clbWaypoints.SelectedIndex);
+        private void btnWaypointSave_Click(object sender, EventArgs e) => WaypointSave(SelectedWaypoint, clbWaypoints.SelectedIndex);
 
-        private void WaypointSave(int i)
+        private void WaypointSave(CPWaypoint waypoint, int i)
         {
-            SelectedWaypoint.Position.X = (Double)nudX.Value;
-            SelectedWaypoint.Position.Y = (Double)nudY.Value;
-            SelectedWaypoint.Position.Z = (Double)nudZ.Value;
-            SelectedWaypoint.Position.R = (Double)nudR.Value;
+            waypoint.Position.X = (Double)nudX.Value;
+            waypoint.Position.Y = (Double)nudY.Value;
+            waypoint.Position.Z = (Double)nudZ.Value;
+            waypoint.Position.R = (Double)nudR.Value;
 
-            SelectedWaypoint.f05 = (int)nud05.Value;
-            SelectedWaypoint.PinState
-                = SelectedWaypoint.Action
+            waypoint.f05 = (int)nud05.Value;
+            waypoint.PinState
+                = waypoint.Action
                 = (cbbAction.SelectedIndex < 0) ? 0 : cbbAction.SelectedIndex;
 
-            SelectedWaypoint.f07 = chb07.Checked;
-            SelectedWaypoint.f08 = chb08.Checked;
-            SelectedWaypoint.f09 = chb09.Checked;
-            SelectedWaypoint.f10 = chb10.Checked;
+            waypoint.f07 = chb07.Checked;
+            waypoint.f08 = chb08.Checked;
+            waypoint.f09 = chb09.Checked;
+            waypoint.f10 = chb10.Checked;
 
-            SelectedWaypoint.f11 = tb11.Text;
-            SelectedWaypoint.f12 = (int)nud12.Value;
-            SelectedWaypoint.f13 = tb13.Text;
-            SelectedWaypoint.f14 = chb14.Checked;
+            waypoint.f11 = tb11.Text;
+            waypoint.f12 = (int)nud12.Value;
+            waypoint.f13 = tb13.Text;
+            waypoint.f14 = chb14.Checked;
 
-            SelectedWaypoint.Edited = true;
+            waypoint.Edited = true;
             btnWaypointSave.Visible = false;
-            clbWaypoints.Items[i] = SelectedWaypoint.GetListLine();
-            FormSHME.Main.ProjectObject(SelectedWaypoint);
+            clbWaypoints.Items[i] = waypoint.GetListLine();
+            FormSHME.Main.ProjectObject(waypoint);
             FormSHME.Main.IAC_Redraw();
         }
 
         private void btnWaypointInsert_Click(object sender, EventArgs e)
         {
             int li = clbWaypoints.SelectedIndex;
-            SelectedWaypoint = new CPWaypoint("");
-            SelectedWaypoint.Show =
-            SelectedWaypoint.Shown =
-            SelectedWaypoint.Position.Present = true;
+            CPWaypoint waypoint = new CPWaypoint("");
+            waypoint.Show =
+            waypoint.Shown =
+            waypoint.Position.Present = true;
             if (li < 0)
             {
-                li = WaypointsShown.Count;
-                SelectedRoute.Waypoints.Add(SelectedWaypoint);
-                WaypointsShown.Add(SelectedWaypoint);
-                WaypointsShow.Add(SelectedWaypoint);
+                SelectedRoute.Waypoints.Add(waypoint);
+                WaypointsShown.Add(waypoint);
+                WaypointsShow.Add(waypoint);
+                waypoint.Selected = true;
+                lockSwitch = true;
+                li = clbWaypoints.Items.Count;
+                clbWaypoints.Items.Add("-");
+                clbWaypoints.SelectedIndex = li;
+                WaypointSave(SelectedWaypoint = waypoint, li);
+                lockSwitch = false;
             }
             else
             {
-                CPWaypoint waypoint = WaypointsShown[li];
-                SelectedRoute.Waypoints.Insert(SelectedRoute.Waypoints.IndexOf(waypoint), SelectedWaypoint);
-                WaypointsShow.Insert(WaypointsShow.IndexOf(waypoint), SelectedWaypoint);
-                WaypointsShown.Insert(li, SelectedWaypoint);
+                int idx = SelectedRoute.Waypoints.IndexOf(SelectedWaypoint);
+                if (0 < idx)
+                {
+                    nudX.Value = (decimal)((SelectedRoute.Waypoints[idx - 1].Position.X + SelectedRoute.Waypoints[idx].Position.X) / 2);
+                    nudY.Value = (decimal)((SelectedRoute.Waypoints[idx - 1].Position.Y + SelectedRoute.Waypoints[idx].Position.Y) / 2);
+                    nudZ.Value = (decimal)((SelectedRoute.Waypoints[idx - 1].Position.Z + SelectedRoute.Waypoints[idx].Position.Z) / 2);
+                }
+                WaypointsShow.Insert(WaypointsShow.IndexOf(SelectedWaypoint), waypoint);
+                SelectedRoute.Waypoints.Insert(idx, waypoint);
+                WaypointsShown.Insert(li, waypoint);
+                clbWaypoints.Items.Insert(li, "-");
+                WaypointSave(waypoint, li);
             }
-            clbWaypoints.Items.Insert(li, "-");
-            WaypointSave(li);
         }
         #endregion
     }
