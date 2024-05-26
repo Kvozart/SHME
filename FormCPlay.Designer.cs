@@ -297,6 +297,7 @@
             this.btnPointInsert.Name = "btnPointInsert";
             this.btnPointInsert.Size = new System.Drawing.Size(24, 24);
             this.btnPointInsert.TabIndex = 45;
+            this.toolTip.SetToolTip(this.btnPointInsert, "Insert before selected (else end)");
             this.btnPointInsert.UseVisualStyleBackColor = true;
             this.btnPointInsert.Click += new System.EventHandler(this.btnWaypointInsert_Click);
             // 
@@ -311,6 +312,7 @@
             this.btnWaypointSave.Name = "btnWaypointSave";
             this.btnWaypointSave.Size = new System.Drawing.Size(24, 24);
             this.btnWaypointSave.TabIndex = 33;
+            this.toolTip.SetToolTip(this.btnWaypointSave, "Apply");
             this.btnWaypointSave.UseVisualStyleBackColor = true;
             this.btnWaypointSave.Visible = false;
             this.btnWaypointSave.Click += new System.EventHandler(this.btnWaypointSave_Click);
@@ -586,8 +588,9 @@
             this.cbLimitR.Name = "cbLimitR";
             this.cbLimitR.Size = new System.Drawing.Size(20, 20);
             this.cbLimitR.TabIndex = 15;
-            this.cbLimitR.Text = "↻";
+            this.cbLimitR.Text = "R";
             this.cbLimitR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.cbLimitR, "Rotation Y axis");
             this.cbLimitR.UseVisualStyleBackColor = true;
             this.cbLimitR.CheckedChanged += new System.EventHandler(this.cbLimit_CheckedChanged);
             // 
@@ -849,6 +852,7 @@
             this.btnRotationAlign.Name = "btnRotationAlign";
             this.btnRotationAlign.Size = new System.Drawing.Size(21, 21);
             this.btnRotationAlign.TabIndex = 2;
+            this.toolTip.SetToolTip(this.btnRotationAlign, "Align rotation. Y axis (R)");
             this.btnRotationAlign.UseVisualStyleBackColor = true;
             this.btnRotationAlign.Click += new System.EventHandler(this.btnAlign_Click);
             // 
@@ -1107,6 +1111,7 @@
             this.label1.TabIndex = 31;
             this.label1.Text = "R";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.label1, "Rotation Y axis");
             // 
             // btnPositionXsub
             // 

@@ -59,6 +59,7 @@
             this.gbWaypoint = new System.Windows.Forms.GroupBox();
             this.nudZ = new System.Windows.Forms.NumericUpDown();
             this.gbLnk = new System.Windows.Forms.GroupBox();
+            this.btnLinkSplit = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.chbLinkIn = new System.Windows.Forms.CheckBox();
             this.tvLinks = new System.Windows.Forms.TreeView();
@@ -637,6 +638,7 @@
             this.gbLnk.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbLnk.Controls.Add(this.btnLinkSplit);
             this.gbLnk.Controls.Add(this.pictureBox1);
             this.gbLnk.Controls.Add(this.chbLinkIn);
             this.gbLnk.Controls.Add(this.tvLinks);
@@ -651,6 +653,22 @@
             this.gbLnk.TabIndex = 34;
             this.gbLnk.TabStop = false;
             this.gbLnk.Text = "Links";
+            // 
+            // btnLinkSplit
+            // 
+            this.btnLinkSplit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLinkSplit.BackgroundImage = global::SHME.Properties.Resources.excangeUpDown;
+            this.btnLinkSplit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnLinkSplit.FlatAppearance.BorderSize = 0;
+            this.btnLinkSplit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLinkSplit.Location = new System.Drawing.Point(167, 45);
+            this.btnLinkSplit.Name = "btnLinkSplit";
+            this.btnLinkSplit.Size = new System.Drawing.Size(20, 20);
+            this.btnLinkSplit.TabIndex = 55;
+            this.toolTip.SetToolTip(this.btnLinkSplit, "Split link");
+            this.btnLinkSplit.UseVisualStyleBackColor = true;
+            this.btnLinkSplit.Visible = false;
+            this.btnLinkSplit.Click += new System.EventHandler(this.btnLinkSplit_Click);
             // 
             // pictureBox1
             // 
@@ -718,7 +736,7 @@
             this.btnLinkInsert.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnLinkInsert.FlatAppearance.BorderSize = 0;
             this.btnLinkInsert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLinkInsert.Location = new System.Drawing.Point(167, 46);
+            this.btnLinkInsert.Location = new System.Drawing.Point(141, 46);
             this.btnLinkInsert.Name = "btnLinkInsert";
             this.btnLinkInsert.Size = new System.Drawing.Size(20, 20);
             this.btnLinkInsert.TabIndex = 50;
@@ -744,7 +762,7 @@
             this.btnLinkSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnLinkSave.FlatAppearance.BorderSize = 0;
             this.btnLinkSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLinkSave.Location = new System.Drawing.Point(141, 45);
+            this.btnLinkSave.Location = new System.Drawing.Point(115, 46);
             this.btnLinkSave.Name = "btnLinkSave";
             this.btnLinkSave.Size = new System.Drawing.Size(20, 20);
             this.btnLinkSave.TabIndex = 34;
@@ -1232,5 +1250,6 @@
         private System.Windows.Forms.GroupBox gbGroups;
         private System.Windows.Forms.CheckBox cbListVisible;
         private System.Windows.Forms.Timer tListTimeout;
+        private System.Windows.Forms.Button btnLinkSplit;
     }
 }

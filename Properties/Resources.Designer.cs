@@ -313,6 +313,16 @@ namespace SHME.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap excangeUpDown {
+            get {
+                object obj = ResourceManager.GetObject("excangeUpDown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap execute {
             get {
                 object obj = ResourceManager.GetObject("execute", resourceCulture);
@@ -366,16 +376,6 @@ namespace SHME.Properties {
         internal static System.Drawing.Bitmap filter {
             get {
                 object obj = ResourceManager.GetObject("filter", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap gear {
-            get {
-                object obj = ResourceManager.GetObject("gear", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -917,10 +917,7 @@ namespace SHME
                 waypoint.Selected = true;
                 lockSwitch = true;
                 li = clbWaypoints.Items.Count;
-                clbWaypoints.Items.Add("-");
-                clbWaypoints.SelectedIndex = li;
-                WaypointSave(SelectedWaypoint = waypoint, li);
-                lockSwitch = false;
+                SelectedWaypoint = waypoint;
             }
             else
             {
@@ -930,13 +927,17 @@ namespace SHME
                     nudX.Value = (decimal)((SelectedRoute.Waypoints[idx - 1].Position.X + SelectedRoute.Waypoints[idx].Position.X) / 2);
                     nudY.Value = (decimal)((SelectedRoute.Waypoints[idx - 1].Position.Y + SelectedRoute.Waypoints[idx].Position.Y) / 2);
                     nudZ.Value = (decimal)((SelectedRoute.Waypoints[idx - 1].Position.Z + SelectedRoute.Waypoints[idx].Position.Z) / 2);
+                    nudR.Value = (decimal)((SelectedRoute.Waypoints[idx - 1].Position.R + SelectedRoute.Waypoints[idx].Position.R) / 2);
+                    cbbAction.SelectedIndex = 0;
                 }
                 WaypointsShow.Insert(WaypointsShow.IndexOf(SelectedWaypoint), waypoint);
                 SelectedRoute.Waypoints.Insert(idx, waypoint);
                 WaypointsShown.Insert(li, waypoint);
-                clbWaypoints.Items.Insert(li, "-");
-                WaypointSave(waypoint, li);
             }
+            clbWaypoints.Items.Insert(li, "-");
+            WaypointSave(waypoint, li);
+            if (clbWaypoints.SelectedIndex < 0) clbWaypoints.SelectedIndex = li;
+            lockSwitch = false;
         }
         #endregion
     }
