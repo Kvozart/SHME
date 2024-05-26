@@ -746,6 +746,7 @@ namespace SHME
         #region Mouse
         int msX0, msX, mapXl, mapX;
         int msY0, msY, mapYl, mapY;
+        double mapXm, mapYm;
         UInt16 levelValue;
 
         private void pbHMap_MouseDown(object sender, MouseEventArgs e)//O
@@ -769,8 +770,9 @@ namespace SHME
             msX = e.X - hScrollBar.Left;
             msY = e.Y - vScrollBar.Top;
             // Mouse XY on map
-            mapX = (msX + hScrollBar.Value) >> zoom;
-            mapY = (msY + vScrollBar.Value) >> zoom;
+            double delta = (double)(1 << zoom) / 2;
+            mapX = (msX + hScrollBar.Value) >> zoom;    mapXm = (msX + hScrollBar.Value - delta) / delta - HMap.MaxX;
+            mapY = (msY + vScrollBar.Value) >> zoom;    mapYm = (msY + vScrollBar.Value - delta) / delta - HMap.MaxY;
             // Update
             ToolAction(sender, e, true);
         }
@@ -796,8 +798,7 @@ namespace SHME
             if (!lblPointerLevel.Enabled) return;
             int delta = 1 << zoom >> 2;
             UInt16 mapXYLevel = HMap.Levels[mapX, mapY];
-            lblPointerPosition.Text = mapX + PointerSpliter + mapY + "\r" +
-                (((msX + hScrollBar.Value - delta) << 1 >> zoom) - HMap.MaxX) + " m " + (((msY + vScrollBar.Value - delta) << 1 >> zoom) - HMap.MaxY);
+            lblPointerPosition.Text = mapX + PointerSpliter + mapY + "\r" + mapXm + " m " + mapYm;
             lblPointerLevel.Text = mapXYLevel.ToString() + "\rx" + mapXYLevel.ToString(NumberFormat);
         }
 
@@ -852,6 +853,14 @@ namespace SHME
                             }
                         }
                         ToolShadow_Update();
+                    }
+                    // Select
+                    else if (toolID == 0)
+                    {
+                        int delta = 1 << zoom >> 2;
+                        if (chbItems .Checked) FIs.TryToSelectItemAt(mapXm, mapYm, zoom);
+                        if (chbADrive.Checked) FAD.TryToSelectItemAt(mapXm, mapYm, zoom);
+                        if (chbCPlay .Checked) FCP.TryToSelectItemAt(mapXm, mapYm, zoom);
                     }
                     // Switching active layer
                     else if (toolID == 1)
@@ -1848,11 +1857,11 @@ namespace SHME
         #endregion
 
         #region History
-        private void btnHistoryBackward_Click(object sender, EventArgs e) => HistoryRoll(historyBackward, historyForward);
+        private void btnHistoryBackward_Click(object sender, EventArgs e) => HistoryRoll(historyBackward, historyForward);//Ok
 
-        private void btnHistoryForward_Click (object sender, EventArgs e) => HistoryRoll(historyForward, historyBackward);
+        private void btnHistoryForward_Click (object sender, EventArgs e) => HistoryRoll(historyForward, historyBackward);//Ok
 
-        private void HistoryAdd()//O
+        private void HistoryAdd()//Ok
         {
             if (historyRecord == null) return;
             // Clear rofward
@@ -1866,7 +1875,7 @@ namespace SHME
             HistoryRoll(null, historyBackward);
         }
 
-        private void HistoryRoll(List<HistoryRecord> src, List<HistoryRecord> dest)
+        private void HistoryRoll(List<HistoryRecord> src, List<HistoryRecord> dest)//Ok
         {
             if (src != null)
                 if (0 < src.Count)
@@ -1899,7 +1908,7 @@ namespace SHME
             historyRecord = null;
         }
 
-        private void HistoryClear()//O
+        private void HistoryClear()//Ok
         {
             btnHistoryForward. Text =
             btnHistoryBackward.Text = "0";

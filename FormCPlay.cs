@@ -608,6 +608,31 @@ namespace SHME
             clbWaypoints_SelectedIndexChanged(null, null);
         }
 
+        public void TryToSelectItemAt(double x, double y, int zoom)
+        {
+            int n = WaypointsShown.Count;
+            if (n < 1) return;
+            double magnitude = 2 / (double)(1 << zoom);
+            double l = x - (Pins.CenterX * magnitude), r = l + (Pins.Width  * magnitude),
+                   t = y - (Pins.CenterY * magnitude), b = t + (Pins.Height * magnitude);
+            int s = clbWaypoints.SelectedIndex < 0 ? 0 : clbWaypoints.SelectedIndex;
+            int i = s;
+            XYZRDouble xyzr;
+            do
+            {
+                i++;
+                if (n <= i) i = 0; // Loop to beginning
+                xyzr = WaypointsShown[i].Position;
+                if (xyzr.Present)
+                    if (l <= xyzr.X && xyzr.X < r &&
+                        t <= xyzr.Z && xyzr.Z < b)
+                    {
+                        clbWaypoints.SelectedIndex = (clbWaypoints.SelectedIndex == i) ? -1 : i;
+                        return;
+                    }
+            } while (i != s);
+        }
+
         private void clbWaypoints_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lockSwitch) return;

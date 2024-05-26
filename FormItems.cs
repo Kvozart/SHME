@@ -519,6 +519,30 @@ namespace SHME
             nudRotationYMin.Increment = nudRotationYMax.Increment =
             nudRotationZMin.Increment = nudRotationZMax.Increment = nudRotationStep.Value;
 
+        public void TryToSelectItemAt(double x, double y, int zoom)
+        {
+            int n = FSItemsShown.Count;
+            if (n < 1) return;
+            double magnitude = 2 / (double)(1 << zoom);
+            double l = x - (Pins.CenterX * magnitude), r = l + (Pins.Width  * magnitude),
+                   t = y - (Pins.CenterY * magnitude), b = t + (Pins.Height * magnitude);
+            int s = clbItems.SelectedIndex < 0 ? 0 : clbItems.SelectedIndex;
+            int i = s;
+            XYZRDouble xyzr;
+            do {
+                i++;
+                if (n <= i) i = 0; // Loop to beginning
+                xyzr = FSItemsShown[i].Position;
+                if (xyzr.Present)
+                    if (l <= xyzr.X && xyzr.X < r &&
+                        t <= xyzr.Z && xyzr.Z < b)
+                    {
+                        clbItems.SelectedIndex = (clbItems.SelectedIndex == i) ? -1 : i;
+                        return;
+                    }
+            } while (i != s);
+        }
+
         private void clbItems_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedFSItem != null) SelectedFSItem.Selected = false;

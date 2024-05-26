@@ -5,10 +5,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|c:\\users\\kvozart\\projects\\shme\\formshme.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|solutionrelative:formshme.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|c:\\users\\kvozart\\projects\\shme\\hmap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|solutionrelative:hmap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,21 +14,8 @@
       "DocumentGroups": [
         {
           "DockedHeight": 265,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "HMap.cs",
-              "DocumentMoniker": "C:\\Users\\Kvozart\\Projects\\SHME\\HMap.cs",
-              "RelativeDocumentMoniker": "HMap.cs",
-              "ToolTip": "C:\\Users\\Kvozart\\Projects\\SHME\\HMap.cs",
-              "RelativeToolTip": "HMap.cs",
-              "ViewState": "AQIAAHUAAAAAAAAAAAAvwFgBAAAMAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-26T11:58:06.541Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -41,7 +24,7 @@
               "RelativeDocumentMoniker": "FormSHME.cs",
               "ToolTip": "C:\\Users\\Kvozart\\Projects\\SHME\\FormSHME.cs",
               "RelativeToolTip": "FormSHME.cs",
-              "ViewState": "AQIAAEwHAAAAAAAAAAAvwGUHAAA9AAAA",
+              "ViewState": "AQIAAPcCAAAAAAAAAAAAAAUDAAB1AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-14T15:20:53.355Z",
               "EditorCaption": ""
