@@ -840,15 +840,13 @@ namespace SHME
                             // Calculate shift
                             int scX = hScrollBar.Value + (msX0 - e.X);
                             int scY = vScrollBar.Value + (msY0 - e.Y);
-                            bool h = ScrollValueCheckAndSet(hScrollBar, ref scX);
-                            bool v = ScrollValueCheckAndSet(vScrollBar, ref scY);
+                            bool h = ScrollValueCheckAndSet(hScrollBar, ref scX, true);
+                            bool v = ScrollValueCheckAndSet(vScrollBar, ref scY, true);
                             // Apply
                             if (h | v)
                             {
                                 msX0 = e.X;
                                 msY0 = e.Y;
-                                hScrollBar.Value = scX;
-                                vScrollBar.Value = scY;
                                 IAC_Relist();
                                 Canvas_Update();
                             }

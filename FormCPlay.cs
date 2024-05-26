@@ -166,9 +166,9 @@ namespace SHME
             public String GetManagerXMLLine() => (InfoEdited) 
                 ? ManagerXMLLine =
                     "        <slot fileName=\"" + fileName +
-                             "\" isUsed=\""     + isUsed.ToString().ToLower() +
                              "\" id=\""         + id +
                              "\" parent=\""     + parent +
+                             "\" isUsed=\""     + isUsed.ToString().ToLower() +
                              "\" name=\""       + name +
                              "\"/>"
                 : ManagerXMLLine;
@@ -183,7 +183,8 @@ namespace SHME
                 : XMLLine;
         }
 
-        private bool lockFilter = true, lockComparing = true;
+        private bool postpondListing = false;
+        private bool lockFilter = true, lockComparing = true, lockSwitch = true;
         private String ManagerFileName = "", RouteFilesPath = "";
         private List<CPRoute> Routes = new List<CPRoute> { };
         private List<CPWaypoint> WaypointsShow  = new List<CPWaypoint> { };
@@ -557,6 +558,13 @@ namespace SHME
             FormSHME.Main.IAC_Redraw();
         }
 
+        private void tListTimeout_Tick(object sender, EventArgs e)
+        {
+            if (postpondListing) ListItems();
+            postpondListing = false;
+            tListTimeout.Enabled = false;
+        }
+
         public void Relist(bool force = false)
         {
             if (lockFilter) return;
@@ -566,26 +574,88 @@ namespace SHME
                 WaypointsShown = (cbListVisible.Checked)
                     ? FormSHME.Main.CheckObjectsVisibility(WaypointsShow, Pins).Cast<CPWaypoint>().ToList()
                     : WaypointsShow;
-                // List
-                clbWaypoints.SelectedIndex = -1; // Temp
-                clbWaypoints.BeginUpdate();
-                clbWaypoints.Items.Clear();
-                if (SelectedRoute != null)
-                {
-                    // Uncheck unvisible
-                    foreach (CPWaypoint waypoint in SelectedRoute.Waypoints)
-                        waypoint.Checked &= waypoint.Shown;
-                    // Fit
-                    int si = WaypointsShown.Count;
-                    for (int i = 0; i < si; i++)
-                    {
-                        clbWaypoints.Items.Add(WaypointsShown[i].ListLine, WaypointsShown[i].Checked);
-                        if (WaypointsShown[i].Selected)
-                            clbWaypoints.SelectedIndex = i;
-                    }
-                }
-                clbWaypoints.EndUpdate();
+                // List or postpond
+                if (tListTimeout.Enabled)
+                    postpondListing = true;
+                else
+                    ListItems();
+                tListTimeout.Enabled = true; // Set timeout
             }
+        }
+
+        public void ListItems()
+        {
+            lockSwitch = true;
+            clbWaypoints.SelectedIndex = -1; // Temp
+            clbWaypoints.BeginUpdate();
+            clbWaypoints.Items.Clear();
+            if (SelectedRoute != null)
+            {
+                // Uncheck unvisible
+                foreach (CPWaypoint waypoint in SelectedRoute.Waypoints)
+                    waypoint.Checked &= waypoint.Shown;
+                // Fit
+                int n = WaypointsShown.Count;
+                for (int li = 0; li < n; li++)
+                {
+                    clbWaypoints.Items.Add(WaypointsShown[li].ListLine, WaypointsShown[li].Checked);
+                    if (WaypointsShown[li].Selected)
+                        clbWaypoints.SelectedIndex = li;
+                }
+            }
+            lockSwitch = false;
+            clbWaypoints.EndUpdate();
+            clbWaypoints_SelectedIndexChanged(null, null);
+        }
+
+        private void clbWaypoints_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lockSwitch) return;
+            if (SelectedWaypoint != null) SelectedWaypoint.Selected = false;
+            int i = clbWaypoints.SelectedIndex;
+            btnWaypointSave.Visible = false;
+            lockComparing = true;
+            if (i < 0)
+            {
+                SelectedWaypoint = null;
+                nudX.Value = 0;
+                nudY.Value = 0;
+                nudZ.Value = 0;
+                nudR.Value = 0;
+                nud05.Value = 0;
+                cbbAction.SelectedIndex = 0;
+                chb07.Checked = false;
+                chb08.Checked = false;
+                chb09.Checked = false;
+                chb10.Checked = false;
+                tb11.Text = "";
+                nud12.Value = 0;
+                tb13.Text = "";
+                chb14.Checked = false;
+                return;
+            }
+            // Set options
+            SelectedWaypoint = WaypointsShown[i];
+            if (!SelectedWaypoint.Selected)
+            {
+                nudX.Value = (Decimal)SelectedWaypoint.Position.X;
+                nudY.Value = (Decimal)SelectedWaypoint.Position.Y;
+                nudZ.Value = (Decimal)SelectedWaypoint.Position.Z;
+                nudR.Value = (Decimal)SelectedWaypoint.Position.R;
+                nud05.Value = (Decimal)SelectedWaypoint.f05;
+                cbbAction.SelectedIndex = SelectedWaypoint.Action;
+                chb07.Checked = SelectedWaypoint.f07;
+                chb08.Checked = SelectedWaypoint.f08;
+                chb09.Checked = SelectedWaypoint.f09;
+                chb10.Checked = SelectedWaypoint.f10;
+                tb11.Text = SelectedWaypoint.f11;
+                nud12.Value = (Decimal)SelectedWaypoint.f12;
+                tb13.Text = SelectedWaypoint.f13;
+                chb14.Checked = SelectedWaypoint.f14;
+                SelectedWaypoint.Selected = true;
+            }
+            lockComparing = false;
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void nudPositionStep_ValueChanged(object sender, EventArgs e) => //Ok
@@ -690,6 +760,7 @@ namespace SHME
             for (int i = WaypointsShow.Count - 1; 0 <= i; i--)
                 clbWaypoints.SetItemChecked(i, WaypointsShow[i].ListLine.Contains(f));
             clbWaypoints.EndUpdate();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void btnReplace_Click(object sender, EventArgs e)
@@ -755,52 +826,6 @@ namespace SHME
         #endregion
 
         #region Waypoint
-        private void clbWaypoints_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (SelectedWaypoint != null) SelectedWaypoint.Selected = false;
-            int i = clbWaypoints.SelectedIndex;
-            btnWaypointSave.Visible = false;
-            lockComparing = true;
-            if (i < 0)
-            {
-                SelectedWaypoint = null;
-                nudX    .Value =          0;
-                nudY    .Value =          0;
-                nudZ    .Value =          0;
-                nudR    .Value =          0;
-                nud05   .Value =          0;
-                cbbAction.SelectedIndex = 0;
-                chb07 .Checked =      false;
-                chb08 .Checked =      false;
-                chb09 .Checked =      false;
-                chb10 .Checked =      false;
-                tb11     .Text =         "";
-                nud12   .Value =          0;
-                tb13     .Text =         "";
-                chb14 .Checked =      false;
-                return;
-            }
-            // Set options
-            SelectedWaypoint = WaypointsShown[i];
-            nudX    .Value = (Decimal)SelectedWaypoint.Position.X;
-            nudY    .Value = (Decimal)SelectedWaypoint.Position.Y;
-            nudZ    .Value = (Decimal)SelectedWaypoint.Position.Z;
-            nudR    .Value = (Decimal)SelectedWaypoint.Position.R;
-            nud05   .Value = (Decimal)SelectedWaypoint.f05;
-            cbbAction.SelectedIndex = SelectedWaypoint.Action;
-            chb07 .Checked =          SelectedWaypoint.f07;
-            chb08 .Checked =          SelectedWaypoint.f08;
-            chb09 .Checked =          SelectedWaypoint.f09;
-            chb10 .Checked =          SelectedWaypoint.f10;
-            tb11     .Text =          SelectedWaypoint.f11;
-            nud12   .Value = (Decimal)SelectedWaypoint.f12;
-            tb13     .Text =          SelectedWaypoint.f13;
-            chb14 .Checked =          SelectedWaypoint.f14;
-            SelectedWaypoint.Selected = true;
-            lockComparing = false;
-            FormSHME.Main.IAC_Redraw();
-        }
-
         private void Waypoint_ValueChanged(object sender, EventArgs e)
         {
             if (lockComparing) return;

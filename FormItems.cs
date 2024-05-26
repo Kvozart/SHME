@@ -438,11 +438,8 @@ namespace SHME
 
         private void tListTimeout_Tick(object sender, EventArgs e)
         {
-            if (postpondListing)
-            {
-                ListItems();
-                postpondListing = false;
-            }
+            if (postpondListing) ListItems();
+            postpondListing = false;
             tListTimeout.Enabled = false;
         }
 
@@ -462,10 +459,8 @@ namespace SHME
                 if (tListTimeout.Enabled)
                     postpondListing = true;
                 else
-                {
                     ListItems();
-                    tListTimeout.Enabled = true; // Set timeout
-                }
+                tListTimeout.Enabled = true; // Set timeout
             }
         }
 
@@ -621,6 +616,7 @@ namespace SHME
             for (int i = FSItemsShown.Count - 1; 0 <= i; i--)
                 clbItems.SetItemChecked(i, FSItemsShown[i].XMLLine.Contains(f));
             clbItems.EndUpdate();
+            FormSHME.Main.IAC_Redraw();
         }
 
         private void btnReplace_Click(object sender, EventArgs e)//Ok

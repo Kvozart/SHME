@@ -96,6 +96,7 @@
             this.btnManagerFileSave = new System.Windows.Forms.Button();
             this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.tListTimeout = new System.Windows.Forms.Timer(this.components);
             this.pnlMain.SuspendLayout();
             this.pnlRoutes.SuspendLayout();
             this.tcADrive.SuspendLayout();
@@ -305,7 +306,6 @@
             this.btnRouteClear.TabIndex = 33;
             this.toolTip.SetToolTip(this.btnRouteClear, "Delete selected");
             this.btnRouteClear.UseVisualStyleBackColor = true;
-            this.btnRouteClear.Visible = false;
             this.btnRouteClear.Click += new System.EventHandler(this.btnRouteClear_Click);
             // 
             // gbLimit
@@ -1114,6 +1114,10 @@
             this.dlgOpen.DefaultExt = "xml";
             this.dlgOpen.Filter = "XML|routes.xml";
             // 
+            // tListTimeout
+            // 
+            this.tListTimeout.Tick += new System.EventHandler(this.tListTimeout_Tick);
+            // 
             // FormADrive
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1227,5 +1231,6 @@
         private System.Windows.Forms.TreeView tvGroups;
         private System.Windows.Forms.GroupBox gbGroups;
         private System.Windows.Forms.CheckBox cbListVisible;
+        private System.Windows.Forms.Timer tListTimeout;
     }
 }

@@ -185,7 +185,7 @@ namespace SHME
             }
 
             public String GetXMLLine() => ((InfoEdited)
-                ? XMLLine =  "<route name=\"" + name +
+                ? XMLLine = "        <route name=\"" + name +
                     "\" fileName=\"" + fileName +
                     "\" map=\"" + map +
                     "\" revision=\"" + revision +
@@ -193,10 +193,11 @@ namespace SHME
                     "\">"
                 : XMLLine);
 
-            public String GetXMLLines() => GetXMLLine() + "\r\n" + otherLines + "\r\n</route>";
+            public String GetXMLLines() => GetXMLLine() + "\r\n" + otherLines + "\r\n        </route>";
         }
 
-        private bool lockFilter = true, lockComparing = true;
+        private bool postpondListing = false;
+        private bool lockFilter = true, lockComparing = true, lockSwitch = true;
         private String ManagerFileName = "", RouteFilesPath = "";
         private List<ADRoute> Routes = new List<ADRoute> { };
         // Visible outside
@@ -399,6 +400,7 @@ namespace SHME
                 e.CancelEdit = true;
                 return;
             }
+            SelectedRoute.InfoEdited = true;
             SelectedRoute.name = routeName;
         }
 
@@ -416,7 +418,6 @@ namespace SHME
                     }
                     file.WriteLine("    </routes>\r\n</autoDriveRoutesManager>");
                 }
-                btnManagerFileSave.Visible = false;
             }
             catch (Exception exc)
             {
@@ -463,7 +464,6 @@ namespace SHME
 
         private void btnRouteReload_Click(object sender, EventArgs e)
         {
-            //gbEdit.Enabled = false;
             if (SelectedRoute == null) return;
             try
             {
@@ -644,6 +644,13 @@ namespace SHME
             FormSHME.Main.IAC_Redraw();
         }
 
+        private void tListTimeout_Tick(object sender, EventArgs e)
+        {
+            if (postpondListing) ListItems();
+            postpondListing = false;
+            tListTimeout.Enabled = false;
+        }
+
         public void Relist(bool force = false)
         {
             if (lockFilter) return;
@@ -653,26 +660,38 @@ namespace SHME
                 WaypointsShown = (cbListVisible.Checked)
                     ? FormSHME.Main.CheckObjectsVisibility(WaypointsShow, Pins).Cast<ADWaypoint>().ToList()
                     : WaypointsShow;
-                // List
-                clbWaypoints.SelectedIndex = -1; // Temp
-                clbWaypoints.BeginUpdate();
-                clbWaypoints.Items.Clear();
-                if (SelectedRoute != null)
-                {
-                    // Uncheck unvisible
-                    foreach (ADWaypoint waypoint in SelectedRoute.Waypoints)
-                        waypoint.Checked &= waypoint.Shown;
-                    // Fit
-                    int si = WaypointsShown.Count;
-                    for (int i = 0; i < si; i++)
-                    {
-                        clbWaypoints.Items.Add(WaypointsShown[i].ListLine, WaypointsShown[i].Checked);
-                        if (WaypointsShown[i].Selected)
-                            clbWaypoints.SelectedIndex = i;
-                    }
-                }
-                clbWaypoints.EndUpdate();
+                // List or postpond
+                if (tListTimeout.Enabled)
+                    postpondListing = true;
+                else
+                    ListItems();
+                tListTimeout.Enabled = true; // Set timeout
             }
+        }
+
+        public void ListItems()
+        {
+            lockSwitch = true;
+            clbWaypoints.SelectedIndex = -1;
+            clbWaypoints.BeginUpdate();
+            clbWaypoints.Items.Clear();
+            if (SelectedRoute != null)
+            {
+                // Uncheck unvisible
+                foreach (ADWaypoint waypoint in SelectedRoute.Waypoints)
+                    waypoint.Checked &= waypoint.Shown;
+                // Fit
+                int n = WaypointsShown.Count;
+                for (int li = 0; li < n; li++)
+                {
+                    clbWaypoints.Items.Add(WaypointsShown[li].ListLine, WaypointsShown[li].Checked);
+                    if (WaypointsShown[li].Selected)
+                        clbWaypoints.SelectedIndex = li;
+                }
+            }
+            lockSwitch = false;
+            clbWaypoints.EndUpdate();
+            clbWaypoints_SelectedIndexChanged(null, null);
         }
 
         private void Limit_ValueChanged(object sender, EventArgs e)
@@ -683,6 +702,7 @@ namespace SHME
 
         private void clbWaypoints_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (lockSwitch) return;
             if (SelectedWaypoint != null) SelectedWaypoint.Selected = false;
             tvLinks.Nodes.Clear();
             btnPointSave.Visible = false;
@@ -700,18 +720,23 @@ namespace SHME
                 return;
             }
             SelectedWaypoint = WaypointsShown[clbWaypoints.SelectedIndex];
-            nudX.Value = (decimal)SelectedWaypoint.Position.X;
-            nudY.Value = (decimal)SelectedWaypoint.Position.Y;
-            nudZ.Value = (decimal)SelectedWaypoint.Position.Z;
-            chbFlag.Checked = SelectedWaypoint.flag;
-            SelectedWaypoint.Selected = true;
-            TreeNode tn;
-            foreach (ADLink l in SelectedWaypoint.Links)
+            if (!SelectedWaypoint.Selected)
             {
-                tvLinks.Nodes.Add(tn = new TreeNode(SelectedRoute.Waypoints[l.waypointID].ListLine));
-                tn.StateImageIndex = l.direction;
+                nudX.Value = (decimal)SelectedWaypoint.Position.X;
+                nudY.Value = (decimal)SelectedWaypoint.Position.Y;
+                nudZ.Value = (decimal)SelectedWaypoint.Position.Z;
+                chbFlag.Checked = SelectedWaypoint.flag;
+                SelectedWaypoint.Selected = true;
+                TreeNode tn;
+                tvLinks.BeginUpdate();
+                foreach (ADLink l in SelectedWaypoint.Links)
+                {
+                    tvLinks.Nodes.Add(tn = new TreeNode(SelectedRoute.Waypoints[l.waypointID].ListLine));
+                    tn.StateImageIndex = l.direction;
+                }
+                tvLinks.EndUpdate();
+                gbWaypoint.Enabled = true;
             }
-            gbWaypoint.Enabled = true;
             lockComparing = false;
             FormSHME.Main.IAC_Redraw();
         }
@@ -766,14 +791,11 @@ namespace SHME
 
         private void btnRouteClear_Click(object sender, EventArgs e)
         {
+            clbWaypoints.SelectedIndex = -1;
             clbWaypoints.BeginUpdate();
             for (int i = clbWaypoints.Items.Count - 1; 0 <= i; i--)
                 if (clbWaypoints.GetItemChecked(i))
-                {
-                    clbWaypoints.Items.RemoveAt(i);
-                    SelectedRoute.Waypoints.Remove(WaypointsShow[i]);
-                    WaypointsShow.RemoveAt(i);
-                }
+                    RemoveWaypoint(WaypointsShown[i]);
             clbWaypoints.EndUpdate();
             FormSHME.Main.IAC_Redraw();
         }
@@ -782,7 +804,7 @@ namespace SHME
         {
             try
             {
-                using (StreamWriter file = File.CreateText(RouteFilesPath + "\\" + SelectedRoute.fileName))
+                using (StreamWriter file = File.CreateText(RouteFilesPath + "\\routes\\" + SelectedRoute.fileName))
                 {
                     ADWaypoint p;
                     String sX = "", sI = "",
@@ -835,8 +857,7 @@ namespace SHME
                 chbFlag.Checked != SelectedWaypoint.flag);
         }
 
-        private void btnWaypointSave_Click(object sender, EventArgs e) =>
-            WaypointSave(clbWaypoints.SelectedIndex);
+        private void btnWaypointSave_Click(object sender, EventArgs e) => WaypointSave(clbWaypoints.SelectedIndex);
 
         private void WaypointSave(int i)
         {
@@ -876,21 +897,27 @@ namespace SHME
 
         private void btnWaypointDelete_Click(object sender, EventArgs e)
         {
-            int li = clbWaypoints.SelectedIndex;
-            if (li < 0) return;
-            int id = SelectedRoute.Waypoints.IndexOf(SelectedWaypoint);
-            SelectedRoute.Waypoints.Remove(SelectedWaypoint);
-            WaypointsShown.Remove(SelectedWaypoint);
-            WaypointsShow.Remove(SelectedWaypoint);
-            clbWaypoints.Items.RemoveAt(li);
+            if (clbWaypoints.SelectedIndex < 0) return;
+            clbWaypoints.SelectedIndex = -1;
+            RemoveWaypoint(SelectedWaypoint);
+            FormSHME.Main.IAC_Redraw();
+        }
+
+        private void RemoveWaypoint(ADWaypoint waypoint)
+        {
+            int id = SelectedRoute.Waypoints.IndexOf(waypoint);
+            // Remove from lists
+            clbWaypoints.Items.RemoveAt(WaypointsShown.IndexOf(waypoint));
+            SelectedRoute.Waypoints.Remove(waypoint);
+            WaypointsShown.Remove(waypoint);
+            WaypointsShow.Remove(waypoint);
             // Remove from links
             cbbLinkPoint.Items.RemoveAt(id);
             for (int i = SelectedRoute.Waypoints.Count - 1; 0 <= i; i--)
-                SelectedRoute.Waypoints[i].Links.RemoveAll(l => (id <= l.waypointID) ? (l.waypointID-- == id) : false);
+                SelectedRoute.Waypoints[i].Links.RemoveAll(l => (id <= l.waypointID) ? (l.waypointID-- == id) : false); // Remove links and decrement higer points IDs in search loop
             // Remove from markers
             cbbMarkerWaypoint.Items.RemoveAt(id);
-            SelectedRoute.Markers.RemoveAll(l => (id <= l.waypointIdx) ? (l.waypointIdx-- == id) : false); // Decrement ID in search loop
-            FormSHME.Main.IAC_Redraw();
+            SelectedRoute.Markers.RemoveAll(l => (id <= l.waypointIdx) ? (l.waypointIdx-- == id) : false); // Remove markers and decrement higer points IDs in search loop
         }
         #endregion
 
@@ -929,7 +956,7 @@ namespace SHME
         {
             if (!chbLinkIn.Checked && !chbLinkOut.Checked)
                 if (sender == chbLinkIn) chbLinkOut.Checked = true;
-                else chbLinkIn.Checked = true;
+                else                      chbLinkIn.Checked = true;
             cbbWaypointLink_SelectedIndexChanged(null, null);
         }
 
