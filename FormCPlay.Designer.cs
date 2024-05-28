@@ -35,10 +35,13 @@
             this.tbManagerFile = new System.Windows.Forms.TextBox();
             this.btnRouteSave = new System.Windows.Forms.Button();
             this.pnlMain = new System.Windows.Forms.Panel();
+            this.btnInsertPointsAfter = new System.Windows.Forms.Button();
+            this.btnInsertPointsBefore = new System.Windows.Forms.Button();
             this.btnWaypointsDeleteSelected = new System.Windows.Forms.Button();
             this.clbWaypoints = new System.Windows.Forms.CheckedListBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.gbWaypoint = new System.Windows.Forms.GroupBox();
+            this.btnWaypointDelete = new System.Windows.Forms.Button();
             this.cbbAction = new System.Windows.Forms.ComboBox();
             this.btnPointInsert = new System.Windows.Forms.Button();
             this.btnWaypointSave = new System.Windows.Forms.Button();
@@ -196,6 +199,8 @@
             this.pnlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlMain.Controls.Add(this.btnInsertPointsAfter);
+            this.pnlMain.Controls.Add(this.btnInsertPointsBefore);
             this.pnlMain.Controls.Add(this.btnWaypointsDeleteSelected);
             this.pnlMain.Controls.Add(this.clbWaypoints);
             this.pnlMain.Controls.Add(this.panel1);
@@ -206,12 +211,45 @@
             this.pnlMain.Size = new System.Drawing.Size(756, 430);
             this.pnlMain.TabIndex = 30;
             // 
+            // btnInsertPointsAfter
+            // 
+            this.btnInsertPointsAfter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnInsertPointsAfter.BackgroundImage = global::SHME.Properties.Resources.historyForwardHi;
+            this.btnInsertPointsAfter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnInsertPointsAfter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnInsertPointsAfter.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnInsertPointsAfter.ForeColor = System.Drawing.Color.LimeGreen;
+            this.btnInsertPointsAfter.Location = new System.Drawing.Point(716, 125);
+            this.btnInsertPointsAfter.Name = "btnInsertPointsAfter";
+            this.btnInsertPointsAfter.Size = new System.Drawing.Size(20, 20);
+            this.btnInsertPointsAfter.TabIndex = 51;
+            this.btnInsertPointsAfter.Text = "+";
+            this.toolTip.SetToolTip(this.btnInsertPointsAfter, "Insert after selected");
+            this.btnInsertPointsAfter.UseVisualStyleBackColor = true;
+            this.btnInsertPointsAfter.Click += new System.EventHandler(this.btnInsertPoints_Click);
+            // 
+            // btnInsertPointsBefore
+            // 
+            this.btnInsertPointsBefore.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnInsertPointsBefore.BackgroundImage = global::SHME.Properties.Resources.historyBackHi;
+            this.btnInsertPointsBefore.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnInsertPointsBefore.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnInsertPointsBefore.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnInsertPointsBefore.ForeColor = System.Drawing.Color.LimeGreen;
+            this.btnInsertPointsBefore.Location = new System.Drawing.Point(716, 99);
+            this.btnInsertPointsBefore.Name = "btnInsertPointsBefore";
+            this.btnInsertPointsBefore.Size = new System.Drawing.Size(20, 20);
+            this.btnInsertPointsBefore.TabIndex = 50;
+            this.btnInsertPointsBefore.Text = "+";
+            this.toolTip.SetToolTip(this.btnInsertPointsBefore, "Insert before selected");
+            this.btnInsertPointsBefore.UseVisualStyleBackColor = true;
+            this.btnInsertPointsBefore.Click += new System.EventHandler(this.btnInsertPoints_Click);
+            // 
             // btnWaypointsDeleteSelected
             // 
             this.btnWaypointsDeleteSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnWaypointsDeleteSelected.BackgroundImage = global::SHME.Properties.Resources.deleteAll;
             this.btnWaypointsDeleteSelected.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnWaypointsDeleteSelected.FlatAppearance.BorderSize = 0;
             this.btnWaypointsDeleteSelected.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnWaypointsDeleteSelected.Location = new System.Drawing.Point(716, 73);
             this.btnWaypointsDeleteSelected.Name = "btnWaypointsDeleteSelected";
@@ -232,6 +270,7 @@
             this.clbWaypoints.ScrollAlwaysVisible = true;
             this.clbWaypoints.Size = new System.Drawing.Size(290, 359);
             this.clbWaypoints.TabIndex = 21;
+            this.clbWaypoints.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbWaypoints_ItemCheck);
             this.clbWaypoints.MouseClick += new System.Windows.Forms.MouseEventHandler(this.clbWaypoints_MouseClick);
             this.clbWaypoints.SelectedIndexChanged += new System.EventHandler(this.clbWaypoints_SelectedIndexChanged);
             // 
@@ -248,6 +287,7 @@
             // 
             // gbWaypoint
             // 
+            this.gbWaypoint.Controls.Add(this.btnWaypointDelete);
             this.gbWaypoint.Controls.Add(this.cbbAction);
             this.gbWaypoint.Controls.Add(this.btnPointInsert);
             this.gbWaypoint.Controls.Add(this.btnWaypointSave);
@@ -272,6 +312,19 @@
             this.gbWaypoint.TabIndex = 31;
             this.gbWaypoint.TabStop = false;
             this.gbWaypoint.Text = "Waypoint";
+            // 
+            // btnWaypointDelete
+            // 
+            this.btnWaypointDelete.BackgroundImage = global::SHME.Properties.Resources.delete;
+            this.btnWaypointDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnWaypointDelete.FlatAppearance.BorderSize = 0;
+            this.btnWaypointDelete.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnWaypointDelete.Location = new System.Drawing.Point(114, 119);
+            this.btnWaypointDelete.Name = "btnWaypointDelete";
+            this.btnWaypointDelete.Size = new System.Drawing.Size(24, 24);
+            this.btnWaypointDelete.TabIndex = 49;
+            this.btnWaypointDelete.UseVisualStyleBackColor = true;
+            this.btnWaypointDelete.Click += new System.EventHandler(this.btnWaypointDelete_Click);
             // 
             // cbbAction
             // 
@@ -997,7 +1050,6 @@
             // 
             // cbListVisible
             // 
-            this.cbListVisible.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cbListVisible.Appearance = System.Windows.Forms.Appearance.Button;
             this.cbListVisible.BackgroundImage = global::SHME.Properties.Resources.eye;
             this.cbListVisible.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
@@ -1525,5 +1577,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer tListTimeout;
         private System.Windows.Forms.Button btnRouteReverse;
+        private System.Windows.Forms.Button btnWaypointDelete;
+        private System.Windows.Forms.Button btnInsertPointsBefore;
+        private System.Windows.Forms.Button btnInsertPointsAfter;
     }
 }

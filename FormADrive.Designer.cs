@@ -42,7 +42,7 @@
             this.btnPointsCheckInvert = new System.Windows.Forms.Button();
             this.btnPointsCheckAll = new System.Windows.Forms.Button();
             this.btnPointsUncheckAll = new System.Windows.Forms.Button();
-            this.btnRouteClear = new System.Windows.Forms.Button();
+            this.btnWaypointsDeleteSelected = new System.Windows.Forms.Button();
             this.gbLimit = new System.Windows.Forms.GroupBox();
             this.nudPositionOffset = new System.Windows.Forms.NumericUpDown();
             this.cbLimitZ = new System.Windows.Forms.CheckBox();
@@ -224,7 +224,7 @@
             this.tpWaypoints.Controls.Add(this.btnPointsCheckInvert);
             this.tpWaypoints.Controls.Add(this.btnPointsCheckAll);
             this.tpWaypoints.Controls.Add(this.btnPointsUncheckAll);
-            this.tpWaypoints.Controls.Add(this.btnRouteClear);
+            this.tpWaypoints.Controls.Add(this.btnWaypointsDeleteSelected);
             this.tpWaypoints.Controls.Add(this.gbLimit);
             this.tpWaypoints.Controls.Add(this.gbWaypoint);
             this.tpWaypoints.Controls.Add(this.btnRouteReload);
@@ -295,19 +295,19 @@
             this.btnPointsUncheckAll.UseVisualStyleBackColor = true;
             this.btnPointsUncheckAll.Click += new System.EventHandler(this.btnPointsSetChecks_Click);
             // 
-            // btnRouteClear
+            // btnWaypointsDeleteSelected
             // 
-            this.btnRouteClear.AutoEllipsis = true;
-            this.btnRouteClear.BackgroundImage = global::SHME.Properties.Resources.deleteAll;
-            this.btnRouteClear.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnRouteClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRouteClear.Location = new System.Drawing.Point(179, 130);
-            this.btnRouteClear.Name = "btnRouteClear";
-            this.btnRouteClear.Size = new System.Drawing.Size(20, 20);
-            this.btnRouteClear.TabIndex = 33;
-            this.toolTip.SetToolTip(this.btnRouteClear, "Delete selected");
-            this.btnRouteClear.UseVisualStyleBackColor = true;
-            this.btnRouteClear.Click += new System.EventHandler(this.btnRouteClear_Click);
+            this.btnWaypointsDeleteSelected.AutoEllipsis = true;
+            this.btnWaypointsDeleteSelected.BackgroundImage = global::SHME.Properties.Resources.deleteAll;
+            this.btnWaypointsDeleteSelected.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnWaypointsDeleteSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnWaypointsDeleteSelected.Location = new System.Drawing.Point(179, 130);
+            this.btnWaypointsDeleteSelected.Name = "btnWaypointsDeleteSelected";
+            this.btnWaypointsDeleteSelected.Size = new System.Drawing.Size(20, 20);
+            this.btnWaypointsDeleteSelected.TabIndex = 33;
+            this.toolTip.SetToolTip(this.btnWaypointsDeleteSelected, "Delete selected");
+            this.btnWaypointsDeleteSelected.UseVisualStyleBackColor = true;
+            this.btnWaypointsDeleteSelected.Click += new System.EventHandler(this.btnWaypointsDeleteSelected_Click);
             // 
             // gbLimit
             // 
@@ -712,10 +712,9 @@
             // 
             this.ilLinkDirection.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilLinkDirection.ImageStream")));
             this.ilLinkDirection.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilLinkDirection.Images.SetKeyName(0, "bulletEmpty.png");
-            this.ilLinkDirection.Images.SetKeyName(1, "directionRight.png");
+            this.ilLinkDirection.Images.SetKeyName(0, "directionRight.png");
+            this.ilLinkDirection.Images.SetKeyName(1, "directionBoth.png");
             this.ilLinkDirection.Images.SetKeyName(2, "directionLeft.png");
-            this.ilLinkDirection.Images.SetKeyName(3, "directionBoth.png");
             // 
             // chbLinkOut
             // 
@@ -1195,7 +1194,7 @@
         private System.Windows.Forms.ImageList ilLinkDirection;
         private System.Windows.Forms.TabControl tcADrive;
         private System.Windows.Forms.TabPage tpWaypoints;
-        private System.Windows.Forms.Button btnRouteClear;
+        private System.Windows.Forms.Button btnWaypointsDeleteSelected;
         private System.Windows.Forms.GroupBox gbLimit;
         private System.Windows.Forms.NumericUpDown nudPositionOffset;
         private System.Windows.Forms.CheckBox cbLimitZ;

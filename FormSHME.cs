@@ -1235,7 +1235,7 @@ namespace SHME
         public void ProjectObject(FSObject obj)
         {
             XYZRDouble xyzr = obj.Position;
-            if (!xyzr.Present) return;
+            if (xyzr == null) return;
             double step = (0 < zoom) ? (1 << zoom >> 1) : 0.5;
             xyzr.canvasX = (int)((HMap.Width  + xyzr.X) * step) + hScrollBar.Left - hScrollBar.Value;
             xyzr.canvasY = (int)((HMap.Height + xyzr.Z) * step) + vScrollBar.Top  - vScrollBar.Value;
@@ -1249,11 +1249,9 @@ namespace SHME
             foreach (FSObject obj in objects)
             {
                 XYZRDouble xyzr = obj.Position;
-                if (xyzr.Present)
-                {
-                    xyzr.canvasX = (int)((HMap.Width  + xyzr.X) * step) + xShift;
-                    xyzr.canvasY = (int)((HMap.Height + xyzr.Z) * step) + yShift;
-                }
+                if (xyzr == null) continue;
+                xyzr.canvasX = (int)((HMap.Width  + xyzr.X) * step) + xShift;
+                xyzr.canvasY = (int)((HMap.Height + xyzr.Z) * step) + yShift;
             }
         }
 
@@ -1261,20 +1259,16 @@ namespace SHME
         {
             int portL = hScrollBar.Left   - pins.CenterX,
                 portT = vScrollBar.Top    - pins.CenterY;
-            int portR = hScrollBar.Width  + pins.Width  + portL,
-                portB = vScrollBar.Height + pins.Height + portT;
+            int portR = hScrollBar.Width  + pins.Width  + portL - 2,
+                portB = vScrollBar.Height + pins.Height + portT - 2; // No frame
             // Mark
             List<FSObject> objectsShown = new List<FSObject>();
             foreach (FSObject obj in objects)
-            {
-                int x = obj.Position.canvasX;
-                int y = obj.Position.canvasY;
-                if (obj.Position.Present)
+                if (obj.Position != null)
                     if (obj.Show)
-                        if (obj.Shown = portL <= x && x < portR &&
-                                        portT <= y && y < portB)
+                        if (obj.Shown = portL < obj.Position.canvasX && obj.Position.canvasX < portR &&
+                                        portT < obj.Position.canvasY && obj.Position.canvasY < portB)
                             objectsShown.Add(obj);
-            }
             return objectsShown;
         }
 
@@ -1285,32 +1279,30 @@ namespace SHME
                 pR = portR - pins.CenterX + pins.Width,
                 pB = portB - pins.CenterY + pins.Height;
             foreach (FSObject obj in objects)
-            {
-                int x = obj.Position.canvasX;
-                int y = obj.Position.canvasY;
-                if (obj.Position.Present)
-                    if (pL <= x && x < pR &&
-                        pT <= y && y < pB)
-                    {
+                if (obj.Position != null)
+                {
+                    int x = obj.Position.canvasX;
+                    int y = obj.Position.canvasY;
+                    if (x < pL || pR <= x ||
+                        y < pT || pB <= y) continue;
+                    DrawArrayToArray(buffer, bufferW, bufferH,
+                        pins.Icons[obj.PinState],
+                        pins.Width, pins.Height,
+                        x - portL - pins.CenterX,
+                        y - portT - pins.CenterY);
+                    if (obj.Selected)
                         DrawArrayToArray(buffer, bufferW, bufferH,
-                            pins.Icons[obj.PinState],
+                            pins.Selection,
                             pins.Width, pins.Height,
                             x - portL - pins.CenterX,
                             y - portT - pins.CenterY);
-                        if (obj.Selected)
-                            DrawArrayToArray(buffer, bufferW, bufferH,
-                                pins.Selection,
-                                pins.Width, pins.Height,
-                                x - portL - pins.CenterX,
-                                y - portT - pins.CenterY);
-                        else if (obj.Checked)
-                            DrawArrayToArray(buffer, bufferW, bufferH,
-                                pins.Checking,
-                                pins.Width, pins.Height,
-                                x - portL - pins.CenterX,
-                                y - portT - pins.CenterY);
-                    }
-            }
+                    else if (obj.Checked)
+                        DrawArrayToArray(buffer, bufferW, bufferH,
+                            pins.Checking,
+                            pins.Width, pins.Height,
+                            x - portL - pins.CenterX,
+                            y - portT - pins.CenterY);
+                }
         }
 
         private void FormSHME_Paint(object sender, PaintEventArgs e)
@@ -1426,8 +1418,8 @@ namespace SHME
             }
 
             // Draw Items, CPlay, ADrive
-            if (chbItems.Checked)  DrawVisibleObjects(buffer, mtsW, mtsH, portL, portT, portR, portB, FormItems .Pins, FIs.FSItemsShown);
-            if (chbCPlay.Checked)  DrawVisibleObjects(buffer, mtsW, mtsH, portL, portT, portR, portB, FormCPlay .Pins, FCP.WaypointsShown);
+            if (chbItems .Checked) DrawVisibleObjects(buffer, mtsW, mtsH, portL, portT, portR, portB, FormItems .Pins, FIs.FSItemsShown);
+            if (chbCPlay .Checked) DrawVisibleObjects(buffer, mtsW, mtsH, portL, portT, portR, portB, FormCPlay .Pins, FCP.WaypointsShown);
             if (chbADrive.Checked) DrawVisibleObjects(buffer, mtsW, mtsH, portL, portT, portR, portB, FormADrive.Pins, FAD.WaypointsShown);
 
             // Transfer
@@ -1498,13 +1490,10 @@ namespace SHME
 
         private void FormSHME_Resize(object sender, EventArgs e)//
         {
-            bool h = ResizeScrollBar(hScrollBar, hScrollBar.Width);
+            bool h = ResizeScrollBar(hScrollBar, hScrollBar.Width );
             bool v = ResizeScrollBar(vScrollBar, vScrollBar.Height);
-            if (h | v)
-            {
-                IAC_Relist();
-                Canvas_Update();
-            }
+            IAC_Relist();
+            if (h | v) Canvas_Update();
         }
 
         private bool ResizeScrollBar(ScrollBar scrollBar, int largeChange)
@@ -1536,8 +1525,8 @@ namespace SHME
 
         private void ScrollBar_ValueChanged(object sender, EventArgs e)
         {
-            Canvas_Update();
             IAC_Relist();
+            Canvas_Update();
         }
 
         private void pnlCorner_DoubleClick(object sender, EventArgs e) => new AboutBox().ShowDialog();

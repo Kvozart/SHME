@@ -70,8 +70,8 @@ namespace SHME
             {
                 String tmp;
                 int pStart, rStart;
-                if (Position.Present = (0 < (pStart = ReadValue.TagsAttribute(line, "position", out tmp, out int pEnd)))) Position.ReadXMLLine(tmp);
-                if (Rotation.Present = (0 < (rStart = ReadValue.TagsAttribute(line, "rotation", out tmp, out int rEnd)))) Rotation.ReadXMLLine(tmp);
+                if (0 < (pStart = ReadValue.TagsAttribute(line, "position", out tmp, out int pEnd))) (Position = new XYZRDouble()).ReadXMLLine(tmp); else Position = null;
+                if (0 < (rStart = ReadValue.TagsAttribute(line, "rotation", out tmp, out int rEnd))) (Rotation = new XYZRDouble()).ReadXMLLine(tmp); else Rotation = null;
                 // A + position + B + rotation + C | "" + 0 + B + rotation + C
                 if (pStart < rStart)
                 {
@@ -90,9 +90,9 @@ namespace SHME
 
             override public String BuildListLine() =>
                 A +
-                (Position.Present ? " position=\"" + Position.GetListLine(FloatFormat) + "\"" : "") +
+                (Position != null ? " position=\"" + Position.GetListLine(FloatFormat) + "\"" : "") +
                 B +
-                (Rotation.Present ? " rotation=\"" + Rotation.GetListLine(FloatFormat) + "\"" : "") +
+                (Rotation != null ? " rotation=\"" + Rotation.GetListLine(FloatFormat) + "\"" : "") +
                 C;
 
             override public String BuildXMLLine () => BuildListLine();
@@ -101,9 +101,9 @@ namespace SHME
         private bool postpondListing = false;
         private bool lockFilter = true;
         private String FileName = "";
-        private List<FSItem> FSItems = new List<FSItem> { };
-        public List<FSItem> FSItemsShow = new List<FSItem> { };
-        public List<FSItem> FSItemsShown = new List<FSItem> { };
+        private List<FSItem> FSItems      = new List<FSItem> { };
+        public  List<FSItem> FSItemsShow  = new List<FSItem> { };
+        public  List<FSItem> FSItemsShown = new List<FSItem> { };
         private FSItem SelectedFSItem = null;
 
         #region Form
@@ -405,12 +405,12 @@ namespace SHME
                 item = FSItems[idx];
                 item.Show = false;
                 line = item.XMLLine;
-                for (i = excN; 0 <= i; i--)    if ( line.Contains(filtersExc[i])) break;    if (0 <= i) continue;
-                for (i = incN; 0 <= i; i--)    if (!line.Contains(filtersInc[i])) break;    if (0 <= i) continue;
+                for (i = excN; 0 <= i; i--) if ( line.Contains(filtersExc[i])) break;    if (0 <= i) continue;
+                for (i = incN; 0 <= i; i--) if (!line.Contains(filtersInc[i])) break;    if (0 <= i) continue;
                 if (limitP)
                 {
                     p = item.Position;
-                    if (!p.Present) continue;
+                    if (p == null) continue;
                     if (limitPX) if (p.X < minPX || maxPX < p.X) continue;
                     if (limitPY) if (p.Y < minPY || maxPY < p.Y) continue;
                     if (limitPZ) if (p.Z < minPZ || maxPZ < p.Z) continue;
@@ -418,7 +418,7 @@ namespace SHME
                 if (limitR)
                 {
                     r = item.Rotation;
-                    if (!r.Present) continue;
+                    if (r == null) continue;
                     if (limitRX) if (r.X < minRX || maxRX < r.X) continue;
                     if (limitRY) if (r.Y < minRY || maxRY < r.Y) continue;
                     if (limitRZ) if (r.Z < minRZ || maxRZ < r.Z) continue;
@@ -534,8 +534,7 @@ namespace SHME
             do {
                 i++;
                 if (n <= i) i = 0; // Loop to beginning
-                xyzr = FSItemsShown[i].Position;
-                if (xyzr.Present)
+                if ((xyzr = FSItemsShown[i].Position) != null)
                     if (l <= xyzr.X && xyzr.X < r &&
                         t <= xyzr.Z && xyzr.Z < b)
                     {

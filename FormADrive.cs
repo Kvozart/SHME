@@ -53,25 +53,32 @@ namespace SHME
                 0x7F7F7F7F, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x7F7F7F7F,
                 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F, 0x7F7F7F7F},
             new Pen[]{
-                new Pen(Color.DarkGray),
                 new Pen(Color.Green),
-                new Pen(Color.Green),
-                new Pen(Color.Blue)}
+                new Pen(Color.Blue),
+                new Pen(Color.Green)}
             );
 
-        public const byte ADLinkOut = 1,
-                          ADLinkIn  = 2,
-                          ADLinkBi  = 3;
         public class ADLink
         {
-            public int waypointID = 0;
-            public byte direction = 0;
+            public static int Outgoing = 0,
+                              Bothway  = 1,
+                              Incoming = 2;
+            public int waypointID;
+            public int direction;
 
-            public ADLink(byte setDirection, int setWaypoint)
+            public ADLink(int setDirection, int setWaypointID)
             {
-                direction = setDirection;
-                waypointID = setWaypoint;
+                direction  = setDirection;
+                waypointID = setWaypointID;
             }
+
+            public static int ReverseDirection(int direction) => 2 - direction;
+
+            public static int BuildDirection(bool In, bool Out) => In ? (Out ? Bothway : Incoming) : Outgoing;
+
+            public static int CombineDirections(int a, int b) => (a + b + 1) >> 1;
+
+            public int CombineDirections(int otherDirection) => (direction + otherDirection + 1) >> 1;
 
             public String GetLine() => "#" + waypointID;
         }
@@ -81,6 +88,8 @@ namespace SHME
             public bool flag = false;
             public List<ADLink> Links = new List<ADLink>();
             public int id = 1;
+
+            public ADWaypoint() => Position = new XYZRDouble();
 
             override public String BuildListLine() =>
                 "#" + id + " " +
@@ -204,9 +213,9 @@ namespace SHME
         // Visible outside
         private List<ADWaypoint> WaypointsShow  = new List<ADWaypoint> { };
         public  List<ADWaypoint> WaypointsShown = new List<ADWaypoint> { };
-        public ADRoute SelectedRoute = null;
+        public ADRoute    SelectedRoute    = null;
         public ADWaypoint SelectedWaypoint = null;
-        public ADLink SelectedLink = null;
+        public ADLink     SelectedLink     = null;
 
         #region Form
         public FormADrive()//Ok
@@ -523,7 +532,6 @@ namespace SHME
                 {
                     SelectedRoute.Waypoints.Add(p = new ADWaypoint());
                     p.id = i + 1;
-                    p.Position.Present = true;
                     if (i < x.Length) p.Position.X = x[i];
                     if (i < y.Length) p.Position.Y = y[i];
                     if (i < z.Length) p.Position.Z = z[i];
@@ -532,9 +540,9 @@ namespace SHME
                     iIDs = new int[0];    if (i < iIDsS.Length)    if (iIDsS[i] != "-1") iIDs = BreakLine_Integer(iIDsS[i], ',');
                     oIDs = new int[0];    if (i < oIDsS.Length)    if (oIDsS[i] != "-1") oIDs = BreakLine_Integer(oIDsS[i], ',');
                     IDBD = iIDs.Intersect(oIDs);
-                    foreach (int ID in             IDBD)  p.Links.Add(new ADLink(ADLinkBi,  ID - 1)); // Bidirectional
-                    foreach (int ID in iIDs.Except(IDBD)) p.Links.Add(new ADLink(ADLinkIn,  ID - 1)); // In
-                    foreach (int ID in oIDs.Except(IDBD)) p.Links.Add(new ADLink(ADLinkOut, ID - 1)); // Out
+                    foreach (int ID in             IDBD ) p.Links.Add(new ADLink(ADLink.Bothway,  ID - 1));
+                    foreach (int ID in iIDs.Except(IDBD)) p.Links.Add(new ADLink(ADLink.Incoming, ID - 1));
+                    foreach (int ID in oIDs.Except(IDBD)) p.Links.Add(new ADLink(ADLink.Outgoing, ID - 1));
                     p.ListLine = p.BuildListLine();
                 }
                 // Sort and add groups
@@ -709,8 +717,7 @@ namespace SHME
             {
                 i++;
                 if (n <= i) i = 0; // Loop to beginning
-                xyzr = WaypointsShown[i].Position;
-                if (xyzr.Present)
+                if ((xyzr = WaypointsShown[i].Position) != null)
                     if (l <= xyzr.X && xyzr.X < r &&
                         t <= xyzr.Z && xyzr.Z < b)
                     {
@@ -815,7 +822,7 @@ namespace SHME
             FilterWaypoints();
         }
 
-        private void btnRouteClear_Click(object sender, EventArgs e)
+        private void btnWaypointsDeleteSelected_Click(object sender, EventArgs e)
         {
             clbWaypoints.SelectedIndex = -1;
             clbWaypoints.BeginUpdate();
@@ -848,8 +855,8 @@ namespace SHME
                     for (int i = 0; i < n; i++)
                     {
                         p = SelectedRoute.Waypoints[i];
-                        sO = String.Join(",", p.Links.Where(l => 0 < (l.direction & ADLinkIn )).ToList().ConvertAll(l => (l.waypointID + 1).ToString()));
-                        sI = String.Join(",", p.Links.Where(l => 0 < (l.direction & ADLinkOut)).ToList().ConvertAll(l => (l.waypointID + 1).ToString()));
+                        sO = String.Join(",", p.Links.Where(l => (l.direction != ADLink.Outgoing)).ToList().ConvertAll(l => (l.waypointID + 1).ToString()));
+                        sI = String.Join(",", p.Links.Where(l => (l.direction != ADLink.Incoming)).ToList().ConvertAll(l => (l.waypointID + 1).ToString()));
                         sOs.Add((sO == "") ? "-1" : sO);
                         sIs.Add((sI == "") ? "-1" : sI);
                     }
@@ -923,14 +930,16 @@ namespace SHME
         private void btnWaypointDelete_Click(object sender, EventArgs e)
         {
             if (clbWaypoints.SelectedIndex < 0) return;
-            clbWaypoints.SelectedIndex = -1;
             RemoveWaypoint(SelectedWaypoint);
+            SelectedWaypoint = null;
+            clbWaypoints.SelectedIndex = -1;
             FormSHME.Main.IAC_Redraw();
         }
 
         private void RemoveWaypoint(ADWaypoint waypoint)
         {
             int id = SelectedRoute.Waypoints.IndexOf(waypoint);
+            if (id < 0) return;
             // Remove from lists
             clbWaypoints.Items.RemoveAt(WaypointsShown.IndexOf(waypoint));
             SelectedRoute.Waypoints.Remove(waypoint);
@@ -958,13 +967,13 @@ namespace SHME
                 btnLinkDelete.Visible =
                 btnLinkSplit.Visible =
                 chbLinkOut.Checked =
-                chbLinkIn.Checked  = false;
+                chbLinkIn .Checked = false;
                 return;
             }
             SelectedLink = SelectedWaypoint.Links[li];
             cbbLinkPoint.SelectedIndex = SelectedLink.waypointID;
-            chbLinkIn.Checked  = 0 < (SelectedLink.direction & ADLinkIn );
-            chbLinkOut.Checked = 0 < (SelectedLink.direction & ADLinkOut);
+            chbLinkIn .Checked = (SelectedLink.direction != ADLink.Outgoing);
+            chbLinkOut.Checked = (SelectedLink.direction != ADLink.Incoming);
             btnLinkSplit.Visible =
             btnLinkDelete.Visible = true;
         }
@@ -991,14 +1000,11 @@ namespace SHME
             if (SelectedWaypoint == null) return;
             int linkID = tvLinks.SelectedNode.Index;
             if (linkID < 0) return;
-            ADLink link = SelectedWaypoint.Links[linkID];
             tvLinks.BeginUpdate();
             int ThisPID = SelectedRoute.Waypoints.IndexOf(SelectedWaypoint);
             int ThatPIDNew = cbbLinkPoint.SelectedIndex;
-            int ThatPIDLast = link.waypointID;
-            byte direction = (byte)(
-                (chbLinkIn .Checked ? ADLinkIn  : 0) &
-                (chbLinkOut.Checked ? ADLinkOut : 0));
+            int ThatPIDLast = SelectedLink.waypointID;
+            int direction = ADLink.BuildDirection(chbLinkIn.Checked, chbLinkOut.Checked);
             ADWaypoint ThatPLast = SelectedRoute.Waypoints[ThatPIDLast];
             ADLink ThatLLast = ThatPLast.Links.Find(l => (l.waypointID == ThisPID));
             // Move
@@ -1011,7 +1017,7 @@ namespace SHME
                 if (ThatLNew != null)
                 {
                     int ThisLIDNew = SelectedWaypoint.Links.FindIndex(l => (l.waypointID == ThatPIDNew));
-                    direction |= SelectedWaypoint.Links[ThisLIDNew].direction; // Combine direction
+                    direction = SelectedWaypoint.Links[ThisLIDNew].CombineDirections(direction); // Combine direction
                     SelectedWaypoint.Links.RemoveAt(ThisLIDNew);
                     tvLinks.Nodes.RemoveAt(ThisLIDNew);
                     if (ThisLIDNew < linkID) linkID--; // Index correction
@@ -1022,11 +1028,11 @@ namespace SHME
 
                 // Update far point of this link
                 tvLinks.Nodes[linkID].Text = SelectedRoute.Waypoints[ThatPIDNew].id.ToString();
-                link.waypointID = ThatPIDNew;
+                SelectedLink.waypointID = ThatPIDNew;
             }
             // Update link directions
-            link.direction = direction;
-            ThatLLast.direction = (byte)(((direction << 1) | (direction >> 1)) & 3); // Reverse
+            SelectedLink.direction = direction;
+            ThatLLast.direction = ADLink.ReverseDirection(direction); // Reverse
             tvLinks.Nodes[linkID].StateImageIndex = direction;
             SelectedWaypoint.Edited = true;
             tvLinks.EndUpdate();
@@ -1036,28 +1042,25 @@ namespace SHME
         private void btnLinkAdd_Click(object sender, EventArgs e)
         {
             if (SelectedWaypoint == null) return;
-            byte direction = (byte)(
-                (chbLinkIn .Checked ? ADLinkIn  : 0) &
-                (chbLinkOut.Checked ? ADLinkOut : 0));
+            int direction = ADLink.BuildDirection(chbLinkIn.Checked, chbLinkOut.Checked);
             int ThisPID = SelectedRoute.Waypoints.IndexOf(SelectedWaypoint);
             int ThatPID = cbbLinkPoint.SelectedIndex;
-            ADWaypoint ThisP = SelectedRoute.Waypoints[ThisPID];
             ADWaypoint ThatP = SelectedRoute.Waypoints[ThatPID];
-            int ThisLID = ThisP.Links.FindIndex(l => (l.waypointID == ThatPID));
+            int ThisLID = SelectedWaypoint.Links.FindIndex(l => (l.waypointID == ThatPID));
             ADLink ThisL, ThatL;
             if (ThisLID < 0)
             {
-                ThisLID = ThisP.Links.Count;
-                ThisP.Links.Add(ThisL = new ADLink(direction, ThatPID));
-                ThatP.Links.Add(ThatL = new ADLink(0, ThisPID));
+                ThisLID = SelectedWaypoint.Links.Count;
+                SelectedWaypoint.Links.Add(ThisL = new ADLink(                        direction,  ThatPID));
+                SelectedWaypoint.Links.Add(ThatL = new ADLink(ADLink.ReverseDirection(direction), ThisPID));
             }
             else
             {
-                ThisL = ThisP.Links[ThisLID];
-                direction = ThisL.direction |= direction;
+                ThisL = SelectedWaypoint.Links[ThisLID];
+                direction = ThisL.direction = ThisL.CombineDirections(direction);
                 ThatL = ThatP.Links.Find(l => (l.waypointID == ThisPID));
             }
-            ThatL.direction = (byte)(((direction << 1) | (direction >> 1)) & 3);
+            ThatL.direction = ADLink.ReverseDirection(direction);
             tvLinks.Nodes[ThisLID].StateImageIndex = direction;
             FormSHME.Main.IAC_Redraw();
         }
@@ -1090,14 +1093,14 @@ namespace SHME
             waypoint.Position.X = (SelectedWaypoint.Position.X + waypointFar.Position.X) / 2;
             waypoint.Position.Y = (SelectedWaypoint.Position.Y + waypointFar.Position.Y) / 2;
             waypoint.Position.Z = (SelectedWaypoint.Position.Z + waypointFar.Position.Z) / 2;
-            waypoint.Links.Add(new ADLink(SelectedLink.direction, pFarID));
-            waypoint.Links.Add(new ADLink((byte)(((SelectedLink.direction << 1) | (SelectedLink.direction >> 1)) & 3), pThisID));
-            waypoint.Position.Present =
+            waypoint.Position.R = (SelectedWaypoint.Position.R + waypointFar.Position.R) / 2;
+            waypoint.Links.Add(new ADLink(                        SelectedLink.direction,  pFarID ));
+            waypoint.Links.Add(new ADLink(ADLink.ReverseDirection(SelectedLink.direction), pThisID));
             waypoint.Edited =
             waypoint.Shown =
             waypoint.Show = true;
             // Interconnect old ones
-            waypointFar.Links.Find(l => l.waypointID == pThisID).waypointID = pNewID;
+            waypointFar.Links.Find(l => (l.waypointID == pThisID)).waypointID = pNewID;
             waypointFar.Edited = true;
             SelectedLink.waypointID = pNewID;
             SelectedWaypoint.Edited = true;

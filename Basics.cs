@@ -142,7 +142,6 @@ namespace SHME
     {
         public double X = 0, Y = 0, Z = 0, R = 0;
         public int canvasX, canvasY;
-        public bool Present;
 
         public void ReadXMLLine(String line)
         {
@@ -152,11 +151,12 @@ namespace SHME
             if (0 < v.Length) Double.TryParse(v[0], NumberStyles.Float, ReadValue.FloatPoint, out X);
             if (1 < v.Length) Double.TryParse(v[1], NumberStyles.Float, ReadValue.FloatPoint, out Y);
             if (2 < v.Length) Double.TryParse(v[2], NumberStyles.Float, ReadValue.FloatPoint, out Z);
+            if (3 < v.Length) Double.TryParse(v[3], NumberStyles.Float, ReadValue.FloatPoint, out R);
         }
 
         public bool Align(double step, double offset, Boolean doX, Boolean doY, Boolean doZ, Boolean doR = false)
         {
-            if (!Present || (step  == 0 && offset == 0)) return false;
+            if (step == 0 && offset == 0) return false;
             double ix = X, iy = Y, iz = Z, ir = R;
             if (doX) X = Math.Round((X - offset) / step) * step + offset;
             if (doY) Y = Math.Round((Y - offset) / step) * step + offset;
@@ -173,17 +173,17 @@ namespace SHME
             R += stepR;
         }
 
-        public String GetListLine(String floatFormat, bool includeR = false) =>
-                  X.ToString(floatFormat, ReadValue.FloatPoint) + 
-            " " + Y.ToString(floatFormat, ReadValue.FloatPoint) + 
-            " " + Z.ToString(floatFormat, ReadValue.FloatPoint) + (includeR ?
-            " " + R.ToString(floatFormat, ReadValue.FloatPoint) : "");
+        public String GetListLine(String floatFormat, char splitCharR = '-') =>
+                         X.ToString(floatFormat, ReadValue.FloatPoint) + 
+                   " " + Y.ToString(floatFormat, ReadValue.FloatPoint) + 
+                   " " + Z.ToString(floatFormat, ReadValue.FloatPoint) + (splitCharR == '-' ? "" :
+            splitCharR + R.ToString(floatFormat, ReadValue.FloatPoint));
     }
 
     abstract public class FSObject
     {
-        public int    PinState = 0;
-        public XYZRDouble Position = new XYZRDouble();
+        public int PinState = 0;
+        public XYZRDouble Position;
         // Own
         public String XMLLine = "", ListLine = "";
         public bool Show  = false, Checked  = false,
