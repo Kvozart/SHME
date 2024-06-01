@@ -123,9 +123,9 @@ namespace SHME
         public readonly int[][] Icons;
         public readonly int[] Selection;
         public readonly int[] Checking;
-        public readonly Pen[] Pens;
+        public readonly int[] Pens;
 
-        public FSPins(int width, int height, int centerX, int centerY, int[][] icons, int[] selection, int[] checking, Pen[] pens)
+        public FSPins(int width, int height, int centerX, int centerY, int[][] icons, int[] selection, int[] checking, int[] pens)
         {
             Width  = width;
             Height = height;

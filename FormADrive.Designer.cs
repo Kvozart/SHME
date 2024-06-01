@@ -59,13 +59,15 @@
             this.gbWaypoint = new System.Windows.Forms.GroupBox();
             this.nudZ = new System.Windows.Forms.NumericUpDown();
             this.gbLnk = new System.Windows.Forms.GroupBox();
+            this.rbLinkDirectionOutB = new System.Windows.Forms.RadioButton();
+            this.rbLinkDirectionOut = new System.Windows.Forms.RadioButton();
+            this.rbLinkDirectionBoth = new System.Windows.Forms.RadioButton();
+            this.rbLinkDirectionIn = new System.Windows.Forms.RadioButton();
+            this.rbLinkDirectionInB = new System.Windows.Forms.RadioButton();
             this.btnLinkSplit = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.chbLinkIn = new System.Windows.Forms.CheckBox();
             this.tvLinks = new System.Windows.Forms.TreeView();
             this.ilLinkDirection = new System.Windows.Forms.ImageList(this.components);
-            this.chbLinkOut = new System.Windows.Forms.CheckBox();
-            this.btnLinkInsert = new System.Windows.Forms.Button();
+            this.btnLinkAdd = new System.Windows.Forms.Button();
             this.cbbLinkPoint = new System.Windows.Forms.ComboBox();
             this.btnLinkSave = new System.Windows.Forms.Button();
             this.btnLinkDelete = new System.Windows.Forms.Button();
@@ -114,7 +116,6 @@
             this.gbWaypoint.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudZ)).BeginInit();
             this.gbLnk.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudY)).BeginInit();
             this.tpMarkers.SuspendLayout();
@@ -638,12 +639,14 @@
             this.gbLnk.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbLnk.Controls.Add(this.rbLinkDirectionOutB);
+            this.gbLnk.Controls.Add(this.rbLinkDirectionOut);
+            this.gbLnk.Controls.Add(this.rbLinkDirectionBoth);
+            this.gbLnk.Controls.Add(this.rbLinkDirectionIn);
+            this.gbLnk.Controls.Add(this.rbLinkDirectionInB);
             this.gbLnk.Controls.Add(this.btnLinkSplit);
-            this.gbLnk.Controls.Add(this.pictureBox1);
-            this.gbLnk.Controls.Add(this.chbLinkIn);
             this.gbLnk.Controls.Add(this.tvLinks);
-            this.gbLnk.Controls.Add(this.chbLinkOut);
-            this.gbLnk.Controls.Add(this.btnLinkInsert);
+            this.gbLnk.Controls.Add(this.btnLinkAdd);
             this.gbLnk.Controls.Add(this.cbbLinkPoint);
             this.gbLnk.Controls.Add(this.btnLinkSave);
             this.gbLnk.Controls.Add(this.btnLinkDelete);
@@ -653,6 +656,88 @@
             this.gbLnk.TabIndex = 34;
             this.gbLnk.TabStop = false;
             this.gbLnk.Text = "Links";
+            // 
+            // rbLinkDirectionOutB
+            // 
+            this.rbLinkDirectionOutB.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbLinkDirectionOutB.BackgroundImage = global::SHME.Properties.Resources.historyForward;
+            this.rbLinkDirectionOutB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.rbLinkDirectionOutB.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rbLinkDirectionOutB.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.rbLinkDirectionOutB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbLinkDirectionOutB.Location = new System.Drawing.Point(80, 46);
+            this.rbLinkDirectionOutB.Name = "rbLinkDirectionOutB";
+            this.rbLinkDirectionOutB.Size = new System.Drawing.Size(18, 20);
+            this.rbLinkDirectionOutB.TabIndex = 60;
+            this.rbLinkDirectionOutB.Tag = 0;
+            this.rbLinkDirectionOutB.UseVisualStyleBackColor = true;
+            this.rbLinkDirectionOutB.CheckedChanged += new System.EventHandler(this.rbLinkDirection_CheckedChanged);
+            // 
+            // rbLinkDirectionOut
+            // 
+            this.rbLinkDirectionOut.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbLinkDirectionOut.BackgroundImage = global::SHME.Properties.Resources.directionRight;
+            this.rbLinkDirectionOut.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.rbLinkDirectionOut.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rbLinkDirectionOut.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.rbLinkDirectionOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbLinkDirectionOut.Location = new System.Drawing.Point(62, 46);
+            this.rbLinkDirectionOut.Name = "rbLinkDirectionOut";
+            this.rbLinkDirectionOut.Size = new System.Drawing.Size(18, 20);
+            this.rbLinkDirectionOut.TabIndex = 59;
+            this.rbLinkDirectionOut.Tag = 1;
+            this.rbLinkDirectionOut.UseVisualStyleBackColor = true;
+            this.rbLinkDirectionOut.CheckedChanged += new System.EventHandler(this.rbLinkDirection_CheckedChanged);
+            // 
+            // rbLinkDirectionBoth
+            // 
+            this.rbLinkDirectionBoth.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbLinkDirectionBoth.BackgroundImage = global::SHME.Properties.Resources.directionBoth;
+            this.rbLinkDirectionBoth.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.rbLinkDirectionBoth.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rbLinkDirectionBoth.Checked = true;
+            this.rbLinkDirectionBoth.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.rbLinkDirectionBoth.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbLinkDirectionBoth.Location = new System.Drawing.Point(44, 46);
+            this.rbLinkDirectionBoth.Name = "rbLinkDirectionBoth";
+            this.rbLinkDirectionBoth.Size = new System.Drawing.Size(18, 20);
+            this.rbLinkDirectionBoth.TabIndex = 58;
+            this.rbLinkDirectionBoth.TabStop = true;
+            this.rbLinkDirectionBoth.Tag = 2;
+            this.rbLinkDirectionBoth.UseVisualStyleBackColor = true;
+            this.rbLinkDirectionBoth.CheckedChanged += new System.EventHandler(this.rbLinkDirection_CheckedChanged);
+            // 
+            // rbLinkDirectionIn
+            // 
+            this.rbLinkDirectionIn.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbLinkDirectionIn.BackgroundImage = global::SHME.Properties.Resources.directionLeft;
+            this.rbLinkDirectionIn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.rbLinkDirectionIn.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rbLinkDirectionIn.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.rbLinkDirectionIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbLinkDirectionIn.Location = new System.Drawing.Point(26, 46);
+            this.rbLinkDirectionIn.Name = "rbLinkDirectionIn";
+            this.rbLinkDirectionIn.Size = new System.Drawing.Size(18, 20);
+            this.rbLinkDirectionIn.TabIndex = 57;
+            this.rbLinkDirectionIn.Tag = 3;
+            this.rbLinkDirectionIn.UseVisualStyleBackColor = true;
+            this.rbLinkDirectionIn.CheckedChanged += new System.EventHandler(this.rbLinkDirection_CheckedChanged);
+            // 
+            // rbLinkDirectionInB
+            // 
+            this.rbLinkDirectionInB.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbLinkDirectionInB.BackgroundImage = global::SHME.Properties.Resources.historyBack;
+            this.rbLinkDirectionInB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.rbLinkDirectionInB.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rbLinkDirectionInB.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.rbLinkDirectionInB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbLinkDirectionInB.Location = new System.Drawing.Point(8, 46);
+            this.rbLinkDirectionInB.Name = "rbLinkDirectionInB";
+            this.rbLinkDirectionInB.Size = new System.Drawing.Size(18, 20);
+            this.rbLinkDirectionInB.TabIndex = 56;
+            this.rbLinkDirectionInB.Tag = 4;
+            this.rbLinkDirectionInB.UseVisualStyleBackColor = true;
+            this.rbLinkDirectionInB.CheckedChanged += new System.EventHandler(this.rbLinkDirection_CheckedChanged);
             // 
             // btnLinkSplit
             // 
@@ -670,34 +755,13 @@
             this.btnLinkSplit.Visible = false;
             this.btnLinkSplit.Click += new System.EventHandler(this.btnLinkSplit_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImage = global::SHME.Properties.Resources.directionBoth;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox1.Location = new System.Drawing.Point(47, 46);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(18, 18);
-            this.pictureBox1.TabIndex = 54;
-            this.pictureBox1.TabStop = false;
-            // 
-            // chbLinkIn
-            // 
-            this.chbLinkIn.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chbLinkIn.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chbLinkIn.Location = new System.Drawing.Point(8, 45);
-            this.chbLinkIn.Name = "chbLinkIn";
-            this.chbLinkIn.Size = new System.Drawing.Size(36, 20);
-            this.chbLinkIn.TabIndex = 51;
-            this.chbLinkIn.Text = "In";
-            this.chbLinkIn.UseVisualStyleBackColor = true;
-            this.chbLinkIn.CheckedChanged += new System.EventHandler(this.chbLinkInOut_CheckedChanged);
-            // 
             // tvLinks
             // 
             this.tvLinks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tvLinks.FullRowSelect = true;
+            this.tvLinks.HideSelection = false;
             this.tvLinks.Location = new System.Drawing.Point(8, 72);
             this.tvLinks.Name = "tvLinks";
             this.tvLinks.ShowLines = false;
@@ -712,35 +776,26 @@
             // 
             this.ilLinkDirection.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilLinkDirection.ImageStream")));
             this.ilLinkDirection.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilLinkDirection.Images.SetKeyName(0, "directionRight.png");
-            this.ilLinkDirection.Images.SetKeyName(1, "directionBoth.png");
-            this.ilLinkDirection.Images.SetKeyName(2, "directionLeft.png");
+            this.ilLinkDirection.Images.SetKeyName(0, "historyForward.png");
+            this.ilLinkDirection.Images.SetKeyName(1, "directionRight.png");
+            this.ilLinkDirection.Images.SetKeyName(2, "directionBoth.png");
+            this.ilLinkDirection.Images.SetKeyName(3, "directionLeft.png");
+            this.ilLinkDirection.Images.SetKeyName(4, "historyBack.png");
             // 
-            // chbLinkOut
+            // btnLinkAdd
             // 
-            this.chbLinkOut.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chbLinkOut.Location = new System.Drawing.Point(68, 46);
-            this.chbLinkOut.Name = "chbLinkOut";
-            this.chbLinkOut.Size = new System.Drawing.Size(44, 20);
-            this.chbLinkOut.TabIndex = 52;
-            this.chbLinkOut.Text = "Out";
-            this.chbLinkOut.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chbLinkOut.UseVisualStyleBackColor = true;
-            this.chbLinkOut.CheckedChanged += new System.EventHandler(this.chbLinkInOut_CheckedChanged);
-            // 
-            // btnLinkInsert
-            // 
-            this.btnLinkInsert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLinkInsert.BackgroundImage = global::SHME.Properties.Resources.add;
-            this.btnLinkInsert.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnLinkInsert.FlatAppearance.BorderSize = 0;
-            this.btnLinkInsert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLinkInsert.Location = new System.Drawing.Point(141, 46);
-            this.btnLinkInsert.Name = "btnLinkInsert";
-            this.btnLinkInsert.Size = new System.Drawing.Size(20, 20);
-            this.btnLinkInsert.TabIndex = 50;
-            this.btnLinkInsert.UseVisualStyleBackColor = true;
-            this.btnLinkInsert.Click += new System.EventHandler(this.btnLinkAdd_Click);
+            this.btnLinkAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLinkAdd.BackgroundImage = global::SHME.Properties.Resources.add;
+            this.btnLinkAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnLinkAdd.FlatAppearance.BorderSize = 0;
+            this.btnLinkAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLinkAdd.Location = new System.Drawing.Point(141, 46);
+            this.btnLinkAdd.Name = "btnLinkAdd";
+            this.btnLinkAdd.Size = new System.Drawing.Size(20, 20);
+            this.btnLinkAdd.TabIndex = 50;
+            this.btnLinkAdd.UseVisualStyleBackColor = true;
+            this.btnLinkAdd.Visible = false;
+            this.btnLinkAdd.Click += new System.EventHandler(this.btnLinkAdd_Click);
             // 
             // cbbLinkPoint
             // 
@@ -901,7 +956,7 @@
             this.btnRouteReload.AutoEllipsis = true;
             this.btnRouteReload.BackgroundImage = global::SHME.Properties.Resources.reload;
             this.btnRouteReload.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnRouteReload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRouteReload.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnRouteReload.Location = new System.Drawing.Point(6, 6);
             this.btnRouteReload.Name = "btnRouteReload";
             this.btnRouteReload.Size = new System.Drawing.Size(20, 20);
@@ -913,7 +968,7 @@
             // 
             this.btnRouteSave.BackgroundImage = global::SHME.Properties.Resources.save;
             this.btnRouteSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnRouteSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRouteSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnRouteSave.Location = new System.Drawing.Point(6, 32);
             this.btnRouteSave.Name = "btnRouteSave";
             this.btnRouteSave.Size = new System.Drawing.Size(20, 20);
@@ -1168,7 +1223,6 @@
             this.gbWaypoint.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudZ)).EndInit();
             this.gbLnk.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudY)).EndInit();
             this.tpMarkers.ResumeLayout(false);
@@ -1211,9 +1265,7 @@
         private System.Windows.Forms.GroupBox gbWaypoint;
         private System.Windows.Forms.GroupBox gbLnk;
         private System.Windows.Forms.TreeView tvLinks;
-        private System.Windows.Forms.CheckBox chbLinkOut;
-        private System.Windows.Forms.CheckBox chbLinkIn;
-        private System.Windows.Forms.Button btnLinkInsert;
+        private System.Windows.Forms.Button btnLinkAdd;
         private System.Windows.Forms.ComboBox cbbLinkPoint;
         private System.Windows.Forms.Button btnLinkSave;
         private System.Windows.Forms.Button btnLinkDelete;
@@ -1243,12 +1295,16 @@
         private System.Windows.Forms.Button btnPointsUncheckAll;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TreeView tvMarkers;
         private System.Windows.Forms.TreeView tvGroups;
         private System.Windows.Forms.GroupBox gbGroups;
         private System.Windows.Forms.CheckBox cbListVisible;
         private System.Windows.Forms.Timer tListTimeout;
         private System.Windows.Forms.Button btnLinkSplit;
+        private System.Windows.Forms.RadioButton rbLinkDirectionInB;
+        private System.Windows.Forms.RadioButton rbLinkDirectionOutB;
+        private System.Windows.Forms.RadioButton rbLinkDirectionOut;
+        private System.Windows.Forms.RadioButton rbLinkDirectionBoth;
+        private System.Windows.Forms.RadioButton rbLinkDirectionIn;
     }
 }

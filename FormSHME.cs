@@ -39,6 +39,49 @@ namespace SHME
             }
         }
 
+        public void DrawLineToArray(int[] aCanvas, int aCanvasW, int aCanvasH, int lColor, int lx0, int ly0, int lx1, int ly1)
+        {
+            if ((lx0 < 0 && lx1 < 0) || (aCanvasW < lx0 && aCanvasW < lx1)) return;
+            if ((ly0 < 0 && ly1 < 0) || (aCanvasH < ly0 && aCanvasH < ly1)) return;
+            int x, dx = lx1 - lx0,
+                y, dy = ly1 - ly0;
+            double s = 0;
+            if (Math.Abs(dy) < Math.Abs(dx))
+            {
+                if (lx1 < lx0)
+                {
+                    x   = lx1; lx1 = lx0;
+                    ly0 = ly1;
+                }
+                else x = lx0;
+                for (; x < lx1; x++)
+                {
+                    y = ly0 + (int)Math.Round(s / dx);
+                    if (0 <= x && x < aCanvasW &&
+                        0 <= y && y < aCanvasH)
+                        aCanvas[y * aCanvasW + x] = lColor;
+                    s += dy;
+                }
+            }
+            else
+            {
+                if (ly1 < ly0)
+                {
+                    y   = ly1; ly1 = ly0;
+                    lx0 = lx1;
+                }
+                else y = ly0;
+                for (; y < ly1; y++)
+                {
+                    x = lx0 + (int)Math.Round(s / dy);
+                    if (0 <= x && x < aCanvasW &&
+                        0 <= y && y < aCanvasH)
+                        aCanvas[y * aCanvasW + x] = lColor;
+                    s += dx;
+                }
+            }
+        }
+
         #region Constants
         const int GridColor0 = -0x7FAAAAAA; // Dark gray
         const int GridColor1 = -0x7F555555; // Light gray
@@ -1417,6 +1460,50 @@ namespace SHME
                 }
             }
 
+            // Draw ADrive lines
+            if (chbADrive.Checked)
+                if (FAD.SelectedRoute != null)
+                {
+                    ADLink l;
+                    ADWaypoint wpA, wpB;
+                    List<ADWaypoint> WPs = FAD.SelectedRoute.Waypoints;
+                    for (iy = WPs.Count - 1; 0 <= iy; iy--)
+                    {
+                        wpA = WPs[iy];
+                        for (ix = wpA.Links.Count - 1; 0 <= ix; ix--)
+                        {
+                            l = wpA.Links[ix];
+                            if (iy < l.waypointID) // Draw only once
+                            {
+                                wpB = WPs[l.waypointID];
+                                if (wpA.Show || wpB.Show)
+                                    DrawLineToArray(buffer, mtsW, mtsH,
+                                        FormADrive.Pins.Pens[l.direction],
+                                        wpA.Position.canvasX - portL, wpA.Position.canvasY - portT,
+                                        wpB.Position.canvasX - portL, wpB.Position.canvasY - portT);
+                            }
+                        }
+                    }
+                }
+            // Draw CPlay lines
+            if (chbCPlay.Checked)
+                if (FCP.SelectedRoute != null)
+                {
+                    List<CPWaypoint> WPs = FCP.SelectedRoute.Waypoints;
+                    offset = WPs.Count - 1;
+                    CPWaypoint wpB, wpA = (0 < offset) ? WPs[offset] : null;
+                    for (iy = offset - 1; 0 <= iy; iy--)
+                    {
+                        wpB = wpA;
+                        wpA = WPs[iy];
+                        if (wpA.Show || wpB.Show)
+                            DrawLineToArray(buffer, mtsW, mtsH,
+                                FormCPlay.Pins.Pens[0],
+                                wpA.Position.canvasX - portL, wpA.Position.canvasY - portT,
+                                wpB.Position.canvasX - portL, wpB.Position.canvasY - portT);
+                    }
+                }
+
             // Draw Items, CPlay, ADrive
             if (chbItems .Checked) DrawVisibleObjects(buffer, mtsW, mtsH, portL, portT, portR, portB, FormItems .Pins, FIs.FSItemsShown);
             if (chbCPlay .Checked) DrawVisibleObjects(buffer, mtsW, mtsH, portL, portT, portR, portB, FormCPlay .Pins, FCP.WaypointsShown);
@@ -1435,49 +1522,6 @@ namespace SHME
                 if (chbBrush2FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush2Width.Value, (int)nudBrush2Height.Value, chbBrush2RectangleShape.Checked);
                 if (chbBrush3FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, chbBrush3RectangleShape.Checked);
             }
-
-            // Draw ADrive lines
-            if (chbADrive.Checked)
-                if (FAD.SelectedRoute != null)
-                {
-                    ADLink l;
-                    ADWaypoint wpA, wpB;
-                    List<ADWaypoint> WPs = FAD.SelectedRoute.Waypoints;
-                    for (iy = WPs.Count - 1; 0 <= iy; iy--)
-                    {
-                        wpA = WPs[iy];
-                        for (ix = wpA.Links.Count - 1; 0 <= ix; ix--)
-                        {
-                            l = wpA.Links[ix];
-                            if (iy < l.waypointID) // Draw only once
-                            {
-                                wpB = WPs[l.waypointID];
-                                if (wpA.Show || wpB.Show)
-                                    e.Graphics.DrawLine(
-                                        FormADrive.Pins.Pens[l.direction],
-                                        wpA.Position.canvasX, wpA.Position.canvasY,
-                                        wpB.Position.canvasX, wpB.Position.canvasY);
-                            }
-                        }
-                    }
-                }
-            // Draw CPlay lines
-            if (chbCPlay.Checked)
-                if (FCP.SelectedRoute != null)
-                {
-                    List<CPWaypoint> WPs = FCP.SelectedRoute.Waypoints;
-                    offset = WPs.Count - 1;
-                    CPWaypoint wpB, wpA = (0 < offset) ? WPs[offset] : null;
-                    for (iy = offset - 1; 0 <= iy; iy--)
-                    {
-                        wpB = wpA;
-                        wpA = WPs[iy];
-                        if (wpA.Show || wpB.Show)
-                            e.Graphics.DrawLine(FormCPlay.Pins.Pens[0],
-                                wpA.Position.canvasX, wpA.Position.canvasY,
-                                wpB.Position.canvasX, wpB.Position.canvasY);
-                    }
-                }
         }
 
         private void DrawBrushContour(Graphics g, int x, int y, int width, int height, bool isRectangle)//Ok
