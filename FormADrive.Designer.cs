@@ -382,6 +382,7 @@
             this.btnPositionAlign.TabIndex = 2;
             this.toolTip.SetToolTip(this.btnPositionAlign, "Align position. Only X, Z axis");
             this.btnPositionAlign.UseVisualStyleBackColor = true;
+            this.btnPositionAlign.Click += new System.EventHandler(this.btnPositionAlign_Click);
             // 
             // nudPositionStep
             // 
@@ -660,14 +661,14 @@
             // rbLinkDirectionOutB
             // 
             this.rbLinkDirectionOutB.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbLinkDirectionOutB.BackgroundImage = global::SHME.Properties.Resources.historyForward;
+            this.rbLinkDirectionOutB.BackgroundImage = global::SHME.Properties.Resources.directionOutBack;
             this.rbLinkDirectionOutB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.rbLinkDirectionOutB.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rbLinkDirectionOutB.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.rbLinkDirectionOutB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbLinkDirectionOutB.Location = new System.Drawing.Point(80, 46);
+            this.rbLinkDirectionOutB.Location = new System.Drawing.Point(88, 46);
             this.rbLinkDirectionOutB.Name = "rbLinkDirectionOutB";
-            this.rbLinkDirectionOutB.Size = new System.Drawing.Size(18, 20);
+            this.rbLinkDirectionOutB.Size = new System.Drawing.Size(20, 20);
             this.rbLinkDirectionOutB.TabIndex = 60;
             this.rbLinkDirectionOutB.Tag = 0;
             this.rbLinkDirectionOutB.UseVisualStyleBackColor = true;
@@ -676,14 +677,14 @@
             // rbLinkDirectionOut
             // 
             this.rbLinkDirectionOut.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbLinkDirectionOut.BackgroundImage = global::SHME.Properties.Resources.directionRight;
+            this.rbLinkDirectionOut.BackgroundImage = global::SHME.Properties.Resources.directionOut;
             this.rbLinkDirectionOut.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.rbLinkDirectionOut.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rbLinkDirectionOut.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.rbLinkDirectionOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbLinkDirectionOut.Location = new System.Drawing.Point(62, 46);
+            this.rbLinkDirectionOut.Location = new System.Drawing.Point(68, 46);
             this.rbLinkDirectionOut.Name = "rbLinkDirectionOut";
-            this.rbLinkDirectionOut.Size = new System.Drawing.Size(18, 20);
+            this.rbLinkDirectionOut.Size = new System.Drawing.Size(20, 20);
             this.rbLinkDirectionOut.TabIndex = 59;
             this.rbLinkDirectionOut.Tag = 1;
             this.rbLinkDirectionOut.UseVisualStyleBackColor = true;
@@ -698,9 +699,9 @@
             this.rbLinkDirectionBoth.Checked = true;
             this.rbLinkDirectionBoth.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.rbLinkDirectionBoth.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbLinkDirectionBoth.Location = new System.Drawing.Point(44, 46);
+            this.rbLinkDirectionBoth.Location = new System.Drawing.Point(48, 46);
             this.rbLinkDirectionBoth.Name = "rbLinkDirectionBoth";
-            this.rbLinkDirectionBoth.Size = new System.Drawing.Size(18, 20);
+            this.rbLinkDirectionBoth.Size = new System.Drawing.Size(20, 20);
             this.rbLinkDirectionBoth.TabIndex = 58;
             this.rbLinkDirectionBoth.TabStop = true;
             this.rbLinkDirectionBoth.Tag = 2;
@@ -710,14 +711,14 @@
             // rbLinkDirectionIn
             // 
             this.rbLinkDirectionIn.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbLinkDirectionIn.BackgroundImage = global::SHME.Properties.Resources.directionLeft;
+            this.rbLinkDirectionIn.BackgroundImage = global::SHME.Properties.Resources.directionIn;
             this.rbLinkDirectionIn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.rbLinkDirectionIn.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rbLinkDirectionIn.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.rbLinkDirectionIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbLinkDirectionIn.Location = new System.Drawing.Point(26, 46);
+            this.rbLinkDirectionIn.Location = new System.Drawing.Point(28, 46);
             this.rbLinkDirectionIn.Name = "rbLinkDirectionIn";
-            this.rbLinkDirectionIn.Size = new System.Drawing.Size(18, 20);
+            this.rbLinkDirectionIn.Size = new System.Drawing.Size(20, 20);
             this.rbLinkDirectionIn.TabIndex = 57;
             this.rbLinkDirectionIn.Tag = 3;
             this.rbLinkDirectionIn.UseVisualStyleBackColor = true;
@@ -726,14 +727,14 @@
             // rbLinkDirectionInB
             // 
             this.rbLinkDirectionInB.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbLinkDirectionInB.BackgroundImage = global::SHME.Properties.Resources.historyBack;
+            this.rbLinkDirectionInB.BackgroundImage = global::SHME.Properties.Resources.directionInBack;
             this.rbLinkDirectionInB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.rbLinkDirectionInB.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rbLinkDirectionInB.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.rbLinkDirectionInB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rbLinkDirectionInB.Location = new System.Drawing.Point(8, 46);
             this.rbLinkDirectionInB.Name = "rbLinkDirectionInB";
-            this.rbLinkDirectionInB.Size = new System.Drawing.Size(18, 20);
+            this.rbLinkDirectionInB.Size = new System.Drawing.Size(20, 20);
             this.rbLinkDirectionInB.TabIndex = 56;
             this.rbLinkDirectionInB.Tag = 4;
             this.rbLinkDirectionInB.UseVisualStyleBackColor = true;
@@ -776,11 +777,11 @@
             // 
             this.ilLinkDirection.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilLinkDirection.ImageStream")));
             this.ilLinkDirection.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilLinkDirection.Images.SetKeyName(0, "historyForward.png");
-            this.ilLinkDirection.Images.SetKeyName(1, "directionRight.png");
+            this.ilLinkDirection.Images.SetKeyName(0, "directionOutBack.png");
+            this.ilLinkDirection.Images.SetKeyName(1, "directionOut.png");
             this.ilLinkDirection.Images.SetKeyName(2, "directionBoth.png");
-            this.ilLinkDirection.Images.SetKeyName(3, "directionLeft.png");
-            this.ilLinkDirection.Images.SetKeyName(4, "historyBack.png");
+            this.ilLinkDirection.Images.SetKeyName(3, "directionIn.png");
+            this.ilLinkDirection.Images.SetKeyName(4, "directionInBack.png");
             // 
             // btnLinkAdd
             // 

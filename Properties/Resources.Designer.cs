@@ -273,9 +273,9 @@ namespace SHME.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap directionLeft {
+        internal static System.Drawing.Bitmap directionIn {
             get {
-                object obj = ResourceManager.GetObject("directionLeft", resourceCulture);
+                object obj = ResourceManager.GetObject("directionIn", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -283,9 +283,29 @@ namespace SHME.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap directionRight {
+        internal static System.Drawing.Bitmap directionInBack {
             get {
-                object obj = ResourceManager.GetObject("directionRight", resourceCulture);
+                object obj = ResourceManager.GetObject("directionInBack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap directionOut {
+            get {
+                object obj = ResourceManager.GetObject("directionOut", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap directionOutBack {
+            get {
+                object obj = ResourceManager.GetObject("directionOutBack", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

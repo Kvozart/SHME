@@ -1326,7 +1326,7 @@
             this.tlpTools.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpTools.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpTools.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTools.Size = new System.Drawing.Size(220, 662);
+            this.tlpTools.Size = new System.Drawing.Size(220, 661);
             this.tlpTools.TabIndex = 3;
             // 
             // gbTools
@@ -1349,7 +1349,7 @@
             this.gbTools.Location = new System.Drawing.Point(3, 401);
             this.gbTools.Name = "gbTools";
             this.gbTools.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.gbTools.Size = new System.Drawing.Size(214, 258);
+            this.gbTools.Size = new System.Drawing.Size(214, 257);
             this.gbTools.TabIndex = 4;
             this.gbTools.TabStop = false;
             this.gbTools.Text = "Tools";
@@ -2270,10 +2270,10 @@
             this.hScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.hScrollBar.LargeChange = 256;
-            this.hScrollBar.Location = new System.Drawing.Point(220, 641);
+            this.hScrollBar.Location = new System.Drawing.Point(220, 640);
             this.hScrollBar.Maximum = 255;
             this.hScrollBar.Name = "hScrollBar";
-            this.hScrollBar.Size = new System.Drawing.Size(543, 21);
+            this.hScrollBar.Size = new System.Drawing.Size(512, 21);
             this.hScrollBar.TabIndex = 10;
             this.hScrollBar.ValueChanged += new System.EventHandler(this.ScrollBar_ValueChanged);
             // 
@@ -2282,10 +2282,10 @@
             this.vScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.vScrollBar.LargeChange = 256;
-            this.vScrollBar.Location = new System.Drawing.Point(763, 0);
+            this.vScrollBar.Location = new System.Drawing.Point(732, 0);
             this.vScrollBar.Maximum = 255;
             this.vScrollBar.Name = "vScrollBar";
-            this.vScrollBar.Size = new System.Drawing.Size(21, 641);
+            this.vScrollBar.Size = new System.Drawing.Size(21, 640);
             this.vScrollBar.TabIndex = 9;
             this.vScrollBar.ValueChanged += new System.EventHandler(this.ScrollBar_ValueChanged);
             // 
@@ -2303,7 +2303,7 @@
             "x16",
             "x32",
             "x64"});
-            this.cbbZoom.Location = new System.Drawing.Point(39, 2);
+            this.cbbZoom.Location = new System.Drawing.Point(32, 2);
             this.cbbZoom.Margin = new System.Windows.Forms.Padding(1);
             this.cbbZoom.Name = "cbbZoom";
             this.cbbZoom.Size = new System.Drawing.Size(44, 24);
@@ -2317,7 +2317,7 @@
             this.btnHistoryForward.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnHistoryForward.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnHistoryForward.Image = global::SHME.Properties.Resources.historyForwardHi;
-            this.btnHistoryForward.Location = new System.Drawing.Point(137, 2);
+            this.btnHistoryForward.Location = new System.Drawing.Point(124, 2);
             this.btnHistoryForward.Margin = new System.Windows.Forms.Padding(1);
             this.btnHistoryForward.Name = "btnHistoryForward";
             this.btnHistoryForward.Size = new System.Drawing.Size(24, 24);
@@ -2335,7 +2335,7 @@
             this.btnHistoryBackward.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnHistoryBackward.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
             this.btnHistoryBackward.Image = global::SHME.Properties.Resources.historyBackHi;
-            this.btnHistoryBackward.Location = new System.Drawing.Point(111, 2);
+            this.btnHistoryBackward.Location = new System.Drawing.Point(98, 2);
             this.btnHistoryBackward.Margin = new System.Windows.Forms.Padding(1);
             this.btnHistoryBackward.Name = "btnHistoryBackward";
             this.btnHistoryBackward.Size = new System.Drawing.Size(24, 24);
@@ -2370,7 +2370,7 @@
             this.pbZoomOut.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pbZoomOut.Image = global::SHME.Properties.Resources.MoveDown;
             this.pbZoomOut.InitialImage = null;
-            this.pbZoomOut.Location = new System.Drawing.Point(83, 14);
+            this.pbZoomOut.Location = new System.Drawing.Point(76, 14);
             this.pbZoomOut.Margin = new System.Windows.Forms.Padding(0);
             this.pbZoomOut.Name = "pbZoomOut";
             this.pbZoomOut.Size = new System.Drawing.Size(16, 12);
@@ -2385,7 +2385,7 @@
             this.pbZoomIn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pbZoomIn.Image = global::SHME.Properties.Resources.MoveUp;
             this.pbZoomIn.InitialImage = null;
-            this.pbZoomIn.Location = new System.Drawing.Point(83, 2);
+            this.pbZoomIn.Location = new System.Drawing.Point(76, 2);
             this.pbZoomIn.Margin = new System.Windows.Forms.Padding(0);
             this.pbZoomIn.Name = "pbZoomIn";
             this.pbZoomIn.Size = new System.Drawing.Size(16, 12);
@@ -2523,7 +2523,7 @@
             this.pnlCorner.BackColor = System.Drawing.SystemColors.Control;
             this.pnlCorner.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlCorner.BackgroundImage")));
             this.pnlCorner.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pnlCorner.Location = new System.Drawing.Point(763, 641);
+            this.pnlCorner.Location = new System.Drawing.Point(732, 640);
             this.pnlCorner.Name = "pnlCorner";
             this.pnlCorner.Size = new System.Drawing.Size(21, 21);
             this.pnlCorner.TabIndex = 11;
@@ -2587,7 +2587,7 @@
             this.chbADrive.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.chbADrive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chbADrive.Image = global::SHME.Properties.Resources.markOption;
-            this.chbADrive.Location = new System.Drawing.Point(203, 2);
+            this.chbADrive.Location = new System.Drawing.Point(183, 2);
             this.chbADrive.Margin = new System.Windows.Forms.Padding(1);
             this.chbADrive.Name = "chbADrive";
             this.chbADrive.Size = new System.Drawing.Size(27, 25);
@@ -2607,10 +2607,10 @@
             this.chbCPlay.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.chbCPlay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chbCPlay.ImageAlign = System.Drawing.ContentAlignment.TopRight;
-            this.chbCPlay.Location = new System.Drawing.Point(232, 2);
+            this.chbCPlay.Location = new System.Drawing.Point(212, 2);
             this.chbCPlay.Margin = new System.Windows.Forms.Padding(1);
             this.chbCPlay.Name = "chbCPlay";
-            this.chbCPlay.Size = new System.Drawing.Size(31, 25);
+            this.chbCPlay.Size = new System.Drawing.Size(27, 25);
             this.chbCPlay.TabIndex = 7;
             this.chbCPlay.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip.SetToolTip(this.chbCPlay, "Course Play");
@@ -2629,7 +2629,7 @@
             this.chbItems.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chbItems.ForeColor = System.Drawing.SystemColors.ControlText;
             this.chbItems.Image = global::SHME.Properties.Resources.markOption;
-            this.chbItems.Location = new System.Drawing.Point(174, 2);
+            this.chbItems.Location = new System.Drawing.Point(154, 2);
             this.chbItems.Margin = new System.Windows.Forms.Padding(1);
             this.chbItems.Name = "chbItems";
             this.chbItems.Size = new System.Drawing.Size(27, 25);
@@ -2657,11 +2657,11 @@
             this.pnlZoomGrid.Controls.Add(this.cbbZoom);
             this.pnlZoomGrid.Controls.Add(this.pbZoomOut);
             this.pnlZoomGrid.Controls.Add(this.pbZoomIn);
-            this.pnlZoomGrid.Location = new System.Drawing.Point(446, 4);
+            this.pnlZoomGrid.Location = new System.Drawing.Point(364, 4);
             this.pnlZoomGrid.Margin = new System.Windows.Forms.Padding(0);
             this.pnlZoomGrid.Name = "pnlZoomGrid";
             this.pnlZoomGrid.Padding = new System.Windows.Forms.Padding(1);
-            this.pnlZoomGrid.Size = new System.Drawing.Size(267, 31);
+            this.pnlZoomGrid.Size = new System.Drawing.Size(243, 31);
             this.pnlZoomGrid.TabIndex = 1;
             // 
             // pnlToolSelect
@@ -2782,7 +2782,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(784, 662);
+            this.ClientSize = new System.Drawing.Size(753, 661);
             this.Controls.Add(this.pnlToolSelect);
             this.Controls.Add(this.pnlZoomGrid);
             this.Controls.Add(this.pnlCorner);
@@ -2793,10 +2793,10 @@
             this.DoubleBuffered = true;
             this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(480, 700);
+            this.MinimumSize = new System.Drawing.Size(488, 700);
             this.Name = "FormSHME";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.Text = "Spectrum Height Map Editor";
+            this.Text = "Spectrum Height Map Editor v1.5 (2024.06.02)";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSHME_FormClosed);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormSHME_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbHMap_MouseDown);

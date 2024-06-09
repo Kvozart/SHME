@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Kvozart\\Projects\\SHME\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|c:\\users\\kvozart\\projects\\shme\\formadrive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|solutionrelative:formadrive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|C:\\Users\\Kvozart\\Projects\\SHME\\formadrive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|solutionrelative:formadrive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|c:\\users\\kvozart\\projects\\shme\\formcplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|solutionrelative:formcplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|C:\\Users\\Kvozart\\Projects\\SHME\\formshme.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -22,42 +18,30 @@
       "DocumentGroups": [
         {
           "DockedHeight": 265,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "FormADrive.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
-              "DocumentMoniker": "C:\\Users\\Kvozart\\Projects\\SHME\\FormADrive.cs",
-              "RelativeDocumentMoniker": "FormADrive.cs",
-              "ToolTip": "C:\\Users\\Kvozart\\Projects\\SHME\\FormADrive.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
-              "RelativeToolTip": "FormADrive.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-01T17:16:07.397Z",
-              "EditorCaption": " [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "FormADrive.cs",
-              "DocumentMoniker": "C:\\Users\\Kvozart\\Projects\\SHME\\FormADrive.cs",
-              "RelativeDocumentMoniker": "FormADrive.cs",
-              "ToolTip": "C:\\Users\\Kvozart\\Projects\\SHME\\FormADrive.cs",
-              "RelativeToolTip": "FormADrive.cs",
-              "ViewState": "AQIAAOwDAAAAAAAAAAAswCsEAAAyAAAA",
+              "Title": "FormCPlay.cs",
+              "DocumentMoniker": "C:\\Users\\Kvozart\\Projects\\SHME\\FormCPlay.cs",
+              "RelativeDocumentMoniker": "FormCPlay.cs",
+              "ToolTip": "C:\\Users\\Kvozart\\Projects\\SHME\\FormCPlay.cs",
+              "RelativeToolTip": "FormCPlay.cs",
+              "ViewState": "AQIAADwBAAAAAAAAAAAAAHkBAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-01T16:52:01.692Z",
+              "WhenOpened": "2024-06-09T13:49:19.525Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "FormSHME.cs",
               "DocumentMoniker": "C:\\Users\\Kvozart\\Projects\\SHME\\FormSHME.cs",
               "RelativeDocumentMoniker": "FormSHME.cs",
               "ToolTip": "C:\\Users\\Kvozart\\Projects\\SHME\\FormSHME.cs",
               "RelativeToolTip": "FormSHME.cs",
-              "ViewState": "AQIAAGQFAAAAAAAAAIAwwMcFAAAkAAAA",
+              "ViewState": "AQIAAMsAAAAAAAAAAAAwwHMEAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-14T15:20:53.355Z",
               "EditorCaption": ""
