@@ -525,9 +525,9 @@ namespace SHME
                             case "x": x = BreakLine_Float(ExtractTagContent(s),      ';'); break;
                             case "y": y = BreakLine_Float(ExtractTagContent(s),      ';'); break;
                             case "z": z = BreakLine_Float(ExtractTagContent(s),      ';'); break;
-                            case "flags":          flag = ExtractTagContent(s).Split(';'); break;
-                            case "in":            iIDsS = ExtractTagContent(s).Split(';'); break;
                             case "out":           oIDsS = ExtractTagContent(s).Split(';'); break;
+                            case "in":            iIDsS = ExtractTagContent(s).Split(';'); break;
+                            case "flags":          flag = ExtractTagContent(s).Split(';'); break;
                             default:
                                 tag = tag.Substring(0, 2);
                                 if (tag == "m ") SelectedRoute.Markers.Add(new ADMarker(s));
@@ -542,10 +542,10 @@ namespace SHME
                 SelectedRoute.newLineID =
                      Math.Max(iIDsS.Length,
                      Math.Max(oIDsS.Length,
-                     Math.Max(x.Length,
-                     Math.Max(y.Length,
-                     Math.Max(z.Length,
-                              flag.Length)))));
+                     Math.Max(    x.Length,
+                     Math.Max(    y.Length,
+                     Math.Max(    z.Length,
+                               flag.Length)))));
                 int[] iIDs, oIDs;
                 IEnumerable<int> IDBD;
                 for (int i = 0; i < SelectedRoute.newLineID; i++)
@@ -901,7 +901,7 @@ namespace SHME
                     file.WriteLine("        <z>" + sZ + "</z>");
                     file.WriteLine("        <out>" + String.Join(";", sOs) + "</out>");
                     file.WriteLine("        <in>"  + String.Join(";", sIs) + "</in>" );
-                    file.WriteLine("        <flag>" + sF + "</flag>");
+                    file.WriteLine("        <flags>" + sF + "</flags>");
                     file.Write("    </waypoints>\r\n    <markers>"); for (int i = SelectedRoute.Markers.Count - 1; 0 <= i; i--) file.WriteLine(SelectedRoute.Markers[i].GetXMLLine());
                     file.Write("    </markers>\r\n    <groups>");    for (int i = SelectedRoute.Groups. Count - 1; 0 <= i; i--) file.WriteLine(SelectedRoute. Groups[i].GetXMLLine());
                     file.Write("    </groups>\r\n</routeExport>");

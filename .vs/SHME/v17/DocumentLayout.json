@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Kvozart\\Projects\\SHME\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|c:\\users\\kvozart\\projects\\shme\\formcplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|solutionrelative:formcplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|c:\\users\\kvozart\\projects\\shme\\formshme.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|solutionrelative:formshme.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{56B601DE-D379-4008-B5FA-EB3AEACB0272}|SHME.csproj|C:\\Users\\Kvozart\\Projects\\SHME\\formshme.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,15 +23,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "FormCPlay.cs",
-              "DocumentMoniker": "C:\\Users\\Kvozart\\Projects\\SHME\\FormCPlay.cs",
-              "RelativeDocumentMoniker": "FormCPlay.cs",
-              "ToolTip": "C:\\Users\\Kvozart\\Projects\\SHME\\FormCPlay.cs",
-              "RelativeToolTip": "FormCPlay.cs",
-              "ViewState": "AQIAADwBAAAAAAAAAAAAAHkBAAAXAAAA",
+              "Title": "FormSHME.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
+              "DocumentMoniker": "C:\\Users\\Kvozart\\Projects\\SHME\\FormSHME.cs",
+              "RelativeDocumentMoniker": "FormSHME.cs",
+              "ToolTip": "C:\\Users\\Kvozart\\Projects\\SHME\\FormSHME.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
+              "RelativeToolTip": "FormSHME.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-09T13:49:19.525Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-09T14:39:57.438Z",
+              "EditorCaption": " [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]"
             },
             {
               "$type": "Document",
@@ -41,7 +40,7 @@
               "RelativeDocumentMoniker": "FormSHME.cs",
               "ToolTip": "C:\\Users\\Kvozart\\Projects\\SHME\\FormSHME.cs",
               "RelativeToolTip": "FormSHME.cs",
-              "ViewState": "AQIAAMsAAAAAAAAAAAAwwHMEAAAIAAAA",
+              "ViewState": "AQIAABQDAAAAAAAAAAAAAEwDAABFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-14T15:20:53.355Z",
               "EditorCaption": ""

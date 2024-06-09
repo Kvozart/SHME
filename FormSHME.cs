@@ -841,7 +841,8 @@ namespace SHME
             if (!lblPointerLevel.Enabled) return;
             int delta = 1 << zoom >> 2;
             UInt16 mapXYLevel = HMap.Levels[mapX, mapY];
-            lblPointerPosition.Text = mapX + PointerSpliter + mapY + "\r" + mapXm + " m " + mapYm;
+            lblPointerPosition.Text = mapX + " " + mapXm.ToString("f4", ReadValue.FloatPoint) + "m\r" +
+                                      mapY + " " + mapYm.ToString("f4", ReadValue.FloatPoint) + "m";
             lblPointerLevel.Text = mapXYLevel.ToString() + "\rx" + mapXYLevel.ToString(NumberFormat);
         }
 

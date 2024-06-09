@@ -254,8 +254,8 @@
             this.gbStatistics.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbStatistics.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.gbStatistics.Controls.Add(this.chbLimitMin);
             this.gbStatistics.Controls.Add(this.lblPointerPosition);
+            this.gbStatistics.Controls.Add(this.chbLimitMin);
             this.gbStatistics.Controls.Add(this.label12);
             this.gbStatistics.Controls.Add(this.lblPointerLevel);
             this.gbStatistics.Controls.Add(this.lblHeightAvg);
@@ -297,10 +297,10 @@
             // 
             this.lblPointerPosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPointerPosition.BackColor = System.Drawing.Color.Transparent;
-            this.lblPointerPosition.Location = new System.Drawing.Point(48, 68);
+            this.lblPointerPosition.Location = new System.Drawing.Point(37, 68);
             this.lblPointerPosition.Margin = new System.Windows.Forms.Padding(1);
             this.lblPointerPosition.Name = "lblPointerPosition";
-            this.lblPointerPosition.Size = new System.Drawing.Size(80, 26);
+            this.lblPointerPosition.Size = new System.Drawing.Size(97, 26);
             this.lblPointerPosition.TabIndex = 23;
             this.lblPointerPosition.Text = "- x -";
             this.lblPointerPosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -309,7 +309,7 @@
             // label12
             // 
             this.label12.BackColor = System.Drawing.Color.Transparent;
-            this.label12.Location = new System.Drawing.Point(4, 12);
+            this.label12.Location = new System.Drawing.Point(-2, 11);
             this.label12.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(44, 28);
@@ -376,7 +376,7 @@
             // label13
             // 
             this.label13.BackColor = System.Drawing.Color.Transparent;
-            this.label13.Location = new System.Drawing.Point(4, 40);
+            this.label13.Location = new System.Drawing.Point(-2, 39);
             this.label13.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(44, 28);
@@ -405,7 +405,7 @@
             // label11
             // 
             this.label11.BackColor = System.Drawing.Color.Transparent;
-            this.label11.Location = new System.Drawing.Point(4, 68);
+            this.label11.Location = new System.Drawing.Point(-2, 67);
             this.label11.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(44, 28);
