@@ -478,7 +478,8 @@ namespace SHME
                     clbItems.SelectedIndex = i;
             }
             clbItems.EndUpdate();
-        }
+            if (clbItems.SelectedIndex < 0) tbLine.Text = "";
+            }
 
         private void LimitFilter_ValueChanged(object sender, EventArgs e)
         {
@@ -587,8 +588,13 @@ namespace SHME
 
         private void tbLine_Leave(object sender, EventArgs e)
         {
-            if (clbItems.SelectedItem?.ToString() == tbLine.Text) return;
             int li = clbItems.SelectedIndex;
+            if (li < 0)
+            {
+                tbLine.Text = "";
+                return;
+            }
+            if (clbItems.SelectedItem?.ToString() == tbLine.Text) return;
             FSItem item = FSItemsShown[li];
             item.Edited = true;
             item.DecodeXMLLine(tbLine.Text);

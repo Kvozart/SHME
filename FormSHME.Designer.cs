@@ -33,8 +33,8 @@
             this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
             this.dlgSave = new System.Windows.Forms.SaveFileDialog();
             this.gbStatistics = new System.Windows.Forms.GroupBox();
-            this.chbLimitMin = new System.Windows.Forms.CheckBox();
             this.lblPointerPosition = new System.Windows.Forms.Label();
+            this.chbLimitMin = new System.Windows.Forms.CheckBox();
             this.label12 = new System.Windows.Forms.Label();
             this.lblPointerLevel = new System.Windows.Forms.Label();
             this.lblHeightAvg = new System.Windows.Forms.Label();
@@ -276,6 +276,19 @@
             this.gbStatistics.TabStop = false;
             this.gbStatistics.Text = "Statistics";
             // 
+            // lblPointerPosition
+            // 
+            this.lblPointerPosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblPointerPosition.BackColor = System.Drawing.Color.Transparent;
+            this.lblPointerPosition.Location = new System.Drawing.Point(37, 68);
+            this.lblPointerPosition.Margin = new System.Windows.Forms.Padding(1);
+            this.lblPointerPosition.Name = "lblPointerPosition";
+            this.lblPointerPosition.Size = new System.Drawing.Size(97, 26);
+            this.lblPointerPosition.TabIndex = 23;
+            this.lblPointerPosition.Text = "- x -";
+            this.lblPointerPosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.lblPointerPosition, "XZ point and meters from center");
+            // 
             // chbLimitMin
             // 
             this.chbLimitMin.Appearance = System.Windows.Forms.Appearance.Button;
@@ -292,19 +305,6 @@
             this.toolTip.SetToolTip(this.chbLimitMin, "Stretch levels to bottom for view");
             this.chbLimitMin.UseVisualStyleBackColor = true;
             this.chbLimitMin.CheckedChanged += new System.EventHandler(this.HMapOption_Changed);
-            // 
-            // lblPointerPosition
-            // 
-            this.lblPointerPosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblPointerPosition.BackColor = System.Drawing.Color.Transparent;
-            this.lblPointerPosition.Location = new System.Drawing.Point(37, 68);
-            this.lblPointerPosition.Margin = new System.Windows.Forms.Padding(1);
-            this.lblPointerPosition.Name = "lblPointerPosition";
-            this.lblPointerPosition.Size = new System.Drawing.Size(97, 26);
-            this.lblPointerPosition.TabIndex = 23;
-            this.lblPointerPosition.Text = "- x -";
-            this.lblPointerPosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip.SetToolTip(this.lblPointerPosition, "XZ point and meters from center");
             // 
             // label12
             // 
@@ -2796,7 +2796,7 @@
             this.MinimumSize = new System.Drawing.Size(488, 700);
             this.Name = "FormSHME";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.Text = "Spectrum Height Map Editor v1.5 (2024.06.02)";
+            this.Text = "Spectrum Height Map Editor v1.5 (2024.06.12)";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSHME_FormClosed);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormSHME_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbHMap_MouseDown);
