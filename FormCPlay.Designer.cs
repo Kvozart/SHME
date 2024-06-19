@@ -427,6 +427,7 @@
             this.nudTopSpeed.Size = new System.Drawing.Size(36, 20);
             this.nudTopSpeed.TabIndex = 42;
             this.nudTopSpeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip.SetToolTip(this.nudTopSpeed, "Top speed");
             this.nudTopSpeed.ValueChanged += new System.EventHandler(this.Waypoint_ValueChanged);
             // 
             // chb10
