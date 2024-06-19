@@ -475,7 +475,11 @@ namespace SHME
             {
                 clbItems.Items.Add(FSItemsShown[i].XMLLine, FSItemsShown[i].Checked);
                 if (FSItemsShown[i].Selected)
+                {
                     clbItems.SelectedIndex = i;
+                    if (tbLine.Text == "")
+                        tbLine.Text = FSItemsShown[i].XMLLine;
+                }
             }
             clbItems.EndUpdate();
             if (clbItems.SelectedIndex < 0) tbLine.Text = "";
@@ -540,6 +544,7 @@ namespace SHME
                         t <= xyzr.Z && xyzr.Z < b)
                     {
                         clbItems.SelectedIndex = (clbItems.SelectedIndex == i) ? -1 : i;
+                        clbItems.SetItemChecked(i, FSItemsShown[i].Checked = !FSItemsShown[i].Checked);
                         return;
                     }
             } while (i != s);
@@ -564,9 +569,8 @@ namespace SHME
             int i = clbItems.SelectedIndex;
             if (0 <= i)
             {
-                bool newChecked = clbItems.GetItemChecked(i);
-                if (20 < e.X) clbItems.SetItemChecked(i, !(FSItemsShown[i].Checked =  newChecked));
-                else                                       FSItemsShown[i].Checked = !newChecked;
+                if (20 < e.X) clbItems.SetItemChecked(i, !FSItemsShown[i].Checked);
+                else FSItemsShown[i].Checked = !FSItemsShown[i].Checked;
                 FormSHME.Main.IAC_Redraw();
             }
         }
@@ -582,7 +586,7 @@ namespace SHME
         private void btnItemsInvertChecks_Click(object sender, EventArgs e)
         {
             for (int i = clbItems.Items.Count - 1; 0 <= i; i--)
-                clbItems.SetItemChecked(i, FSItemsShown[i].Checked = !clbItems.GetItemChecked(i));
+                clbItems.SetItemChecked(i, FSItemsShown[i].Checked = !FSItemsShown[i].Checked);
             FormSHME.Main.IAC_Redraw();
         }
 

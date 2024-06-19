@@ -270,7 +270,6 @@
             this.clbWaypoints.ScrollAlwaysVisible = true;
             this.clbWaypoints.Size = new System.Drawing.Size(290, 359);
             this.clbWaypoints.TabIndex = 21;
-            this.clbWaypoints.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbWaypoints_ItemCheck);
             this.clbWaypoints.MouseClick += new System.Windows.Forms.MouseEventHandler(this.clbWaypoints_MouseClick);
             this.clbWaypoints.SelectedIndexChanged += new System.EventHandler(this.clbWaypoints_SelectedIndexChanged);
             // 

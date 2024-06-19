@@ -1523,6 +1523,7 @@ namespace SHME
                 if (chbBrush2FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush2Width.Value, (int)nudBrush2Height.Value, chbBrush2RectangleShape.Checked);
                 if (chbBrush3FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, chbBrush3RectangleShape.Checked);
             }
+            buffer[0] = 0; // In case of garbage collector runs beffore buffer is coppied
         }
 
         private void DrawBrushContour(Graphics g, int x, int y, int width, int height, bool isRectangle)//Ok

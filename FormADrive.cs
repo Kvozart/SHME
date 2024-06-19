@@ -757,6 +757,7 @@ namespace SHME
                         t <= xyzr.Z && xyzr.Z < b)
                     {
                         clbWaypoints.SelectedIndex = (clbWaypoints.SelectedIndex == i) ? -1 : i;
+                        clbWaypoints.SetItemChecked(i, WaypointsShown[i].Checked = !WaypointsShown[i].Checked);
                         return;
                     }
             } while (i != s);
@@ -832,7 +833,7 @@ namespace SHME
         private void btnPointsInvertChecks_Click(object sender, EventArgs e)
         {
             for (int i = clbWaypoints.Items.Count - 1; 0 <= i; i--)
-                clbWaypoints.SetItemChecked(i, WaypointsShown[i].Checked = !clbWaypoints.GetItemChecked(i));
+                clbWaypoints.SetItemChecked(i, WaypointsShown[i].Checked = !WaypointsShown[i].Checked);
             FormSHME.Main.IAC_Redraw();
         }
 

@@ -623,6 +623,7 @@ namespace SHME
                         t <= xyzr.Z && xyzr.Z < b)
                     {
                         clbWaypoints.SelectedIndex = (clbWaypoints.SelectedIndex == i) ? -1 : i;
+                        clbWaypoints.SetItemChecked(i, WaypointsShown[i].Checked = !WaypointsShown[i].Checked);
                         return;
                     }
             } while (i != s);
@@ -699,7 +700,8 @@ namespace SHME
             int i = clbWaypoints.SelectedIndex;
             if (0 <= i)
             {
-                if (20 < e.X) clbWaypoints.SetItemChecked(i, !clbWaypoints.GetItemChecked(i));
+                if (20 < e.X) clbWaypoints.SetItemChecked(i, !WaypointsShown[i].Checked);
+                else WaypointsShown[i].Checked = !WaypointsShown[i].Checked;
                 FormSHME.Main.IAC_Redraw();
             }
         }
@@ -708,18 +710,16 @@ namespace SHME
         {
             bool newChecked = (sender == btnPointsCheckAll);
             for (int i = clbWaypoints.Items.Count - 1; 0 <= i; i--)
-                clbWaypoints.SetItemChecked(i, newChecked);
+                clbWaypoints.SetItemChecked(i, WaypointsShown[i].Checked = newChecked);
             FormSHME.Main.IAC_Redraw();
         }
 
         private void btnWaypointsCheckInvert_Click(object sender, EventArgs e)
         {
             for (int i = clbWaypoints.Items.Count - 1; 0 <= i; i--)
-                clbWaypoints.SetItemChecked(i, !clbWaypoints.GetItemChecked(i));
+                clbWaypoints.SetItemChecked(i, WaypointsShown[i].Checked = !WaypointsShown[i].Checked);
             FormSHME.Main.IAC_Redraw();
         }
-
-        private void clbWaypoints_ItemCheck(object sender, ItemCheckEventArgs e) => WaypointsShown[e.Index].Checked = e.NewValue == CheckState.Checked;
 
         private void btnAlign_Click(object sender, EventArgs e)
         {
