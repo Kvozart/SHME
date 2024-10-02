@@ -39,45 +39,73 @@ namespace SHME
             }
         }
 
-        public void DrawLineToArray(int[] aCanvas, int aCanvasW, int aCanvasH, int lColor, int lx0, int ly0, int lx1, int ly1)
+        public void DrawLineToArray(int[] aCanvas, int aCanvasW, int aCanvasH, int lColor, int x0, int y0, int x1, int y1)
         {
-            if ((lx0 < 0 && lx1 < 0) || (aCanvasW < lx0 && aCanvasW < lx1)) return;
-            if ((ly0 < 0 && ly1 < 0) || (aCanvasH < ly0 && aCanvasH < ly1)) return;
-            int x, dx = lx1 - lx0,
-                y, dy = ly1 - ly0;
-            double s = 0;
-            if (Math.Abs(dy) < Math.Abs(dx))
+            // Check if outside
+            if ((x0 < 0 && x1 < 0) || (aCanvasW < x0 && aCanvasW < x1)) return;
+            if ((y0 < 0 && y1 < 0) || (aCanvasH < y0 && aCanvasH < y1)) return;
+            // Presets
+            int dx = x1 - x0, udx = (dx < 0) ? -dx : dx, 
+                dy = y1 - y0, udy = (dy < 0) ? -dy : dy;
+            int x, midP, aIndex,
+                y, step, aStep;
+            // Mostly horizontal
+            if (udy < udx)
             {
-                if (lx1 < lx0)
+                midP = udx >> 1; // Move V-point to "center" of pixel a.k.a. "0.5"
+                step = (dy < 0) ? -1 : 1; // decline/incline
+                if (x1 < x0) // Reverse if vector to left
                 {
-                    x   = lx1; lx1 = lx0;
-                    ly0 = ly1;
+                    x  = x1; x1 = x0;
+                    y0 = y1;
+                    step = -step;
                 }
-                else x = lx0;
-                for (; x < lx1; x++)
+                else x = x0;
+                y = y0;
+                aIndex = y * aCanvasW + x;
+                aStep = (step < 0) ? -aCanvasW : aCanvasW;
+                for (; x < x1; x++)
                 {
-                    y = ly0 + (int)Math.Round(s / dx);
                     if (0 <= x && x < aCanvasW &&
                         0 <= y && y < aCanvasH)
-                        aCanvas[y * aCanvasW + x] = lColor;
-                    s += dy;
+                        aCanvas[aIndex] = lColor;
+                    aIndex++;
+                    midP += udy;
+                    if (udx < midP)
+                    {
+                        midP -= udx;
+                        y += step;
+                        aIndex += aStep; // Next "scanline"
+                    }
                 }
             }
+            // Mostly vertical
             else
             {
-                if (ly1 < ly0)
+                midP = udy >> 1;
+                step = (dx < 0) ? -1 : 1;
+                if (y1 < y0)
                 {
-                    y   = ly1; ly1 = ly0;
-                    lx0 = lx1;
+                    y  = y1; y1 = y0;
+                    x0 = x1;
+                    step = -step;
                 }
-                else y = ly0;
-                for (; y < ly1; y++)
+                else y = y0;
+                x = x0;
+                aIndex = y * aCanvasW + x;
+                for (; y < y1; y++)
                 {
-                    x = lx0 + (int)Math.Round(s / dy);
                     if (0 <= x && x < aCanvasW &&
                         0 <= y && y < aCanvasH)
-                        aCanvas[y * aCanvasW + x] = lColor;
-                    s += dx;
+                        aCanvas[aIndex] = lColor;
+                    aIndex += aCanvasW; // Next "scanline"
+                    midP += udx;
+                    if (udy < midP)
+                    {
+                        midP -= udy;
+                        x += step;
+                        aIndex += step;
+                    }
                 }
             }
         }
@@ -1280,14 +1308,14 @@ namespace SHME
         {
             XYZRDouble xyzr = obj.Position;
             if (xyzr == null) return;
-            double step = (0 < zoom) ? (1 << zoom >> 1) : 0.5;
+            double step = (double)(1 << zoom) / 2;
             xyzr.canvasX = (int)((HMap.Width  + xyzr.X) * step) + hScrollBar.Left - hScrollBar.Value;
             xyzr.canvasY = (int)((HMap.Height + xyzr.Z) * step) + vScrollBar.Top  - vScrollBar.Value;
         }
 
         public void ProjectObjects(IEnumerable<FSObject> objects)
         {
-            double step = (0 < zoom) ? (1 << zoom >> 1) : 0.5;
+            double step = (double)(1 << zoom) / 2;
             int xShift = hScrollBar.Left - hScrollBar.Value, // x shift of scope on map
                 yShift = vScrollBar.Top  - vScrollBar.Value; // y shift of scope on map
             foreach (FSObject obj in objects)
