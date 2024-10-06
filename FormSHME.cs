@@ -27,7 +27,7 @@ namespace SHME
                 if (0 <= iy + y && iy + y < aCanvasH)
                     for (ix = 0; ix < aImgW; ix++)
                     {
-                        if (0xFFFFFF < aImg[iOffset])
+                        if (0 < (aImg[iOffset] >> 24))
                             if (0 <= ix + x && ix + x < aCanvasW)
                                 aCanvas[cOffset] = aImg[iOffset];
                         cOffset++;
@@ -64,16 +64,16 @@ namespace SHME
                 y = y0;
                 aIndex = y * aCanvasW + x;
                 aStep = (step < 0) ? -aCanvasW : aCanvasW;
-                for (; x < x1; x++)
+                for (; x <= x1; x++)
                 {
                     if (0 <= x && x < aCanvasW &&
                         0 <= y && y < aCanvasH)
                         aCanvas[aIndex] = lColor;
                     aIndex++;
-                    midP += udy;
-                    if (udx < midP)
+                    midP -= udy;
+                    if (midP < 0)
                     {
-                        midP -= udx;
+                        midP += udx;
                         y += step;
                         aIndex += aStep; // Next "scanline"
                     }
@@ -93,16 +93,158 @@ namespace SHME
                 else y = y0;
                 x = x0;
                 aIndex = y * aCanvasW + x;
-                for (; y < y1; y++)
+                for (; y <= y1; y++)
                 {
                     if (0 <= x && x < aCanvasW &&
                         0 <= y && y < aCanvasH)
                         aCanvas[aIndex] = lColor;
                     aIndex += aCanvasW; // Next "scanline"
-                    midP += udx;
-                    if (udy < midP)
+                    midP -= udx;
+                    if (midP < 0)
                     {
-                        midP -= udy;
+                        midP += udy;
+                        x += step;
+                        aIndex += step;
+                    }
+                }
+            }
+        }
+
+        public void DrawInvertedLineToArray(int[] aCanvas, int aCanvasW, int aCanvasH, int[] aCanvas0, int x0, int y0, int x1, int y1)
+        {
+            // Check if outside
+            if ((x0 < 0 && x1 < 0) || (aCanvasW < x0 && aCanvasW < x1)) return;
+            if ((y0 < 0 && y1 < 0) || (aCanvasH < y0 && aCanvasH < y1)) return;
+            // Presets
+            int dx = x1 - x0, udx = (dx < 0) ? -dx : dx,
+                dy = y1 - y0, udy = (dy < 0) ? -dy : dy;
+            int x, midP, aIndex,
+                y, step, aStep;
+            // Mostly horizontal
+            if (udy < udx)
+            {
+                midP = udx >> 1; // Move V-point to "center" of pixel a.k.a. "0.5"
+                step = (dy < 0) ? -1 : 1; // decline/incline
+                if (x1 < x0) // Reverse if vector to left
+                {
+                    x = x1; x1 = x0;
+                    y0 = y1;
+                    step = -step;
+                }
+                else x = x0;
+                y = y0;
+                aIndex = y * aCanvasW + x;
+                aStep = (step < 0) ? -aCanvasW : aCanvasW;
+                for (; x <= x1; x++)
+                {
+                    if (0 <= x && x < aCanvasW &&
+                        0 <= y && y < aCanvasH)
+                        aCanvas[aIndex] = aCanvas0[aIndex] ^ 0xFFffFF;
+                    aIndex++;
+                    midP -= udy;
+                    if (midP < 0)
+                    {
+                        midP += udx;
+                        y += step;
+                        aIndex += aStep; // Next "scanline"
+                    }
+                }
+            }
+            // Mostly vertical
+            else
+            {
+                midP = udy >> 1;
+                step = (dx < 0) ? -1 : 1;
+                if (y1 < y0)
+                {
+                    y = y1; y1 = y0;
+                    x0 = x1;
+                    step = -step;
+                }
+                else y = y0;
+                x = x0;
+                aIndex = y * aCanvasW + x;
+                for (; y <= y1; y++)
+                {
+                    if (0 <= x && x < aCanvasW &&
+                        0 <= y && y < aCanvasH)
+                        aCanvas[aIndex] = aCanvas0[aIndex] ^ 0xFFffFF;
+                    aIndex += aCanvasW; // Next "scanline"
+                    midP -= udx;
+                    if (midP < 0)
+                    {
+                        midP += udy;
+                        x += step;
+                        aIndex += step;
+                    }
+                }
+            }
+        }
+
+        public void DrawShiftedLineToArray(int[] aCanvas, int aCanvasW, int aCanvasH, int[] aCanvas0, int x0, int y0, int x1, int y1)
+        {
+            // Check if outside
+            if ((x0 < 0 && x1 < 0) || (aCanvasW < x0 && aCanvasW < x1)) return;
+            if ((y0 < 0 && y1 < 0) || (aCanvasH < y0 && aCanvasH < y1)) return;
+            // Presets
+            int dx = x1 - x0, udx = (dx < 0) ? -dx : dx,
+                dy = y1 - y0, udy = (dy < 0) ? -dy : dy;
+            int x, midP, aIndex,
+                y, step, aStep;
+            // Mostly horizontal
+            if (udy < udx)
+            {
+                midP = udx >> 1; // Move V-point to "center" of pixel a.k.a. "0.5"
+                step = (dy < 0) ? -1 : 1; // decline/incline
+                if (x1 < x0) // Reverse if vector to left
+                {
+                    x = x1; x1 = x0;
+                    y0 = y1;
+                    step = -step;
+                }
+                else x = x0;
+                y = y0;
+                aIndex = y * aCanvasW + x;
+                aStep = (step < 0) ? -aCanvasW : aCanvasW;
+                for (; x <= x1; x++)
+                {
+                    if (0 <= x && x < aCanvasW &&
+                        0 <= y && y < aCanvasH)
+                        aCanvas[aIndex] = aCanvas0[aIndex] ^ 0x808080; // Shifting hi/lo part
+                    aIndex++;
+                    midP -= udy;
+                    if (midP < 0)
+                    {
+                        midP += udx;
+                        y += step;
+                        aIndex += aStep; // Next "scanline"
+                    }
+                }
+            }
+            // Mostly vertical
+            else
+            {
+                midP = udy >> 1;
+                step = (dx < 0) ? -1 : 1;
+                if (y1 < y0)
+                {
+                    y = y1; y1 = y0;
+                    x0 = x1;
+                    step = -step;
+                }
+                else y = y0;
+                x = x0;
+                aIndex = y * aCanvasW + x;
+                for (; y <= y1; y++)
+                {
+                    if (0 <= x && x < aCanvasW &&
+                        0 <= y && y < aCanvasH)
+                        aCanvas[aIndex] = aCanvas0[aIndex] ^ 0x808080;
+                    aIndex += aCanvasW; // Next "scanline"
+                    midP -= udx;
+                    if (midP < 0)
+                    {
+                        midP += udy;
                         x += step;
                         aIndex += step;
                     }
@@ -175,7 +317,7 @@ namespace SHME
 
         bool lockMouse = false;
         bool lockDrawing = true;
-        int zoom = 0; // 1:1 (2^zoom)
+        int zoom = 0; // 1:1 (1:2^zoom)
         byte[] bBuffer; // Raw byte data
         HeightMap      HMap = new HeightMap();
         TopologicalMap TMap = new TopologicalMap();
@@ -451,32 +593,34 @@ namespace SHME
             if (HMap == null) return;
             if (bBuffer == null) return;
             int loIdx = (cbbLevelFormat8bit.Visible)
-                ? cbbLevelFormat8bit.SelectedIndex / 2
+                ? cbbLevelFormat8bit.SelectedIndex >> 1
                 : (cbbLevelFormat16bit.Visible)
-                    ? 2 * cbbLevelFormat8bit.SelectedIndex
+                    ? cbbLevelFormat8bit.SelectedIndex << 1
                     : 0;
             int hiIdx = (cbbLevelFormat8bit.Visible)
                 ? 2 - cbbLevelFormat8bit.SelectedIndex % 3
                 : (cbbLevelFormat16bit.Visible)
-                    ? 2 * cbbLevelFormat8bit.SelectedIndex + 1
+                    ? (cbbLevelFormat8bit.SelectedIndex << 1) + 1
                     : 1;
-            HMap.SetLevels(bBuffer, (int)chbLevelByteBigLittleIndian.Tag,
-                chbLevelByteBigLittleIndian.Checked ? hiIdx : loIdx,
-                chbLevelByteBigLittleIndian.Checked ? loIdx : hiIdx,
-                chbLevelPixelBigLittleIndian.Checked);
+            if (chbLevelByteBigLittleIndian.Checked) HMap.SetLevels(bBuffer, (int)chbLevelByteBigLittleIndian.Tag, hiIdx, loIdx, chbLevelPixelBigLittleIndian.Checked);
+            else                                     HMap.SetLevels(bBuffer, (int)chbLevelByteBigLittleIndian.Tag, loIdx, hiIdx, chbLevelPixelBigLittleIndian.Checked);
         }
 
         private void CreateGradientMap(bool serpantine)
         {
             int x, y;
             HMap.SetSize(256, 256);
-            for (x = 0; x < 256; x++)
-                for (y = 0; y < 256; y++)
-                {
-                    HMap.Levels[x, y] = (UInt16)((y << 8) + x);
-                    if (serpantine)
+            if (serpantine)
+                for (x = 0; x < 256; x++)
+                    for (y = 0; y < 256; y++)
+                    {
+                        HMap.Levels[x,   y] = (UInt16)((y << 8) + x);
                         HMap.Levels[x, ++y] = (UInt16)((y << 8) - x + 255);
-                }
+                    }
+            else
+                for (x = 0; x < 256; x++)
+                    for (y = 0; y < 256; y++)
+                        HMap.Levels[x,   y] = (UInt16)((y << 8) + x);
         }
 
         private void ShowStatistics()//Ok
@@ -574,10 +718,12 @@ namespace SHME
                     bBuffer = new byte[rowBytes * height];
                     // Grab data
                     IntPtr rowPtr = imgData.Scan0;
+                    int idx = 0;
                     for (int y = 0; y < height; y++)
                     {
-                        Marshal.Copy(rowPtr, bBuffer, y * rowBytes, rowBytes);
+                        Marshal.Copy(rowPtr, bBuffer, idx, rowBytes);
                         rowPtr += imgData.Stride;
+                        idx += rowBytes;
                     }
                     img.UnlockBits(imgData);
                 }
@@ -654,14 +800,14 @@ namespace SHME
         {
             TMap.SetSize(width, height);
             int x, y;
-            // Clear
+            // Clear BG
             for (y = 0; y < height; y++)
                 for (x = 0; x < width; x++)
                     TMap.Pixels[x + y * width] = -0x7F696968;
-            // 10x10
+            // 10x10 grid
             for (x = 0; x < width;  x += 10) for (y = 0; y < height; y++) TMap.Pixels[x + y * TMap.Width] = -0x7FA9A9A8;
             for (y = 0; y < height; y += 10) for (x = 0; x < width;  x++) TMap.Pixels[x + y * TMap.Width] = -0x7FA9A9A8;
-            // 100x100
+            // 100x100 grid
             for (x = 0; x < width;  x += 100) for (y = 0; y < height; y++) TMap.Pixels[x + y * TMap.Width] = -0x7FD3D3D2;
             for (y = 0; y < height; y += 100) for (x = 0; x < width;  x++) TMap.Pixels[x + y * TMap.Width] = -0x7FD3D3D2;
             // Apply
@@ -1344,12 +1490,14 @@ namespace SHME
             return objectsShown;
         }
 
-        private void DrawVisibleObjects(int[] buffer, int bufferW, int bufferH, int portL, int portT, int portR, int portB, FSPins pins, IEnumerable<FSObject> objects)
+        private void DrawVisibleObjects(int[] aCanvas, int aCanvasW, int aCanvasH, int portL, int portT, int portR, int portB, FSPins pins, IEnumerable<FSObject> objects)
         {
             int pL = portL - pins.CenterX,
                 pT = portT - pins.CenterY,
                 pR = portR - pins.CenterX + pins.Width,
-                pB = portB - pins.CenterY + pins.Height;
+                pB = portB - pins.CenterY + pins.Height,
+                pLC = portL + pins.CenterX,
+                pTC = portT + pins.CenterY;
             foreach (FSObject obj in objects)
                 if (obj.Position != null)
                 {
@@ -1357,23 +1505,23 @@ namespace SHME
                     int y = obj.Position.canvasY;
                     if (x < pL || pR <= x ||
                         y < pT || pB <= y) continue;
-                    DrawArrayToArray(buffer, bufferW, bufferH,
+                    DrawArrayToArray(aCanvas, aCanvasW, aCanvasH,
                         pins.Icons[obj.PinState],
                         pins.Width, pins.Height,
-                        x - portL - pins.CenterX,
-                        y - portT - pins.CenterY);
+                        x - pLC,
+                        y - pTC);
                     if (obj.Selected)
-                        DrawArrayToArray(buffer, bufferW, bufferH,
+                        DrawArrayToArray(aCanvas, aCanvasW, aCanvasH,
                             pins.Selection,
                             pins.Width, pins.Height,
-                            x - portL - pins.CenterX,
-                            y - portT - pins.CenterY);
+                            x - pLC,
+                            y - pTC);
                     else if (obj.Checked)
-                        DrawArrayToArray(buffer, bufferW, bufferH,
+                        DrawArrayToArray(aCanvas, aCanvasW, aCanvasH,
                             pins.Checking,
                             pins.Width, pins.Height,
-                            x - portL - pins.CenterX,
-                            y - portT - pins.CenterY);
+                            x - pLC,
+                            y - pTC);
                 }
         }
 
@@ -1538,28 +1686,53 @@ namespace SHME
             if (chbCPlay .Checked) DrawVisibleObjects(buffer, mtsW, mtsH, portL, portT, portR, portB, FormCPlay .Pins, FCP.WaypointsShown);
             if (chbADrive.Checked) DrawVisibleObjects(buffer, mtsW, mtsH, portL, portT, portR, portB, FormADrive.Pins, FAD.WaypointsShown);
 
+            // Add brushes
+            if (lblPointerLevel.Enabled)
+            {
+                x = (mapX << zoom) - mtsL;
+                y = (mapY << zoom) - mtsT;
+                int[] buffer0 = new int[buffer.Length];
+                buffer.CopyTo(buffer0, 0);
+                if (chbBrush1FrameShow.Checked) DrawBrushContourShifted(buffer, mtsW, mtsH, buffer0, x, y, (int)nudBrush1Width.Value, (int)nudBrush1Height.Value, brush1ForceMask);
+                if (chbBrush2FrameShow.Checked) DrawBrushContourShifted(buffer, mtsW, mtsH, buffer0, x, y, (int)nudBrush2Width.Value, (int)nudBrush2Height.Value, brush2ForceMask);
+                if (chbBrush3FrameShow.Checked) DrawBrushContourShifted(buffer, mtsW, mtsH, buffer0, x, y, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, brush3ForceMask);
+            }
+
             // Transfer
             Bitmap img = new Bitmap(mtsW, mtsH, mtsW << 2, PixelFormat.Format32bppRgb, Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0));
             e.Graphics.DrawImageUnscaled(img, portL, portT);
 
-            // Add brushes
-            if (lblPointerLevel.Enabled)
-            {
-                x = (mapX << zoom) + xShift;
-                y = (mapY << zoom) + yShift;
-                if (chbBrush1FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush1Width.Value, (int)nudBrush1Height.Value, chbBrush1RectangleShape.Checked);
-                if (chbBrush2FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush2Width.Value, (int)nudBrush2Height.Value, chbBrush2RectangleShape.Checked);
-                if (chbBrush3FrameShow.Checked) DrawBrushContour(e.Graphics, x, y, (int)nudBrush3Width.Value, (int)nudBrush3Height.Value, chbBrush3RectangleShape.Checked);
-            }
             buffer[0] = 0; // In case of garbage collector runs beffore buffer is coppied
+            img.Dispose();
         }
 
-        private void DrawBrushContour(Graphics g, int x, int y, int width, int height, bool isRectangle)//Ok
+        private void DrawBrushContourShifted(int[] aCanvas, int aCanvasW, int aCanvasH, int[] aCanvas0, int x, int y, int width, int height, float[,] mask)//Ok
         {
-            x -= ((width  - 1) >> 1) << zoom;    width  = (width  << zoom) - 1;
-            y -= ((height - 1) >> 1) << zoom;    height = (height << zoom) - 1;
-            if (isRectangle) g.DrawRectangle(new Pen(Color.Black), x, y, width, height);
-            else             g.DrawEllipse  (new Pen(Color.Black), x, y, width, height);
+            int x0, x1, xi, xL = x - (((width  - 1) >> 1) << zoom),
+                y0, y1, yi, yT = y - (((height - 1) >> 1) << zoom),
+                sq = (1 << zoom) - 1;
+            for (yi = 0; yi < height; yi++)
+            {
+                xi = 0;
+                for (; xi < width; xi++) if (mask[xi, yi] != 0) break;
+                if (width <= xi) break;
+                x0 = xL + (xi << zoom);
+                y0 = yT + (yi << zoom);
+                DrawShiftedLineToArray(aCanvas, aCanvasW, aCanvasH, aCanvas0, x0, y0, x0, y0 + sq);
+                x1 = xL + ((width - xi) << zoom) - 1;
+                DrawShiftedLineToArray(aCanvas, aCanvasW, aCanvasH, aCanvas0, x1, y0, x1, y0 + sq);
+            }
+            for (xi = 0; xi < width; xi++)
+            {
+                yi = 0;
+                for (; yi < height; yi++) if (mask[xi, yi] != 0) break;
+                if (width <= xi) break;
+                x0 = xL + (xi << zoom);
+                y0 = yT + (yi << zoom);
+                DrawShiftedLineToArray(aCanvas, aCanvasW, aCanvasH, aCanvas0, x0, y0, x0 + sq, y0);
+                y1 = yT + ((height - yi) << zoom) - 1;
+                DrawShiftedLineToArray(aCanvas, aCanvasW, aCanvasH, aCanvas0, x0, y1, x0 + sq, y1);
+            }
         }
 
         private void FormSHME_Resize(object sender, EventArgs e)//
@@ -1695,11 +1868,11 @@ namespace SHME
 
         #region Tools
         private void btnToolsetAdd_Click(object sender, EventArgs e) => cbbToolsetPreset.SelectedIndex = AddToolset(
-                (int)btnToolLMB.Tag,
-                (int)btnToolMMB.Tag,
-                (int)btnToolRMB.Tag,
-                (int)btnToolX1MB.Tag,
-                (int)btnToolX2MB.Tag);
+            (int)btnToolLMB.Tag,
+            (int)btnToolMMB.Tag,
+            (int)btnToolRMB.Tag,
+            (int)btnToolX1MB.Tag,
+            (int)btnToolX2MB.Tag);
 
         private int AddToolset(int toolL, int toolM, int toolR, int toolX1, int toolX2)//Ok
         {
@@ -1915,7 +2088,7 @@ namespace SHME
                         mask[      x,       y] =
                         mask[      x, szH - y] =
                         mask[szW - x,       y] =
-                        mask[szW - x, szH - y] = mask[Math.Min(x, y), hsizeH];
+                        mask[szW - x, szH - y] = mask[(x < y) ? x : y, hsizeH];
         }
         #endregion
 
