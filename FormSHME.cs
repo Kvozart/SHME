@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using LibPNGsharp;
 using static SHME.FormADrive;
@@ -1711,28 +1708,30 @@ namespace SHME
             int x0, x1, xi, xL = x - (((width  - 1) >> 1) << zoom),
                 y0, y1, yi, yT = y - (((height - 1) >> 1) << zoom),
                 sq = (1 << zoom) - 1;
+            // Vertical outline parts
             for (yi = 0; yi < height; yi++)
-            {
-                xi = 0;
-                for (; xi < width; xi++) if (mask[xi, yi] != 0) break;
-                if (width <= xi) break;
-                x0 = xL + (xi << zoom);
-                y0 = yT + (yi << zoom);
-                DrawShiftedLineToArray(aCanvas, aCanvasW, aCanvasH, aCanvas0, x0, y0, x0, y0 + sq);
-                x1 = xL + ((width - xi) << zoom) - 1;
-                DrawShiftedLineToArray(aCanvas, aCanvasW, aCanvasH, aCanvas0, x1, y0, x1, y0 + sq);
-            }
+                for (xi = 0; xi < width; xi++)
+                    if (mask[xi, yi] != 0)
+                    {
+                        x0 = xL + (xi << zoom);
+                        y0 = yT + (yi << zoom);
+                        x1 = xL + ((width - xi) << zoom) - 1;
+                        DrawShiftedLineToArray(aCanvas, aCanvasW, aCanvasH, aCanvas0, x0, y0 - (y < y0 ? 1 : 0), x0, y0 + sq + (y0 < y ? 1 : 0)); // Left side. Condition for inside corners
+                        DrawShiftedLineToArray(aCanvas, aCanvasW, aCanvasH, aCanvas0, x1, y0 - (y < y0 ? 1 : 0), x1, y0 + sq + (y0 < y ? 1 : 0)); // Right side
+                        break;
+                    }
+            // Horizontal outline parts
             for (xi = 0; xi < width; xi++)
-            {
-                yi = 0;
-                for (; yi < height; yi++) if (mask[xi, yi] != 0) break;
-                if (width <= xi) break;
-                x0 = xL + (xi << zoom);
-                y0 = yT + (yi << zoom);
-                DrawShiftedLineToArray(aCanvas, aCanvasW, aCanvasH, aCanvas0, x0, y0, x0 + sq, y0);
-                y1 = yT + ((height - yi) << zoom) - 1;
-                DrawShiftedLineToArray(aCanvas, aCanvasW, aCanvasH, aCanvas0, x0, y1, x0 + sq, y1);
-            }
+                for (yi = 0; yi < height; yi++)
+                    if (mask[xi, yi] != 0)
+                    {
+                        x0 = xL + (xi << zoom);
+                        y0 = yT + (yi << zoom);
+                        y1 = yT + ((height - yi) << zoom) - 1;
+                        DrawShiftedLineToArray(aCanvas, aCanvasW, aCanvasH, aCanvas0, x0, y0, x0 + sq, y0); // Top side
+                        DrawShiftedLineToArray(aCanvas, aCanvasW, aCanvasH, aCanvas0, x0, y1, x0 + sq, y1); // Bottom side
+                        break;
+                    }
         }
 
         private void FormSHME_Resize(object sender, EventArgs e)//
@@ -2028,7 +2027,7 @@ namespace SHME
             int szH = sizeH - 1, qqr= qr * qr;
             int hsizeW = szW >> 1;
             int hsizeH = szH >> 1;
-            int cx, cy;
+            int cx, cy, sx, sy;
 
             // Square distribution
             if (distributionShape == 0)
@@ -2039,7 +2038,7 @@ namespace SHME
                     {
                         cx = (szW - (x << 1)) * sizeH;
                         cy = (szH - (y << 1)) * sizeW;
-                        r = (cx * cx + cy * cy);
+                        r = cx * cx + cy * cy;
                         if (r + 1 < qqr)
                             mask[      x,       y] =
                             mask[      x, szH - y] =
@@ -2056,7 +2055,7 @@ namespace SHME
                     {
                         cx = (szW - (x << 1)) * sizeH;
                         cy = (szH - (y << 1)) * sizeW;
-                        r = (cx * cx + cy * cy);
+                        r = cx * cx + cy * cy;
                         if (r < qqr)
                             mask[      x,       y] =
                             mask[      x, szH - y] =
@@ -2073,11 +2072,16 @@ namespace SHME
                     {
                         cx = hsizeW - x;
                         cy = hsizeH - y;
-                        r = (float)((cx * cx + cy * cy) << 2) / qr;
-                        mask[      x,       y] =
-                        mask[      x, szH - y] =
-                        mask[szW - x,       y] =
-                        mask[szW - x, szH - y] = (float)Math.Exp(-24 * r * r);
+                        sx = (cx << 1) * sizeH;
+                        sy = (cy << 1) * sizeW;
+                        if (sx * sx + sy * sy <= qqr)
+                        {
+                            r = (float)((cx * cx + cy * cy) << 2) / qr;
+                            mask[      x,       y] =
+                            mask[      x, szH - y] =
+                            mask[szW - x,       y] =
+                            mask[szW - x, szH - y] = (float)Math.Exp(-24 * r * r);
+                        }
                     }
             }
 

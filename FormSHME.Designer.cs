@@ -2796,7 +2796,7 @@
             this.MinimumSize = new System.Drawing.Size(488, 700);
             this.Name = "FormSHME";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.Text = "Spectrum Height Map Editor v1.5 (2024.10.06)";
+            this.Text = "Spectrum Height Map Editor v1.5 (2024.10.14)";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSHME_FormClosed);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormSHME_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbHMap_MouseDown);
