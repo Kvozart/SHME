@@ -2708,6 +2708,7 @@
             this.rbToolUseBrush3.TabIndex = 6;
             this.rbToolUseBrush3.Text = "3";
             this.rbToolUseBrush3.UseVisualStyleBackColor = false;
+            this.rbToolUseBrush3.Click += new System.EventHandler(this.btnTool_Click);
             // 
             // rbToolUseBrush2
             // 
@@ -2723,6 +2724,7 @@
             this.rbToolUseBrush2.TabIndex = 5;
             this.rbToolUseBrush2.Text = "2";
             this.rbToolUseBrush2.UseVisualStyleBackColor = false;
+            this.rbToolUseBrush2.Click += new System.EventHandler(this.btnTool_Click);
             // 
             // rbToolUseBrush1
             // 
@@ -2741,6 +2743,7 @@
             this.rbToolUseBrush1.Text = "1";
             this.rbToolUseBrush1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rbToolUseBrush1.UseVisualStyleBackColor = false;
+            this.rbToolUseBrush1.Click += new System.EventHandler(this.btnTool_Click);
             // 
             // label15
             // 
@@ -2796,7 +2799,7 @@
             this.MinimumSize = new System.Drawing.Size(488, 700);
             this.Name = "FormSHME";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.Text = "Spectrum Height Map Editor v1.5 (2024.10.14)";
+            this.Text = "Spectrum Height Map Editor v1.5 (2024.10.27)";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSHME_FormClosed);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormSHME_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbHMap_MouseDown);

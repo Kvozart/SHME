@@ -1935,20 +1935,23 @@ namespace SHME
         private void pnlToolSelect_Click(object sender, EventArgs e) => pnlToolSelect.Visible = false;
         private void btnTool_Click(object sender, EventArgs e)//Ok
         {
-            int useBrushNumber = (rbToolUseBrush1.Checked) ? 0:
-                                 (rbToolUseBrush2.Checked) ? 1:
-                                                             2;
-            ToolXMBSelect(pnlToolSelect.Tag as Button, ((int)(sender as Button).Tag << 2) + useBrushNumber);
+            Button targetToolButton = pnlToolSelect.Tag as Button;
+            int tool = sender is RadioButton
+                ? (int) targetToolButton.Tag  & 252  // Target's tool
+                : (int)(sender as Button).Tag <<  2; // Selected tool
+            int slot = (rbToolUseBrush1.Checked) ? 0 :
+                       (rbToolUseBrush2.Checked) ? 1 :
+                                                   2 ;
+            ToolXMBSelect(targetToolButton, tool + slot);
             cbbToolsetPreset.SelectedIndex = -1;
-            pnlToolSelect.Visible = false;
         }
 
         private void ToolXMBSelect(Button btnXMB, int ID)//O
         {
             ID = ID & 63; // Filter out ID + brush (4 + 2 bits)
-            if (ToolControls.Length <= ID >> 2) ID = 0; // Unknown tool, set pan
+            if (ToolControls.Length <= (ID >> 2)) ID = 0; // Unknown tool, set pan
             btnXMB.Image = ToolControls[ID >> 2].Image;
-            btnXMB.Text = (ID < 16) ? "" : ((ID & 3) + 1).ToString();
+            btnXMB.Text = (ID < 16) ? "" : ((ID & 3) + 1).ToString(); // First 4 tools don't show slot #
             btnXMB.Tag = ID;
         }
 
